@@ -807,7 +807,9 @@ def main():
     
     # 2. Test authentication endpoints
     print("\n🔐 Testing Authentication...")
-    tester.test_login_valid_credentials()
+    success, response = tester.test_login_valid_credentials()
+    if success:
+        tester.coo_token = tester.token  # Store COO token
     tester.test_login_invalid_mobile()
     tester.test_login_invalid_pin()
     tester.test_login_missing_fields()
