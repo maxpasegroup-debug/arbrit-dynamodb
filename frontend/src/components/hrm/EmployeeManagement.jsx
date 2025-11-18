@@ -177,6 +177,57 @@ const EmployeeManagement = () => {
 
   return (
     <div className="space-y-6">
+      {/* Filters */}
+      <div className="bg-white/5 backdrop-blur-sm rounded-xl border border-white/10 p-4 mb-4">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div>
+            <Label className="text-gray-300 text-sm mb-2 block">Branch</Label>
+            <Select value={filterBranch} onValueChange={setFilterBranch}>
+              <SelectTrigger data-testid="filter-branch" className="bg-white/5 border-white/20 text-white">
+                <SelectValue placeholder="All Branches" />
+              </SelectTrigger>
+              <SelectContent className="bg-[#1a2f4d] border-white/20 text-white">
+                <SelectItem value="all">All Branches</SelectItem>
+                <SelectItem value="Dubai">Dubai</SelectItem>
+                <SelectItem value="Abu Dhabi">Abu Dhabi</SelectItem>
+                <SelectItem value="Saudi Arabia">Saudi Arabia</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <div>
+            <Label className="text-gray-300 text-sm mb-2 block">Department</Label>
+            <Select value={filterDepartment} onValueChange={setFilterDepartment}>
+              <SelectTrigger data-testid="filter-department" className="bg-white/5 border-white/20 text-white">
+                <SelectValue placeholder="All Departments" />
+              </SelectTrigger>
+              <SelectContent className="bg-[#1a2f4d] border-white/20 text-white">
+                <SelectItem value="all">All Departments</SelectItem>
+                <SelectItem value="Sales">Sales</SelectItem>
+                <SelectItem value="HR">HR</SelectItem>
+                <SelectItem value="Academic">Academic</SelectItem>
+                <SelectItem value="Accounts">Accounts</SelectItem>
+                <SelectItem value="Marketing">Marketing</SelectItem>
+                <SelectItem value="Dispatch">Dispatch</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="flex items-end">
+            {(filterBranch || filterDepartment) && (
+              <Button
+                onClick={() => {
+                  setFilterBranch('');
+                  setFilterDepartment('');
+                }}
+                variant="outline"
+                className="border-white/20 text-white hover:bg-white/10 w-full"
+              >
+                Clear Filters
+              </Button>
+            )}
+          </div>
+        </div>
+      </div>
+
       {/* Header Actions */}
       <div className="flex items-center justify-between">
         <div className="relative flex-1 max-w-md">
