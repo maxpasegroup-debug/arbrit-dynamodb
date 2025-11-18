@@ -1475,8 +1475,8 @@ async def get_all_quotations(current_user: dict = Depends(get_current_user)):
 # Sales Head - Approve/Reject Quotation
 @api_router.put("/sales/quotations/{quotation_id}/approve")
 async def approve_quotation(quotation_id: str, approval_data: dict, current_user: dict = Depends(get_current_user)):
-    if current_user["role"] != "Sales Head":
-        raise HTTPException(status_code=403, detail="Access denied. Sales Head only.")
+    if current_user["role"] not in ["COO", "Sales Head"]:
+        raise HTTPException(status_code=403, detail="Access denied. Sales Head or COO role required.")
     
     approved = approval_data.get("approved", False)
     remarks = approval_data.get("remarks", "")
