@@ -489,6 +489,58 @@ class ArbritAPITester:
             return True, response
         return False, {}
 
+    def test_create_field_sales_user(self):
+        """Create a test field sales user for visit logs testing"""
+        # Switch back to COO token for creating employee
+        temp_token = self.token
+        self.token = self.sales_token if hasattr(self, 'sales_token') else temp_token
+        
+        # Use COO token to create employee
+        if hasattr(self, 'coo_token'):
+            self.token = self.coo_token
+        
+        employee_data = {
+            "name": "Test Field Sales User",
+            "mobile": "9876543211",  # Different mobile
+            "branch": "Dubai",
+            "email": "fieldtest@arbrit.com",
+            "designation": "Field Sales Executive",
+            "department": "Sales",
+            "badge_title": "Field Sales Executive",
+            "sales_type": "field"  # This will create a Field Sales user
+        }
+        
+        success, response = self.run_test(
+            "Create Field Sales Employee",
+            "POST",
+            "hrm/employees",
+            200,
+            data=employee_data
+        )
+        
+        if success and 'id' in response:
+            self.field_sales_employee_id = response['id']
+            print(f"   Field Sales Employee ID: {self.field_sales_employee_id}")
+        
+        # Restore previous token
+        self.token = temp_token
+        return success, response
+
+    def test_login_field_sales_user(self):
+        """Test login with field sales user credentials"""
+        success, response = self.run_test(
+            "Login with Field Sales User Credentials",
+            "POST",
+            "auth/login",
+            200,
+            data={"mobile": "9876543211", "pin": "3211"}  # Last 4 digits
+        )
+        if success and 'token' in response:
+            self.field_sales_token = response['token']
+            print(f"   Field Sales Token received: {self.field_sales_token[:20]}...")
+            return True, response
+        return False, {}
+
     # Sales API Tests
     def test_submit_self_lead(self):
         """Test submitting a self-generated lead"""
