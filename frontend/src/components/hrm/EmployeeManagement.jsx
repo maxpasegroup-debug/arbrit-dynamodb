@@ -212,13 +212,13 @@ const EmployeeManagement = () => {
           <TableBody>
             {loading && employees.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={6} className="text-center text-gray-400 py-8">
+                <TableCell colSpan={8} className="text-center text-gray-400 py-8">
                   Loading employees...
                 </TableCell>
               </TableRow>
             ) : filteredEmployees.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={6} className="text-center text-gray-400 py-8">
+                <TableCell colSpan={8} className="text-center text-gray-400 py-8">
                   {searchTerm ? 'No employees found matching your search' : 'No employees added yet'}
                 </TableCell>
               </TableRow>
@@ -227,13 +227,23 @@ const EmployeeManagement = () => {
                 <TableRow key={employee.id} className="border-white/10 hover:bg-white/5" data-testid={`employee-row-${employee.id}`}>
                   <TableCell className="text-white font-medium">{employee.name}</TableCell>
                   <TableCell className="text-gray-300">{employee.mobile}</TableCell>
-                  <TableCell className="text-gray-300">{employee.email || '-'}</TableCell>
                   <TableCell className="text-gray-300">{employee.designation || '-'}</TableCell>
                   <TableCell className="text-gray-300">
                     <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-purple-500/20 text-purple-300">
                       {employee.branch}
                     </span>
                   </TableCell>
+                  <TableCell className="text-gray-300">{employee.department || '-'}</TableCell>
+                  <TableCell className="text-gray-300">
+                    {employee.sales_type ? (
+                      <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                        employee.sales_type === 'tele' ? 'bg-blue-500/20 text-blue-300' : 'bg-green-500/20 text-green-300'
+                      }`}>
+                        {employee.sales_type === 'tele' ? 'Tele Sales' : employee.sales_type === 'field' ? 'Field Sales' : '-'}
+                      </span>
+                    ) : '-'}
+                  </TableCell>
+                  <TableCell className="text-gray-300">{employee.badge_title || '-'}</TableCell>
                   <TableCell className="text-right">
                     <div className="flex justify-end gap-2">
                       <Button
