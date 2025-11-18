@@ -283,6 +283,25 @@ async def create_employee(employee: EmployeeCreate, current_user: dict = Depends
     doc = employee_obj.model_dump()
     doc['created_at'] = doc['created_at'].isoformat()
     await db.employees.insert_one(doc)
+    
+    # Auto-create user account if designation contains "HR"
+    if employee.designation and "HR" in employee.designation.upper():
+        # Check if user already exists
+        existing_user = await db.users.find_one({"mobile": employee.mobile})
+        if not existing_user:
+            # Create HR user account with PIN = last 4 digits of mobile
+            pin = employee.mobile[-4:]
+            hr_user = User(
+                mobile=employee.mobile,
+                pin_hash=hash_pin(pin),
+                name=employee.name,
+                role="HR"
+            )
+            user_dict = hr_user.model_dump()
+            user_dict['created_at'] = user_dict['created_at'].isoformat()
+            await db.users.insert_one(user_dict)
+            logger.info(f"HR user account created for {employee.name} with mobile {employee.mobile}")
+    
     return employee_obj
 
 
