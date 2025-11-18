@@ -716,6 +716,27 @@ async def get_live_attendance(current_user: dict = Depends(get_current_user)):
     return result
 
 
+@api_router.put("/sales-head/employees/{employee_id}/badge")
+async def assign_badge(employee_id: str, badge_data: dict, current_user: dict = Depends(get_current_user)):
+    if current_user["role"] != "Sales Head":
+        raise HTTPException(status_code=403, detail="Access denied")
+    
+    existing = await db.employees.find_one({"id": employee_id}, {"_id": 0})
+    if not existing:
+        raise HTTPException(status_code=404, detail="Employee not found")
+    
+    if existing.get("department") != "Sales":
+        raise HTTPException(status_code=403, detail="Can only assign badges to sales team members")
+    
+    badge_title = badge_data.get("badge_title")
+    if not badge_title:
+        raise HTTPException(status_code=400, detail="Badge title is required")
+    
+    await db.employees.update_one({"id": employee_id}, {"$set": {"badge_title": badge_title}})
+    
+    return {"message": "Badge assigned successfully", "badge_title": badge_title}
+
+
 # Sales Head - Lead Management
 @api_router.post("/sales-head/leads", response_model=Lead)
 async def create_lead(lead: LeadCreate, current_user: dict = Depends(get_current_user)):
