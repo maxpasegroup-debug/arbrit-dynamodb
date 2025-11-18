@@ -755,6 +755,11 @@ def main():
     tester.test_get_employees()
     tester.test_update_employee()
     
+    # 4.1. Create Sales User for Testing Sales APIs
+    print("\n👤 Creating Sales User for Testing...")
+    tester.test_create_sales_user()
+    tester.test_login_sales_user()
+    
     # 5. Test HRM Module - Attendance Management
     print("\n⏰ Testing HRM - Attendance Management...")
     tester.test_record_attendance()
