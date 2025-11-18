@@ -1,12 +1,14 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { LogOut, Users, TrendingUp, FileText, CalendarCheck } from 'lucide-react';
+import { LogOut, LayoutDashboard, Users, TrendingUp, FileText, CalendarCheck, ClipboardList } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import SalesOverview from '@/components/sales/SalesOverview';
 import EmployeeMonitoring from '@/components/sales/EmployeeMonitoring';
-import LeadManagement from '@/components/sales/LeadManagement';
-import QuotationManagement from '@/components/sales/QuotationManagement';
+import LeadAllocation from '@/components/sales/LeadAllocation';
+import QuotationApproval from '@/components/sales/QuotationApproval';
 import LeaveApprovals from '@/components/sales/LeaveApprovals';
+import RequestsView from '@/components/sales/RequestsView';
 import { toast } from 'sonner';
 import axios from 'axios';
 
