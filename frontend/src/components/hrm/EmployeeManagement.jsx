@@ -91,7 +91,10 @@ const EmployeeManagement = () => {
       mobile: '',
       branch: '',
       email: '',
-      designation: ''
+      designation: '',
+      department: '',
+      badge_title: '',
+      sales_type: ''
     });
   };
 
