@@ -410,7 +410,7 @@ async def create_employee(employee: EmployeeCreate, current_user: dict = Depends
     doc['created_at'] = doc['created_at'].isoformat()
     await db.employees.insert_one(doc)
     
-    # Auto-create user account based on designation
+    # Auto-create user account based on designation and sales_type
     user_role = None
     if employee.designation:
         designation_upper = employee.designation.upper()
@@ -419,8 +419,13 @@ async def create_employee(employee: EmployeeCreate, current_user: dict = Depends
         elif "SALES HEAD" in designation_upper:
             user_role = "Sales Head"
         elif employee.department == "Sales" and "SALES HEAD" not in designation_upper:
-            # Any sales department employee (except Sales Head) gets Sales Employee role
-            user_role = "Sales Employee"
+            # Determine role based on sales_type
+            if employee.sales_type == "tele":
+                user_role = "Tele Sales"
+            elif employee.sales_type == "field":
+                user_role = "Field Sales"
+            else:
+                user_role = "Sales Employee"  # Fallback for backward compatibility
     
     if user_role:
         # Check if user already exists
