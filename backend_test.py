@@ -111,7 +111,7 @@ class ArbritAPITester:
             "POST",
             "auth/login",
             401,
-            data={"mobile": "971566374020", "pin": "1234"}
+            data={"mobile": "9876543210", "pin": "1234"}
         )
 
     def test_login_missing_fields(self):
