@@ -721,7 +721,36 @@ def main():
     tester.test_get_company_documents()
     tester.test_get_company_document_alerts()
     
-    # 8. Test Delete Operations
+    # 8. Test Sales APIs - Self Lead Management
+    print("\n💼 Testing Sales APIs - Lead Management...")
+    tester.test_submit_self_lead()
+    tester.test_get_my_leads()
+    
+    # 9. Test Sales APIs - Quotation Management
+    print("\n📋 Testing Sales APIs - Quotation Management...")
+    tester.test_create_quotation()
+    tester.test_get_my_quotations()
+    
+    # 10. Test Sales APIs - Trainer Requests
+    print("\n👨‍🏫 Testing Sales APIs - Trainer Requests...")
+    tester.test_create_trainer_request()
+    tester.test_get_trainer_requests()
+    
+    # 11. Test Sales APIs - Invoice Requests
+    print("\n🧾 Testing Sales APIs - Invoice Requests...")
+    tester.test_create_invoice_request()
+    tester.test_get_invoice_requests()
+    
+    # 12. Test Sales APIs - Visit Logs (Field Sales)
+    print("\n📍 Testing Sales APIs - Visit Logs...")
+    tester.test_create_visit_log()
+    tester.test_get_visit_logs()
+    
+    # 13. Test Sales API Error Handling
+    print("\n⚠️ Testing Sales API Error Handling...")
+    tester.test_sales_api_error_handling()
+    
+    # 14. Test Delete Operations
     print("\n🗑️ Testing Delete Operations...")
     tester.test_delete_employee_document()
     tester.test_delete_company_document()
