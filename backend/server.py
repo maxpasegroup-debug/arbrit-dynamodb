@@ -635,6 +635,313 @@ async def delete_company_document(doc_id: str, current_user: dict = Depends(get_
     return {"message": "Document deleted successfully"}
 
 
+# Sales Head - Dashboard
+@api_router.get("/dashboard/sales-head")
+async def sales_head_dashboard(current_user: dict = Depends(get_current_user)):
+    if current_user["role"] != "Sales Head":
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Access denied. Sales Head role required."
+        )
+    
+    return {
+        "message": "Welcome to Sales Head Dashboard",
+        "user": current_user["name"],
+        "role": "Sales Head"
+    }
+
+
+# Sales Head - Employee Monitoring
+@api_router.get("/sales-head/employees")
+async def get_sales_employees(
+    branch: Optional[str] = None,
+    badge_title: Optional[str] = None,
+    current_user: dict = Depends(get_current_user)
+):
+    if current_user["role"] != "Sales Head":
+        raise HTTPException(status_code=403, detail="Access denied")
+    
+    # Filter sales department employees
+    query = {"department": "Sales"}
+    if branch:
+        query["branch"] = branch
+    if badge_title:
+        query["badge_title"] = badge_title
+    
+    employees = await db.employees.find(query, {"_id": 0}).to_list(1000)
+    for emp in employees:
+        if isinstance(emp.get('created_at'), str):
+            emp['created_at'] = datetime.fromisoformat(emp['created_at'])
+    
+    return employees
+
+
+@api_router.get("/sales-head/attendance/live")
+async def get_live_attendance(current_user: dict = Depends(get_current_user)):
+    if current_user["role"] != "Sales Head":
+        raise HTTPException(status_code=403, detail="Access denied")
+    
+    # Get all sales employees
+    employees = await db.employees.find({"department": "Sales"}, {"_id": 0}).to_list(1000)
+    
+    # Get today's attendance
+    today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+    attendance_records = await db.attendance.find({"date": today}, {"_id": 0}).to_list(1000)
+    
+    # Create attendance map
+    attendance_map = {record["employee_id"]: record for record in attendance_records}
+    
+    # Combine employee + attendance status
+    result = []
+    for emp in employees:
+        att_record = attendance_map.get(emp["id"])
+        result.append({
+            "id": emp["id"],
+            "name": emp["name"],
+            "mobile": emp["mobile"],
+            "branch": emp["branch"],
+            "badge_title": emp.get("badge_title", "Staff"),
+            "status": "Working" if att_record else "Not Working",
+            "last_attendance": att_record["time"] if att_record else None
+        })
+    
+    return result
+
+
+# Sales Head - Lead Management
+@api_router.post("/sales-head/leads", response_model=Lead)
+async def create_lead(lead: LeadCreate, current_user: dict = Depends(get_current_user)):
+    if current_user["role"] != "Sales Head":
+        raise HTTPException(status_code=403, detail="Access denied")
+    
+    # Get assigned employee name if provided
+    assigned_to_name = None
+    if lead.assigned_to:
+        emp = await db.employees.find_one({"id": lead.assigned_to}, {"_id": 0})
+        if emp:
+            assigned_to_name = emp["name"]
+    
+    lead_obj = Lead(
+        **lead.model_dump(),
+        assigned_to_name=assigned_to_name,
+        assigned_by=current_user["id"],
+        assigned_by_name=current_user["name"]
+    )
+    
+    doc = lead_obj.model_dump()
+    doc['created_at'] = doc['created_at'].isoformat()
+    doc['updated_at'] = doc['updated_at'].isoformat()
+    await db.leads.insert_one(doc)
+    
+    return lead_obj
+
+
+@api_router.get("/sales-head/leads", response_model=List[Lead])
+async def get_leads(
+    source: Optional[str] = None,
+    status: Optional[str] = None,
+    current_user: dict = Depends(get_current_user)
+):
+    if current_user["role"] != "Sales Head":
+        raise HTTPException(status_code=403, detail="Access denied")
+    
+    query = {}
+    if source:
+        query["source"] = source
+    if status:
+        query["status"] = status
+    
+    leads = await db.leads.find(query, {"_id": 0}).sort("created_at", -1).to_list(1000)
+    for lead in leads:
+        if isinstance(lead.get('created_at'), str):
+            lead['created_at'] = datetime.fromisoformat(lead['created_at'])
+        if isinstance(lead.get('updated_at'), str):
+            lead['updated_at'] = datetime.fromisoformat(lead['updated_at'])
+    
+    return leads
+
+
+@api_router.put("/sales-head/leads/{lead_id}", response_model=Lead)
+async def update_lead(lead_id: str, lead_update: LeadUpdate, current_user: dict = Depends(get_current_user)):
+    if current_user["role"] != "Sales Head":
+        raise HTTPException(status_code=403, detail="Access denied")
+    
+    existing = await db.leads.find_one({"id": lead_id}, {"_id": 0})
+    if not existing:
+        raise HTTPException(status_code=404, detail="Lead not found")
+    
+    update_data = {k: v for k, v in lead_update.model_dump().items() if v is not None}
+    
+    # Update assigned_to_name if assigned_to changed
+    if "assigned_to" in update_data and update_data["assigned_to"]:
+        emp = await db.employees.find_one({"id": update_data["assigned_to"]}, {"_id": 0})
+        if emp:
+            update_data["assigned_to_name"] = emp["name"]
+    
+    update_data["updated_at"] = datetime.now(timezone.utc).isoformat()
+    
+    if update_data:
+        await db.leads.update_one({"id": lead_id}, {"$set": update_data})
+    
+    updated = await db.leads.find_one({"id": lead_id}, {"_id": 0})
+    if isinstance(updated.get('created_at'), str):
+        updated['created_at'] = datetime.fromisoformat(updated['created_at'])
+    if isinstance(updated.get('updated_at'), str):
+        updated['updated_at'] = datetime.fromisoformat(updated['updated_at'])
+    
+    return updated
+
+
+@api_router.delete("/sales-head/leads/{lead_id}")
+async def delete_lead(lead_id: str, current_user: dict = Depends(get_current_user)):
+    if current_user["role"] != "Sales Head":
+        raise HTTPException(status_code=403, detail="Access denied")
+    
+    result = await db.leads.delete_one({"id": lead_id})
+    if result.deleted_count == 0:
+        raise HTTPException(status_code=404, detail="Lead not found")
+    
+    return {"message": "Lead deleted successfully"}
+
+
+# Sales Head - Quotation Management
+@api_router.post("/sales-head/quotations", response_model=Quotation)
+async def create_quotation(quotation: QuotationCreate, current_user: dict = Depends(get_current_user)):
+    if current_user["role"] != "Sales Head":
+        raise HTTPException(status_code=403, detail="Access denied")
+    
+    quot_obj = Quotation(
+        **quotation.model_dump(),
+        created_by=current_user["id"],
+        created_by_name=current_user["name"],
+        status="Approved"  # Sales Head quotations are auto-approved
+    )
+    
+    doc = quot_obj.model_dump()
+    doc['created_at'] = doc['created_at'].isoformat()
+    if doc.get('approved_at'):
+        doc['approved_at'] = doc['approved_at'].isoformat()
+    await db.quotations.insert_one(doc)
+    
+    return quot_obj
+
+
+@api_router.get("/sales-head/quotations", response_model=List[Quotation])
+async def get_quotations(
+    status: Optional[str] = None,
+    current_user: dict = Depends(get_current_user)
+):
+    if current_user["role"] != "Sales Head":
+        raise HTTPException(status_code=403, detail="Access denied")
+    
+    query = {}
+    if status:
+        query["status"] = status
+    
+    quotations = await db.quotations.find(query, {"_id": 0}).sort("created_at", -1).to_list(1000)
+    for quot in quotations:
+        if isinstance(quot.get('created_at'), str):
+            quot['created_at'] = datetime.fromisoformat(quot['created_at'])
+        if quot.get('approved_at') and isinstance(quot['approved_at'], str):
+            quot['approved_at'] = datetime.fromisoformat(quot['approved_at'])
+    
+    return quotations
+
+
+@api_router.put("/sales-head/quotations/{quot_id}/approve")
+async def approve_quotation(quot_id: str, approval: QuotationApprove, current_user: dict = Depends(get_current_user)):
+    if current_user["role"] != "Sales Head":
+        raise HTTPException(status_code=403, detail="Access denied")
+    
+    existing = await db.quotations.find_one({"id": quot_id}, {"_id": 0})
+    if not existing:
+        raise HTTPException(status_code=404, detail="Quotation not found")
+    
+    update_data = {
+        "status": approval.status,
+        "approved_by": current_user["id"],
+        "approved_by_name": current_user["name"],
+        "approved_at": datetime.now(timezone.utc).isoformat()
+    }
+    
+    if approval.remarks:
+        update_data["remarks"] = approval.remarks
+    
+    await db.quotations.update_one({"id": quot_id}, {"$set": update_data})
+    
+    return {"message": f"Quotation {approval.status.lower()} successfully"}
+
+
+# Sales Head - Leave Approvals
+@api_router.get("/sales-head/leave-requests")
+async def get_leave_requests(
+    status: Optional[str] = None,
+    current_user: dict = Depends(get_current_user)
+):
+    if current_user["role"] != "Sales Head":
+        raise HTTPException(status_code=403, detail="Access denied")
+    
+    # Get leave requests from sales department employees
+    query = {}
+    if status:
+        query["status"] = status
+    
+    leave_requests = await db.leave_requests.find(query, {"_id": 0}).sort("created_at", -1).to_list(1000)
+    for req in leave_requests:
+        if isinstance(req.get('created_at'), str):
+            req['created_at'] = datetime.fromisoformat(req['created_at'])
+        if isinstance(req.get('updated_at'), str):
+            req['updated_at'] = datetime.fromisoformat(req['updated_at'])
+    
+    return leave_requests
+
+
+@api_router.put("/sales-head/leave-requests/{request_id}/approve")
+async def approve_leave_request(request_id: str, action: LeaveApprovalAction, current_user: dict = Depends(get_current_user)):
+    if current_user["role"] != "Sales Head":
+        raise HTTPException(status_code=403, detail="Access denied")
+    
+    existing = await db.leave_requests.find_one({"id": request_id}, {"_id": 0})
+    if not existing:
+        raise HTTPException(status_code=404, detail="Leave request not found")
+    
+    new_status = "Approved by Sales Head" if action.action == "Approve" else "Rejected"
+    
+    update_data = {
+        "status": new_status,
+        "approved_by_sales_head": current_user["id"],
+        "sales_head_remarks": action.remarks or "",
+        "updated_at": datetime.now(timezone.utc).isoformat()
+    }
+    
+    await db.leave_requests.update_one({"id": request_id}, {"$set": update_data})
+    
+    return {"message": f"Leave request {action.action.lower()}d successfully"}
+
+
+# Employee - Submit Leave Request
+@api_router.post("/employee/leave-request", response_model=LeaveRequest)
+async def submit_leave_request(leave_req: LeaveRequestCreate, current_user: dict = Depends(get_current_user)):
+    # Get employee details
+    employee = await db.employees.find_one({"mobile": current_user["mobile"]}, {"_id": 0})
+    if not employee:
+        raise HTTPException(status_code=404, detail="Employee record not found")
+    
+    leave_obj = LeaveRequest(
+        employee_id=employee["id"],
+        employee_name=employee["name"],
+        employee_mobile=employee["mobile"],
+        **leave_req.model_dump()
+    )
+    
+    doc = leave_obj.model_dump()
+    doc['created_at'] = doc['created_at'].isoformat()
+    doc['updated_at'] = doc['updated_at'].isoformat()
+    await db.leave_requests.insert_one(doc)
+    
+    return leave_obj
+
+
 # Include the router in the main app
 app.include_router(api_router)
 
