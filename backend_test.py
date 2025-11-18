@@ -461,6 +461,35 @@ def main():
     tester.test_coo_dashboard_access()
     tester.test_coo_dashboard_no_token()
     
+    # 4. Test HRM Module - Employee Management
+    print("\n👥 Testing HRM - Employee Management...")
+    tester.test_create_employee()
+    tester.test_get_employees()
+    tester.test_update_employee()
+    
+    # 5. Test HRM Module - Attendance Management
+    print("\n⏰ Testing HRM - Attendance Management...")
+    tester.test_record_attendance()
+    tester.test_get_attendance()
+    
+    # 6. Test HRM Module - Employee Documents
+    print("\n📄 Testing HRM - Employee Documents...")
+    tester.test_upload_employee_document()
+    tester.test_get_employee_documents()
+    tester.test_get_employee_document_alerts()
+    
+    # 7. Test HRM Module - Company Documents
+    print("\n🏢 Testing HRM - Company Documents...")
+    tester.test_upload_company_document()
+    tester.test_get_company_documents()
+    tester.test_get_company_document_alerts()
+    
+    # 8. Test Delete Operations
+    print("\n🗑️ Testing Delete Operations...")
+    tester.test_delete_employee_document()
+    tester.test_delete_company_document()
+    tester.test_delete_employee()
+    
     # Print results
     print("\n" + "=" * 50)
     print(f"📊 Test Results: {tester.tests_passed}/{tester.tests_run} passed")
