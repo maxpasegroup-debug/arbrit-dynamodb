@@ -206,6 +206,17 @@ class LeadUpdate(BaseModel):
     next_followup_date: Optional[str] = None
 
 
+class SelfLeadCreate(BaseModel):
+    client_name: str
+    mobile: str
+    email: Optional[str] = None
+    company_name: Optional[str] = None
+    branch: str
+    requirement: str
+    lead_type: Optional[str] = None  # Company, Individual (for Field Sales)
+    notes: Optional[str] = None
+
+
 class Quotation(BaseModel):
     model_config = ConfigDict(extra="ignore")
     
