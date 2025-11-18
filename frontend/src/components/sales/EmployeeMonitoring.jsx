@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react';
-import { Users, Filter, RefreshCw } from 'lucide-react';
+import { Users, Filter, RefreshCw, Award } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
 import { toast } from 'sonner';
 import axios from 'axios';
 
@@ -15,6 +16,9 @@ const EmployeeMonitoring = () => {
   const [loading, setLoading] = useState(false);
   const [filterBranch, setFilterBranch] = useState('');
   const [filterBadge, setFilterBadge] = useState('');
+  const [showBadgeDialog, setShowBadgeDialog] = useState(false);
+  const [selectedEmployee, setSelectedEmployee] = useState(null);
+  const [selectedBadgeTitle, setSelectedBadgeTitle] = useState('');
 
   useEffect(() => {
     fetchLiveAttendance();
