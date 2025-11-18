@@ -792,6 +792,325 @@ class ArbritAPITester:
         
         return success, response
 
+    # Sales Head API Tests
+    def test_sales_head_get_all_leads(self):
+        """Test Sales Head - Get All Leads"""
+        # Switch to COO token (COO has Sales Head access)
+        if hasattr(self, 'coo_token'):
+            temp_token = self.token
+            self.token = self.coo_token
+        elif not self.token:
+            print("❌ Skipping - No token available")
+            return False, {}
+        
+        success, response = self.run_test(
+            "Sales Head - Get All Leads",
+            "GET",
+            "sales/leads",
+            200
+        )
+        
+        # Store leads for assignment testing
+        if success and isinstance(response, list) and len(response) > 0:
+            self.available_leads = response
+            print(f"   Found {len(response)} leads for testing")
+        
+        # Restore token if switched
+        if 'temp_token' in locals():
+            self.token = temp_token
+        
+        return success, response
+
+    def test_sales_head_assign_lead(self):
+        """Test Sales Head - Assign Lead to Employee"""
+        # Switch to COO token (COO has Sales Head access)
+        if hasattr(self, 'coo_token'):
+            temp_token = self.token
+            self.token = self.coo_token
+        elif not self.token:
+            print("❌ Skipping - No token available")
+            return False, {}
+        
+        # Need a lead ID and employee ID for testing
+        if not hasattr(self, 'available_leads') or not self.available_leads:
+            print("❌ Skipping - No leads available for assignment")
+            return False, {}
+        
+        if not hasattr(self, 'sales_employee_id'):
+            print("❌ Skipping - No sales employee ID available")
+            return False, {}
+        
+        lead_id = self.available_leads[0]['id']
+        assign_data = {
+            "employee_id": self.sales_employee_id
+        }
+        
+        success, response = self.run_test(
+            "Sales Head - Assign Lead to Employee",
+            "PUT",
+            f"sales/leads/{lead_id}/assign",
+            200,
+            data=assign_data
+        )
+        
+        # Restore token if switched
+        if 'temp_token' in locals():
+            self.token = temp_token
+        
+        return success, response
+
+    def test_sales_head_get_all_quotations(self):
+        """Test Sales Head - Get All Quotations"""
+        # Switch to COO token (COO has Sales Head access)
+        if hasattr(self, 'coo_token'):
+            temp_token = self.token
+            self.token = self.coo_token
+        elif not self.token:
+            print("❌ Skipping - No token available")
+            return False, {}
+        
+        success, response = self.run_test(
+            "Sales Head - Get All Quotations",
+            "GET",
+            "sales/quotations/all",
+            200
+        )
+        
+        # Store quotations for approval testing
+        if success and isinstance(response, list) and len(response) > 0:
+            self.available_quotations = response
+            print(f"   Found {len(response)} quotations for testing")
+        
+        # Restore token if switched
+        if 'temp_token' in locals():
+            self.token = temp_token
+        
+        return success, response
+
+    def test_sales_head_approve_quotation(self):
+        """Test Sales Head - Approve Quotation"""
+        # Switch to COO token (COO has Sales Head access)
+        if hasattr(self, 'coo_token'):
+            temp_token = self.token
+            self.token = self.coo_token
+        elif not self.token:
+            print("❌ Skipping - No token available")
+            return False, {}
+        
+        # Need a quotation ID for testing
+        if not hasattr(self, 'available_quotations') or not self.available_quotations:
+            print("❌ Skipping - No quotations available for approval")
+            return False, {}
+        
+        quotation_id = self.available_quotations[0]['id']
+        approval_data = {
+            "approved": True,
+            "remarks": "Approved by Sales Head - pricing looks good"
+        }
+        
+        success, response = self.run_test(
+            "Sales Head - Approve Quotation",
+            "PUT",
+            f"sales/quotations/{quotation_id}/approve",
+            200,
+            data=approval_data
+        )
+        
+        # Restore token if switched
+        if 'temp_token' in locals():
+            self.token = temp_token
+        
+        return success, response
+
+    def test_sales_head_reject_quotation(self):
+        """Test Sales Head - Reject Quotation"""
+        # Switch to COO token (COO has Sales Head access)
+        if hasattr(self, 'coo_token'):
+            temp_token = self.token
+            self.token = self.coo_token
+        elif not self.token:
+            print("❌ Skipping - No token available")
+            return False, {}
+        
+        # Need another quotation ID for testing rejection
+        if not hasattr(self, 'available_quotations') or len(self.available_quotations) < 2:
+            # Create a new quotation for rejection testing
+            quotation_data = {
+                "client_name": "Test Rejection Client",
+                "items": "Test rejection quotation items",
+                "total_amount": 1000.00,
+                "remarks": "Test quotation for rejection"
+            }
+            
+            create_success, create_response = self.run_test(
+                "Create Quotation for Rejection Test",
+                "POST",
+                "sales/quotations",
+                200,
+                data=quotation_data
+            )
+            
+            if not create_success or 'quotation_id' not in create_response:
+                print("❌ Skipping - Could not create quotation for rejection test")
+                return False, {}
+            
+            quotation_id = create_response['quotation_id']
+        else:
+            quotation_id = self.available_quotations[1]['id']
+        
+        rejection_data = {
+            "approved": False,
+            "remarks": "Pricing needs revision - too high for current market"
+        }
+        
+        success, response = self.run_test(
+            "Sales Head - Reject Quotation",
+            "PUT",
+            f"sales/quotations/{quotation_id}/approve",
+            200,
+            data=rejection_data
+        )
+        
+        # Restore token if switched
+        if 'temp_token' in locals():
+            self.token = temp_token
+        
+        return success, response
+
+    def test_create_leave_request(self):
+        """Create a leave request for testing approval/rejection"""
+        # Switch to sales user token to create leave request
+        if hasattr(self, 'sales_token'):
+            temp_token = self.token
+            self.token = self.sales_token
+        elif not self.token:
+            print("❌ Skipping - No token available")
+            return False, {}
+        
+        leave_data = {
+            "leave_from": "2025-10-01",
+            "leave_to": "2025-10-03",
+            "reason": "Personal vacation - family event"
+        }
+        
+        success, response = self.run_test(
+            "Create Leave Request",
+            "POST",
+            "employee/leave-request",
+            200,
+            data=leave_data
+        )
+        
+        if success and 'id' in response:
+            self.leave_request_id = response['id']
+            print(f"   Leave Request ID: {self.leave_request_id}")
+        
+        # Restore token if switched
+        if 'temp_token' in locals():
+            self.token = temp_token
+        
+        return success, response
+
+    def test_sales_head_approve_leave_request(self):
+        """Test Sales Head - Approve Leave Request"""
+        # Switch to COO token (COO has Sales Head access)
+        if hasattr(self, 'coo_token'):
+            temp_token = self.token
+            self.token = self.coo_token
+        elif not self.token:
+            print("❌ Skipping - No token available")
+            return False, {}
+        
+        # Need a leave request ID for testing
+        if not hasattr(self, 'leave_request_id'):
+            print("❌ Skipping - No leave request ID available")
+            return False, {}
+        
+        approval_data = {
+            "remarks": "Approved - enjoy your vacation"
+        }
+        
+        success, response = self.run_test(
+            "Sales Head - Approve Leave Request",
+            "PUT",
+            f"hrm/leave-requests/{self.leave_request_id}/approve",
+            200,
+            data=approval_data
+        )
+        
+        # Restore token if switched
+        if 'temp_token' in locals():
+            self.token = temp_token
+        
+        return success, response
+
+    def test_create_another_leave_request(self):
+        """Create another leave request for rejection testing"""
+        # Switch to sales user token to create leave request
+        if hasattr(self, 'sales_token'):
+            temp_token = self.token
+            self.token = self.sales_token
+        elif not self.token:
+            print("❌ Skipping - No token available")
+            return False, {}
+        
+        leave_data = {
+            "leave_from": "2025-11-15",
+            "leave_to": "2025-11-20",
+            "reason": "Extended vacation - overseas travel"
+        }
+        
+        success, response = self.run_test(
+            "Create Another Leave Request",
+            "POST",
+            "employee/leave-request",
+            200,
+            data=leave_data
+        )
+        
+        if success and 'id' in response:
+            self.leave_request_id_2 = response['id']
+            print(f"   Leave Request ID 2: {self.leave_request_id_2}")
+        
+        # Restore token if switched
+        if 'temp_token' in locals():
+            self.token = temp_token
+        
+        return success, response
+
+    def test_sales_head_reject_leave_request(self):
+        """Test Sales Head - Reject Leave Request"""
+        # Switch to COO token (COO has Sales Head access)
+        if hasattr(self, 'coo_token'):
+            temp_token = self.token
+            self.token = self.coo_token
+        elif not self.token:
+            print("❌ Skipping - No token available")
+            return False, {}
+        
+        # Need a leave request ID for testing
+        if not hasattr(self, 'leave_request_id_2'):
+            print("❌ Skipping - No second leave request ID available")
+            return False, {}
+        
+        rejection_data = {
+            "remarks": "Cannot approve - peak business season, insufficient leave balance"
+        }
+        
+        success, response = self.run_test(
+            "Sales Head - Reject Leave Request",
+            "PUT",
+            f"hrm/leave-requests/{self.leave_request_id_2}/reject",
+            200,
+            data=rejection_data
+        )
+        
+        # Restore token if switched
+        if 'temp_token' in locals():
+            self.token = temp_token
+        
+        return success, response
+
 def main():
     print("🚀 Starting Arbrit Safety Training API Tests")
     print("=" * 50)
