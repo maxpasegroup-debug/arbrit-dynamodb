@@ -1338,6 +1338,80 @@ async def get_my_visits(current_user: dict = Depends(get_current_user)):
     return visits
 
 
+# Simplified Trainer Request (matching frontend structure)
+@api_router.post("/sales/trainer-requests")
+async def create_trainer_request_simple(request_data: dict, current_user: dict = Depends(get_current_user)):
+    if current_user["role"] not in ["Tele Sales", "Field Sales"]:
+        raise HTTPException(status_code=403, detail="Access denied")
+    
+    trainer_req = {
+        "id": str(uuid.uuid4()),
+        "client_name": request_data["client_name"],
+        "course_type": request_data["course_type"],
+        "preferred_date": request_data["preferred_date"],
+        "location": request_data.get("location", ""),
+        "duration": request_data.get("duration", ""),
+        "remarks": request_data.get("remarks", ""),
+        "requested_by": current_user["id"],
+        "requested_by_name": current_user["name"],
+        "status": "Pending",
+        "created_at": datetime.now(timezone.utc).isoformat()
+    }
+    
+    await db.trainer_requests.insert_one(trainer_req)
+    
+    return {"message": "Trainer request submitted successfully", "request_id": trainer_req["id"]}
+
+
+# Simplified Invoice Request (matching frontend structure)
+@api_router.post("/sales/invoice-requests")
+async def create_invoice_request_simple(request_data: dict, current_user: dict = Depends(get_current_user)):
+    if current_user["role"] not in ["Tele Sales", "Field Sales"]:
+        raise HTTPException(status_code=403, detail="Access denied")
+    
+    invoice_req = {
+        "id": str(uuid.uuid4()),
+        "client_name": request_data["client_name"],
+        "quotation_ref": request_data.get("quotation_ref", ""),
+        "amount": float(request_data["amount"]),
+        "description": request_data.get("description", ""),
+        "remarks": request_data.get("remarks", ""),
+        "requested_by": current_user["id"],
+        "requested_by_name": current_user["name"],
+        "status": "Pending",
+        "created_at": datetime.now(timezone.utc).isoformat()
+    }
+    
+    await db.invoice_requests.insert_one(invoice_req)
+    
+    return {"message": "Invoice request submitted successfully", "request_id": invoice_req["id"]}
+
+
+# Simplified Visit Log (matching frontend structure)
+@api_router.post("/sales/visit-logs")
+async def create_visit_log_simple(visit_data: dict, current_user: dict = Depends(get_current_user)):
+    if current_user["role"] != "Field Sales":
+        raise HTTPException(status_code=403, detail="Access denied. Field Sales only.")
+    
+    visit_log = {
+        "id": str(uuid.uuid4()),
+        "client_name": visit_data["client_name"],
+        "location": visit_data["location"],
+        "visit_date": visit_data["visit_date"],
+        "visit_time": visit_data.get("visit_time", ""),
+        "purpose": visit_data.get("purpose", ""),
+        "outcome": visit_data.get("outcome", ""),
+        "next_action": visit_data.get("next_action", ""),
+        "logged_by": current_user["id"],
+        "logged_by_name": current_user["name"],
+        "created_at": datetime.now(timezone.utc).isoformat()
+    }
+    
+    await db.visit_logs.insert_one(visit_log)
+    
+    return {"message": "Visit log submitted successfully", "visit_id": visit_log["id"]}
+
+
 # Include the router in the main app
 app.include_router(api_router)
 
