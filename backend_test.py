@@ -438,6 +438,239 @@ class ArbritAPITester:
             200
         )
 
+    # Sales API Tests
+    def test_submit_self_lead(self):
+        """Test submitting a self-generated lead"""
+        if not self.token:
+            print("❌ Skipping - No token available")
+            return False, {}
+        
+        lead_data = {
+            "client_name": "ABC Safety Solutions",
+            "mobile": "0501234567",
+            "email": "contact@abcsafety.com",
+            "company_name": "ABC Safety Solutions LLC",
+            "branch": "Dubai",
+            "requirement": "Fire safety training for 20 employees",
+            "lead_type": "Company",
+            "notes": "Urgent requirement - follow up within 2 days"
+        }
+        
+        success, response = self.run_test(
+            "Submit Self Lead",
+            "POST",
+            "sales/self-lead",
+            200,
+            data=lead_data
+        )
+        
+        if success and 'lead_id' in response:
+            self.lead_id = response['lead_id']
+            print(f"   Lead ID: {self.lead_id}")
+        
+        return success, response
+
+    def test_get_my_leads(self):
+        """Test getting my leads"""
+        if not self.token:
+            print("❌ Skipping - No token available")
+            return False, {}
+        
+        return self.run_test(
+            "Get My Leads",
+            "GET",
+            "sales/my-leads",
+            200
+        )
+
+    def test_create_quotation(self):
+        """Test creating a quotation"""
+        if not self.token:
+            print("❌ Skipping - No token available")
+            return False, {}
+        
+        quotation_data = {
+            "client_name": "XYZ Manufacturing",
+            "items": "Fire Safety Training Course - 15 participants\nFirst Aid Kit - 5 units\nSafety Equipment Inspection",
+            "total_amount": 3500.00,
+            "remarks": "Valid for 30 days from date of issue"
+        }
+        
+        success, response = self.run_test(
+            "Create Quotation",
+            "POST",
+            "sales/quotations",
+            200,
+            data=quotation_data
+        )
+        
+        if success and 'quotation_id' in response:
+            self.quotation_id = response['quotation_id']
+            print(f"   Quotation ID: {self.quotation_id}")
+        
+        return success, response
+
+    def test_get_my_quotations(self):
+        """Test getting my quotations"""
+        if not self.token:
+            print("❌ Skipping - No token available")
+            return False, {}
+        
+        return self.run_test(
+            "Get My Quotations",
+            "GET",
+            "sales/quotations",
+            200
+        )
+
+    def test_create_trainer_request(self):
+        """Test creating a trainer request"""
+        if not self.token:
+            print("❌ Skipping - No token available")
+            return False, {}
+        
+        trainer_request_data = {
+            "client_name": "Emirates Steel Industries",
+            "course_type": "Fire Safety",
+            "preferred_date": "2025-09-20",
+            "location": "Dubai Industrial Area",
+            "duration": "2 days",
+            "remarks": "Urgent training needed for new project"
+        }
+        
+        success, response = self.run_test(
+            "Create Trainer Request",
+            "POST",
+            "sales/trainer-requests",
+            200,
+            data=trainer_request_data
+        )
+        
+        if success and 'request_id' in response:
+            self.trainer_request_id = response['request_id']
+            print(f"   Trainer Request ID: {self.trainer_request_id}")
+        
+        return success, response
+
+    def test_get_trainer_requests(self):
+        """Test getting trainer requests"""
+        if not self.token:
+            print("❌ Skipping - No token available")
+            return False, {}
+        
+        return self.run_test(
+            "Get Trainer Requests",
+            "GET",
+            "sales/trainer-requests",
+            200
+        )
+
+    def test_create_invoice_request(self):
+        """Test creating an invoice request"""
+        if not self.token:
+            print("❌ Skipping - No token available")
+            return False, {}
+        
+        invoice_request_data = {
+            "client_name": "Global Construction LLC",
+            "quotation_ref": "QT-2025-001",
+            "amount": "5000",
+            "description": "Safety equipment purchase and training services",
+            "remarks": "Please expedite processing - client payment ready"
+        }
+        
+        success, response = self.run_test(
+            "Create Invoice Request",
+            "POST",
+            "sales/invoice-requests",
+            200,
+            data=invoice_request_data
+        )
+        
+        if success and 'request_id' in response:
+            self.invoice_request_id = response['request_id']
+            print(f"   Invoice Request ID: {self.invoice_request_id}")
+        
+        return success, response
+
+    def test_get_invoice_requests(self):
+        """Test getting invoice requests"""
+        if not self.token:
+            print("❌ Skipping - No token available")
+            return False, {}
+        
+        return self.run_test(
+            "Get Invoice Requests",
+            "GET",
+            "sales/invoice-requests",
+            200
+        )
+
+    def test_create_visit_log(self):
+        """Test creating a visit log (Field Sales only)"""
+        if not self.token:
+            print("❌ Skipping - No token available")
+            return False, {}
+        
+        visit_log_data = {
+            "client_name": "Petrochemical Industries",
+            "location": "Dubai Marina Office Tower",
+            "visit_date": "2025-09-15",
+            "visit_time": "10:00",
+            "purpose": "Product demonstration and safety consultation",
+            "outcome": "Client showed strong interest in comprehensive safety package",
+            "next_action": "Follow up with detailed proposal next week"
+        }
+        
+        success, response = self.run_test(
+            "Create Visit Log",
+            "POST",
+            "sales/visit-logs",
+            200,
+            data=visit_log_data
+        )
+        
+        if success and 'visit_id' in response:
+            self.visit_log_id = response['visit_id']
+            print(f"   Visit Log ID: {self.visit_log_id}")
+        
+        return success, response
+
+    def test_get_visit_logs(self):
+        """Test getting visit logs"""
+        if not self.token:
+            print("❌ Skipping - No token available")
+            return False, {}
+        
+        return self.run_test(
+            "Get Visit Logs",
+            "GET",
+            "sales/visit-logs",
+            200
+        )
+
+    def test_sales_api_error_handling(self):
+        """Test sales API error handling with missing required fields"""
+        if not self.token:
+            print("❌ Skipping - No token available")
+            return False, {}
+        
+        # Test trainer request with missing required fields
+        incomplete_data = {
+            "client_name": "Test Client"
+            # Missing course_type, preferred_date, etc.
+        }
+        
+        success, response = self.run_test(
+            "Trainer Request - Missing Fields",
+            "POST",
+            "sales/trainer-requests",
+            422,  # Expecting validation error
+            data=incomplete_data
+        )
+        
+        return success, response
+
 def main():
     print("🚀 Starting Arbrit Safety Training API Tests")
     print("=" * 50)
