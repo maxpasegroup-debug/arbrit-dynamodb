@@ -276,6 +276,21 @@ async def coo_dashboard(current_user: dict = Depends(get_current_user)):
     }
 
 
+@api_router.get("/dashboard/hr")
+async def hr_dashboard(current_user: dict = Depends(get_current_user)):
+    if current_user["role"] != "HR":
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Access denied. HR role required."
+        )
+    
+    return {
+        "message": "Welcome to HR Dashboard",
+        "user": current_user["name"],
+        "role": "HR Manager"
+    }
+
+
 # HRM - Employee Management
 @api_router.post("/hrm/employees", response_model=Employee)
 async def create_employee(employee: EmployeeCreate, current_user: dict = Depends(get_current_user)):
