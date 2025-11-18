@@ -1431,8 +1431,8 @@ async def get_all_leads(current_user: dict = Depends(get_current_user)):
 # Sales Head - Assign Lead to Employee
 @api_router.put("/sales/leads/{lead_id}/assign")
 async def assign_lead(lead_id: str, assign_data: dict, current_user: dict = Depends(get_current_user)):
-    if current_user["role"] != "Sales Head":
-        raise HTTPException(status_code=403, detail="Access denied. Sales Head only.")
+    if current_user["role"] not in ["COO", "Sales Head"]:
+        raise HTTPException(status_code=403, detail="Access denied. Sales Head or COO role required.")
     
     employee_id = assign_data.get("employee_id")
     if not employee_id:
