@@ -1412,6 +1412,133 @@ async def create_visit_log_simple(visit_data: dict, current_user: dict = Depends
     return {"message": "Visit log submitted successfully", "visit_id": visit_log["id"]}
 
 
+# Sales Head - Get All Leads
+@api_router.get("/sales/leads")
+async def get_all_leads(current_user: dict = Depends(get_current_user)):
+    if current_user["role"] != "Sales Head":
+        raise HTTPException(status_code=403, detail="Access denied. Sales Head only.")
+    
+    leads = await db.leads.find({}, {"_id": 0}).sort("created_at", -1).to_list(1000)
+    for lead in leads:
+        if isinstance(lead.get('created_at'), str):
+            lead['created_at'] = datetime.fromisoformat(lead['created_at'])
+        if isinstance(lead.get('updated_at'), str):
+            lead['updated_at'] = datetime.fromisoformat(lead['updated_at'])
+    
+    return leads
+
+
+# Sales Head - Assign Lead to Employee
+@api_router.put("/sales/leads/{lead_id}/assign")
+async def assign_lead(lead_id: str, assign_data: dict, current_user: dict = Depends(get_current_user)):
+    if current_user["role"] != "Sales Head":
+        raise HTTPException(status_code=403, detail="Access denied. Sales Head only.")
+    
+    employee_id = assign_data.get("employee_id")
+    if not employee_id:
+        raise HTTPException(status_code=400, detail="employee_id required")
+    
+    employee = await db.employees.find_one({"id": employee_id}, {"_id": 0})
+    if not employee:
+        raise HTTPException(status_code=404, detail="Employee not found")
+    
+    await db.leads.update_one(
+        {"id": lead_id},
+        {"$set": {
+            "assigned_to": employee_id,
+            "assigned_to_name": employee["name"],
+            "assigned_by": current_user["id"],
+            "assigned_by_name": current_user["name"],
+            "updated_at": datetime.now(timezone.utc).isoformat()
+        }}
+    )
+    
+    return {"message": "Lead assigned successfully"}
+
+
+# Sales Head - Get All Quotations
+@api_router.get("/sales/quotations/all")
+async def get_all_quotations(current_user: dict = Depends(get_current_user)):
+    if current_user["role"] != "Sales Head":
+        raise HTTPException(status_code=403, detail="Access denied. Sales Head only.")
+    
+    quotations = await db.quotations.find({}, {"_id": 0}).sort("created_at", -1).to_list(1000)
+    for quot in quotations:
+        if isinstance(quot.get('created_at'), str):
+            quot['created_at'] = datetime.fromisoformat(quot['created_at'])
+        if quot.get('approved_at') and isinstance(quot['approved_at'], str):
+            quot['approved_at'] = datetime.fromisoformat(quot['approved_at'])
+    
+    return quotations
+
+
+# Sales Head - Approve/Reject Quotation
+@api_router.put("/sales/quotations/{quotation_id}/approve")
+async def approve_quotation(quotation_id: str, approval_data: dict, current_user: dict = Depends(get_current_user)):
+    if current_user["role"] != "Sales Head":
+        raise HTTPException(status_code=403, detail="Access denied. Sales Head only.")
+    
+    approved = approval_data.get("approved", False)
+    remarks = approval_data.get("remarks", "")
+    
+    await db.quotations.update_one(
+        {"id": quotation_id},
+        {"$set": {
+            "status": "Approved" if approved else "Rejected",
+            "approved_at": datetime.now(timezone.utc).isoformat(),
+            "approved_by": current_user["id"],
+            "approved_by_name": current_user["name"],
+            "approval_remarks": remarks
+        }}
+    )
+    
+    return {"message": f"Quotation {'approved' if approved else 'rejected'} successfully"}
+
+
+# HRM - Approve Leave Request
+@api_router.put("/hrm/leave-requests/{request_id}/approve")
+async def approve_leave_request(request_id: str, approval_data: dict, current_user: dict = Depends(get_current_user)):
+    if current_user["role"] not in ["COO", "Sales Head", "HR"]:
+        raise HTTPException(status_code=403, detail="Access denied")
+    
+    remarks = approval_data.get("remarks", "")
+    
+    await db.leave_requests.update_one(
+        {"id": request_id},
+        {"$set": {
+            "status": "Approved",
+            "approved_by": current_user["id"],
+            "approved_by_name": current_user["name"],
+            "approval_remarks": remarks,
+            "approved_at": datetime.now(timezone.utc).isoformat()
+        }}
+    )
+    
+    return {"message": "Leave request approved successfully"}
+
+
+# HRM - Reject Leave Request
+@api_router.put("/hrm/leave-requests/{request_id}/reject")
+async def reject_leave_request(request_id: str, rejection_data: dict, current_user: dict = Depends(get_current_user)):
+    if current_user["role"] not in ["COO", "Sales Head", "HR"]:
+        raise HTTPException(status_code=403, detail="Access denied")
+    
+    remarks = rejection_data.get("remarks", "")
+    
+    await db.leave_requests.update_one(
+        {"id": request_id},
+        {"$set": {
+            "status": "Rejected",
+            "rejected_by": current_user["id"],
+            "rejected_by_name": current_user["name"],
+            "rejection_remarks": remarks,
+            "rejected_at": datetime.now(timezone.utc).isoformat()
+        }}
+    )
+    
+    return {"message": "Leave request rejected successfully"}
+
+
 # Include the router in the main app
 app.include_router(api_router)
 
