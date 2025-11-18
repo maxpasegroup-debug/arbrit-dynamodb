@@ -740,6 +740,46 @@ async def sales_employee_dashboard(current_user: dict = Depends(get_current_user
     }
 
 
+@api_router.get("/dashboard/tele-sales")
+async def tele_sales_dashboard(current_user: dict = Depends(get_current_user)):
+    if current_user["role"] != "Tele Sales":
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Access denied. Tele Sales role required."
+        )
+    
+    employee = await db.employees.find_one({"mobile": current_user["mobile"]}, {"_id": 0})
+    
+    return {
+        "message": "Welcome to Tele Sales Dashboard",
+        "user": current_user["name"],
+        "role": "Tele Sales",
+        "badge_title": employee.get("badge_title", "Tele Sales") if employee else "Tele Sales",
+        "branch": employee.get("branch") if employee else None,
+        "employee_id": employee["id"] if employee else None
+    }
+
+
+@api_router.get("/dashboard/field-sales")
+async def field_sales_dashboard(current_user: dict = Depends(get_current_user)):
+    if current_user["role"] != "Field Sales":
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Access denied. Field Sales role required."
+        )
+    
+    employee = await db.employees.find_one({"mobile": current_user["mobile"]}, {"_id": 0})
+    
+    return {
+        "message": "Welcome to Field Sales Dashboard",
+        "user": current_user["name"],
+        "role": "Field Sales",
+        "badge_title": employee.get("badge_title", "Field Sales") if employee else "Field Sales",
+        "branch": employee.get("branch") if employee else None,
+        "employee_id": employee["id"] if employee else None
+    }
+
+
 # Sales Head - Employee Monitoring
 @api_router.get("/sales-head/employees")
 async def get_sales_employees(
