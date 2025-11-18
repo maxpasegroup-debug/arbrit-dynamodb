@@ -1103,6 +1103,241 @@ async def submit_leave_request(leave_req: LeaveRequestCreate, current_user: dict
     return leave_obj
 
 
+# Sales - Self Lead Submission (All Sales Roles)
+@api_router.post("/sales/self-lead")
+async def submit_self_lead(lead_data: SelfLeadCreate, current_user: dict = Depends(get_current_user)):
+    if current_user["role"] not in ["Sales Head", "Tele Sales", "Field Sales"]:
+        raise HTTPException(status_code=403, detail="Access denied")
+    
+    employee = await db.employees.find_one({"mobile": current_user["mobile"]}, {"_id": 0})
+    if not employee:
+        raise HTTPException(status_code=404, detail="Employee record not found")
+    
+    lead_obj = Lead(
+        source="Self",
+        client_name=lead_data.client_name,
+        requirement=lead_data.requirement,
+        industry=lead_data.company_name or "",
+        assigned_to=employee["id"],
+        assigned_to_name=employee["name"],
+        assigned_by=employee["id"],
+        assigned_by_name=employee["name"],
+        status="New",
+        remarks=lead_data.notes or ""
+    )
+    
+    doc = lead_obj.model_dump()
+    doc['mobile'] = lead_data.mobile
+    doc['email'] = lead_data.email or ""
+    doc['branch'] = lead_data.branch
+    doc['lead_type'] = lead_data.lead_type or "Individual"
+    doc['created_at'] = doc['created_at'].isoformat()
+    doc['updated_at'] = doc['updated_at'].isoformat()
+    await db.leads.insert_one(doc)
+    
+    return {"message": "Self lead submitted successfully", "lead_id": lead_obj.id}
+
+
+# Sales - Get My Leads (Assigned + Self)
+@api_router.get("/sales/my-leads")
+async def get_my_leads(current_user: dict = Depends(get_current_user)):
+    if current_user["role"] not in ["Tele Sales", "Field Sales"]:
+        raise HTTPException(status_code=403, detail="Access denied")
+    
+    employee = await db.employees.find_one({"mobile": current_user["mobile"]}, {"_id": 0})
+    if not employee:
+        raise HTTPException(status_code=404, detail="Employee record not found")
+    
+    leads = await db.leads.find({"assigned_to": employee["id"]}, {"_id": 0}).sort("created_at", -1).to_list(1000)
+    for lead in leads:
+        if isinstance(lead.get('created_at'), str):
+            lead['created_at'] = datetime.fromisoformat(lead['created_at'])
+        if isinstance(lead.get('updated_at'), str):
+            lead['updated_at'] = datetime.fromisoformat(lead['updated_at'])
+    
+    return leads
+
+
+# Sales - Update Lead Status
+@api_router.put("/sales/leads/{lead_id}")
+async def update_my_lead(lead_id: str, update_data: dict, current_user: dict = Depends(get_current_user)):
+    if current_user["role"] not in ["Tele Sales", "Field Sales"]:
+        raise HTTPException(status_code=403, detail="Access denied")
+    
+    existing = await db.leads.find_one({"id": lead_id}, {"_id": 0})
+    if not existing:
+        raise HTTPException(status_code=404, detail="Lead not found")
+    
+    update_data["updated_at"] = datetime.now(timezone.utc).isoformat()
+    await db.leads.update_one({"id": lead_id}, {"$set": update_data})
+    
+    return {"message": "Lead updated successfully"}
+
+
+# Sales - Create Quotation
+@api_router.post("/sales/quotations")
+async def create_sales_quotation(quot_data: QuotationCreate, current_user: dict = Depends(get_current_user)):
+    if current_user["role"] not in ["Sales Head", "Tele Sales", "Field Sales"]:
+        raise HTTPException(status_code=403, detail="Access denied")
+    
+    quot_obj = Quotation(
+        **quot_data.model_dump(),
+        created_by=current_user["id"],
+        created_by_name=current_user["name"],
+        status="Approved"  # Auto-approved
+    )
+    
+    doc = quot_obj.model_dump()
+    doc['created_at'] = doc['created_at'].isoformat()
+    if doc.get('approved_at'):
+        doc['approved_at'] = doc['approved_at'].isoformat()
+    await db.quotations.insert_one(doc)
+    
+    return {"message": "Quotation created successfully", "quotation_id": quot_obj.id}
+
+
+# Sales - Get My Quotations
+@api_router.get("/sales/quotations")
+async def get_my_quotations(current_user: dict = Depends(get_current_user)):
+    if current_user["role"] not in ["Sales Head", "Tele Sales", "Field Sales"]:
+        raise HTTPException(status_code=403, detail="Access denied")
+    
+    quotations = await db.quotations.find({"created_by": current_user["id"]}, {"_id": 0}).sort("created_at", -1).to_list(1000)
+    for quot in quotations:
+        if isinstance(quot.get('created_at'), str):
+            quot['created_at'] = datetime.fromisoformat(quot['created_at'])
+        if quot.get('approved_at') and isinstance(quot['approved_at'], str):
+            quot['approved_at'] = datetime.fromisoformat(quot['approved_at'])
+    
+    return quotations
+
+
+# Sales - Trainer Availability Request
+@api_router.post("/sales/trainer-request")
+async def request_trainer(request_data: dict, current_user: dict = Depends(get_current_user)):
+    if current_user["role"] not in ["Tele Sales", "Field Sales"]:
+        raise HTTPException(status_code=403, detail="Access denied")
+    
+    trainer_req = TrainerAvailabilityRequest(
+        lead_id=request_data.get("lead_id"),
+        client_name=request_data["client_name"],
+        course=request_data["course"],
+        preferred_dates=request_data["preferred_dates"],
+        branch=request_data["branch"],
+        mode=request_data["mode"],
+        notes=request_data.get("notes"),
+        requested_by=current_user["id"],
+        requested_by_name=current_user["name"]
+    )
+    
+    doc = trainer_req.model_dump()
+    doc['created_at'] = doc['created_at'].isoformat()
+    await db.trainer_requests.insert_one(doc)
+    
+    return {"message": "Trainer availability request submitted", "request_id": trainer_req.id}
+
+
+# Sales - Get My Trainer Requests
+@api_router.get("/sales/trainer-requests")
+async def get_my_trainer_requests(current_user: dict = Depends(get_current_user)):
+    if current_user["role"] not in ["Tele Sales", "Field Sales"]:
+        raise HTTPException(status_code=403, detail="Access denied")
+    
+    requests = await db.trainer_requests.find({"requested_by": current_user["id"]}, {"_id": 0}).sort("created_at", -1).to_list(1000)
+    for req in requests:
+        if isinstance(req.get('created_at'), str):
+            req['created_at'] = datetime.fromisoformat(req['created_at'])
+    
+    return requests
+
+
+# Sales - Invoice Request
+@api_router.post("/sales/invoice-request")
+async def request_invoice(request_data: dict, current_user: dict = Depends(get_current_user)):
+    if current_user["role"] not in ["Tele Sales", "Field Sales"]:
+        raise HTTPException(status_code=403, detail="Access denied")
+    
+    invoice_req = InvoiceRequest(
+        lead_id=request_data.get("lead_id"),
+        quotation_id=request_data.get("quotation_id"),
+        payment_terms=request_data["payment_terms"],
+        initial_amount=request_data.get("initial_amount"),
+        notes=request_data.get("notes"),
+        requested_by=current_user["id"],
+        requested_by_name=current_user["name"]
+    )
+    
+    doc = invoice_req.model_dump()
+    doc['created_at'] = doc['created_at'].isoformat()
+    await db.invoice_requests.insert_one(doc)
+    
+    return {"message": "Invoice request submitted", "request_id": invoice_req.id}
+
+
+# Sales - Get My Invoice Requests
+@api_router.get("/sales/invoice-requests")
+async def get_my_invoice_requests(current_user: dict = Depends(get_current_user)):
+    if current_user["role"] not in ["Tele Sales", "Field Sales"]:
+        raise HTTPException(status_code=403, detail="Access denied")
+    
+    requests = await db.invoice_requests.find({"requested_by": current_user["id"]}, {"_id": 0}).sort("created_at", -1).to_list(1000)
+    for req in requests:
+        if isinstance(req.get('created_at'), str):
+            req['created_at'] = datetime.fromisoformat(req['created_at'])
+    
+    return requests
+
+
+# Sales - Update Payment Confirmation
+@api_router.put("/sales/invoice-requests/{request_id}/payment")
+async def update_payment_confirmation(request_id: str, payment_data: dict, current_user: dict = Depends(get_current_user)):
+    if current_user["role"] not in ["Tele Sales", "Field Sales"]:
+        raise HTTPException(status_code=403, detail="Access denied")
+    
+    await db.invoice_requests.update_one(
+        {"id": request_id},
+        {"$set": {"payment_confirmations": payment_data.get("confirmation_details")}}
+    )
+    
+    return {"message": "Payment confirmation updated"}
+
+
+# Field Sales - Visit Log
+@api_router.post("/sales/visit-log")
+async def log_visit(visit_data: dict, current_user: dict = Depends(get_current_user)):
+    if current_user["role"] != "Field Sales":
+        raise HTTPException(status_code=403, detail="Access denied. Field Sales only.")
+    
+    visit_log = VisitLog(
+        date=visit_data["date"],
+        company=visit_data["company"],
+        contact_person=visit_data["contact_person"],
+        notes=visit_data.get("notes"),
+        logged_by=current_user["id"],
+        logged_by_name=current_user["name"]
+    )
+    
+    doc = visit_log.model_dump()
+    doc['created_at'] = doc['created_at'].isoformat()
+    await db.visit_logs.insert_one(doc)
+    
+    return {"message": "Visit logged successfully", "visit_id": visit_log.id}
+
+
+# Field Sales - Get My Visits
+@api_router.get("/sales/visit-logs")
+async def get_my_visits(current_user: dict = Depends(get_current_user)):
+    if current_user["role"] != "Field Sales":
+        raise HTTPException(status_code=403, detail="Access denied")
+    
+    visits = await db.visit_logs.find({"logged_by": current_user["id"]}, {"_id": 0}).sort("date", -1).to_list(1000)
+    for visit in visits:
+        if isinstance(visit.get('created_at'), str):
+            visit['created_at'] = datetime.fromisoformat(visit['created_at'])
+    
+    return visits
+
+
 # Include the router in the main app
 app.include_router(api_router)
 
