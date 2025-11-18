@@ -72,6 +72,10 @@ const Login = () => {
         navigate('/dashboard/hr');
       } else if (user.role === 'Sales Head') {
         navigate('/dashboard/sales-head');
+      } else if (user.role === 'Tele Sales') {
+        navigate('/dashboard/tele-sales');
+      } else if (user.role === 'Field Sales') {
+        navigate('/dashboard/field-sales');
       } else if (user.role === 'Sales Employee') {
         navigate('/dashboard/sales-employee');
       } else {
