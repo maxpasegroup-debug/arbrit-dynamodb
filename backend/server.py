@@ -1459,8 +1459,8 @@ async def assign_lead(lead_id: str, assign_data: dict, current_user: dict = Depe
 # Sales Head - Get All Quotations
 @api_router.get("/sales/quotations/all")
 async def get_all_quotations(current_user: dict = Depends(get_current_user)):
-    if current_user["role"] != "Sales Head":
-        raise HTTPException(status_code=403, detail="Access denied. Sales Head only.")
+    if current_user["role"] not in ["COO", "Sales Head"]:
+        raise HTTPException(status_code=403, detail="Access denied. Sales Head or COO role required.")
     
     quotations = await db.quotations.find({}, {"_id": 0}).sort("created_at", -1).to_list(1000)
     for quot in quotations:
