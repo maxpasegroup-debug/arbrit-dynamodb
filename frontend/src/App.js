@@ -5,6 +5,7 @@ import DashboardCOO from "@/pages/DashboardCOO";
 import HRMDashboard from "@/pages/HRMDashboard";
 import HRDashboard from "@/pages/HRDashboard";
 import SalesHeadDashboard from "@/pages/SalesHeadDashboard";
+import SalesEmployeeDashboard from "@/pages/SalesEmployeeDashboard";
 import { Toaster } from '@/components/ui/sonner';
 
 function App() {
@@ -17,6 +18,7 @@ function App() {
           <Route path="/dashboard/coo" element={<DashboardCOO />} />
           <Route path="/dashboard/hr" element={<HRDashboard />} />
           <Route path="/dashboard/sales-head" element={<SalesHeadDashboard />} />
+          <Route path="/dashboard/sales-employee" element={<SalesEmployeeDashboard />} />
           <Route path="/hrm" element={<HRMDashboard />} />
         </Routes>
       </BrowserRouter>
