@@ -133,45 +133,67 @@ const TeleSalesDashboard = () => {
             Welcome, {user?.name?.split(' ')[0]}!
           </h2>
           <p className="text-gray-300">
-            Manage your leads, create quotations, and track follow-ups from your dashboard.
+            Manage your leads, create quotations, and request services from your dashboard.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {modules.map((module) => {
-            const Icon = module.icon;
-            return (
-              <Card
-                key={module.id}
-                data-testid={`module-${module.id}`}
-                onClick={() => handleModuleClick(module.title)}
-                className="group relative overflow-hidden cursor-pointer border-white/10 bg-white/5 backdrop-blur-sm hover:bg-white/10 transition-all duration-300 hover:scale-105 hover:shadow-2xl"
-                style={{ minHeight: '160px' }}
-              >
-                <div className={`absolute inset-0 bg-gradient-to-br ${module.color} opacity-0 group-hover:opacity-10 transition-opacity duration-300`} />
-                
-                <div className="p-6 relative z-10">
-                  <div className={`${module.bgColor} w-12 h-12 rounded-xl flex items-center justify-center mb-4`}>
-                    <Icon className={`w-6 h-6 ${module.iconColor}`} />
-                  </div>
-                  
-                  <h3 className="text-lg font-bold text-white mb-2">{module.title}</h3>
-                  <p className="text-sm text-gray-400">{module.description}</p>
-                  
-                  {module.count > 0 && (
-                    <div className="mt-3">
-                      <span className="text-2xl font-bold text-white">{module.count}</span>
-                      <span className="text-sm text-gray-400 ml-2">items</span>
-                    </div>
-                  )}
-                </div>
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+          <TabsList className="grid w-full grid-cols-5 bg-white/5 border border-white/10">
+            <TabsTrigger 
+              value="leads"
+              data-testid="tab-leads"
+              className="data-[state=active]:bg-blue-500/20 data-[state=active]:text-white text-gray-300"
+            >
+              <TrendingUp className="w-4 h-4 mr-2" />
+              Leads
+            </TabsTrigger>
+            <TabsTrigger 
+              value="quotations"
+              data-testid="tab-quotations"
+              className="data-[state=active]:bg-blue-500/20 data-[state=active]:text-white text-gray-300"
+            >
+              <FileText className="w-4 h-4 mr-2" />
+              Quotations
+            </TabsTrigger>
+            <TabsTrigger 
+              value="trainer"
+              data-testid="tab-trainer"
+              className="data-[state=active]:bg-blue-500/20 data-[state=active]:text-white text-gray-300"
+            >
+              <GraduationCap className="w-4 h-4 mr-2" />
+              Trainer
+            </TabsTrigger>
+            <TabsTrigger 
+              value="invoice"
+              data-testid="tab-invoice"
+              className="data-[state=active]:bg-blue-500/20 data-[state=active]:text-white text-gray-300"
+            >
+              <DollarSign className="w-4 h-4 mr-2" />
+              Invoice
+            </TabsTrigger>
+          </TabsList>
 
-                <div className={`absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r ${module.color} transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300`} />
-              </Card>
-            );
-          })}
-        </div>
+          <div className="mt-6">
+            <TabsContent value="leads" className="mt-0 space-y-6">
+              <div className="flex justify-end">
+                <SelfLeadForm />
+              </div>
+              <LeadManagement />
+            </TabsContent>
 
+            <TabsContent value="quotations" className="mt-0">
+              <QuotationManager />
+            </TabsContent>
+
+            <TabsContent value="trainer" className="mt-0">
+              <TrainerRequest />
+            </TabsContent>
+
+            <TabsContent value="invoice" className="mt-0">
+              <InvoiceRequest />
+            </TabsContent>
+          </div>
+        </Tabs>
       </main>
     </div>
   );
