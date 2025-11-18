@@ -70,6 +70,8 @@ const Login = () => {
         navigate('/dashboard/coo');
       } else if (user.role === 'HR') {
         navigate('/dashboard/hr');
+      } else if (user.role === 'Sales Head') {
+        navigate('/dashboard/sales-head');
       } else {
         navigate('/dashboard');
       }
