@@ -60,7 +60,10 @@ const EmployeeManagement = () => {
         mobile: employee.mobile,
         branch: employee.branch,
         email: employee.email || '',
-        designation: employee.designation || ''
+        designation: employee.designation || '',
+        department: employee.department || '',
+        badge_title: employee.badge_title || '',
+        sales_type: employee.sales_type || ''
       });
     } else {
       setEditMode(false);
@@ -70,7 +73,10 @@ const EmployeeManagement = () => {
         mobile: '',
         branch: '',
         email: '',
-        designation: ''
+        designation: '',
+        department: '',
+        badge_title: '',
+        sales_type: ''
       });
     }
     setShowDialog(true);
