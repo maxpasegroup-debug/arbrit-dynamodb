@@ -180,6 +180,260 @@ class ArbritAPITester:
         self.token = temp_token
         return success, response
 
+    # HRM Module Tests
+    def test_create_employee(self):
+        """Test creating a new employee"""
+        if not self.token:
+            print("❌ Skipping - No token available")
+            return False, {}
+        
+        employee_data = {
+            "name": "Test Employee",
+            "mobile": "971501234567",
+            "branch": "Dubai",
+            "email": "test@arbrit.com",
+            "designation": "Safety Officer"
+        }
+        
+        success, response = self.run_test(
+            "Create Employee",
+            "POST",
+            "hrm/employees",
+            200,
+            data=employee_data
+        )
+        
+        if success and 'id' in response:
+            self.employee_id = response['id']
+            print(f"   Employee ID: {self.employee_id}")
+        
+        return success, response
+
+    def test_get_employees(self):
+        """Test getting all employees"""
+        if not self.token:
+            print("❌ Skipping - No token available")
+            return False, {}
+        
+        return self.run_test(
+            "Get All Employees",
+            "GET",
+            "hrm/employees",
+            200
+        )
+
+    def test_update_employee(self):
+        """Test updating an employee"""
+        if not self.token or not hasattr(self, 'employee_id'):
+            print("❌ Skipping - No token or employee ID available")
+            return False, {}
+        
+        update_data = {
+            "designation": "Senior Safety Officer",
+            "email": "updated@arbrit.com"
+        }
+        
+        return self.run_test(
+            "Update Employee",
+            "PUT",
+            f"hrm/employees/{self.employee_id}",
+            200,
+            data=update_data
+        )
+
+    def test_record_attendance(self):
+        """Test recording attendance"""
+        if not self.token or not hasattr(self, 'employee_id'):
+            print("❌ Skipping - No token or employee ID available")
+            return False, {}
+        
+        attendance_data = {
+            "employee_id": self.employee_id,
+            "gps_lat": 25.2048,
+            "gps_long": 55.2708
+        }
+        
+        success, response = self.run_test(
+            "Record Attendance",
+            "POST",
+            "hrm/attendance",
+            200,
+            data=attendance_data
+        )
+        
+        if success and 'id' in response:
+            self.attendance_id = response['id']
+        
+        return success, response
+
+    def test_get_attendance(self):
+        """Test getting attendance records"""
+        if not self.token:
+            print("❌ Skipping - No token available")
+            return False, {}
+        
+        return self.run_test(
+            "Get Attendance Records",
+            "GET",
+            "hrm/attendance",
+            200
+        )
+
+    def test_upload_employee_document(self):
+        """Test uploading employee document"""
+        if not self.token or not hasattr(self, 'employee_id'):
+            print("❌ Skipping - No token or employee ID available")
+            return False, {}
+        
+        # Create a simple base64 encoded test document
+        import base64
+        test_content = "This is a test document content"
+        file_data = base64.b64encode(test_content.encode()).decode()
+        
+        doc_data = {
+            "employee_id": self.employee_id,
+            "doc_type": "Passport",
+            "file_name": "test_passport.pdf",
+            "file_data": file_data,
+            "expiry_date": "2025-12-31"
+        }
+        
+        success, response = self.run_test(
+            "Upload Employee Document",
+            "POST",
+            "hrm/employee-documents",
+            200,
+            data=doc_data
+        )
+        
+        if success and 'id' in response:
+            self.employee_doc_id = response['id']
+        
+        return success, response
+
+    def test_get_employee_documents(self):
+        """Test getting employee documents"""
+        if not self.token or not hasattr(self, 'employee_id'):
+            print("❌ Skipping - No token or employee ID available")
+            return False, {}
+        
+        return self.run_test(
+            "Get Employee Documents",
+            "GET",
+            f"hrm/employee-documents/{self.employee_id}",
+            200
+        )
+
+    def test_get_employee_document_alerts(self):
+        """Test getting employee document alerts"""
+        if not self.token:
+            print("❌ Skipping - No token available")
+            return False, {}
+        
+        return self.run_test(
+            "Get Employee Document Alerts",
+            "GET",
+            "hrm/employee-documents/alerts/all",
+            200
+        )
+
+    def test_upload_company_document(self):
+        """Test uploading company document"""
+        if not self.token:
+            print("❌ Skipping - No token available")
+            return False, {}
+        
+        # Create a simple base64 encoded test document
+        import base64
+        test_content = "This is a test company document content"
+        file_data = base64.b64encode(test_content.encode()).decode()
+        
+        doc_data = {
+            "doc_name": "Test Trade License",
+            "doc_type": "Trade License",
+            "file_name": "trade_license.pdf",
+            "file_data": file_data,
+            "expiry_date": "2025-06-30"
+        }
+        
+        success, response = self.run_test(
+            "Upload Company Document",
+            "POST",
+            "hrm/company-documents",
+            200,
+            data=doc_data
+        )
+        
+        if success and 'id' in response:
+            self.company_doc_id = response['id']
+        
+        return success, response
+
+    def test_get_company_documents(self):
+        """Test getting company documents"""
+        if not self.token:
+            print("❌ Skipping - No token available")
+            return False, {}
+        
+        return self.run_test(
+            "Get Company Documents",
+            "GET",
+            "hrm/company-documents",
+            200
+        )
+
+    def test_get_company_document_alerts(self):
+        """Test getting company document alerts"""
+        if not self.token:
+            print("❌ Skipping - No token available")
+            return False, {}
+        
+        return self.run_test(
+            "Get Company Document Alerts",
+            "GET",
+            "hrm/company-documents/alerts/all",
+            200
+        )
+
+    def test_delete_employee_document(self):
+        """Test deleting employee document"""
+        if not self.token or not hasattr(self, 'employee_doc_id'):
+            print("❌ Skipping - No token or document ID available")
+            return False, {}
+        
+        return self.run_test(
+            "Delete Employee Document",
+            "DELETE",
+            f"hrm/employee-documents/{self.employee_doc_id}",
+            200
+        )
+
+    def test_delete_company_document(self):
+        """Test deleting company document"""
+        if not self.token or not hasattr(self, 'company_doc_id'):
+            print("❌ Skipping - No token or document ID available")
+            return False, {}
+        
+        return self.run_test(
+            "Delete Company Document",
+            "DELETE",
+            f"hrm/company-documents/{self.company_doc_id}",
+            200
+        )
+
+    def test_delete_employee(self):
+        """Test deleting an employee"""
+        if not self.token or not hasattr(self, 'employee_id'):
+            print("❌ Skipping - No token or employee ID available")
+            return False, {}
+        
+        return self.run_test(
+            "Delete Employee",
+            "DELETE",
+            f"hrm/employees/{self.employee_id}",
+            200
+        )
+
 def main():
     print("🚀 Starting Arbrit Safety Training API Tests")
     print("=" * 50)
