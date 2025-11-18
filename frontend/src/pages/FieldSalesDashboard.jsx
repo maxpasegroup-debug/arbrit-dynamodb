@@ -210,21 +210,6 @@ const FieldSalesDashboard = () => {
           })}
         </div>
 
-        <div className="mt-8 bg-green-500/10 border border-green-500/30 rounded-xl p-6">
-          <div className="flex items-start gap-3">
-            <div className="bg-green-500/20 p-2 rounded-lg">
-              <svg className="w-6 h-6 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
-            </div>
-            <div>
-              <h3 className="text-lg font-semibold text-white mb-1">Phase 1 - Basic Dashboard</h3>
-              <p className="text-sm text-gray-300">
-                Module cards are ready for navigation. Full corporate lead management, visit tracking, and quotation features will be enabled in Phase 2.
-              </p>
-            </div>
-          </div>
-        </div>
       </main>
     </div>
   );
