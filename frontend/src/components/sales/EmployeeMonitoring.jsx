@@ -167,6 +167,7 @@ const EmployeeMonitoring = () => {
               <TableHead className="text-gray-300">Badge Title</TableHead>
               <TableHead className="text-gray-300">Status</TableHead>
               <TableHead className="text-gray-300">Last Attendance</TableHead>
+              <TableHead className="text-gray-300 text-right">Actions</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
