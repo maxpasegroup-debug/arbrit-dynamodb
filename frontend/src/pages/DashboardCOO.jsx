@@ -62,7 +62,8 @@ const DashboardCOO = () => {
       description: 'Manage campaigns and sales operations',
       color: 'from-blue-500 to-cyan-500',
       bgColor: 'bg-blue-500/10',
-      iconColor: 'text-blue-500'
+      iconColor: 'text-blue-500',
+      route: null
     },
     {
       id: 'hrm',
@@ -71,7 +72,8 @@ const DashboardCOO = () => {
       description: 'Human resource management system',
       color: 'from-purple-500 to-pink-500',
       bgColor: 'bg-purple-500/10',
-      iconColor: 'text-purple-500'
+      iconColor: 'text-purple-500',
+      route: '/hrm'
     },
     {
       id: 'academics',
@@ -80,7 +82,8 @@ const DashboardCOO = () => {
       description: 'Training programs and certifications',
       color: 'from-green-500 to-emerald-500',
       bgColor: 'bg-green-500/10',
-      iconColor: 'text-green-500'
+      iconColor: 'text-green-500',
+      route: null
     },
     {
       id: 'accounts',
@@ -89,12 +92,17 @@ const DashboardCOO = () => {
       description: 'Financial management and reports',
       color: 'from-orange-500 to-yellow-500',
       bgColor: 'bg-orange-500/10',
-      iconColor: 'text-orange-500'
+      iconColor: 'text-orange-500',
+      route: null
     }
   ];
 
-  const handleModuleClick = (moduleId) => {
-    toast.info(`${moduleId} module - Coming soon in Phase 2`);
+  const handleModuleClick = (module) => {
+    if (module.route) {
+      navigate(module.route);
+    } else {
+      toast.info(`${module.name} module - Coming soon in Phase 2`);
+    }
   };
 
   if (loading) {
@@ -163,27 +171,9 @@ const DashboardCOO = () => {
             <ModuleCard
               key={module.id}
               module={module}
-              onClick={() => handleModuleClick(module.name)}
+              onClick={() => handleModuleClick(module)}
             />
           ))}
-        </div>
-
-        {/* Footer Info */}
-        <div className="mt-12 bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/10">
-          <div className="flex items-start gap-4">
-            <div className="bg-yellow-500/20 p-3 rounded-lg">
-              <svg className="w-6 h-6 text-yellow-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
-            </div>
-            <div>
-              <h3 className="text-lg font-semibold text-white mb-1">Phase 1 - Dashboard Overview</h3>
-              <p className="text-gray-300 text-sm leading-relaxed">
-                You are viewing the COO dashboard with access to 4 core modules. Click on any module card to explore its features. 
-                Additional functionality and detailed views will be available in upcoming phases.
-              </p>
-            </div>
-          </div>
         </div>
       </main>
     </div>

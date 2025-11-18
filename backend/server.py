@@ -1,4 +1,4 @@
-from fastapi import FastAPI, APIRouter, HTTPException, Depends, status
+from fastapi import FastAPI, APIRouter, HTTPException, Depends, status, UploadFile, File, Form
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from dotenv import load_dotenv
 from starlette.middleware.cors import CORSMiddleware
@@ -6,12 +6,13 @@ from motor.motor_asyncio import AsyncIOMotorClient
 import os
 import logging
 from pathlib import Path
-from pydantic import BaseModel, Field, ConfigDict
+from pydantic import BaseModel, Field, ConfigDict, EmailStr
 from typing import List, Optional
 import uuid
 from datetime import datetime, timezone, timedelta
 from passlib.context import CryptContext
 import jwt
+import base64
 
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
@@ -65,6 +66,96 @@ class UserResponse(BaseModel):
     role: str
 
 
+# HRM Models
+class Employee(BaseModel):
+    model_config = ConfigDict(extra="ignore")
+    
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    name: str
+    mobile: str
+    branch: str  # Dubai, Saudi, Abu Dhabi
+    email: Optional[str] = None
+    designation: Optional[str] = None
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+
+
+class EmployeeCreate(BaseModel):
+    name: str
+    mobile: str
+    branch: str
+    email: Optional[str] = None
+    designation: Optional[str] = None
+
+
+class EmployeeUpdate(BaseModel):
+    name: Optional[str] = None
+    mobile: Optional[str] = None
+    branch: Optional[str] = None
+    email: Optional[str] = None
+    designation: Optional[str] = None
+
+
+class Attendance(BaseModel):
+    model_config = ConfigDict(extra="ignore")
+    
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    employee_id: str
+    employee_name: str
+    mobile: str
+    date: str  # YYYY-MM-DD
+    time: str  # HH:MM:SS
+    gps_lat: Optional[float] = None
+    gps_long: Optional[float] = None
+    timestamp: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+
+
+class AttendanceCreate(BaseModel):
+    employee_id: str
+    gps_lat: Optional[float] = None
+    gps_long: Optional[float] = None
+
+
+class EmployeeDocument(BaseModel):
+    model_config = ConfigDict(extra="ignore")
+    
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    employee_id: str
+    employee_name: str
+    doc_type: str  # Passport, Visa, Emirates ID, Work Permit
+    file_name: str
+    file_data: str  # Base64 encoded
+    expiry_date: str  # YYYY-MM-DD
+    uploaded_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+
+
+class EmployeeDocumentCreate(BaseModel):
+    employee_id: str
+    doc_type: str
+    file_name: str
+    file_data: str
+    expiry_date: str
+
+
+class CompanyDocument(BaseModel):
+    model_config = ConfigDict(extra="ignore")
+    
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    doc_name: str
+    doc_type: str  # Trade License, ISO Certificate, etc.
+    file_name: str
+    file_data: str  # Base64 encoded
+    expiry_date: str  # YYYY-MM-DD
+    uploaded_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+
+
+class CompanyDocumentCreate(BaseModel):
+    doc_name: str
+    doc_type: str
+    file_name: str
+    file_data: str
+    expiry_date: str
+
+
 # Helper functions
 def hash_pin(pin: str) -> str:
     return pwd_context.hash(pin)
@@ -101,6 +192,17 @@ async def get_current_user(credentials: HTTPAuthorizationCredentials = Depends(s
     if user is None:
         raise HTTPException(status_code=401, detail="User not found")
     return user
+
+
+def calculate_days_until_expiry(expiry_date_str: str) -> int:
+    """Calculate days until document expiry"""
+    try:
+        expiry_date = datetime.strptime(expiry_date_str, "%Y-%m-%d")
+        today = datetime.now()
+        delta = expiry_date - today
+        return delta.days
+    except:
+        return 999  # Return high number if date parsing fails
 
 
 # Routes
@@ -172,6 +274,200 @@ async def coo_dashboard(current_user: dict = Depends(get_current_user)):
             {"id": "accounts", "name": "Accounts"}
         ]
     }
+
+
+# HRM - Employee Management
+@api_router.post("/hrm/employees", response_model=Employee)
+async def create_employee(employee: EmployeeCreate, current_user: dict = Depends(get_current_user)):
+    employee_obj = Employee(**employee.model_dump())
+    doc = employee_obj.model_dump()
+    doc['created_at'] = doc['created_at'].isoformat()
+    await db.employees.insert_one(doc)
+    return employee_obj
+
+
+@api_router.get("/hrm/employees", response_model=List[Employee])
+async def get_employees(current_user: dict = Depends(get_current_user)):
+    employees = await db.employees.find({}, {"_id": 0}).to_list(1000)
+    for emp in employees:
+        if isinstance(emp.get('created_at'), str):
+            emp['created_at'] = datetime.fromisoformat(emp['created_at'])
+    return employees
+
+
+@api_router.put("/hrm/employees/{employee_id}", response_model=Employee)
+async def update_employee(employee_id: str, employee_update: EmployeeUpdate, current_user: dict = Depends(get_current_user)):
+    # Get existing employee
+    existing = await db.employees.find_one({"id": employee_id}, {"_id": 0})
+    if not existing:
+        raise HTTPException(status_code=404, detail="Employee not found")
+    
+    # Update fields
+    update_data = {k: v for k, v in employee_update.model_dump().items() if v is not None}
+    if update_data:
+        await db.employees.update_one({"id": employee_id}, {"$set": update_data})
+    
+    # Return updated employee
+    updated = await db.employees.find_one({"id": employee_id}, {"_id": 0})
+    if isinstance(updated.get('created_at'), str):
+        updated['created_at'] = datetime.fromisoformat(updated['created_at'])
+    return updated
+
+
+@api_router.delete("/hrm/employees/{employee_id}")
+async def delete_employee(employee_id: str, current_user: dict = Depends(get_current_user)):
+    result = await db.employees.delete_one({"id": employee_id})
+    if result.deleted_count == 0:
+        raise HTTPException(status_code=404, detail="Employee not found")
+    
+    # Also delete related documents and attendance
+    await db.employee_documents.delete_many({"employee_id": employee_id})
+    await db.attendance.delete_many({"employee_id": employee_id})
+    
+    return {"message": "Employee deleted successfully"}
+
+
+# HRM - Attendance Management
+@api_router.post("/hrm/attendance", response_model=Attendance)
+async def record_attendance(attendance: AttendanceCreate, current_user: dict = Depends(get_current_user)):
+    # Get employee details
+    employee = await db.employees.find_one({"id": attendance.employee_id}, {"_id": 0})
+    if not employee:
+        raise HTTPException(status_code=404, detail="Employee not found")
+    
+    # Create attendance record
+    now = datetime.now(timezone.utc)
+    attendance_obj = Attendance(
+        employee_id=attendance.employee_id,
+        employee_name=employee["name"],
+        mobile=employee["mobile"],
+        date=now.strftime("%Y-%m-%d"),
+        time=now.strftime("%H:%M:%S"),
+        gps_lat=attendance.gps_lat,
+        gps_long=attendance.gps_long
+    )
+    
+    doc = attendance_obj.model_dump()
+    doc['timestamp'] = doc['timestamp'].isoformat()
+    await db.attendance.insert_one(doc)
+    return attendance_obj
+
+
+@api_router.get("/hrm/attendance", response_model=List[Attendance])
+async def get_attendance(current_user: dict = Depends(get_current_user)):
+    attendance_records = await db.attendance.find({}, {"_id": 0}).sort("timestamp", -1).to_list(1000)
+    for record in attendance_records:
+        if isinstance(record.get('timestamp'), str):
+            record['timestamp'] = datetime.fromisoformat(record['timestamp'])
+    return attendance_records
+
+
+# HRM - Employee Documents
+@api_router.post("/hrm/employee-documents", response_model=EmployeeDocument)
+async def upload_employee_document(doc: EmployeeDocumentCreate, current_user: dict = Depends(get_current_user)):
+    # Get employee details
+    employee = await db.employees.find_one({"id": doc.employee_id}, {"_id": 0})
+    if not employee:
+        raise HTTPException(status_code=404, detail="Employee not found")
+    
+    doc_obj = EmployeeDocument(
+        employee_id=doc.employee_id,
+        employee_name=employee["name"],
+        doc_type=doc.doc_type,
+        file_name=doc.file_name,
+        file_data=doc.file_data,
+        expiry_date=doc.expiry_date
+    )
+    
+    doc_dict = doc_obj.model_dump()
+    doc_dict['uploaded_at'] = doc_dict['uploaded_at'].isoformat()
+    await db.employee_documents.insert_one(doc_dict)
+    return doc_obj
+
+
+@api_router.get("/hrm/employee-documents/{employee_id}", response_model=List[EmployeeDocument])
+async def get_employee_documents(employee_id: str, current_user: dict = Depends(get_current_user)):
+    docs = await db.employee_documents.find({"employee_id": employee_id}, {"_id": 0}).to_list(100)
+    for doc in docs:
+        if isinstance(doc.get('uploaded_at'), str):
+            doc['uploaded_at'] = datetime.fromisoformat(doc['uploaded_at'])
+    return docs
+
+
+@api_router.get("/hrm/employee-documents/alerts/all")
+async def get_employee_document_alerts(current_user: dict = Depends(get_current_user)):
+    all_docs = await db.employee_documents.find({}, {"_id": 0}).to_list(1000)
+    
+    alerts = []
+    for doc in all_docs:
+        days_until_expiry = calculate_days_until_expiry(doc["expiry_date"])
+        if days_until_expiry <= 30:  # Alert for docs expiring in 30 days or less
+            alerts.append({
+                "id": doc["id"],
+                "employee_id": doc["employee_id"],
+                "employee_name": doc["employee_name"],
+                "doc_type": doc["doc_type"],
+                "expiry_date": doc["expiry_date"],
+                "days_until_expiry": days_until_expiry,
+                "severity": "critical" if days_until_expiry <= 7 else "warning" if days_until_expiry <= 15 else "info"
+            })
+    
+    return alerts
+
+
+@api_router.delete("/hrm/employee-documents/{doc_id}")
+async def delete_employee_document(doc_id: str, current_user: dict = Depends(get_current_user)):
+    result = await db.employee_documents.delete_one({"id": doc_id})
+    if result.deleted_count == 0:
+        raise HTTPException(status_code=404, detail="Document not found")
+    return {"message": "Document deleted successfully"}
+
+
+# HRM - Company Documents
+@api_router.post("/hrm/company-documents", response_model=CompanyDocument)
+async def upload_company_document(doc: CompanyDocumentCreate, current_user: dict = Depends(get_current_user)):
+    doc_obj = CompanyDocument(**doc.model_dump())
+    doc_dict = doc_obj.model_dump()
+    doc_dict['uploaded_at'] = doc_dict['uploaded_at'].isoformat()
+    await db.company_documents.insert_one(doc_dict)
+    return doc_obj
+
+
+@api_router.get("/hrm/company-documents", response_model=List[CompanyDocument])
+async def get_company_documents(current_user: dict = Depends(get_current_user)):
+    docs = await db.company_documents.find({}, {"_id": 0}).to_list(100)
+    for doc in docs:
+        if isinstance(doc.get('uploaded_at'), str):
+            doc['uploaded_at'] = datetime.fromisoformat(doc['uploaded_at'])
+    return docs
+
+
+@api_router.get("/hrm/company-documents/alerts/all")
+async def get_company_document_alerts(current_user: dict = Depends(get_current_user)):
+    all_docs = await db.company_documents.find({}, {"_id": 0}).to_list(1000)
+    
+    alerts = []
+    for doc in all_docs:
+        days_until_expiry = calculate_days_until_expiry(doc["expiry_date"])
+        if days_until_expiry <= 30:  # Alert for docs expiring in 30 days or less
+            alerts.append({
+                "id": doc["id"],
+                "doc_name": doc["doc_name"],
+                "doc_type": doc["doc_type"],
+                "expiry_date": doc["expiry_date"],
+                "days_until_expiry": days_until_expiry,
+                "severity": "critical" if days_until_expiry <= 7 else "warning" if days_until_expiry <= 15 else "info"
+            })
+    
+    return alerts
+
+
+@api_router.delete("/hrm/company-documents/{doc_id}")
+async def delete_company_document(doc_id: str, current_user: dict = Depends(get_current_user)):
+    result = await db.company_documents.delete_one({"id": doc_id})
+    if result.deleted_count == 0:
+        raise HTTPException(status_code=404, detail="Document not found")
+    return {"message": "Document deleted successfully"}
 
 
 # Include the router in the main app
