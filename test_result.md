@@ -265,10 +265,7 @@ metadata:
 
 test_plan:
   current_focus:
-    - "Trainer Request API Endpoints"
-    - "Invoice Request API Endpoints"
-    - "Visit Logs API Endpoints"
-    - "Existing Sales APIs (Leads, Quotations)"
+    - "Sales Head API Endpoints"
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
