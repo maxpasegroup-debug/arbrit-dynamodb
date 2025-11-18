@@ -19,7 +19,7 @@ const SalesHeadDashboard = () => {
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState('monitoring');
+  const [activeTab, setActiveTab] = useState('overview');
 
   useEffect(() => {
     const checkAuth = async () => {
