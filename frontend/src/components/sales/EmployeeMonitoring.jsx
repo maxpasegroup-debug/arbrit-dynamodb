@@ -179,7 +179,7 @@ const EmployeeMonitoring = () => {
               </TableRow>
             ) : filteredAttendance.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={6} className="text-center text-gray-400 py-8">
+                <TableCell colSpan={7} className="text-center text-gray-400 py-8">
                   No employees found
                 </TableCell>
               </TableRow>
@@ -201,6 +201,18 @@ const EmployeeMonitoring = () => {
                   </TableCell>
                   <TableCell className="text-gray-300">
                     {emp.last_attendance || '-'}
+                  </TableCell>
+                  <TableCell className="text-right">
+                    <Button
+                      data-testid={`assign-badge-${emp.id}`}
+                      onClick={() => handleAssignBadge(emp)}
+                      variant="ghost"
+                      size="sm"
+                      className="text-yellow-400 hover:text-yellow-300 hover:bg-yellow-500/10"
+                    >
+                      <Award className="w-4 h-4 mr-1" />
+                      Assign Badge
+                    </Button>
                   </TableCell>
                 </TableRow>
               ))
