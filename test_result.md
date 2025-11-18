@@ -169,6 +169,21 @@ backend:
         agent: "testing"
         comment: "✅ PASSED - All existing sales APIs working correctly: POST /api/sales/self-lead (created lead ID 1e9af76a-fab5-4d41-b740-595ec5bceaa8), GET /api/sales/my-leads (retrieved 2 leads), POST /api/sales/quotations (created quotation ID 6ca5e5c5-b41a-490a-900f-db241f845d46), GET /api/sales/quotations (retrieved 2 quotations). All require proper sales role authentication."
 
+  - task: "Sales Head API Endpoints"
+    implemented: true
+    working: true
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "New Sales Head endpoints implemented: GET /api/sales/leads (all leads), PUT /api/sales/leads/{id}/assign (assign leads), GET /api/sales/quotations/all (all quotations), PUT /api/sales/quotations/{id}/approve (approve/reject), PUT /api/hrm/leave-requests/{id}/approve (approve leave), PUT /api/hrm/leave-requests/{id}/reject (reject leave). Need testing with COO credentials."
+      - working: true
+        agent: "testing"
+        comment: "✅ PASSED - All 8 Sales Head endpoints working perfectly with COO credentials (mobile: 971566374020, PIN: 4020). Fixed role-based access control to allow COO access. Successfully tested: lead retrieval (5 leads), lead assignment, quotation retrieval (5 quotations), quotation approval/rejection, leave request approval/rejection. All endpoints return proper JSON responses with correct status codes (200). COO user has full Sales Head functionality as required."
+
 frontend:
   - task: "TrainerRequest Component"
     implemented: true
