@@ -131,14 +131,22 @@ const SalesHeadDashboard = () => {
         </div>
 
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-4 bg-white/5 border border-white/10">
+          <TabsList className="grid w-full grid-cols-6 bg-white/5 border border-white/10">
+            <TabsTrigger 
+              value="overview" 
+              data-testid="tab-overview"
+              className="data-[state=active]:bg-blue-500/20 data-[state=active]:text-white text-gray-300"
+            >
+              <LayoutDashboard className="w-4 h-4 mr-2" />
+              Overview
+            </TabsTrigger>
             <TabsTrigger 
               value="monitoring" 
               data-testid="tab-monitoring"
               className="data-[state=active]:bg-blue-500/20 data-[state=active]:text-white text-gray-300"
             >
               <Users className="w-4 h-4 mr-2" />
-              Employee Monitoring
+              Team
             </TabsTrigger>
             <TabsTrigger 
               value="leads"
@@ -146,7 +154,7 @@ const SalesHeadDashboard = () => {
               className="data-[state=active]:bg-blue-500/20 data-[state=active]:text-white text-gray-300"
             >
               <TrendingUp className="w-4 h-4 mr-2" />
-              Lead Management
+              Leads
             </TabsTrigger>
             <TabsTrigger 
               value="quotations"
@@ -157,26 +165,42 @@ const SalesHeadDashboard = () => {
               Quotations
             </TabsTrigger>
             <TabsTrigger 
+              value="requests"
+              data-testid="tab-requests"
+              className="data-[state=active]:bg-blue-500/20 data-[state=active]:text-white text-gray-300"
+            >
+              <ClipboardList className="w-4 h-4 mr-2" />
+              Requests
+            </TabsTrigger>
+            <TabsTrigger 
               value="leaves"
               data-testid="tab-leaves"
               className="data-[state=active]:bg-blue-500/20 data-[state=active]:text-white text-gray-300"
             >
               <CalendarCheck className="w-4 h-4 mr-2" />
-              Leave Approvals
+              Leaves
             </TabsTrigger>
           </TabsList>
 
           <div className="mt-6">
+            <TabsContent value="overview" className="mt-0">
+              <SalesOverview />
+            </TabsContent>
+
             <TabsContent value="monitoring" className="mt-0">
               <EmployeeMonitoring />
             </TabsContent>
 
             <TabsContent value="leads" className="mt-0">
-              <LeadManagement />
+              <LeadAllocation />
             </TabsContent>
 
             <TabsContent value="quotations" className="mt-0">
-              <QuotationManagement />
+              <QuotationApproval />
+            </TabsContent>
+
+            <TabsContent value="requests" className="mt-0">
+              <RequestsView />
             </TabsContent>
 
             <TabsContent value="leaves" className="mt-0">
