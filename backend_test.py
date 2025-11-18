@@ -829,8 +829,16 @@ def main():
     
     # 4.1. Create Sales User for Testing Sales APIs
     print("\n👤 Creating Sales User for Testing...")
+    # Switch back to COO token for creating employees
+    tester.token = tester.coo_token if hasattr(tester, 'coo_token') else tester.token
     tester.test_create_sales_user()
     tester.test_login_sales_user()
+    
+    # 4.2. Create Field Sales User for Visit Logs Testing
+    print("\n👤 Creating Field Sales User for Visit Logs...")
+    tester.token = tester.coo_token if hasattr(tester, 'coo_token') else tester.token
+    tester.test_create_field_sales_user()
+    tester.test_login_field_sales_user()
     
     # 5. Test HRM Module - Attendance Management
     print("\n⏰ Testing HRM - Attendance Management...")
