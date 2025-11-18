@@ -81,12 +81,13 @@ class ArbritAPITester:
 
     def test_login_valid_credentials(self):
         """Test login with valid COO credentials"""
+        # First try with the seeded COO user to get a token
         success, response = self.run_test(
-            "Login with Valid Credentials",
+            "Login with COO Credentials",
             "POST",
             "auth/login",
             200,
-            data={"mobile": "9876543210", "pin": "3210"}
+            data={"mobile": "971566374020", "pin": "4020"}
         )
         if success and 'token' in response:
             self.token = response['token']
