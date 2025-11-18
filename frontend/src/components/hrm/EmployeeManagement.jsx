@@ -338,6 +338,54 @@ const EmployeeManagement = () => {
                 className="bg-white/5 border-white/20 text-white mt-1"
               />
             </div>
+            <div>
+              <Label htmlFor="department" className="text-gray-300">Department</Label>
+              <Select value={formData.department} onValueChange={(value) => setFormData({ ...formData, department: value })}>
+                <SelectTrigger data-testid="employee-department-select" className="bg-white/5 border-white/20 text-white mt-1">
+                  <SelectValue placeholder="Select department" />
+                </SelectTrigger>
+                <SelectContent className="bg-[#1a2f4d] border-white/20 text-white">
+                  <SelectItem value="Sales">Sales</SelectItem>
+                  <SelectItem value="HR">HR</SelectItem>
+                  <SelectItem value="Academic">Academic</SelectItem>
+                  <SelectItem value="Accounts">Accounts</SelectItem>
+                  <SelectItem value="Marketing">Marketing</SelectItem>
+                  <SelectItem value="Dispatch">Dispatch</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            {formData.department === 'Sales' && (
+              <>
+                <div>
+                  <Label htmlFor="sales_type" className="text-gray-300">Sales Type *</Label>
+                  <Select value={formData.sales_type} onValueChange={(value) => setFormData({ ...formData, sales_type: value })}>
+                    <SelectTrigger data-testid="employee-salestype-select" className="bg-white/5 border-white/20 text-white mt-1">
+                      <SelectValue placeholder="Select sales type" />
+                    </SelectTrigger>
+                    <SelectContent className="bg-[#1a2f4d] border-white/20 text-white">
+                      <SelectItem value="tele">Tele Sales</SelectItem>
+                      <SelectItem value="field">Field Sales</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div>
+                  <Label htmlFor="badge_title" className="text-gray-300">Badge Title</Label>
+                  <Select value={formData.badge_title} onValueChange={(value) => setFormData({ ...formData, badge_title: value })}>
+                    <SelectTrigger data-testid="employee-badge-select" className="bg-white/5 border-white/20 text-white mt-1">
+                      <SelectValue placeholder="Select badge" />
+                    </SelectTrigger>
+                    <SelectContent className="bg-[#1a2f4d] border-white/20 text-white">
+                      <SelectItem value="Sales Manager">Sales Manager</SelectItem>
+                      <SelectItem value="Assistant Sales Manager">Assistant Sales Manager</SelectItem>
+                      <SelectItem value="Team Leader">Team Leader</SelectItem>
+                      <SelectItem value="Business Development Executive">Business Development Executive</SelectItem>
+                      <SelectItem value="Sales Executive">Sales Executive</SelectItem>
+                      <SelectItem value="Tele Caller Executive">Tele Caller Executive</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              </>
+            )}
             <DialogFooter>
               <Button
                 type="button"
