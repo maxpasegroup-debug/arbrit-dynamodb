@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { LogOut, Phone, TrendingUp, FileText, GraduationCap, DollarSign } from 'lucide-react';
+import { LogOut, Phone, TrendingUp, FileText, GraduationCap, DollarSign, Calendar } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -9,6 +9,7 @@ import LeadManagement from '@/components/sales/LeadManagement';
 import QuotationManager from '@/components/sales/QuotationManager';
 import TrainerRequest from '@/components/sales/TrainerRequest';
 import InvoiceRequest from '@/components/sales/InvoiceRequest';
+import FollowUps from '@/components/sales/FollowUps';
 import { toast } from 'sonner';
 import axios from 'axios';
 
