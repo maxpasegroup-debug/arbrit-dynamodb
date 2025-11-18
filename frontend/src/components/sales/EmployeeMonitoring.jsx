@@ -50,6 +50,39 @@ const EmployeeMonitoring = () => {
     return status === 'Working' ? 'bg-green-500/20 text-green-300 border-green-500/30' : 'bg-orange-500/20 text-orange-300 border-orange-500/30';
   };
 
+  const handleAssignBadge = (employee) => {
+    setSelectedEmployee(employee);
+    setSelectedBadgeTitle(employee.badge_title || '');
+    setShowBadgeDialog(true);
+  };
+
+  const submitBadgeAssignment = async () => {
+    if (!selectedBadgeTitle) {
+      toast.error('Please select a badge title');
+      return;
+    }
+
+    setLoading(true);
+    try {
+      const token = localStorage.getItem('token');
+      await axios.put(
+        `${API}/sales-head/employees/${selectedEmployee.id}/badge`,
+        { badge_title: selectedBadgeTitle },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      toast.success(`Badge assigned to ${selectedEmployee.name}`);
+      setShowBadgeDialog(false);
+      setSelectedEmployee(null);
+      setSelectedBadgeTitle('');
+      fetchLiveAttendance();
+    } catch (error) {
+      console.error('Error assigning badge:', error);
+      toast.error('Failed to assign badge');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
