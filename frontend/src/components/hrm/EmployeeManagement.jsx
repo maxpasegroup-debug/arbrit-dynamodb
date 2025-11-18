@@ -19,6 +19,8 @@ const EmployeeManagement = () => {
   const [editMode, setEditMode] = useState(false);
   const [currentEmployee, setCurrentEmployee] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
+  const [filterBranch, setFilterBranch] = useState('');
+  const [filterDepartment, setFilterDepartment] = useState('');
   
   const [formData, setFormData] = useState({
     name: '',
