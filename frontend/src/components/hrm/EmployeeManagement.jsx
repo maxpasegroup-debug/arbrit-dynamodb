@@ -201,9 +201,11 @@ const EmployeeManagement = () => {
             <TableRow className="border-white/10 hover:bg-white/5">
               <TableHead className="text-gray-300">Name</TableHead>
               <TableHead className="text-gray-300">Mobile</TableHead>
-              <TableHead className="text-gray-300">Email</TableHead>
               <TableHead className="text-gray-300">Designation</TableHead>
               <TableHead className="text-gray-300">Branch</TableHead>
+              <TableHead className="text-gray-300">Department</TableHead>
+              <TableHead className="text-gray-300">Sales Type</TableHead>
+              <TableHead className="text-gray-300">Badge</TableHead>
               <TableHead className="text-gray-300 text-right">Actions</TableHead>
             </TableRow>
           </TableHeader>
