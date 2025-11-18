@@ -72,57 +72,7 @@ const FieldSalesDashboard = () => {
     navigate('/login');
   };
 
-  const modules = [
-    {
-      id: 'my-leads',
-      title: 'My Assigned Leads',
-      description: 'Corporate leads assigned to you',
-      icon: TrendingUp,
-      color: 'from-blue-500 to-cyan-500',
-      bgColor: 'bg-blue-500/10',
-      iconColor: 'text-blue-400'
-    },
-    {
-      id: 'corporate-leads',
-      title: 'Corporate Enquiries',
-      description: 'Add and track corporate leads',
-      icon: Briefcase,
-      color: 'from-green-500 to-emerald-500',
-      bgColor: 'bg-green-500/10',
-      iconColor: 'text-green-400'
-    },
-    {
-      id: 'visit-logs',
-      title: 'Visit Logs',
-      description: 'Track client visits & meetings',
-      icon: MapPin,
-      color: 'from-purple-500 to-pink-500',
-      bgColor: 'bg-purple-500/10',
-      iconColor: 'text-purple-400'
-    },
-    {
-      id: 'quotations',
-      title: 'Quotations',
-      description: 'Create corporate quotations',
-      icon: FileText,
-      color: 'from-orange-500 to-yellow-500',
-      bgColor: 'bg-orange-500/10',
-      iconColor: 'text-orange-400'
-    },
-    {
-      id: 'conversions',
-      title: 'Client Conversion',
-      description: 'Track conversion pipeline',
-      icon: Target,
-      color: 'from-pink-500 to-rose-500',
-      bgColor: 'bg-pink-500/10',
-      iconColor: 'text-pink-400'
-    }
-  ];
-
-  const handleModuleClick = (moduleId) => {
-    toast.info(`${moduleId} - Feature coming in Phase 2`);
-  };
+  const [activeTab, setActiveTab] = useState('leads');
 
   if (loading) {
     return (
