@@ -477,11 +477,17 @@ async def delete_employee(employee_id: str, current_user: dict = Depends(get_cur
     await db.employee_documents.delete_many({"employee_id": employee_id})
     await db.attendance.delete_many({"employee_id": employee_id})
     
-    # If employee had HR designation, delete user account
-    if employee.get("designation") and "HR" in employee["designation"].upper():
-        deleted_user = await db.users.delete_one({"mobile": employee["mobile"], "role": "HR"})
-        if deleted_user.deleted_count > 0:
-            logger.info(f"HR user account deleted for {employee['name']}")
+    # If employee had HR or Sales Head designation, delete user account
+    if employee.get("designation"):
+        designation_upper = employee["designation"].upper()
+        if "HR" in designation_upper and "SALES" not in designation_upper:
+            deleted_user = await db.users.delete_one({"mobile": employee["mobile"], "role": "HR"})
+            if deleted_user.deleted_count > 0:
+                logger.info(f"HR user account deleted for {employee['name']}")
+        elif "SALES HEAD" in designation_upper:
+            deleted_user = await db.users.delete_one({"mobile": employee["mobile"], "role": "Sales Head"})
+            if deleted_user.deleted_count > 0:
+                logger.info(f"Sales Head user account deleted for {employee['name']}")
     
     return {"message": "Employee deleted successfully"}
 
