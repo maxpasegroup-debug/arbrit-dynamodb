@@ -381,6 +381,7 @@ const EmployeeManagement = () => {
                       <SelectItem value="Business Development Executive">Business Development Executive</SelectItem>
                       <SelectItem value="Sales Executive">Sales Executive</SelectItem>
                       <SelectItem value="Tele Caller Executive">Tele Caller Executive</SelectItem>
+                      <SelectItem value="Marketing Executive">Marketing Executive</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
