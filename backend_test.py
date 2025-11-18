@@ -1207,7 +1207,22 @@ def main():
     print("\n⚠️ Testing Sales API Error Handling...")
     tester.test_sales_api_error_handling()
     
-    # 14. Test Delete Operations
+    # 14. Test Sales Head APIs (COO has Sales Head access)
+    print("\n👑 Testing Sales Head APIs...")
+    tester.test_sales_head_get_all_leads()
+    tester.test_sales_head_assign_lead()
+    tester.test_sales_head_get_all_quotations()
+    tester.test_sales_head_approve_quotation()
+    tester.test_sales_head_reject_quotation()
+    
+    # 15. Test Leave Request Management
+    print("\n📝 Testing Leave Request Management...")
+    tester.test_create_leave_request()
+    tester.test_sales_head_approve_leave_request()
+    tester.test_create_another_leave_request()
+    tester.test_sales_head_reject_leave_request()
+    
+    # 16. Test Delete Operations
     print("\n🗑️ Testing Delete Operations...")
     tester.test_delete_employee_document()
     tester.test_delete_company_document()
