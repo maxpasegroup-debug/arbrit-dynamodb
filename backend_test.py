@@ -711,7 +711,11 @@ class ArbritAPITester:
 
     def test_create_visit_log(self):
         """Test creating a visit log (Field Sales only)"""
-        if not self.token:
+        # Switch to field sales token if available
+        if hasattr(self, 'field_sales_token'):
+            temp_token = self.token
+            self.token = self.field_sales_token
+        elif not self.token:
             print("❌ Skipping - No token available")
             return False, {}
         
@@ -726,7 +730,7 @@ class ArbritAPITester:
         }
         
         success, response = self.run_test(
-            "Create Visit Log",
+            "Create Visit Log (Field Sales)",
             "POST",
             "sales/visit-logs",
             200,
@@ -737,20 +741,34 @@ class ArbritAPITester:
             self.visit_log_id = response['visit_id']
             print(f"   Visit Log ID: {self.visit_log_id}")
         
+        # Restore previous token if we switched
+        if hasattr(self, 'field_sales_token') and 'temp_token' in locals():
+            self.token = temp_token
+        
         return success, response
 
     def test_get_visit_logs(self):
         """Test getting visit logs"""
-        if not self.token:
+        # Switch to field sales token if available
+        if hasattr(self, 'field_sales_token'):
+            temp_token = self.token
+            self.token = self.field_sales_token
+        elif not self.token:
             print("❌ Skipping - No token available")
             return False, {}
         
-        return self.run_test(
-            "Get Visit Logs",
+        success, response = self.run_test(
+            "Get Visit Logs (Field Sales)",
             "GET",
             "sales/visit-logs",
             200
         )
+        
+        # Restore previous token if we switched
+        if hasattr(self, 'field_sales_token') and 'temp_token' in locals():
+            self.token = temp_token
+        
+        return success, response
 
     def test_sales_api_error_handling(self):
         """Test sales API error handling with missing required fields"""
