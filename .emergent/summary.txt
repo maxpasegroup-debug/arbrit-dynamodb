@@ -1,0 +1,92 @@
+<analysis>
+My analysis of the trajectory indicates a phased, iterative development process for a full-stack business management application. The user provides detailed requirements for each phase, emphasizing production stability and non-destructive updates.
+
+**Phase 1:** The AI engineer successfully built the initial login page and a COO dashboard. Authentication is based on mobile number and the last 4 digits as a PIN.
+
+**Phase 2 (HRM):** A comprehensive Human Resource Management (HRM) module was added, including employee management, attendance, and document handling. A separate HR role and dashboard were created, with access granted upon employee creation by the COO.
+
+**Phase 3 (Sales):** The scope expanded to include dashboards for a Sales Head, Tele Sales, and Field Sales employees. This involved significant backend work to create new models and API endpoints for leads, quotations, and role-based access. The engineer implemented role-specific onboarding logic, where creating an employee with a Sales designation automatically provisions their account and dashboard access.
+
+**Current State & Issue:** The AI engineer fixed a critical frontend compilation error () in  caused by improperly escaped characters. The user has confirmed the backend is stable and has instructed the AI to complete the frontend UI for all sales dashboards. The AI was in the process of creating the required React components for lead management and quotation management just before this summary was requested.
+
+The user's primary language is English, and all future responses should be in English.
+</analysis>
+
+<product_requirements>
+The project is to build a multi-role, full-stack business management application named Arbrit Safety.
+
+**Phase 1 (Completed):**
+- A pixel-perfect login page with mobile number and a 4-digit PIN (last 4 digits of the mobile number) for authentication.
+- A COO dashboard with four card-based modules: Marketing & Sales, HRM, Academics, and Accounts.
+
+**Phase 2 (Completed):**
+- A full Human Resources Management (HRM) module accessible from the COO dashboard.
+- HRM features include: Employee Management (Add/Edit/Delete), Attendance Management (auto-recorded on login), Employee Records (document upload with expiry), and Company Document Management.
+- A dedicated HR dashboard with the same HRM features, accessible to users onboarded as HR.
+
+**Phase 3 (In Progress):**
+- Role-based dashboards for Sales Head, Tele Sales, and Field Sales employees.
+- The Sales Head dashboard includes team attendance monitoring, lead management (assigning online leads, viewing self-generated leads), quotation creation/approval, and leave approvals.
+- Tele Sales and Field Sales dashboards need to be completed with functionalities for handling assigned leads, submitting self-generated leads, creating quotations, requesting trainer availability from the Academics department, and requesting invoices from the Accounts department.
+- The HR module was enhanced to include sales-specific fields (, ) and table filters (by branch, department).
+</product_requirements>
+
+<key_technical_concepts>
+- **Backend:** FastAPI (Python)
+- **Frontend:** React, Tailwind CSS, Shadcn/UI
+- **Database:** MongoDB
+- **Authentication:** JWT-based, using mobile number as username and the last 4 digits as a PIN.
+- **Architecture:** RESTful API with a role-based access control (RBAC) system. Backend serves a JSON API consumed by the React frontend.
+- **Key Frontend Libraries:**  for icons.
+- **Key Backend Libraries:** , ,  for JWT.
+</key_technical_concepts>
+
+<code_architecture>
+The application follows a standard monorepo structure with separate  and  directories.
+
+
+
+**Key Files & Recent Changes:**
+
+-   ****
+    -   **Importance:** This is the core of the backend, defining all FastAPI application logic, API endpoints, Pydantic models, and database interactions for all roles (COO, HR, Sales Head, Sales Employees).
+    -   **Changes:** It has been extensively modified to add models and API endpoints for all features, including employees, leads, quotations, and role-specific dashboard data. Recent edits added endpoints for self-lead submission and other sales-related functionalities (, , etc.).
+
+-   ****
+    -   **Importance:** Manages the application's client-side routing, directing users to the correct dashboard (, , , etc.) based on their role after login.
+    -   **Changes:** Updated multiple times to add routes for the newly created HR, Sales Head, Tele Sales, and Field Sales dashboards.
+
+-   ****
+    -   **Importance:** A critical component used in both the COO and HR dashboards for managing employees.
+    -   **Changes:** Recently updated to include new form fields (, ) for onboarding sales team members and to add filters for branch and department at the top of the employee table.
+
+-   ****, ****, ****
+    -   **Importance:** These are the main pages for the different sales roles. They are responsible for laying out the UI and integrating the various functional components.
+    -   **Changes:** Created and updated to remove placeholder text. They are the target for integrating newly created sales components.
+
+-   **** (New Directory)
+    -   **Importance:** This new directory centralizes all components related to the sales dashboards.
+    -   **Changes:** The AI just created , , and . These are the first components for building out the full sales functionality.  within this directory was also fixed due to a syntax error.
+</code_architecture>
+
+<pending_tasks>
+-   Complete the frontend UI for the Tele Sales and Field Sales dashboards.
+-   Integrate the  and  features, which require communication with the Academic and Accounts departments, respectively.
+-   Implement the  feature for the Field Sales dashboard.
+-   Verify and finalize the document expiry reminder system for both employee and company documents in the HR module.
+-   Fully integrate the newly created sales components (, , etc.) into the respective sales dashboards.
+</pending_tasks>
+
+<current_work>
+The AI engineer was actively building the frontend components for the sales dashboards, as per the user's explicit instructions to complete the UI on top of the stable backend APIs. The immediate preceding actions were the creation of several new files within the  directory to handle complex sales functionalities.
+
+Specifically, the last successful actions were:
+1.  Creation of  to allow sales users to submit their own leads.
+2.  Creation of  and  to manage leads and quotations.
+
+The very last action was an attempt to create the remaining components for trainer requests, invoice requests, and visit logs. This indicates the work is focused on systematically building out all required UI components for the sales modules before integrating them into the main dashboard pages ( and ). The backend is considered feature-complete and stable for this phase.
+</current_work>
+
+<optional_next_step>
+Create the remaining frontend components for the sales dashboards: , , and , and then integrate all the new sales components into the  and  pages.
+</optional_next_step>

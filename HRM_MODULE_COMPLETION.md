@@ -148,8 +148,8 @@
 
 ## URLs
 
-- **HRM Dashboard**: https://school-dash-11.preview.emergentagent.com/hrm
-- **COO Dashboard**: https://school-dash-11.preview.emergentagent.com/dashboard/coo
+- **HRM Dashboard**: https://safety-app-4.preview.emergentagent.com/hrm
+- **COO Dashboard**: https://safety-app-4.preview.emergentagent.com/dashboard/coo
 
 ## Key Features
 

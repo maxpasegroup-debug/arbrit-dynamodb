@@ -293,10 +293,10 @@ Delete Employee
 
 ## 📍 URLs
 
-- **Login**: https://school-dash-11.preview.emergentagent.com/login
-- **COO Dashboard**: https://school-dash-11.preview.emergentagent.com/dashboard/coo
-- **HR Dashboard**: https://school-dash-11.preview.emergentagent.com/dashboard/hr
-- **HRM Modules** (COO access): https://school-dash-11.preview.emergentagent.com/hrm
+- **Login**: https://safety-app-4.preview.emergentagent.com/login
+- **COO Dashboard**: https://safety-app-4.preview.emergentagent.com/dashboard/coo
+- **HR Dashboard**: https://safety-app-4.preview.emergentagent.com/dashboard/hr
+- **HRM Modules** (COO access): https://safety-app-4.preview.emergentagent.com/hrm
 
 ---
 

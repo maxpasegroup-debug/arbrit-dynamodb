@@ -396,10 +396,10 @@ Designation: "Sales Head"
 
 ## 📍 URLs
 
-- **Login**: https://school-dash-11.preview.emergentagent.com/login
-- **COO Dashboard**: https://school-dash-11.preview.emergentagent.com/dashboard/coo
-- **HR Dashboard**: https://school-dash-11.preview.emergentagent.com/dashboard/hr
-- **Sales Head Dashboard**: https://school-dash-11.preview.emergentagent.com/dashboard/sales-head
+- **Login**: https://safety-app-4.preview.emergentagent.com/login
+- **COO Dashboard**: https://safety-app-4.preview.emergentagent.com/dashboard/coo
+- **HR Dashboard**: https://safety-app-4.preview.emergentagent.com/dashboard/hr
+- **Sales Head Dashboard**: https://safety-app-4.preview.emergentagent.com/dashboard/sales-head
 
 ## ⚠️ Important Notes
 

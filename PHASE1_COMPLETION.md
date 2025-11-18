@@ -94,8 +94,8 @@
 
 ## URLs
 
-- **Login Page**: https://school-dash-11.preview.emergentagent.com/login
-- **COO Dashboard**: https://school-dash-11.preview.emergentagent.com/dashboard/coo
+- **Login Page**: https://safety-app-4.preview.emergentagent.com/login
+- **COO Dashboard**: https://safety-app-4.preview.emergentagent.com/dashboard/coo
 
 ## API Endpoints
 
