@@ -659,6 +659,26 @@ async def sales_head_dashboard(current_user: dict = Depends(get_current_user)):
     }
 
 
+@api_router.get("/dashboard/sales-employee")
+async def sales_employee_dashboard(current_user: dict = Depends(get_current_user)):
+    if current_user["role"] != "Sales Employee":
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Access denied. Sales Employee role required."
+        )
+    
+    # Get employee details including badge
+    employee = await db.employees.find_one({"mobile": current_user["mobile"]}, {"_id": 0})
+    
+    return {
+        "message": "Welcome to Sales Employee Dashboard",
+        "user": current_user["name"],
+        "role": "Sales Employee",
+        "badge_title": employee.get("badge_title", "Sales Staff") if employee else "Sales Staff",
+        "branch": employee.get("branch") if employee else None
+    }
+
+
 # Sales Head - Employee Monitoring
 @api_router.get("/sales-head/employees")
 async def get_sales_employees(
