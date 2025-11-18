@@ -86,7 +86,7 @@ class ArbritAPITester:
             "POST",
             "auth/login",
             200,
-            data={"mobile": "971566374020", "pin": "4020"}
+            data={"mobile": "9876543210", "pin": "3210"}
         )
         if success and 'token' in response:
             self.token = response['token']
