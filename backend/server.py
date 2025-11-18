@@ -162,6 +162,108 @@ class CompanyDocumentCreate(BaseModel):
     expiry_date: str
 
 
+# Sales Head Models
+class Lead(BaseModel):
+    model_config = ConfigDict(extra="ignore")
+    
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    source: str  # Online, Self
+    client_name: str
+    requirement: str
+    industry: Optional[str] = None
+    assigned_to: Optional[str] = None  # Employee ID
+    assigned_to_name: Optional[str] = None
+    assigned_by: str  # User ID who assigned
+    assigned_by_name: str
+    status: str = "New"  # New, In Progress, Proposal Sent, Closed, Dropped
+    remarks: Optional[str] = None
+    next_followup_date: Optional[str] = None
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+    updated_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+
+
+class LeadCreate(BaseModel):
+    source: str
+    client_name: str
+    requirement: str
+    industry: Optional[str] = None
+    assigned_to: Optional[str] = None
+    status: str = "New"
+    remarks: Optional[str] = None
+    next_followup_date: Optional[str] = None
+
+
+class LeadUpdate(BaseModel):
+    client_name: Optional[str] = None
+    requirement: Optional[str] = None
+    industry: Optional[str] = None
+    assigned_to: Optional[str] = None
+    status: Optional[str] = None
+    remarks: Optional[str] = None
+    next_followup_date: Optional[str] = None
+
+
+class Quotation(BaseModel):
+    model_config = ConfigDict(extra="ignore")
+    
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    lead_id: Optional[str] = None
+    client_name: str
+    items: str  # JSON string of quotation items
+    total_amount: float
+    created_by: str  # User ID
+    created_by_name: str
+    approved_by: Optional[str] = None  # Sales Head ID
+    approved_by_name: Optional[str] = None
+    status: str = "Pending"  # Pending, Approved, Rejected
+    remarks: Optional[str] = None
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+    approved_at: Optional[datetime] = None
+
+
+class QuotationCreate(BaseModel):
+    lead_id: Optional[str] = None
+    client_name: str
+    items: str
+    total_amount: float
+    remarks: Optional[str] = None
+
+
+class QuotationApprove(BaseModel):
+    status: str  # Approved, Rejected
+    remarks: Optional[str] = None
+
+
+class LeaveRequest(BaseModel):
+    model_config = ConfigDict(extra="ignore")
+    
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    employee_id: str
+    employee_name: str
+    employee_mobile: str
+    leave_from: str  # YYYY-MM-DD
+    leave_to: str  # YYYY-MM-DD
+    reason: str
+    status: str = "Pending"  # Pending, Approved by Sales Head, Approved by HR, Rejected
+    approved_by_sales_head: Optional[str] = None
+    sales_head_remarks: Optional[str] = None
+    approved_by_hr: Optional[str] = None
+    hr_remarks: Optional[str] = None
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+    updated_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+
+
+class LeaveRequestCreate(BaseModel):
+    leave_from: str
+    leave_to: str
+    reason: str
+
+
+class LeaveApprovalAction(BaseModel):
+    action: str  # Approve, Reject
+    remarks: Optional[str] = None
+
+
 # Helper functions
 def hash_pin(pin: str) -> str:
     return pwd_context.hash(pin)
