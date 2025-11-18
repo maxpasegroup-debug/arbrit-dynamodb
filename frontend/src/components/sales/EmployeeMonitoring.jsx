@@ -235,6 +235,70 @@ const EmployeeMonitoring = () => {
           </p>
         </div>
       </div>
+
+      {/* Badge Assignment Dialog */}
+      <Dialog open={showBadgeDialog} onOpenChange={setShowBadgeDialog}>
+        <DialogContent className="bg-[#1a2f4d] border-white/20 text-white">
+          <DialogHeader>
+            <DialogTitle className="text-xl flex items-center gap-2">
+              <Award className="w-5 h-5 text-yellow-400" />
+              Assign Badge Title
+            </DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4">
+            {selectedEmployee && (
+              <div className="bg-white/5 rounded-lg p-3 border border-white/10">
+                <p className="text-sm text-gray-400">Employee</p>
+                <p className="text-lg font-semibold text-white">{selectedEmployee.name}</p>
+                <p className="text-sm text-gray-400">{selectedEmployee.mobile}</p>
+              </div>
+            )}
+            <div>
+              <label className="text-sm text-gray-300 mb-2 block">Select Badge Title</label>
+              <Select value={selectedBadgeTitle} onValueChange={setSelectedBadgeTitle}>
+                <SelectTrigger data-testid="badge-select" className="bg-white/5 border-white/20 text-white">
+                  <SelectValue placeholder="Choose a badge title" />
+                </SelectTrigger>
+                <SelectContent className="bg-[#1a2f4d] border-white/20 text-white">
+                  <SelectItem value="Sales Manager">Sales Manager</SelectItem>
+                  <SelectItem value="Assistant Sales Manager">Assistant Sales Manager</SelectItem>
+                  <SelectItem value="Team Leader">Team Leader</SelectItem>
+                  <SelectItem value="Business Development Executive">Business Development Executive</SelectItem>
+                  <SelectItem value="Sales Executive">Sales Executive</SelectItem>
+                  <SelectItem value="Tele Caller Executive">Tele Caller Executive</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="bg-blue-500/10 border border-blue-500/30 rounded-lg p-3">
+              <p className="text-xs text-blue-300">
+                <strong>Note:</strong> This badge will be visible on the employee's dashboard and represents their hierarchy position in the sales team.
+              </p>
+            </div>
+          </div>
+          <DialogFooter>
+            <Button
+              variant="outline"
+              onClick={() => {
+                setShowBadgeDialog(false);
+                setSelectedEmployee(null);
+                setSelectedBadgeTitle('');
+              }}
+              className="border-white/20 text-white hover:bg-white/10"
+            >
+              Cancel
+            </Button>
+            <Button
+              data-testid="submit-badge-button"
+              onClick={submitBadgeAssignment}
+              disabled={loading}
+              style={{ background: 'linear-gradient(135deg, #d4af37 0%, #c9a02c 100%)' }}
+              className="text-[#0a1e3d] font-semibold"
+            >
+              Assign Badge
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
