@@ -161,13 +161,18 @@ const EmployeeManagement = () => {
 
   const filteredEmployees = employees.filter(emp => {
     const search = searchTerm.toLowerCase();
-    return (
+    const matchesSearch = (
       emp.name.toLowerCase().includes(search) ||
       emp.mobile.includes(search) ||
       emp.branch.toLowerCase().includes(search) ||
       (emp.email && emp.email.toLowerCase().includes(search)) ||
       (emp.designation && emp.designation.toLowerCase().includes(search))
     );
+    
+    const matchesBranch = !filterBranch || filterBranch === 'all' || emp.branch === filterBranch;
+    const matchesDepartment = !filterDepartment || filterDepartment === 'all' || emp.department === filterDepartment;
+    
+    return matchesSearch && matchesBranch && matchesDepartment;
   });
 
   return (
