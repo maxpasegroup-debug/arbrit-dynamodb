@@ -73,11 +73,12 @@ class Employee(BaseModel):
     id: str = Field(default_factory=lambda: str(uuid.uuid4()))
     name: str
     mobile: str
-    branch: str  # Dubai, Saudi, Abu Dhabi
+    branch: str  # Dubai, Abu Dhabi, Saudi Arabia
     email: Optional[str] = None
     designation: Optional[str] = None
-    department: Optional[str] = None  # Sales, Marketing, Training, etc.
-    badge_title: Optional[str] = None  # UI designation hierarchy
+    department: Optional[str] = None  # Sales, Marketing, Training, Academic, Accounts, Dispatch, HR
+    badge_title: Optional[str] = None  # Sales Manager, Team Leader, etc.
+    sales_type: Optional[str] = None  # tele, field, none
     created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 
 
@@ -89,6 +90,7 @@ class EmployeeCreate(BaseModel):
     designation: Optional[str] = None
     department: Optional[str] = None
     badge_title: Optional[str] = None
+    sales_type: Optional[str] = None
 
 
 class EmployeeUpdate(BaseModel):
@@ -99,6 +101,7 @@ class EmployeeUpdate(BaseModel):
     designation: Optional[str] = None
     department: Optional[str] = None
     badge_title: Optional[str] = None
+    sales_type: Optional[str] = None
 
 
 class Attendance(BaseModel):
