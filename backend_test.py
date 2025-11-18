@@ -859,6 +859,8 @@ def main():
     
     # 8. Test Sales APIs - Self Lead Management
     print("\n💼 Testing Sales APIs - Lead Management...")
+    # Switch to sales user token for sales API tests
+    tester.token = tester.sales_token if hasattr(tester, 'sales_token') else tester.token
     tester.test_submit_self_lead()
     tester.test_get_my_leads()
     
