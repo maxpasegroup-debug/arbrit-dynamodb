@@ -439,6 +439,56 @@ class ArbritAPITester:
             200
         )
 
+    def test_create_sales_user(self):
+        """Create a test sales user with the required credentials"""
+        if not self.token:
+            print("❌ Skipping - No token available")
+            return False, {}
+        
+        # Create a sales employee that will auto-generate a user account
+        employee_data = {
+            "name": "Test Sales User",
+            "mobile": "9876543210",
+            "branch": "Dubai",
+            "email": "testsales@arbrit.com",
+            "designation": "Sales Manager",
+            "department": "Sales",
+            "badge_title": "Senior Sales Manager",
+            "sales_type": "tele"  # This will create a Tele Sales user
+        }
+        
+        success, response = self.run_test(
+            "Create Sales Employee (Auto-creates User)",
+            "POST",
+            "hrm/employees",
+            200,
+            data=employee_data
+        )
+        
+        if success and 'id' in response:
+            self.sales_employee_id = response['id']
+            print(f"   Sales Employee ID: {self.sales_employee_id}")
+            print("   User account should be auto-created with PIN: 3210")
+        
+        return success, response
+
+    def test_login_sales_user(self):
+        """Test login with the created sales user credentials"""
+        success, response = self.run_test(
+            "Login with Sales User Credentials",
+            "POST",
+            "auth/login",
+            200,
+            data={"mobile": "9876543210", "pin": "3210"}
+        )
+        if success and 'token' in response:
+            self.sales_token = response['token']
+            print(f"   Sales Token received: {self.sales_token[:20]}...")
+            # Switch to sales user token for sales API tests
+            self.token = self.sales_token
+            return True, response
+        return False, {}
+
     # Sales API Tests
     def test_submit_self_lead(self):
         """Test submitting a self-generated lead"""
