@@ -335,13 +335,23 @@ async def update_employee(employee_id: str, employee_update: EmployeeUpdate, cur
 
 @api_router.delete("/hrm/employees/{employee_id}")
 async def delete_employee(employee_id: str, current_user: dict = Depends(get_current_user)):
-    result = await db.employees.delete_one({"id": employee_id})
-    if result.deleted_count == 0:
+    # Get employee details before deletion
+    employee = await db.employees.find_one({"id": employee_id}, {"_id": 0})
+    if not employee:
         raise HTTPException(status_code=404, detail="Employee not found")
     
-    # Also delete related documents and attendance
+    # Delete employee
+    result = await db.employees.delete_one({"id": employee_id})
+    
+    # Delete related documents and attendance
     await db.employee_documents.delete_many({"employee_id": employee_id})
     await db.attendance.delete_many({"employee_id": employee_id})
+    
+    # If employee had HR designation, delete user account
+    if employee.get("designation") and "HR" in employee["designation"].upper():
+        deleted_user = await db.users.delete_one({"mobile": employee["mobile"], "role": "HR"})
+        if deleted_user.deleted_count > 0:
+            logger.info(f"HR user account deleted for {employee['name']}")
     
     return {"message": "Employee deleted successfully"}
 
