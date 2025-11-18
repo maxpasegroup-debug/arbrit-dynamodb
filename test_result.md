@@ -111,51 +111,63 @@ user_problem_statement: |
 backend:
   - task: "Trainer Request API Endpoints"
     implemented: true
-    working: "NA"
+    working: true
     file: "/app/backend/server.py"
     stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: "NA"
         agent: "main"
         comment: "Created simplified POST /api/sales/trainer-requests endpoint to match frontend structure with fields: client_name, course_type, preferred_date, location, duration, remarks. GET endpoint already existed."
+      - working: true
+        agent: "testing"
+        comment: "✅ PASSED - Both POST and GET /api/sales/trainer-requests endpoints working correctly. Successfully created trainer request with ID 69137db7-27fb-4dcf-9d7c-9b0e6b3b978f and retrieved all trainer requests. Requires Tele Sales or Field Sales role authentication."
 
   - task: "Invoice Request API Endpoints"
     implemented: true
-    working: "NA"
+    working: true
     file: "/app/backend/server.py"
     stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: "NA"
         agent: "main"
         comment: "Created simplified POST /api/sales/invoice-requests endpoint to match frontend structure with fields: client_name, quotation_ref, amount, description, remarks. GET endpoint already existed."
+      - working: true
+        agent: "testing"
+        comment: "✅ PASSED - Both POST and GET /api/sales/invoice-requests endpoints working correctly. Successfully created invoice request with ID 68ee34cd-917b-4ee5-b7a2-24cc6cc4d0ee and retrieved all invoice requests. Requires Tele Sales or Field Sales role authentication."
 
   - task: "Visit Logs API Endpoints"
     implemented: true
-    working: "NA"
+    working: true
     file: "/app/backend/server.py"
     stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: "NA"
         agent: "main"
         comment: "Created simplified POST /api/sales/visit-logs endpoint to match frontend structure with fields: client_name, location, visit_date, visit_time, purpose, outcome, next_action. GET endpoint already existed."
+      - working: true
+        agent: "testing"
+        comment: "✅ PASSED - Both POST and GET /api/sales/visit-logs endpoints working correctly. Successfully created visit log with ID 30572936-410a-40ed-a32e-df8239d3673b and retrieved all visit logs. Correctly restricted to Field Sales role only (403 error for Tele Sales users as expected)."
 
   - task: "Existing Sales APIs (Leads, Quotations)"
     implemented: true
-    working: "NA"
+    working: true
     file: "/app/backend/server.py"
     stuck_count: 0
     priority: "medium"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: "NA"
         agent: "main"
         comment: "Backend already has working endpoints for leads (/api/sales/self-lead, /api/sales/my-leads, /api/sales/leads/:id) and quotations (/api/sales/quotations). Need to verify they work with integrated frontend."
+      - working: true
+        agent: "testing"
+        comment: "✅ PASSED - All existing sales APIs working correctly: POST /api/sales/self-lead (created lead ID 1e9af76a-fab5-4d41-b740-595ec5bceaa8), GET /api/sales/my-leads (retrieved 2 leads), POST /api/sales/quotations (created quotation ID 6ca5e5c5-b41a-490a-900f-db241f845d46), GET /api/sales/quotations (retrieved 2 quotations). All require proper sales role authentication."
 
 frontend:
   - task: "TrainerRequest Component"
