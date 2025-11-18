@@ -121,7 +121,7 @@ class ArbritAPITester:
             "POST",
             "auth/login",
             422,
-            data={"mobile": "971566374020"}
+            data={"mobile": "9876543210"}
         )
 
     def test_get_current_user(self):
