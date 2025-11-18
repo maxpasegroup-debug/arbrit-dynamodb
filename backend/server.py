@@ -267,6 +267,56 @@ class LeaveApprovalAction(BaseModel):
     remarks: Optional[str] = None
 
 
+# New Models for Enhanced Sales Features
+class TrainerAvailabilityRequest(BaseModel):
+    model_config = ConfigDict(extra="ignore")
+    
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    lead_id: Optional[str] = None
+    client_name: str
+    course: str
+    preferred_dates: str
+    branch: str
+    mode: str  # Online, Offline
+    notes: Optional[str] = None
+    requested_by: str
+    requested_by_name: str
+    status: str = "Pending"  # Pending, Confirmed, Alternative Suggested, Rejected
+    trainer_name: Optional[str] = None
+    confirmed_slots: Optional[str] = None
+    academic_remarks: Optional[str] = None
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+
+
+class InvoiceRequest(BaseModel):
+    model_config = ConfigDict(extra="ignore")
+    
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    lead_id: Optional[str] = None
+    quotation_id: Optional[str] = None
+    payment_terms: str  # Full Before, Partial, After Training
+    initial_amount: Optional[float] = None
+    notes: Optional[str] = None
+    requested_by: str
+    requested_by_name: str
+    status: str = "Pending"  # Pending, Generated, Paid, Partially Paid, Overdue
+    payment_confirmations: Optional[str] = None
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+
+
+class VisitLog(BaseModel):
+    model_config = ConfigDict(extra="ignore")
+    
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    date: str  # YYYY-MM-DD
+    company: str
+    contact_person: str
+    notes: Optional[str] = None
+    logged_by: str
+    logged_by_name: str
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+
+
 # Helper functions
 def hash_pin(pin: str) -> str:
     return pwd_context.hash(pin)
