@@ -76,6 +76,8 @@ class Employee(BaseModel):
     branch: str  # Dubai, Saudi, Abu Dhabi
     email: Optional[str] = None
     designation: Optional[str] = None
+    department: Optional[str] = None  # Sales, Marketing, Training, etc.
+    badge_title: Optional[str] = None  # UI designation hierarchy
     created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 
 
@@ -85,6 +87,8 @@ class EmployeeCreate(BaseModel):
     branch: str
     email: Optional[str] = None
     designation: Optional[str] = None
+    department: Optional[str] = None
+    badge_title: Optional[str] = None
 
 
 class EmployeeUpdate(BaseModel):
@@ -93,6 +97,8 @@ class EmployeeUpdate(BaseModel):
     branch: Optional[str] = None
     email: Optional[str] = None
     designation: Optional[str] = None
+    department: Optional[str] = None
+    badge_title: Optional[str] = None
 
 
 class Attendance(BaseModel):
