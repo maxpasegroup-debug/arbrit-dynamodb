@@ -140,7 +140,7 @@ const FieldSalesDashboard = () => {
         </div>
 
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-6 bg-white/5 border border-white/10">
+          <TabsList className="grid w-full grid-cols-7 bg-white/5 border border-white/10">
             <TabsTrigger 
               value="leads"
               data-testid="tab-leads"
@@ -148,6 +148,14 @@ const FieldSalesDashboard = () => {
             >
               <TrendingUp className="w-4 h-4 mr-2" />
               Leads
+            </TabsTrigger>
+            <TabsTrigger 
+              value="followups"
+              data-testid="tab-followups"
+              className="data-[state=active]:bg-green-500/20 data-[state=active]:text-white text-gray-300"
+            >
+              <Calendar className="w-4 h-4 mr-2" />
+              Follow-ups
             </TabsTrigger>
             <TabsTrigger 
               value="visits"
@@ -189,6 +197,10 @@ const FieldSalesDashboard = () => {
                 <SelfLeadForm />
               </div>
               <LeadManagement />
+            </TabsContent>
+
+            <TabsContent value="followups" className="mt-0">
+              <FollowUps />
             </TabsContent>
 
             <TabsContent value="visits" className="mt-0">
