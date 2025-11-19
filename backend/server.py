@@ -18,16 +18,20 @@ ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
 
 # MongoDB connection with error handling
+# PRODUCTION FIX: Hardcode database name to ensure correct DB connection
+DB_NAME = "arbrit-workdesk"  # Fixed database name - DO NOT change
+
 try:
     mongo_url = os.environ['MONGO_URL']
     print(f"🔵 Attempting MongoDB connection to: {mongo_url.split('@')[-1] if '@' in mongo_url else mongo_url}")
+    print(f"🔵 Using HARDCODED database name: {DB_NAME}")
     client = AsyncIOMotorClient(
         mongo_url,
         serverSelectionTimeoutMS=5000,  # 5 second timeout
         connectTimeoutMS=10000,  # 10 second connection timeout
     )
-    db = client[os.environ['DB_NAME']]
-    print(f"✅ MongoDB client initialized successfully for database: {os.environ['DB_NAME']}")
+    db = client[DB_NAME]  # Use hardcoded DB_NAME instead of env variable
+    print(f"✅ MongoDB client initialized successfully for database: {DB_NAME}")
 except KeyError as e:
     print(f"❌ CRITICAL: Missing environment variable: {e}")
     print(f"   Available env vars: {', '.join([k for k in os.environ.keys() if not k.startswith('_')])}")
