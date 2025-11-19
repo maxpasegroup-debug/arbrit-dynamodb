@@ -9,6 +9,7 @@ import AttendanceReport from '@/components/trainer/AttendanceReport';
 import CertificateRequest from '@/components/trainer/CertificateRequest';
 import TrainerUploads from '@/components/trainer/TrainerUploads';
 import AssessmentQRGenerator from '@/components/assessment/AssessmentQRGenerator';
+import ExpenseSubmission from '@/components/expenses/ExpenseSubmission';
 import { toast } from 'sonner';
 
 const TrainerDashboard = () => {
