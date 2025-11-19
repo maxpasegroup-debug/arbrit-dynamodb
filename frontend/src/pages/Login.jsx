@@ -68,9 +68,9 @@ const Login = () => {
       // Redirect based on role
       const roleToRoute = {
         'COO': '/dashboard/coo',
-        'Management': '/dashboard/coo',
-        'MD': '/dashboard/coo',
-        'CEO': '/dashboard/coo',
+        'Management': '/dashboard/md',
+        'MD': '/dashboard/md',
+        'CEO': '/dashboard/md',
         'HR': '/dashboard/hr',
         'Sales Head': '/dashboard/sales-head',
         'Tele Sales': '/dashboard/tele-sales',
