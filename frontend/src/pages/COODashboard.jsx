@@ -114,18 +114,28 @@ const COODashboard = () => {
       </div>
 
       <main className="max-w-6xl mx-auto px-6 py-12">
-        {/* Welcome Section */}
-        <div className="mb-12 text-center">
-          <h2 className="text-4xl font-bold text-white mb-3">
-            Welcome, {user?.name?.split(' ')[0]}!
-          </h2>
-          <p className="text-lg text-slate-300">
-            Navigate to your operational modules
-          </p>
-        </div>
+        <Tabs defaultValue="modules" className="space-y-6">
+          <TabsList className="bg-white/10 border border-white/20">
+            <TabsTrigger value="modules">Modules</TabsTrigger>
+            <TabsTrigger value="expenses">
+              <Receipt className="w-4 h-4 mr-2" />
+              Expense Overview
+            </TabsTrigger>
+          </TabsList>
 
-        {/* Navigation Grid - 2x2 */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-5xl mx-auto">
+          <TabsContent value="modules">
+            {/* Welcome Section */}
+            <div className="mb-12 text-center">
+              <h2 className="text-4xl font-bold text-white mb-3">
+                Welcome, {user?.name?.split(' ')[0]}!
+              </h2>
+              <p className="text-lg text-slate-300">
+                Navigate to your operational modules
+              </p>
+            </div>
+
+            {/* Navigation Grid - 2x2 */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-5xl mx-auto">
           {navigationModules.map((module, index) => {
             const IconComponent = module.icon;
             return (
