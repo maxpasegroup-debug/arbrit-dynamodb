@@ -344,11 +344,26 @@ const Diagnostics = () => {
           )}
         </div>
 
+        {/* Cleanup Demo Users */}
+        <div className="bg-red-50 border border-red-200 rounded-2xl p-6 mb-6">
+          <h2 className="text-xl font-semibold mb-4 text-red-900">🗑️ Delete Demo/Test Users</h2>
+          <p className="text-sm text-red-800 mb-4">
+            <strong>IMPORTANT:</strong> Your database has demo users with fake mobile numbers (like 0123456789, 0550000001, etc.) that are conflicting with real users. Click below to delete ALL demo users.
+          </p>
+          <Button
+            onClick={cleanupDemoUsers}
+            disabled={loading}
+            className="bg-red-600 hover:bg-red-700 text-white"
+          >
+            Delete All Demo Users
+          </Button>
+        </div>
+
         {/* Reset Default Users */}
         <div className="bg-yellow-50 border border-yellow-200 rounded-2xl p-6 mb-6">
-          <h2 className="text-xl font-semibold mb-4 text-yellow-900">🔧 Reset Default Users</h2>
+          <h2 className="text-xl font-semibold mb-4 text-yellow-900">🔧 Reset MD & COO Credentials</h2>
           <p className="text-sm text-yellow-800 mb-4">
-            If MD and COO login is not working, click the button below to reset their credentials to the correct values.
+            After cleaning up demo users, click here to create fresh MD and COO users with correct credentials.
           </p>
           <Button
             onClick={resetDefaultUsers}
