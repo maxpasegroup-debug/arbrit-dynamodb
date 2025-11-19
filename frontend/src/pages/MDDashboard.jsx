@@ -107,12 +107,23 @@ const MDDashboard = () => {
       <main className="max-w-7xl mx-auto px-8 py-10">
         {/* Welcome Section */}
         <div className="mb-10 bg-gradient-to-r from-amber-900/10 to-transparent rounded-2xl border border-amber-500/20 p-8">
-          <h2 className="text-2xl font-bold text-amber-100 mb-2">
-            Good {new Date().getHours() < 12 ? 'Morning' : new Date().getHours() < 18 ? 'Afternoon' : 'Evening'}, {user?.name?.split(' ')[0]}
-          </h2>
-          <p className="text-amber-200/70">
-            Here's your strategic business intelligence for today
-          </p>
+          <div className="flex justify-between items-center">
+            <div className="text-center flex-1">
+              <h2 className="text-2xl font-bold text-amber-100 mb-2">
+                Good {new Date().getHours() < 12 ? 'Morning' : new Date().getHours() < 18 ? 'Afternoon' : 'Evening'}, {user?.name?.split(' ')[0]}
+              </h2>
+              <p className="text-amber-200/70">
+                Here's your strategic business intelligence for today
+              </p>
+            </div>
+            <Button
+              onClick={() => navigate('/dashboard/coo')}
+              className="bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-slate-900 font-semibold px-6 py-3 shadow-lg hover:shadow-xl transition-all"
+            >
+              <Shield className="w-5 h-5 mr-2" />
+              Access Control Panel
+            </Button>
+          </div>
         </div>
 
         {/* Top Row - Corporate Health */}
