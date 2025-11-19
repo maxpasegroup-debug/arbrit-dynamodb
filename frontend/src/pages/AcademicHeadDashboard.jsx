@@ -277,6 +277,10 @@ const AcademicHeadDashboard = () => {
               <CertificateApproval />
             </TabsContent>
 
+            <TabsContent value="generate" className="mt-0">
+              <CertificateGeneration />
+            </TabsContent>
+
             <TabsContent value="team" className="mt-0">
               <TeamMonitoring />
             </TabsContent>
