@@ -328,6 +328,76 @@ class VisitLog(BaseModel):
     created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 
 
+# Academic Module Models
+class WorkOrder(BaseModel):
+    model_config = ConfigDict(extra="ignore")
+    
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    reference_number: str  # WO-2025-0001
+    client_name: str
+    course: str
+    trainer_request_id: Optional[str] = None
+    invoice_id: Optional[str] = None
+    payment_status: str = "Pending"  # Pending, Confirmed
+    training_location: str
+    training_mode: str  # Online, Onsite
+    preferred_dates: str
+    batch_size: Optional[int] = None
+    assigned_trainer_id: Optional[str] = None
+    assigned_trainer_name: Optional[str] = None
+    assigned_coordinator_id: Optional[str] = None
+    assigned_coordinator_name: Optional[str] = None
+    status: str = "Pending"  # Pending, Approved, Trainer Assigned, Scheduled, Completed
+    approved_by: Optional[str] = None
+    approved_by_name: Optional[str] = None
+    remarks: Optional[str] = None
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+    updated_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+
+
+class TrainingSession(BaseModel):
+    model_config = ConfigDict(extra="ignore")
+    
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    work_order_id: str
+    work_order_reference: str
+    client_name: str
+    course: str
+    trainer_id: str
+    trainer_name: str
+    coordinator_id: Optional[str] = None
+    coordinator_name: Optional[str] = None
+    training_date: str  # YYYY-MM-DD
+    training_time: Optional[str] = None
+    location: str
+    mode: str  # Online, Onsite
+    status: str = "Scheduled"  # Scheduled, In-Progress, Completed, Cancelled
+    attendance_count: Optional[int] = None
+    completion_notes: Optional[str] = None
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+    updated_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+
+
+class CertificateRequest(BaseModel):
+    model_config = ConfigDict(extra="ignore")
+    
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    training_session_id: str
+    work_order_reference: str
+    client_name: str
+    course: str
+    trainer_name: str
+    training_date: str
+    certificate_type: str = "In-House"  # In-House, International
+    participant_names: str  # Comma-separated or JSON
+    status: str = "Pending"  # Pending, Approved, Generated, Dispatched
+    approved_by: Optional[str] = None
+    approved_by_name: Optional[str] = None
+    remarks: Optional[str] = None
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+    updated_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+
+
 # Helper functions
 def hash_pin(pin: str) -> str:
     return pwd_context.hash(pin)
