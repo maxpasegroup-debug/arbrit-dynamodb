@@ -30,7 +30,7 @@ const MyTasksHistory = () => {
       setTasks(completedTasks);
     } catch (error) {
       console.error('Error fetching history:', error);
-      toast.error('Failed to load history');
+      // Silent fail - no toast on empty data
     } finally {
       setLoading(false);
     }

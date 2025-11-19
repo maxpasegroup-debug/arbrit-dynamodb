@@ -38,7 +38,7 @@ const CompanyDocuments = () => {
       setDocuments(response.data);
     } catch (error) {
       console.error('Error fetching company documents:', error);
-      toast.error('Failed to fetch company documents');
+      // Silent fail - no toast on empty data
     } finally {
       setLoading(false);
     }

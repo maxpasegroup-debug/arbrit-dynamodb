@@ -38,7 +38,7 @@ const CertificateRequest = () => {
       setCertificateRequests(requestsRes.data || []);
     } catch (error) {
       console.error('Error fetching data:', error);
-      toast.error('Failed to load data');
+      // Silent fail - no toast on empty data
     } finally {
       setLoading(false);
     }

@@ -27,7 +27,7 @@ const SessionDocumentation = () => {
       setDocuments(response.data || []);
     } catch (error) {
       console.error('Error fetching documents:', error);
-      toast.error('Failed to load session documents');
+      // Silent fail - no toast on empty data
     } finally {
       setLoading(false);
     }

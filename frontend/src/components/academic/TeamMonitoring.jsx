@@ -26,7 +26,7 @@ const TeamMonitoring = () => {
       setTeamMembers(response.data || []);
     } catch (error) {
       console.error('Error fetching team:', error);
-      toast.error('Failed to fetch academic team');
+      // Silent fail - no toast on empty data
     } finally {
       setLoading(false);
     }

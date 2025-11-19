@@ -89,7 +89,7 @@ const EmployeeManagement = () => {
       setEmployees(response.data);
     } catch (error) {
       console.error('Error fetching employees:', error);
-      toast.error('Failed to fetch employees');
+      // Silent fail - no toast on empty data
     } finally {
       setLoading(false);
     }

@@ -42,7 +42,7 @@ const MyTasksToday = () => {
       setTasks(activeTasks);
     } catch (error) {
       console.error('Error fetching tasks:', error);
-      toast.error('Failed to load tasks');
+      // Silent fail - no toast on empty data
     } finally {
       setLoading(false);
     }

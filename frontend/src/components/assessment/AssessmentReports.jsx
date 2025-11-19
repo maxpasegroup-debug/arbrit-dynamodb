@@ -59,7 +59,7 @@ const AssessmentReports = () => {
       setReports(response.data);
     } catch (error) {
       console.error('Error fetching reports:', error);
-      toast.error('Failed to load reports');
+      // Silent fail - no toast on empty data
     } finally {
       setLoading(false);
     }

@@ -33,7 +33,7 @@ const LeadManagement = () => {
       setLeads(response.data);
     } catch (error) {
       console.error('Error fetching leads:', error);
-      toast.error('Failed to fetch leads');
+      // Silent fail - no toast on empty data
     } finally {
       setLoading(false);
     }

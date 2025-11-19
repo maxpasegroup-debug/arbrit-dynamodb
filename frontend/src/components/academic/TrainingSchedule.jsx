@@ -31,7 +31,7 @@ const TrainingSchedule = () => {
       setSessions(response.data || []);
     } catch (error) {
       console.error('Error fetching training sessions:', error);
-      toast.error('Failed to fetch training schedule');
+      // Silent fail - no toast on empty data
     }
   };
 

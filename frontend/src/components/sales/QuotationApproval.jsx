@@ -31,7 +31,7 @@ const QuotationApproval = () => {
       setQuotations(response.data || []);
     } catch (error) {
       console.error('Error fetching quotations:', error);
-      toast.error('Failed to fetch quotations');
+      // Silent fail - no toast on empty data
     }
   };
 

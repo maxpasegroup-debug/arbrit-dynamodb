@@ -33,7 +33,7 @@ const AttendanceManagement = () => {
       setAttendance(response.data);
     } catch (error) {
       console.error('Error fetching attendance:', error);
-      toast.error('Failed to fetch attendance records');
+      // Silent fail - no toast on empty data
     } finally {
       setLoading(false);
     }

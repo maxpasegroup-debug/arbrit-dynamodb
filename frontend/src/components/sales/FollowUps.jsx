@@ -31,7 +31,7 @@ const FollowUps = () => {
       setFollowUps(pendingLeads);
     } catch (error) {
       console.error('Error fetching follow-ups:', error);
-      toast.error('Failed to fetch follow-ups');
+      // Silent fail - no toast on empty data
     } finally {
       setLoading(false);
     }

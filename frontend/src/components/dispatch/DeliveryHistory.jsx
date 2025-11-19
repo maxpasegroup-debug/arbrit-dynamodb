@@ -27,7 +27,7 @@ const DeliveryHistory = () => {
       setDeliveries(response.data || []);
     } catch (error) {
       console.error('Error fetching delivery history:', error);
-      toast.error('Failed to load delivery history');
+      // Silent fail - no toast on empty data
     } finally {
       setLoading(false);
     }

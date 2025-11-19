@@ -34,7 +34,7 @@ const CertificateApproval = () => {
       setCertificates(response.data || []);
     } catch (error) {
       console.error('Error fetching certificates:', error);
-      toast.error('Failed to fetch certificate requests');
+      // Silent fail - no toast on empty data
     }
   };
 

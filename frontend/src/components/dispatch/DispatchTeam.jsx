@@ -28,7 +28,7 @@ const DispatchTeam = () => {
       setTeam(dispatchTeam);
     } catch (error) {
       console.error('Error fetching team:', error);
-      toast.error('Failed to load team');
+      // Silent fail - no toast on empty data
     } finally {
       setLoading(false);
     }

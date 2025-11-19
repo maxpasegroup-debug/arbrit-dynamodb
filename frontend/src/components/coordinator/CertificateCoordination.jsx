@@ -27,7 +27,7 @@ const CertificateCoordination = () => {
       setCertificates(response.data || []);
     } catch (error) {
       console.error('Error fetching certificates:', error);
-      toast.error('Failed to load certificates');
+      // Silent fail - no toast on empty data
     } finally {
       setLoading(false);
     }

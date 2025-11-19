@@ -44,7 +44,7 @@ const TrainerAllocation = () => {
       setAttendance(attendanceMap);
     } catch (error) {
       console.error('Error fetching trainers:', error);
-      toast.error('Failed to fetch trainers');
+      // Silent fail - no toast on empty data
     }
   };
 

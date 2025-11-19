@@ -33,7 +33,7 @@ const LiveDeliveries = () => {
       setTasks(liveTasks);
     } catch (error) {
       console.error('Error fetching live deliveries:', error);
-      toast.error('Failed to load live deliveries');
+      // Silent fail - no toast on empty data
     } finally {
       setLoading(false);
     }

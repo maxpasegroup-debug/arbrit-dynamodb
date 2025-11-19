@@ -34,7 +34,7 @@ const EmployeeMonitoring = () => {
       setLiveAttendance(response.data);
     } catch (error) {
       console.error('Error fetching attendance:', error);
-      toast.error('Failed to fetch attendance data');
+      // Silent fail - no toast on empty data
     } finally {
       setLoading(false);
     }

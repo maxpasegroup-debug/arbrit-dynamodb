@@ -27,7 +27,7 @@ const TrainingCalendar = () => {
       setSessions(response.data || []);
     } catch (error) {
       console.error('Error fetching sessions:', error);
-      toast.error('Failed to load training sessions');
+      // Silent fail - no toast on empty data
     } finally {
       setLoading(false);
     }

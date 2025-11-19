@@ -32,7 +32,7 @@ const LeaveApprovals = () => {
       setLeaveRequests(response.data || []);
     } catch (error) {
       console.error('Error fetching leave requests:', error);
-      toast.error('Failed to fetch leave requests');
+      // Silent fail - no toast on empty data
     }
   };
 

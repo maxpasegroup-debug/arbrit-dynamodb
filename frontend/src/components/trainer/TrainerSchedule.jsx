@@ -26,7 +26,7 @@ const TrainerSchedule = () => {
       setSchedule(response.data || []);
     } catch (error) {
       console.error('Error fetching schedule:', error);
-      toast.error('Failed to load your schedule');
+      // Silent fail - no toast on empty data
     } finally {
       setLoading(false);
     }

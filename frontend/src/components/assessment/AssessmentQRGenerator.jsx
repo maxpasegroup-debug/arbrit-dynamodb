@@ -30,7 +30,7 @@ const AssessmentQRGenerator = ({ userRole }) => {
       setForms(response.data);
     } catch (error) {
       console.error('Error fetching forms:', error);
-      toast.error('Failed to load forms');
+      // Silent fail - no toast on empty data
     } finally {
       setLoading(false);
     }

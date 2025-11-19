@@ -38,7 +38,7 @@ const ExpenseApprovals = ({ userRole }) => {
       setClaims(response.data);
     } catch (error) {
       console.error('Error fetching claims:', error);
-      toast.error('Failed to load expense claims');
+      // Silent fail - no toast on empty data
     } finally {
       setLoading(false);
     }

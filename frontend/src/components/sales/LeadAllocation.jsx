@@ -38,7 +38,7 @@ const LeadAllocation = () => {
       setEmployees(salesEmployees);
     } catch (error) {
       console.error('Error fetching data:', error);
-      toast.error('Failed to fetch data');
+      // Silent fail - no toast on empty data
     }
   };
 
