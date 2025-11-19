@@ -11,6 +11,8 @@ import FieldSalesDashboard from "@/pages/FieldSalesDashboard";
 import AcademicHeadDashboard from "@/pages/AcademicHeadDashboard";
 import AcademicCoordinatorDashboard from "@/pages/AcademicCoordinatorDashboard";
 import TrainerDashboard from "@/pages/TrainerDashboard";
+import DispatchHeadDashboard from "@/pages/DispatchHeadDashboard";
+import DispatchAssistantDashboard from "@/pages/DispatchAssistantDashboard";
 import { Toaster } from '@/components/ui/sonner';
 
 function App() {
