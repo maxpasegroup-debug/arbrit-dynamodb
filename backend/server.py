@@ -3683,11 +3683,19 @@ def get_department_head_id(department: str, db_instance):
 async def create_expense_claim(claim_data: ExpenseClaimCreate, current_user: dict = Depends(get_current_user)):
     """Employee submits new expense claim"""
     try:
-        # Get employee details
-        employee = await db.employees.find_one({"id": current_user.get("employee_id")}, {"_id": 0})
+        # Get employee details - try by employee_id first, then by mobile
+        employee = None
+        if current_user.get("employee_id"):
+            employee = await db.employees.find_one({"id": current_user.get("employee_id")}, {"_id": 0})
         
         if not employee:
-            raise HTTPException(status_code=404, detail="Employee record not found")
+            # Try finding by mobile number
+            user = await db.users.find_one({"id": current_user["id"]}, {"_id": 0})
+            if user and user.get("mobile"):
+                employee = await db.employees.find_one({"mobile": user["mobile"]}, {"_id": 0})
+        
+        if not employee:
+            raise HTTPException(status_code=404, detail="Employee record not found. Please contact HR.")
         
         department = employee.get("department", "General")
         branch = employee.get("branch", "Dubai")
