@@ -3055,6 +3055,136 @@ async def update_my_delivery_task(
     return {"message": "Delivery task updated successfully"}
 
 
+
+# ==================== ACCOUNTS MODULE ENDPOINTS ====================
+
+@api_router.get("/accounts/invoice-requests")
+async def get_all_invoice_requests(current_user: dict = Depends(get_current_user)):
+    """Get all invoice requests from sales team for Accounts dashboard"""
+    if current_user.get("role") not in ["Accounts Head", "Accountant", "COO", "MD", "CEO"]:
+        raise HTTPException(status_code=403, detail="Access denied. Accounts team access only.")
+    
+    try:
+        requests = await db.invoice_requests.find({}, {"_id": 0}).sort("created_at", -1).to_list(1000)
+        return requests
+    except Exception as e:
+        logger.error(f"Error fetching invoice requests: {e}")
+        raise HTTPException(status_code=500, detail="Failed to fetch invoice requests")
+
+
+@api_router.get("/accounts/invoices")
+async def get_all_invoices(current_user: dict = Depends(get_current_user)):
+    """Get all invoices for Accounts dashboard"""
+    if current_user.get("role") not in ["Accounts Head", "Accountant", "COO", "MD", "CEO"]:
+        raise HTTPException(status_code=403, detail="Access denied. Accounts team access only.")
+    
+    try:
+        invoices = await db.invoices.find({}, {"_id": 0}).sort("created_at", -1).to_list(1000)
+        return invoices
+    except Exception as e:
+        logger.error(f"Error fetching invoices: {e}")
+        raise HTTPException(status_code=500, detail="Failed to fetch invoices")
+
+
+@api_router.post("/accounts/invoices")
+async def create_invoice(invoice_data: dict, current_user: dict = Depends(get_current_user)):
+    """Create a new invoice"""
+    if current_user.get("role") not in ["Accounts Head", "Accountant"]:
+        raise HTTPException(status_code=403, detail="Access denied. Accounts team access only.")
+    
+    try:
+        invoice = {
+            "id": str(uuid.uuid4()),
+            "client_name": invoice_data["client_name"],
+            "invoice_number": invoice_data["invoice_number"],
+            "amount": float(invoice_data["amount"]),
+            "description": invoice_data.get("description", ""),
+            "due_date": invoice_data.get("due_date"),
+            "status": "Pending",
+            "created_by": current_user["id"],
+            "created_by_name": current_user["name"],
+            "created_at": datetime.now(timezone.utc).isoformat()
+        }
+        
+        await db.invoices.insert_one(invoice)
+        return {"message": "Invoice created successfully", "invoice_id": invoice["id"]}
+    except Exception as e:
+        logger.error(f"Error creating invoice: {e}")
+        raise HTTPException(status_code=500, detail="Failed to create invoice")
+
+
+@api_router.get("/accounts/payments")
+async def get_all_payments(current_user: dict = Depends(get_current_user)):
+    """Get all payment records for Accounts dashboard"""
+    if current_user.get("role") not in ["Accounts Head", "Accountant", "COO", "MD", "CEO"]:
+        raise HTTPException(status_code=403, detail="Access denied. Accounts team access only.")
+    
+    try:
+        payments = await db.payments.find({}, {"_id": 0}).sort("payment_date", -1).to_list(1000)
+        return payments
+    except Exception as e:
+        logger.error(f"Error fetching payments: {e}")
+        raise HTTPException(status_code=500, detail="Failed to fetch payments")
+
+
+@api_router.post("/accounts/payments")
+async def record_payment(payment_data: dict, current_user: dict = Depends(get_current_user)):
+    """Record a payment received from client"""
+    if current_user.get("role") not in ["Accounts Head", "Accountant"]:
+        raise HTTPException(status_code=403, detail="Access denied. Accounts team access only.")
+    
+    try:
+        invoice_id = payment_data["invoice_id"]
+        payment_amount = float(payment_data["amount"])
+        
+        # Get the invoice
+        invoice = await db.invoices.find_one({"id": invoice_id}, {"_id": 0})
+        if not invoice:
+            raise HTTPException(status_code=404, detail="Invoice not found")
+        
+        # Create payment record
+        payment = {
+            "id": str(uuid.uuid4()),
+            "invoice_id": invoice_id,
+            "amount": payment_amount,
+            "payment_method": payment_data.get("payment_method", "Bank Transfer"),
+            "reference_number": payment_data.get("reference_number", ""),
+            "notes": payment_data.get("notes", ""),
+            "recorded_by": current_user["id"],
+            "recorded_by_name": current_user["name"],
+            "payment_date": datetime.now(timezone.utc).isoformat()
+        }
+        
+        await db.payments.insert_one(payment)
+        
+        # Update invoice status
+        invoice_total = float(invoice.get("amount", 0))
+        total_paid = payment_amount
+        
+        # Calculate total payments for this invoice
+        existing_payments = await db.payments.find({"invoice_id": invoice_id}, {"_id": 0}).to_list(1000)
+        total_paid = sum(float(p.get("amount", 0)) for p in existing_payments)
+        
+        if total_paid >= invoice_total:
+            new_status = "Paid"
+        elif total_paid > 0:
+            new_status = "Partially Paid"
+        else:
+            new_status = "Pending"
+        
+        await db.invoices.update_one(
+            {"id": invoice_id},
+            {"$set": {"status": new_status}}
+        )
+        
+        return {"message": "Payment recorded successfully", "payment_id": payment["id"]}
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error recording payment: {e}")
+        raise HTTPException(status_code=500, detail="Failed to record payment")
+
+
 # Include the router in the main app
 app.include_router(api_router)
 
