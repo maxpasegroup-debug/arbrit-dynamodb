@@ -11,6 +11,7 @@ import TrainerRequest from '@/components/sales/TrainerRequest';
 import InvoiceRequest from '@/components/sales/InvoiceRequest';
 import VisitLogs from '@/components/sales/VisitLogs';
 import FollowUps from '@/components/sales/FollowUps';
+import ExpenseSubmission from '@/components/expenses/ExpenseSubmission';
 import { toast } from 'sonner';
 import axios from 'axios';
 
