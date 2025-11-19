@@ -2120,6 +2120,95 @@ class CertificateTemplateUpdate(BaseModel):
     is_active: Optional[bool] = None
 
 
+
+# ==================== ASSESSMENT & FEEDBACK MODELS ====================
+
+class AssessmentQuestion(BaseModel):
+    """Individual question in an assessment form"""
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    question_text: str
+    question_type: str  # "rating", "multiple_choice", "free_text"
+    options: Optional[List[str]] = None  # For multiple choice
+    required: bool = True
+
+
+class AssessmentForm(BaseModel):
+    """Assessment/Feedback form configuration"""
+    model_config = ConfigDict(extra="ignore")
+    
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    title: str
+    description: Optional[str] = None
+    questions: List[dict]  # List of AssessmentQuestion dicts
+    
+    # Session/Course details
+    work_order_id: Optional[str] = None
+    course_name: Optional[str] = None
+    batch_name: Optional[str] = None
+    trainer_id: Optional[str] = None
+    trainer_name: Optional[str] = None
+    session_date: Optional[str] = None
+    branch: Optional[str] = None
+    
+    # Metadata
+    created_by: str
+    created_by_name: str
+    created_by_role: str
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+    updated_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+    status: str = "active"  # active, archived
+    qr_code_url: Optional[str] = None
+
+
+class AssessmentFormCreate(BaseModel):
+    """Create new assessment form"""
+    title: str
+    description: Optional[str] = None
+    questions: List[dict]
+    work_order_id: Optional[str] = None
+    course_name: Optional[str] = None
+    batch_name: Optional[str] = None
+    trainer_id: Optional[str] = None
+    trainer_name: Optional[str] = None
+    session_date: Optional[str] = None
+    branch: Optional[str] = None
+
+
+class AssessmentSubmission(BaseModel):
+    """Student submission for an assessment"""
+    model_config = ConfigDict(extra="ignore")
+    
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    form_id: str
+    form_title: str
+    
+    # Responses
+    responses: List[dict]  # [{question_id, question_text, answer, question_type}]
+    
+    # Session info (copied from form)
+    work_order_id: Optional[str] = None
+    course_name: Optional[str] = None
+    batch_name: Optional[str] = None
+    trainer_id: Optional[str] = None
+    trainer_name: Optional[str] = None
+    session_date: Optional[str] = None
+    branch: Optional[str] = None
+    
+    # Submission metadata
+    submitted_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+    student_name: Optional[str] = None
+    student_contact: Optional[str] = None
+
+
+class AssessmentSubmissionCreate(BaseModel):
+    """Public submission from student"""
+    form_id: str
+    responses: List[dict]
+    student_name: Optional[str] = None
+    student_contact: Optional[str] = None
+
+
+
 class CertificateCandidate(BaseModel):
     model_config = ConfigDict(extra="ignore")
     
