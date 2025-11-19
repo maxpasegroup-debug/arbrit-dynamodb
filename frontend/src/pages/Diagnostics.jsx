@@ -10,6 +10,9 @@ const Diagnostics = () => {
   const [diagnostics, setDiagnostics] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [resetResult, setResetResult] = useState(null);
+  const [searchMobile, setSearchMobile] = useState('');
+  const [searchResult, setSearchResult] = useState(null);
 
   const checkHealth = async () => {
     setLoading(true);
