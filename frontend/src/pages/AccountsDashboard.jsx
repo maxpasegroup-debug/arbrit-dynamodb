@@ -15,6 +15,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
+import ExpenseAccountsPayment from '@/components/expenses/ExpenseAccountsPayment';
 import { toast } from 'sonner';
 import axios from 'axios';
 
