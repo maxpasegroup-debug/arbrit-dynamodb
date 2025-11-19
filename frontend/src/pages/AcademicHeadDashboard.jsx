@@ -1,9 +1,15 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { LogOut, GraduationCap, Users, FileText, Calendar, Award, UserCheck } from 'lucide-react';
+import { LogOut, GraduationCap, Users, FileText, Calendar, Award, UserCheck, LayoutDashboard } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card } from '@/components/ui/card';
 import TrainingRequests from '@/components/academic/TrainingRequests';
+import TrainerAllocation from '@/components/academic/TrainerAllocation';
+import WorkOrderManagement from '@/components/academic/WorkOrderManagement';
+import TrainingSchedule from '@/components/academic/TrainingSchedule';
+import CertificateApproval from '@/components/academic/CertificateApproval';
+import TeamMonitoring from '@/components/academic/TeamMonitoring';
 import { toast } from 'sonner';
 import axios from 'axios';
 
