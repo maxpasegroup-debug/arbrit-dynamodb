@@ -288,7 +288,7 @@ const MDDashboard = () => {
             </CardHeader>
             <CardContent className="space-y-3">
               <div>
-                <p className="text-3xl font-bold text-red-400">{dashboardData.alerts.total_critical}</p>
+                <p className="text-2xl sm:text-3xl font-bold text-red-400">{dashboardData.alerts.total_critical}</p>
                 <p className="text-sm text-slate-400">Critical Items</p>
               </div>
               <div className="space-y-2">
