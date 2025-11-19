@@ -90,6 +90,22 @@ const Diagnostics = () => {
     setLoading(false);
   };
 
+  const deleteSpecificUser = async (mobile) => {
+    if (!window.confirm(`Are you sure you want to DELETE user with mobile ${mobile}? This cannot be undone!`)) {
+      return;
+    }
+    setLoading(true);
+    try {
+      const response = await axios.delete(`${BACKEND_URL}/api/admin/delete-user/${mobile}`);
+      setResetResult(response.data);
+      // Refresh diagnostics after deletion
+      setTimeout(() => runAllChecks(), 1000);
+    } catch (err) {
+      setError(err.message);
+    }
+    setLoading(false);
+  };
+
   useEffect(() => {
     runAllChecks();
   }, []);
