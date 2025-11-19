@@ -24,6 +24,7 @@ function App() {
           <Route path="/dashboard/sales-employee" element={<SalesEmployeeDashboard />} />
           <Route path="/dashboard/tele-sales" element={<TeleSalesDashboard />} />
           <Route path="/dashboard/field-sales" element={<FieldSalesDashboard />} />
+          <Route path="/dashboard/academic" element={<AcademicHeadDashboard />} />
           <Route path="/hrm" element={<HRMDashboard />} />
         </Routes>
       </BrowserRouter>
