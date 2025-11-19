@@ -58,7 +58,7 @@ const TrainerAllocation = () => {
       );
     }
 
-    if (branchFilter) {
+    if (branchFilter && branchFilter !== 'all') {
       filtered = filtered.filter(t => t.branch === branchFilter);
     }
 
