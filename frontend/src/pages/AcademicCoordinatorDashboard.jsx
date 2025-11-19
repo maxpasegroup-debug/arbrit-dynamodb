@@ -171,6 +171,13 @@ const AcademicCoordinatorDashboard = () => {
               <MessageSquare className="w-4 h-4 mr-2" />
               Communication
             </TabsTrigger>
+            <TabsTrigger 
+              value="expenses"
+              className="data-[state=active]:bg-yellow-500/20 data-[state=active]:text-white text-gray-300"
+            >
+              <Receipt className="w-4 h-4 mr-2" />
+              Expenses
+            </TabsTrigger>
           </TabsList>
 
           <div className="mt-6">
