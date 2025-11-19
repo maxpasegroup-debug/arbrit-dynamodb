@@ -37,8 +37,8 @@ const AcademicHeadDashboard = () => {
 
     try {
       const parsedUser = JSON.parse(storedUser);
-      if (parsedUser.role !== 'Academic Head') {
-        toast.error('Access denied. Academic Head only.');
+      if (!['Academic Head', 'COO', 'MD', 'CEO'].includes(parsedUser.role)) {
+        toast.error('Access denied. Academic Head access required.');
         navigate('/login');
         return;
       }
