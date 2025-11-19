@@ -14,6 +14,7 @@ import AcademicCoordinatorDashboard from "@/pages/AcademicCoordinatorDashboard";
 import TrainerDashboard from "@/pages/TrainerDashboard";
 import DispatchHeadDashboard from "@/pages/DispatchHeadDashboard";
 import DispatchAssistantDashboard from "@/pages/DispatchAssistantDashboard";
+import AccountsDashboard from "@/pages/AccountsDashboard";
 import { Toaster } from '@/components/ui/sonner';
 
 function App() {
@@ -35,6 +36,7 @@ function App() {
           <Route path="/dashboard/trainer" element={<TrainerDashboard />} />
           <Route path="/dashboard/dispatch" element={<DispatchHeadDashboard />} />
           <Route path="/dashboard/dispatch-assistant" element={<DispatchAssistantDashboard />} />
+          <Route path="/dashboard/accounts" element={<AccountsDashboard />} />
           <Route path="/hrm" element={<HRMDashboard />} />
         </Routes>
       </BrowserRouter>
