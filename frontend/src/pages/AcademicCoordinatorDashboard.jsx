@@ -225,6 +225,10 @@ const AcademicCoordinatorDashboard = () => {
             <TabsContent value="communication" className="mt-0">
               <CoordinatorCommunication />
             </TabsContent>
+
+            <TabsContent value="expenses" className="mt-0">
+              <ExpenseSubmission />
+            </TabsContent>
           </div>
         </Tabs>
       </main>
