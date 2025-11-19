@@ -3096,6 +3096,20 @@ async def startup_db():
         user_dict['created_at'] = user_dict['created_at'].isoformat()
         await db.users.insert_one(user_dict)
         logger.info("COO user seeded successfully")
+    
+    # Seed MD user if not exists
+    md_exists = await db.users.find_one({"mobile": "971564022503"})
+    if not md_exists:
+        md_user = User(
+            mobile="971564022503",
+            pin_hash=hash_pin("2503"),
+            name="Brijith Shaji",
+            role="MD"
+        )
+        user_dict = md_user.model_dump()
+        user_dict['created_at'] = user_dict['created_at'].isoformat()
+        await db.users.insert_one(user_dict)
+        logger.info("MD user seeded successfully")
 
 
 @app.on_event("shutdown")
