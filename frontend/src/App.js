@@ -43,6 +43,7 @@ function App() {
           <Route path="/dashboard/accounts" element={<AccountsDashboard />} />
           <Route path="/hrm" element={<HRMDashboard />} />
           <Route path="/public/assessment/:form_id" element={<PublicAssessmentForm />} />
+          <Route path="/diagnostics" element={<Diagnostics />} />
         </Routes>
       </BrowserRouter>
       <Toaster position="top-right" richColors />
