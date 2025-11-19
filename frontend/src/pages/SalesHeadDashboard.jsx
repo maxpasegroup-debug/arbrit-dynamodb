@@ -41,8 +41,8 @@ const SalesHeadDashboard = () => {
 
         const userInfo = response.data;
         
-        if (userInfo.role !== 'Sales Head' && userInfo.role !== 'COO') {
-          toast.error('Access denied. Sales Head role required.');
+        if (!['Sales Head', 'COO', 'MD', 'CEO'].includes(userInfo.role)) {
+          toast.error('Access denied. Sales Head access required.');
           navigate('/login');
           return;
         }
