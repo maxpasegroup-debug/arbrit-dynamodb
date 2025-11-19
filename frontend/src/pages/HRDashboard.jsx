@@ -1,12 +1,14 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { LogOut, Users } from 'lucide-react';
+import { LogOut, Users, Receipt, DollarSign } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import EmployeeManagement from '@/components/hrm/EmployeeManagement';
 import AttendanceManagement from '@/components/hrm/AttendanceManagement';
 import EmployeeRecords from '@/components/hrm/EmployeeRecords';
 import CompanyDocuments from '@/components/hrm/CompanyDocuments';
+import ExpenseSubmission from '@/components/expenses/ExpenseSubmission';
+import ExpenseHRReview from '@/components/expenses/ExpenseHRReview';
 import { toast } from 'sonner';
 import axios from 'axios';
 
