@@ -201,6 +201,14 @@ const HRDashboard = () => {
             <TabsContent value="company" className="mt-0">
               <CompanyDocuments />
             </TabsContent>
+
+            <TabsContent value="my-expenses" className="mt-0">
+              <ExpenseSubmission />
+            </TabsContent>
+
+            <TabsContent value="expense-review" className="mt-0">
+              <ExpenseHRReview />
+            </TabsContent>
           </div>
         </Tabs>
       </main>
