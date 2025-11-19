@@ -428,7 +428,7 @@ const Diagnostics = () => {
               All Users in Database ({diagnostics.all_users.length})
             </h2>
             <p className="text-sm text-gray-600 mb-4">
-              These are ALL the users in your production database. Search for the mobile number you're trying to use.
+              These are ALL the users in your production database. If you see a demo user, click the delete button.
             </p>
             <div className="max-h-96 overflow-y-auto">
               <table className="w-full text-sm">
@@ -437,23 +437,51 @@ const Diagnostics = () => {
                     <th className="px-4 py-2 text-left">Mobile</th>
                     <th className="px-4 py-2 text-left">Name</th>
                     <th className="px-4 py-2 text-left">Role</th>
+                    <th className="px-4 py-2 text-center">Action</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {diagnostics.all_users.map((user, index) => (
-                    <tr key={index} className="border-t hover:bg-gray-50">
-                      <td className="px-4 py-2 font-mono text-xs">{user.mobile}</td>
-                      <td className="px-4 py-2">{user.name}</td>
-                      <td className="px-4 py-2">
-                        <span className="px-2 py-1 bg-blue-100 text-blue-700 rounded text-xs">
-                          {user.role}
-                        </span>
-                      </td>
-                    </tr>
-                  ))}
+                  {diagnostics.all_users.map((user, index) => {
+                    // Check if this looks like a demo user
+                    const isDemoMobile = 
+                      user.mobile.startsWith('012345') || 
+                      user.mobile.startsWith('055000') ||
+                      user.mobile === '1234567890' ||
+                      user.mobile === '9876543210' ||
+                      /^[0-9]\1+$/.test(user.mobile) || // repeated digits
+                      ['test', 'demo', 'sample', 'dummy'].some(word => user.mobile.toLowerCase().includes(word));
+                    
+                    return (
+                      <tr key={index} className={`border-t hover:bg-gray-50 ${isDemoMobile ? 'bg-red-50' : ''}`}>
+                        <td className="px-4 py-2 font-mono text-xs">{user.mobile}</td>
+                        <td className="px-4 py-2">{user.name}</td>
+                        <td className="px-4 py-2">
+                          <span className="px-2 py-1 bg-blue-100 text-blue-700 rounded text-xs">
+                            {user.role}
+                          </span>
+                        </td>
+                        <td className="px-4 py-2 text-center">
+                          <button
+                            onClick={() => deleteSpecificUser(user.mobile)}
+                            disabled={loading}
+                            className={`px-3 py-1 text-xs rounded ${
+                              isDemoMobile 
+                                ? 'bg-red-600 hover:bg-red-700 text-white' 
+                                : 'bg-gray-200 hover:bg-gray-300 text-gray-700'
+                            }`}
+                          >
+                            {isDemoMobile ? '🗑️ Delete Demo' : 'Delete'}
+                          </button>
+                        </td>
+                      </tr>
+                    );
+                  })}
                 </tbody>
               </table>
             </div>
+            <p className="text-xs text-gray-500 mt-3">
+              ⚠️ Demo users are highlighted in red. BE CAREFUL when deleting real users!
+            </p>
           </div>
         )}
 
