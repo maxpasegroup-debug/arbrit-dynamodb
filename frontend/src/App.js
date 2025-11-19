@@ -8,6 +8,7 @@ import SalesHeadDashboard from "@/pages/SalesHeadDashboard";
 import SalesEmployeeDashboard from "@/pages/SalesEmployeeDashboard";
 import TeleSalesDashboard from "@/pages/TeleSalesDashboard";
 import FieldSalesDashboard from "@/pages/FieldSalesDashboard";
+import AcademicHeadDashboard from "@/pages/AcademicHeadDashboard";
 import { Toaster } from '@/components/ui/sonner';
 
 function App() {
