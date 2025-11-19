@@ -77,6 +77,7 @@ const Login = () => {
         'Field Sales': '/dashboard/field-sales',
         'Sales Employee': '/dashboard/sales-employee',
         'Academic Head': '/dashboard/academic',
+        'Academic Coordinator': '/dashboard/coordinator',
         'Trainer': '/dashboard/trainer',
         'Accounts Head': '/dashboard/accounts',
         'Accountant': '/dashboard/accounts',
