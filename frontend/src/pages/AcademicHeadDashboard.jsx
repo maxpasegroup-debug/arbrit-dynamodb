@@ -20,7 +20,7 @@ const AcademicHeadDashboard = () => {
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [activeView, setActiveView] = useState('overview');
+  const [activeTab, setActiveTab] = useState('overview');
 
   useEffect(() => {
     const storedUser = localStorage.getItem('user');
