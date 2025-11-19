@@ -190,77 +190,41 @@ backend:
         comment: "✅ PASSED - All 8 Sales Head endpoints working perfectly with COO credentials (mobile: 971566374020, PIN: 4020). Fixed role-based access control to allow COO access. Successfully tested: lead retrieval (5 leads), lead assignment, quotation retrieval (5 quotations), quotation approval/rejection, leave request approval/rejection. All endpoints return proper JSON responses with correct status codes (200). COO user has full Sales Head functionality as required."
 
 frontend:
-  - task: "TrainerRequest Component"
+  - task: "MD Dashboard"
     implemented: true
     working: "NA"
-    file: "/app/frontend/src/components/sales/TrainerRequest.jsx"
+    file: "/app/frontend/src/pages/MDDashboard.jsx"
     stuck_count: 0
     priority: "high"
     needs_retesting: true
     status_history:
       - working: "NA"
         agent: "main"
-        comment: "Created TrainerRequest component with form to submit trainer availability requests and table to view submitted requests. Styled consistently with other sales components."
+        comment: "Royal-themed read-only analytics dashboard with Executive Intelligence Panel header, Corporate Health Score card, and 6 analytics cards (Executive Analytics, Workforce Intelligence, Sales Intelligence, Academic Excellence, Executive Alerts, AI Business Insights). Requires MD/CEO role authentication."
 
-  - task: "InvoiceRequest Component"
+  - task: "COO Dashboard"
     implemented: true
     working: "NA"
-    file: "/app/frontend/src/components/sales/InvoiceRequest.jsx"
+    file: "/app/frontend/src/pages/COODashboard.jsx"
     stuck_count: 0
     priority: "high"
     needs_retesting: true
     status_history:
       - working: "NA"
         agent: "main"
-        comment: "Created InvoiceRequest component with form to request invoices from accounts department and table to view submitted requests. Styled consistently with other sales components."
+        comment: "Simple 2x2 navigation hub with 4 cards: Marketing & Sales, Human Resources, Academics, and Accounts. Each card has icon, title, description, and 'Open Module' link. Requires COO/Management/MD/CEO role authentication."
 
-  - task: "VisitLogs Component"
+  - task: "Accounts Dashboard"
     implemented: true
     working: "NA"
-    file: "/app/frontend/src/components/sales/VisitLogs.jsx"
+    file: "/app/frontend/src/pages/AccountsDashboard.jsx"
     stuck_count: 0
     priority: "high"
     needs_retesting: true
     status_history:
       - working: "NA"
         agent: "main"
-        comment: "Created VisitLogs component for Field Sales to log client visits with details like location, date, time, purpose, outcome. Includes table to view all logged visits."
-
-  - task: "TeleSalesDashboard Integration"
-    implemented: true
-    working: "NA"
-    file: "/app/frontend/src/pages/TeleSalesDashboard.jsx"
-    stuck_count: 0
-    priority: "high"
-    needs_retesting: true
-    status_history:
-      - working: "NA"
-        agent: "main"
-        comment: "Converted TeleSalesDashboard from card-based layout to tabs-based layout. Integrated 5 tabs: Leads (with SelfLeadForm + LeadManagement), Quotations (QuotationManager), Trainer (TrainerRequest), Invoice (InvoiceRequest). Frontend compiled successfully."
-
-  - task: "FieldSalesDashboard Integration"
-    implemented: true
-    working: "NA"
-    file: "/app/frontend/src/pages/FieldSalesDashboard.jsx"
-    stuck_count: 0
-    priority: "high"
-    needs_retesting: true
-    status_history:
-      - working: "NA"
-        agent: "main"
-        comment: "Converted FieldSalesDashboard from card-based layout to tabs-based layout. Integrated 6 tabs: Leads (with SelfLeadForm + LeadManagement), Visits (VisitLogs), Quotations (QuotationManager), Trainer (TrainerRequest), Invoice (InvoiceRequest). Frontend compiled successfully."
-
-  - task: "Existing Sales Components"
-    implemented: true
-    working: "NA"
-    file: "/app/frontend/src/components/sales/"
-    stuck_count: 0
-    priority: "medium"
-    needs_retesting: true
-    status_history:
-      - working: "NA"
-        agent: "main"
-        comment: "SelfLeadForm, LeadManagement, and QuotationManager components were already created in previous work. They are now integrated into both sales dashboards."
+        comment: "Tabbed interface with 3 tabs: 'Requests from Sales', 'Invoices', 'Payments'. Includes Create Invoice dialog with form fields: client_name, invoice_number, amount, description, due_date. Requires Accounts Head/Accountant/COO/MD/CEO role authentication."
 
 metadata:
   created_by: "main_agent"
