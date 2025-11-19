@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { LogOut, GraduationCap, Users, FileText, Calendar, Award, UserCheck, LayoutDashboard, FileCheck } from 'lucide-react';
+import { LogOut, GraduationCap, Users, FileText, Calendar, Award, UserCheck, LayoutDashboard, FileCheck, ClipboardCheck } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card } from '@/components/ui/card';
@@ -11,6 +11,9 @@ import TrainingSchedule from '@/components/academic/TrainingSchedule';
 import CertificateApproval from '@/components/academic/CertificateApproval';
 import CertificateGeneration from '@/components/academic/CertificateGeneration';
 import TeamMonitoring from '@/components/academic/TeamMonitoring';
+import AssessmentFormBuilder from '@/components/assessment/AssessmentFormBuilder';
+import AssessmentQRGenerator from '@/components/assessment/AssessmentQRGenerator';
+import AssessmentReports from '@/components/assessment/AssessmentReports';
 import { toast } from 'sonner';
 import axios from 'axios';
 
