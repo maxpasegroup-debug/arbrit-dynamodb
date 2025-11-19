@@ -45,6 +45,23 @@ const Diagnostics = () => {
     await checkDiagnostics();
   };
 
+  const cleanupDemoUsers = async () => {
+    if (!window.confirm('This will DELETE all demo/test users with fake mobile numbers (like 0123456789). Continue?')) {
+      return;
+    }
+    setLoading(true);
+    setError(null);
+    try {
+      const response = await axios.post(`${BACKEND_URL}/api/admin/cleanup-demo-users`);
+      setResetResult(response.data);
+      // Refresh diagnostics after cleanup
+      setTimeout(() => runAllChecks(), 1000);
+    } catch (err) {
+      setError(err.message);
+    }
+    setLoading(false);
+  };
+
   const resetDefaultUsers = async () => {
     setLoading(true);
     setError(null);
@@ -52,6 +69,8 @@ const Diagnostics = () => {
     try {
       const response = await axios.post(`${BACKEND_URL}/api/admin/reset-default-users`);
       setResetResult(response.data);
+      // Refresh diagnostics after reset
+      setTimeout(() => runAllChecks(), 1000);
     } catch (err) {
       setError(err.message);
     }
