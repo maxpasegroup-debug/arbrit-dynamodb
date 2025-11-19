@@ -2140,6 +2140,12 @@ class CertificateCandidate(BaseModel):
     generated_by_name: str
     generated_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
     status: str = "generated"  # generated, dispatched, delivered
+    # NEW FIELDS (ADDITIVE ONLY - backward compatible)
+    template_id: Optional[str] = None  # Link to certificate template
+    verification_code: Optional[str] = None  # Unique code for QR verification
+    verification_url: Optional[str] = None  # Full URL for QR code
+    candidate_email: Optional[str] = None  # For bulk generation
+    candidate_id: Optional[str] = None  # For bulk generation
 
 
 class CertificateGenerationRequest(BaseModel):
