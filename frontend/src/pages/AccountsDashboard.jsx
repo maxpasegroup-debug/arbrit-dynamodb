@@ -557,6 +557,11 @@ const AccountsDashboard = () => {
               </CardContent>
             </Card>
           </TabsContent>
+
+          {/* Expense Payments Tab */}
+          <TabsContent value="expenses">
+            <ExpenseAccountsPayment />
+          </TabsContent>
         </Tabs>
       </main>
     </div>
