@@ -66,21 +66,25 @@ const Login = () => {
       toast.success(`Welcome back, ${user.name}!`);
       
       // Redirect based on role
-      if (user.role === 'COO') {
-        navigate('/dashboard/coo');
-      } else if (user.role === 'HR') {
-        navigate('/dashboard/hr');
-      } else if (user.role === 'Sales Head') {
-        navigate('/dashboard/sales-head');
-      } else if (user.role === 'Tele Sales') {
-        navigate('/dashboard/tele-sales');
-      } else if (user.role === 'Field Sales') {
-        navigate('/dashboard/field-sales');
-      } else if (user.role === 'Sales Employee') {
-        navigate('/dashboard/sales-employee');
-      } else {
-        navigate('/dashboard');
-      }
+      const roleToRoute = {
+        'COO': '/dashboard/coo',
+        'Management': '/dashboard/coo',
+        'MD': '/dashboard/coo',
+        'CEO': '/dashboard/coo',
+        'HR': '/dashboard/hr',
+        'Sales Head': '/dashboard/sales-head',
+        'Tele Sales': '/dashboard/tele-sales',
+        'Field Sales': '/dashboard/field-sales',
+        'Sales Employee': '/dashboard/sales-employee',
+        'Academic Head': '/dashboard/academic',
+        'Trainer': '/dashboard/trainer',
+        'Accounts Head': '/dashboard/accounts',
+        'Accountant': '/dashboard/accounts',
+        'Dispatch Head': '/dashboard/dispatch'
+      };
+      
+      const route = roleToRoute[user.role] || '/dashboard';
+      navigate(route);
     } catch (error) {
       console.error('Login error:', error);
       toast.error(error.response?.data?.detail || 'Invalid mobile number or PIN');
