@@ -222,6 +222,10 @@ const TrainerDashboard = () => {
               <CertificateRequest />
             </TabsContent>
 
+            <TabsContent value="qr-codes" className="mt-0">
+              <AssessmentQRGenerator userRole="Trainer" />
+            </TabsContent>
+
             <TabsContent value="uploads" className="mt-0">
               <TrainerUploads />
             </TabsContent>
