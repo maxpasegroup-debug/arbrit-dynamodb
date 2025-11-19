@@ -93,7 +93,9 @@ const COODashboard = () => {
       <div className="bg-white/5 backdrop-blur-sm border-b border-white/10">
         <div className="max-w-7xl mx-auto px-6 py-5 flex justify-between items-center">
           <div>
-            <h1 className="text-3xl font-bold text-white">COO Dashboard</h1>
+            <h1 className="text-3xl font-bold text-white">
+              {user?.role === 'MD' || user?.role === 'CEO' ? 'CEO Command Panel' : 'COO Dashboard'}
+            </h1>
             <p className="text-sm text-slate-400 mt-1">Executive Operations Control Center</p>
           </div>
           <div className="flex items-center gap-4">
