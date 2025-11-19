@@ -107,23 +107,23 @@ const MDDashboard = () => {
         </div>
       </div>
 
-      <main className="max-w-7xl mx-auto px-8 py-10">
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-10">
         {/* Welcome Section */}
-        <div className="mb-10 bg-gradient-to-r from-amber-900/10 to-transparent rounded-2xl border border-amber-500/20 p-8">
-          <div className="flex justify-between items-center">
-            <div className="text-center flex-1">
-              <h2 className="text-2xl font-bold text-amber-100 mb-2">
+        <div className="mb-6 sm:mb-10 bg-gradient-to-r from-amber-900/10 to-transparent rounded-xl sm:rounded-2xl border border-amber-500/20 p-4 sm:p-6 lg:p-8">
+          <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
+            <div className="text-center sm:text-left flex-1">
+              <h2 className="text-lg sm:text-xl lg:text-2xl font-bold text-amber-100 mb-2">
                 Good {new Date().getHours() < 12 ? 'Morning' : new Date().getHours() < 18 ? 'Afternoon' : 'Evening'}, {user?.name?.split(' ')[0]}
               </h2>
-              <p className="text-amber-200/70">
+              <p className="text-sm sm:text-base text-amber-200/70">
                 Here's your strategic business intelligence for today
               </p>
             </div>
             <Button
               onClick={() => navigate('/dashboard/coo')}
-              className="bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-slate-900 font-semibold px-6 py-3 shadow-lg hover:shadow-xl transition-all"
+              className="bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-slate-900 font-semibold px-4 sm:px-6 py-2 sm:py-3 shadow-lg hover:shadow-xl transition-all w-full sm:w-auto text-sm sm:text-base"
             >
-              <Shield className="w-5 h-5 mr-2" />
+              <Shield className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
               Access Control Panel
             </Button>
           </div>
