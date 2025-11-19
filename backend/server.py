@@ -560,6 +560,7 @@ async def create_employee(employee: EmployeeCreate, current_user: dict = Depends
             'ACCOUNTS_HEAD': 'Accounts Head',
             'ACCOUNTANT': 'Accountant',
             'DISPATCH_HEAD': 'Dispatch Head',
+            'DISPATCH_ASSISTANT': 'Dispatch Assistant',
             'COO': 'COO',
             'MD': 'Management',
             'CEO': 'Management'
