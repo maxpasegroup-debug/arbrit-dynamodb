@@ -332,6 +332,14 @@ const AcademicHeadDashboard = () => {
                 </TabsContent>
               </Tabs>
             </TabsContent>
+
+            <TabsContent value="my-expenses" className="mt-0">
+              <ExpenseSubmission />
+            </TabsContent>
+
+            <TabsContent value="expense-approvals" className="mt-0">
+              <ExpenseApprovals userRole="Academic Head" />
+            </TabsContent>
           </div>
         </Tabs>
       </main>
