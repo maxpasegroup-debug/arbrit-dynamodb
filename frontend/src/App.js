@@ -39,6 +39,7 @@ function App() {
           <Route path="/dashboard/dispatch-assistant" element={<DispatchAssistantDashboard />} />
           <Route path="/dashboard/accounts" element={<AccountsDashboard />} />
           <Route path="/hrm" element={<HRMDashboard />} />
+          <Route path="/public/assessment/:form_id" element={<PublicAssessmentForm />} />
         </Routes>
       </BrowserRouter>
       <Toaster position="top-right" richColors />
