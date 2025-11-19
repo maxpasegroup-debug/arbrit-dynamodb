@@ -2389,6 +2389,13 @@ logger = logging.getLogger(__name__)
 
 @app.on_event("startup")
 async def startup_db():
+    # Create unique index on mobile field in users collection to prevent duplicates
+    try:
+        await db.users.create_index("mobile", unique=True)
+        logger.info("Unique index created on users.mobile field")
+    except Exception as e:
+        logger.info(f"Unique index on users.mobile already exists or creation failed: {e}")
+    
     # Seed COO user if not exists
     coo_exists = await db.users.find_one({"mobile": "971566374020"})
     if not coo_exists:
