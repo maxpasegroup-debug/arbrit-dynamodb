@@ -294,6 +294,28 @@ const AcademicHeadDashboard = () => {
             <TabsContent value="team" className="mt-0">
               <TeamMonitoring />
             </TabsContent>
+
+            <TabsContent value="assessments" className="mt-0">
+              <Tabs defaultValue="create" className="space-y-6">
+                <TabsList className="bg-white/10 border border-white/20">
+                  <TabsTrigger value="create">Create Form</TabsTrigger>
+                  <TabsTrigger value="qr">Generate QR</TabsTrigger>
+                  <TabsTrigger value="reports">Reports</TabsTrigger>
+                </TabsList>
+                
+                <TabsContent value="create">
+                  <AssessmentFormBuilder onBack={() => {}} onFormCreated={() => {}} />
+                </TabsContent>
+                
+                <TabsContent value="qr">
+                  <AssessmentQRGenerator userRole="Academic Head" />
+                </TabsContent>
+                
+                <TabsContent value="reports">
+                  <AssessmentReports />
+                </TabsContent>
+              </Tabs>
+            </TabsContent>
           </div>
         </Tabs>
       </main>
