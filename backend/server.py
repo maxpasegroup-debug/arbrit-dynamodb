@@ -625,46 +625,77 @@ async def update_employee(employee_id: str, employee_update: EmployeeUpdate, cur
     if not existing:
         raise HTTPException(status_code=404, detail="Employee not found")
     
-    # Check if mobile number is being changed
+    # Check if mobile number or name is being changed
     mobile_changed = False
+    name_changed = False
     old_mobile = existing.get("mobile")
+    old_name = existing.get("name")
     new_mobile = employee_update.mobile
+    new_name = employee_update.name
+    
     if new_mobile and new_mobile != old_mobile:
         mobile_changed = True
+    if new_name and new_name != old_name:
+        name_changed = True
     
     # Update fields
     update_data = {k: v for k, v in employee_update.model_dump().items() if v is not None}
     if update_data:
         await db.employees.update_one({"id": employee_id}, {"$set": update_data})
     
-    # If mobile changed and employee is in Sales department, update user account
-    if mobile_changed and existing.get("department") == "Sales":
-        sales_type = existing.get("sales_type") or update_data.get("sales_type")
-        if sales_type:
-            # Delete old user account(s) for this employee
-            await db.users.delete_many({"id": employee_id})
+    # If mobile or name changed, sync user account for ALL roles with user accounts
+    if mobile_changed or name_changed:
+        # Get the designation to determine if user account should exist
+        designation = existing.get("designation") or update_data.get("designation")
+        
+        if designation:
+            designation_to_role = {
+                'SALES_HEAD': 'Sales Head',
+                'TELE_SALES_EXECUTIVE': 'Tele Sales',
+                'FIELD_SALES_EXECUTIVE': 'Field Sales',
+                'ACADEMIC_HEAD': 'Academic Head',
+                'ACADEMIC_COORDINATOR': 'Academic Coordinator',
+                'TRAINER_FULLTIME': 'Trainer',
+                'TRAINER_PARTTIME': 'Trainer',
+                'HR_MANAGER': 'HR',
+                'HR_EXECUTIVE': 'HR',
+                'ACCOUNTS_HEAD': 'Accounts Head',
+                'ACCOUNTANT': 'Accountant',
+                'DISPATCH_HEAD': 'Dispatch Head',
+                'DISPATCH_ASSISTANT': 'Dispatch Assistant',
+                'COO': 'COO',
+                'MD': 'Management',
+                'CEO': 'Management'
+            }
             
-            # Create new user account with new mobile
-            if sales_type == "tele":
-                user_role = "Tele Sales"
-            elif sales_type == "field":
-                user_role = "Field Sales"
-            else:
-                user_role = "Sales Employee"
+            user_role = designation_to_role.get(designation)
             
-            pin = new_mobile[-4:]
-            new_user = User(
-                id=employee_id,
-                mobile=new_mobile,
-                pin_hash=hash_pin(pin),
-                name=existing["name"],
-                role=user_role
-            )
-            
-            user_dict = new_user.model_dump()
-            user_dict['created_at'] = user_dict['created_at'].isoformat()
-            await db.users.insert_one(user_dict)
-            logger.info(f"User account updated for {existing['name']}: new mobile {new_mobile}, new PIN {pin}")
+            if user_role:
+                # Delete old user account(s) by old mobile
+                if mobile_changed:
+                    await db.users.delete_one({"mobile": old_mobile})
+                    logger.info(f"Deleted old user account for mobile {old_mobile}")
+                
+                # If mobile changed, also delete any user with new mobile (clean slate)
+                if mobile_changed:
+                    await db.users.delete_one({"mobile": new_mobile})
+                
+                # Create/update user account with new mobile and/or name
+                final_mobile = new_mobile if new_mobile else old_mobile
+                final_name = new_name if new_name else old_name
+                pin = final_mobile[-4:]
+                
+                new_user = User(
+                    mobile=final_mobile,
+                    pin_hash=hash_pin(pin),
+                    name=final_name,
+                    role=user_role
+                )
+                
+                user_dict = new_user.model_dump()
+                user_dict['created_at'] = user_dict['created_at'].isoformat()
+                await db.users.insert_one(user_dict)
+                logger.info(f"User account synced for {final_name}: mobile {final_mobile}, PIN {pin}, role {user_role}")
     
     # Return updated employee
     updated = await db.employees.find_one({"id": employee_id}, {"_id": 0})
