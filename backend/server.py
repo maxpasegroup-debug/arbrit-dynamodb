@@ -541,24 +541,47 @@ async def create_employee(employee: EmployeeCreate, current_user: dict = Depends
     doc['created_at'] = doc['created_at'].isoformat()
     await db.employees.insert_one(doc)
     
-    # Auto-create user account based on designation and sales_type
+    # Auto-create user account based on designation
     user_role = None
     if employee.designation:
-        designation_upper = employee.designation.upper()
-        if "HR" in designation_upper and "SALES" not in designation_upper:
+        designation = employee.designation
+        
+        # Map designation keys to user roles
+        designation_to_role = {
+            'SALES_HEAD': 'Sales Head',
+            'TELE_SALES_EXECUTIVE': 'Tele Sales',
+            'FIELD_SALES_EXECUTIVE': 'Field Sales',
+            'ACADEMIC_HEAD': 'Academic Head',
+            'TRAINER_FULLTIME': 'Trainer',
+            'TRAINER_PARTTIME': 'Trainer',
+            'HR_MANAGER': 'HR',
+            'HR_EXECUTIVE': 'HR',
+            'ACCOUNTS_HEAD': 'Accounts Head',
+            'ACCOUNTANT': 'Accountant',
+            'DISPATCH_HEAD': 'Dispatch Head',
+            'COO': 'COO',
+            'MD': 'Management',
+            'CEO': 'Management'
+        }
+        
+        # Check if designation is in the mapping
+        if designation in designation_to_role:
+            user_role = designation_to_role[designation]
+        # Backward compatibility: check old format
+        elif "HR" in designation.upper() and "SALES" not in designation.upper():
             user_role = "HR"
-        elif "SALES HEAD" in designation_upper:
+        elif "SALES HEAD" in designation.upper():
             user_role = "Sales Head"
-        elif "ACADEMIC HEAD" in designation_upper or "ACADEMIC_HEAD" in designation_upper:
+        elif "ACADEMIC HEAD" in designation.upper() or "ACADEMIC_HEAD" in designation.upper():
             user_role = "Academic Head"
-        elif employee.department == "Sales" and "SALES HEAD" not in designation_upper:
-            # Determine role based on sales_type
+        elif employee.department == "Sales" and "SALES HEAD" not in designation.upper():
+            # Determine role based on sales_type for backward compatibility
             if employee.sales_type == "tele":
                 user_role = "Tele Sales"
             elif employee.sales_type == "field":
                 user_role = "Field Sales"
             else:
-                user_role = "Sales Employee"  # Fallback for backward compatibility
+                user_role = "Sales Employee"
     
     if user_role:
         # Check if user already exists
