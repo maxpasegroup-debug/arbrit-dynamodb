@@ -80,26 +80,29 @@ const MDDashboard = () => {
     <div className="min-h-screen bg-gradient-to-br from-[#0f172a] via-[#1e293b] to-[#0f172a]">
       {/* Royal Header */}
       <div className="bg-gradient-to-r from-amber-900/20 via-amber-800/10 to-amber-900/20 backdrop-blur-sm border-b border-amber-500/20">
-        <div className="max-w-7xl mx-auto px-8 py-6 flex justify-between items-center">
-          <div>
-            <h1 className="text-3xl font-bold bg-gradient-to-r from-amber-200 to-amber-400 bg-clip-text text-transparent">
-              Executive Intelligence Panel
-            </h1>
-            <p className="text-sm text-amber-300/70 mt-1">Strategic Overview & Business Insights</p>
-          </div>
-          <div className="flex items-center gap-4">
-            <div className="text-right">
-              <p className="text-sm font-medium text-amber-100">{user?.name}</p>
-              <p className="text-xs text-amber-300/70">{user?.role}</p>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6">
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+            <div>
+              <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold bg-gradient-to-r from-amber-200 to-amber-400 bg-clip-text text-transparent">
+                Executive Intelligence Panel
+              </h1>
+              <p className="text-xs sm:text-sm text-amber-300/70 mt-1">Strategic Overview & Business Insights</p>
             </div>
-            <Button
-              onClick={handleLogout}
-              variant="outline"
-              className="border-amber-500/30 text-amber-200 hover:bg-amber-500/10"
-            >
-              <LogOut className="w-4 h-4 mr-2" />
-              Logout
-            </Button>
+            <div className="flex items-center gap-3 w-full sm:w-auto">
+              <div className="text-left sm:text-right flex-1 sm:flex-initial">
+                <p className="text-sm font-medium text-amber-100">{user?.name}</p>
+                <p className="text-xs text-amber-300/70">{user?.role}</p>
+              </div>
+              <Button
+                onClick={handleLogout}
+                variant="outline"
+                size="sm"
+                className="border-amber-500/30 text-amber-200 hover:bg-amber-500/10"
+              >
+                <LogOut className="w-4 h-4 sm:mr-2" />
+                <span className="hidden sm:inline">Logout</span>
+              </Button>
+            </div>
           </div>
         </div>
       </div>
