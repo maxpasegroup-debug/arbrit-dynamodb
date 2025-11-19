@@ -1,7 +1,8 @@
 import "@/App.css";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Login from "@/pages/Login";
-import DashboardCOO from "@/pages/DashboardCOO";
+import COODashboard from "@/pages/COODashboard";
+import MDDashboard from "@/pages/MDDashboard";
 import HRMDashboard from "@/pages/HRMDashboard";
 import HRDashboard from "@/pages/HRDashboard";
 import SalesHeadDashboard from "@/pages/SalesHeadDashboard";
