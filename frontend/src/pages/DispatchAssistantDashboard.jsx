@@ -7,6 +7,7 @@ import { Card } from '@/components/ui/card';
 import MyTasksToday from '@/components/dispatch/MyTasksToday';
 import MyTasksHistory from '@/components/dispatch/MyTasksHistory';
 import AssistantProfile from '@/components/dispatch/AssistantProfile';
+import ExpenseSubmission from '@/components/expenses/ExpenseSubmission';
 import { toast } from 'sonner';
 
 const DispatchAssistantDashboard = () => {
