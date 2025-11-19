@@ -182,6 +182,20 @@ const SalesHeadDashboard = () => {
               <CalendarCheck className="w-4 h-4 mr-2" />
               Leaves
             </TabsTrigger>
+            <TabsTrigger 
+              value="my-expenses"
+              className="data-[state=active]:bg-blue-500/20 data-[state=active]:text-white text-gray-300"
+            >
+              <Receipt className="w-4 h-4 mr-2" />
+              My Expenses
+            </TabsTrigger>
+            <TabsTrigger 
+              value="expense-approvals"
+              className="data-[state=active]:bg-blue-500/20 data-[state=active]:text-white text-gray-300"
+            >
+              <CheckSquare className="w-4 h-4 mr-2" />
+              Approve Expenses
+            </TabsTrigger>
           </TabsList>
 
           <div className="mt-6">
