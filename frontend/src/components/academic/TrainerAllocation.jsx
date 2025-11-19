@@ -98,7 +98,7 @@ const TrainerAllocation = () => {
                 <SelectValue placeholder="All Branches" />
               </SelectTrigger>
               <SelectContent className="bg-[#1a2f4d] border-white/20 text-white">
-                <SelectItem value="">All Branches</SelectItem>
+                <SelectItem value="all">All Branches</SelectItem>
                 {branches.map(branch => (
                   <SelectItem key={branch} value={branch}>{branch}</SelectItem>
                 ))}
