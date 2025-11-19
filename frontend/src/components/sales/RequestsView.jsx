@@ -32,7 +32,7 @@ const RequestsView = () => {
       setInvoiceRequests(invoiceRes.data || []);
     } catch (error) {
       console.error('Error fetching requests:', error);
-      toast.error('Failed to fetch requests');
+      // Silent fail - no toast on empty data
     }
   };
 
