@@ -119,11 +119,15 @@ const AcademicHeadDashboard = () => {
   ];
 
   const handleModuleClick = (moduleId) => {
-    if (moduleId === 'training-requests') {
-      setActiveView('training-requests');
-    } else {
-      toast.info('This feature is being finalized');
-    }
+    const moduleToTab = {
+      'training-requests': 'requests',
+      'trainers': 'trainers',
+      'work-orders': 'work-orders',
+      'schedule': 'schedule',
+      'certificates': 'certificates',
+      'team': 'team'
+    };
+    setActiveTab(moduleToTab[moduleId] || 'overview');
   };
 
   return (
