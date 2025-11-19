@@ -2150,13 +2150,141 @@ class CertificateCandidate(BaseModel):
 
 class CertificateGenerationRequest(BaseModel):
     work_order_id: str
-    candidates: List[dict]  # List of {name, grade (optional)}
+    candidates: List[dict]  # List of {name, grade (optional), email (optional), id (optional)}
     course_name: str
     trainer_name: str
     training_date: str
     completion_date: str
     expiry_date: Optional[str] = None
+    template_id: Optional[str] = None  # NEW: Optional template selection
 
+
+class BulkCertificateGenerationRequest(BaseModel):
+    work_order_id: str
+    template_id: Optional[str] = None
+    candidates: List[dict]  # List with candidate_name, candidate_email, candidate_id, grade
+
+
+# ==================== CERTIFICATE TEMPLATE ENDPOINTS (NEW - ADDITIVE) ====================
+
+@api_router.get("/academic/templates")
+async def get_certificate_templates(current_user: dict = Depends(get_current_user)):
+    """Get all certificate templates"""
+    if current_user.get("role") not in ["Academic Head", "COO"]:
+        raise HTTPException(status_code=403, detail="Access denied. Academic Head or COO only.")
+    
+    templates = await db.certificate_templates.find(
+        {"is_active": True},
+        {"_id": 0}
+    ).to_list(1000)
+    
+    return templates
+
+
+@api_router.get("/academic/templates/default")
+async def get_default_template(current_user: dict = Depends(get_current_user)):
+    """Get the default certificate template"""
+    template = await db.certificate_templates.find_one(
+        {"is_default": True, "is_active": True},
+        {"_id": 0}
+    )
+    
+    if not template:
+        # Return a basic default if none exists
+        return {
+            "id": "default",
+            "name": "Default Template",
+            "type": "INHOUSE",
+            "is_default": True
+        }
+    
+    return template
+
+
+@api_router.post("/academic/templates")
+async def create_certificate_template(
+    template_data: CertificateTemplateCreate,
+    current_user: dict = Depends(get_current_user)
+):
+    """Create a new certificate template"""
+    if current_user.get("role") not in ["Academic Head", "COO"]:
+        raise HTTPException(status_code=403, detail="Access denied. Academic Head or COO only.")
+    
+    # If this template is set as default, unset other defaults
+    if template_data.is_default:
+        await db.certificate_templates.update_many(
+            {"is_default": True},
+            {"$set": {"is_default": False}}
+        )
+    
+    template = CertificateTemplate(
+        **template_data.model_dump(),
+        created_by=current_user.get("id", ""),
+        created_by_name=current_user.get("name", "")
+    )
+    
+    template_dict = template.model_dump()
+    template_dict['created_at'] = template_dict['created_at'].isoformat()
+    template_dict['updated_at'] = template_dict['updated_at'].isoformat()
+    
+    await db.certificate_templates.insert_one(template_dict)
+    
+    return {"message": "Template created successfully", "template": template}
+
+
+@api_router.put("/academic/templates/{template_id}")
+async def update_certificate_template(
+    template_id: str,
+    template_update: CertificateTemplateUpdate,
+    current_user: dict = Depends(get_current_user)
+):
+    """Update a certificate template"""
+    if current_user.get("role") not in ["Academic Head", "COO"]:
+        raise HTTPException(status_code=403, detail="Access denied. Academic Head or COO only.")
+    
+    # If setting as default, unset other defaults
+    if template_update.is_default:
+        await db.certificate_templates.update_many(
+            {"is_default": True, "id": {"$ne": template_id}},
+            {"$set": {"is_default": False}}
+        )
+    
+    update_data = {k: v for k, v in template_update.model_dump().items() if v is not None}
+    update_data["updated_at"] = datetime.now(timezone.utc).isoformat()
+    
+    result = await db.certificate_templates.update_one(
+        {"id": template_id},
+        {"$set": update_data}
+    )
+    
+    if result.matched_count == 0:
+        raise HTTPException(status_code=404, detail="Template not found")
+    
+    return {"message": "Template updated successfully"}
+
+
+@api_router.delete("/academic/templates/{template_id}")
+async def delete_certificate_template(
+    template_id: str,
+    current_user: dict = Depends(get_current_user)
+):
+    """Soft delete a certificate template"""
+    if current_user.get("role") not in ["Academic Head", "COO"]:
+        raise HTTPException(status_code=403, detail="Access denied. Academic Head or COO only.")
+    
+    # Soft delete by marking inactive
+    result = await db.certificate_templates.update_one(
+        {"id": template_id},
+        {"$set": {"is_active": False, "updated_at": datetime.now(timezone.utc).isoformat()}}
+    )
+    
+    if result.matched_count == 0:
+        raise HTTPException(status_code=404, detail="Template not found")
+    
+    return {"message": "Template deleted successfully"}
+
+
+# ==================== CERTIFICATE GENERATION ENDPOINTS (UPDATED) ====================
 
 @api_router.post("/academic/generate-certificates")
 async def generate_certificates(
