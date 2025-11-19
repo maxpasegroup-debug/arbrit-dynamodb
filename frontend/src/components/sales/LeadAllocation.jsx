@@ -16,7 +16,7 @@ const LeadAllocation = () => {
   const [employees, setEmployees] = useState([]);
   const [showDialog, setShowDialog] = useState(false);
   const [selectedLead, setSelectedLead] = useState(null);
-  const [selectedEmployee, setSelectedEmployee] = useState('');
+  const [selectedEmployee, setSelectedEmployee] = useState(undefined);
   const [filter, setFilter] = useState('unassigned'); // unassigned, assigned, all
 
   useEffect(() => {

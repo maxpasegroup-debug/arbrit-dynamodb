@@ -19,10 +19,10 @@ const WorkOrderManagement = () => {
   const [showDialog, setShowDialog] = useState(false);
   const [selectedWorkOrder, setSelectedWorkOrder] = useState(null);
   const [formData, setFormData] = useState({
-    trainer_id: '',
-    trainer_name: '',
-    coordinator_id: '',
-    coordinator_name: '',
+    trainer_id: undefined,
+    trainer_name: undefined,
+    coordinator_id: undefined,
+    coordinator_name: undefined,
     remarks: ''
   });
 
@@ -56,7 +56,7 @@ const WorkOrderManagement = () => {
 
   const handleApprove = (workOrder) => {
     setSelectedWorkOrder(workOrder);
-    setFormData({ trainer_id: '', trainer_name: '', coordinator_id: '', coordinator_name: '', remarks: '' });
+    setFormData({ trainer_id: undefined, trainer_name: undefined, coordinator_id: undefined, coordinator_name: undefined, remarks: '' });
     setShowDialog(true);
   };
 

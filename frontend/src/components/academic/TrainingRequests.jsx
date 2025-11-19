@@ -23,8 +23,8 @@ const TrainingRequests = () => {
     remarks: '',
     confirmed_slots: '',
     alternative_dates: '',
-    trainer_id: '',
-    trainer_name: ''
+    trainer_id: undefined,
+    trainer_name: undefined
   });
 
   useEffect(() => {
@@ -49,7 +49,7 @@ const TrainingRequests = () => {
   const handleAction = (request, action) => {
     setSelectedRequest(request);
     setActionType(action);
-    setFormData({ remarks: '', confirmed_slots: '', alternative_dates: '', trainer_id: '', trainer_name: '' });
+    setFormData({ remarks: '', confirmed_slots: '', alternative_dates: '', trainer_id: undefined, trainer_name: undefined });
     setShowDialog(true);
   };
 
