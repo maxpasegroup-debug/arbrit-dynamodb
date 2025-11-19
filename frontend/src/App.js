@@ -16,6 +16,7 @@ import DispatchHeadDashboard from "@/pages/DispatchHeadDashboard";
 import DispatchAssistantDashboard from "@/pages/DispatchAssistantDashboard";
 import AccountsDashboard from "@/pages/AccountsDashboard";
 import PublicAssessmentForm from "@/pages/PublicAssessmentForm";
+import Diagnostics from "@/pages/Diagnostics";
 import BrowserBackWarning from '@/components/common/BrowserBackWarning';
 import { Toaster } from '@/components/ui/sonner';
 
