@@ -173,6 +173,12 @@ const COODashboard = () => {
             );
           })}
         </div>
+      </TabsContent>
+
+      <TabsContent value="expenses">
+        <ExpenseReadOnlyView />
+      </TabsContent>
+    </Tabs>
       </main>
     </div>
   );
