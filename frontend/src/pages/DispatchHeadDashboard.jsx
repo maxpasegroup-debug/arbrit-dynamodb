@@ -28,8 +28,8 @@ const DispatchHeadDashboard = () => {
 
     try {
       const parsedUser = JSON.parse(storedUser);
-      if (parsedUser.role !== 'Dispatch Head') {
-        toast.error('Access denied. Dispatch Head only.');
+      if (!['Dispatch Head', 'COO', 'MD', 'CEO'].includes(parsedUser.role)) {
+        toast.error('Access denied. Dispatch Head access required.');
         navigate('/login');
         return;
       }
