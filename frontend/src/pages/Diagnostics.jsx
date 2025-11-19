@@ -283,6 +283,122 @@ const Diagnostics = () => {
           </div>
         )}
 
+        {/* User Search Tool */}
+        <div className="bg-white rounded-2xl shadow-lg p-6 mb-6">
+          <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
+            <AlertCircle className="w-5 h-5" />
+            Search for User by Mobile
+          </h2>
+          <div className="flex gap-3">
+            <input
+              type="text"
+              placeholder="Enter mobile number (e.g., 971564022503)"
+              value={searchMobile}
+              onChange={(e) => setSearchMobile(e.target.value)}
+              className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            />
+            <Button
+              onClick={checkUserExists}
+              disabled={loading || !searchMobile}
+              className="px-6"
+            >
+              Search
+            </Button>
+          </div>
+          
+          {searchResult && (
+            <div className={`mt-4 p-4 rounded-lg ${searchResult.exists ? 'bg-green-50 border border-green-200' : 'bg-red-50 border border-red-200'}`}>
+              {searchResult.exists ? (
+                <div>
+                  <p className="font-semibold text-green-900 mb-2">✅ User Found!</p>
+                  <p className="text-sm text-green-800"><strong>Name:</strong> {searchResult.user.name}</p>
+                  <p className="text-sm text-green-800"><strong>Role:</strong> {searchResult.user.role}</p>
+                  <p className="text-sm text-green-800"><strong>Mobile:</strong> {searchResult.user.mobile}</p>
+                </div>
+              ) : (
+                <div>
+                  <p className="font-semibold text-red-900 mb-2">❌ User Not Found</p>
+                  <p className="text-sm text-red-800">{searchResult.message || searchResult.error}</p>
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+
+        {/* Reset Default Users */}
+        <div className="bg-yellow-50 border border-yellow-200 rounded-2xl p-6 mb-6">
+          <h2 className="text-xl font-semibold mb-4 text-yellow-900">🔧 Reset Default Users</h2>
+          <p className="text-sm text-yellow-800 mb-4">
+            If MD and COO login is not working, click the button below to reset their credentials to the correct values.
+          </p>
+          <Button
+            onClick={resetDefaultUsers}
+            disabled={loading}
+            className="bg-yellow-600 hover:bg-yellow-700 text-white"
+          >
+            Reset MD & COO Users
+          </Button>
+          
+          {resetResult && (
+            <div className={`mt-4 p-4 rounded-lg ${resetResult.success ? 'bg-green-50 border border-green-200' : 'bg-red-50 border border-red-200'}`}>
+              {resetResult.success ? (
+                <div>
+                  <p className="font-semibold text-green-900 mb-2">✅ {resetResult.message}</p>
+                  {resetResult.results && resetResult.results.map((result, idx) => (
+                    <p key={idx} className="text-sm text-green-800">{result}</p>
+                  ))}
+                  <div className="mt-3 p-3 bg-white rounded border border-green-300">
+                    <p className="text-sm font-semibold text-green-900 mb-1">You can now login with:</p>
+                    <p className="text-sm text-green-800">• MD: 971564022503 / PIN: 2503</p>
+                    <p className="text-sm text-green-800">• COO: 971566374020 / PIN: 4020</p>
+                  </div>
+                </div>
+              ) : (
+                <div>
+                  <p className="font-semibold text-red-900 mb-2">❌ {resetResult.message}</p>
+                  <p className="text-sm text-red-800">{resetResult.error}</p>
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+
+        {/* All Users List */}
+        {diagnostics && diagnostics.all_users && diagnostics.all_users.length > 0 && (
+          <div className="bg-white rounded-2xl shadow-lg p-6 mb-6">
+            <h2 className="text-xl font-semibold mb-4 text-gray-900">
+              All Users in Database ({diagnostics.all_users.length})
+            </h2>
+            <p className="text-sm text-gray-600 mb-4">
+              These are ALL the users in your production database. Search for the mobile number you're trying to use.
+            </p>
+            <div className="max-h-96 overflow-y-auto">
+              <table className="w-full text-sm">
+                <thead className="bg-gray-50 sticky top-0">
+                  <tr>
+                    <th className="px-4 py-2 text-left">Mobile</th>
+                    <th className="px-4 py-2 text-left">Name</th>
+                    <th className="px-4 py-2 text-left">Role</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {diagnostics.all_users.map((user, index) => (
+                    <tr key={index} className="border-t hover:bg-gray-50">
+                      <td className="px-4 py-2 font-mono text-xs">{user.mobile}</td>
+                      <td className="px-4 py-2">{user.name}</td>
+                      <td className="px-4 py-2">
+                        <span className="px-2 py-1 bg-blue-100 text-blue-700 rounded text-xs">
+                          {user.role}
+                        </span>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        )}
+
         {/* Instructions */}
         <div className="bg-blue-50 border border-blue-200 rounded-2xl p-6">
           <h3 className="font-semibold text-blue-900 mb-3">How to Use This Page</h3>
@@ -290,6 +406,8 @@ const Diagnostics = () => {
             <li>✅ <strong>Green Status:</strong> System is working correctly</li>
             <li>❌ <strong>Red Status:</strong> There's a problem that needs attention</li>
             <li>🔄 <strong>Click Refresh:</strong> Re-run all diagnostic checks</li>
+            <li>🔍 <strong>Search User:</strong> Check if a specific mobile number exists</li>
+            <li>🔧 <strong>Reset Users:</strong> Fix MD & COO credentials if login fails</li>
             <li>📋 <strong>Share this info:</strong> Screenshot this page if you need support</li>
           </ul>
         </div>
