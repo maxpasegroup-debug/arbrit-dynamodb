@@ -234,7 +234,9 @@ metadata:
 
 test_plan:
   current_focus:
-    - "Sales Head API Endpoints"
+    - "MD Dashboard"
+    - "COO Dashboard"
+    - "Accounts Dashboard"
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
