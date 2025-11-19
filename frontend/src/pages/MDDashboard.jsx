@@ -178,7 +178,7 @@ const MDDashboard = () => {
             </CardHeader>
             <CardContent className="space-y-4">
               <div>
-                <p className="text-3xl font-bold text-amber-100">{dashboardData.executive_analytics.total_employees}</p>
+                <p className="text-2xl sm:text-3xl font-bold text-amber-100">{dashboardData.executive_analytics.total_employees}</p>
                 <p className="text-sm text-slate-400">Total Workforce</p>
               </div>
               <div className="grid grid-cols-2 gap-3">
@@ -204,7 +204,7 @@ const MDDashboard = () => {
             </CardHeader>
             <CardContent className="space-y-3">
               <div>
-                <p className="text-3xl font-bold text-amber-100">{dashboardData.workforce.total}</p>
+                <p className="text-2xl sm:text-3xl font-bold text-amber-100">{dashboardData.workforce.total}</p>
                 <p className="text-sm text-slate-400">Active Employees</p>
               </div>
               <div className="space-y-2">
@@ -262,7 +262,7 @@ const MDDashboard = () => {
             </CardHeader>
             <CardContent className="space-y-4">
               <div>
-                <p className="text-3xl font-bold text-amber-100">{dashboardData.academic.certificates_issued}</p>
+                <p className="text-2xl sm:text-3xl font-bold text-amber-100">{dashboardData.academic.certificates_issued}</p>
                 <p className="text-sm text-slate-400">Certificates Issued</p>
               </div>
               <div className="grid grid-cols-2 gap-3">
