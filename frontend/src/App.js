@@ -31,6 +31,8 @@ function App() {
           <Route path="/dashboard/academic" element={<AcademicHeadDashboard />} />
           <Route path="/dashboard/coordinator" element={<AcademicCoordinatorDashboard />} />
           <Route path="/dashboard/trainer" element={<TrainerDashboard />} />
+          <Route path="/dashboard/dispatch" element={<DispatchHeadDashboard />} />
+          <Route path="/dashboard/dispatch-assistant" element={<DispatchAssistantDashboard />} />
           <Route path="/hrm" element={<HRMDashboard />} />
         </Routes>
       </BrowserRouter>
