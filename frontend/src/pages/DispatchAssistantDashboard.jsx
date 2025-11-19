@@ -204,6 +204,10 @@ const DispatchAssistantDashboard = () => {
             <TabsContent value="profile" className="mt-0">
               <AssistantProfile />
             </TabsContent>
+
+            <TabsContent value="expenses" className="mt-0">
+              <ExpenseSubmission />
+            </TabsContent>
           </div>
         </Tabs>
       </main>
