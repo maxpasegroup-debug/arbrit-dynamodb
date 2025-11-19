@@ -237,6 +237,10 @@ const TrainerDashboard = () => {
             <TabsContent value="uploads" className="mt-0">
               <TrainerUploads />
             </TabsContent>
+
+            <TabsContent value="expenses" className="mt-0">
+              <ExpenseSubmission />
+            </TabsContent>
           </div>
         </Tabs>
       </main>
