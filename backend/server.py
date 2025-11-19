@@ -18,19 +18,24 @@ ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
 
 # MongoDB connection with error handling
-# Read database name from environment variable (for both preview and production)
-DB_NAME = os.environ.get('DB_NAME', 'arbrit-workdesk')
+# Environment-based database selection to ensure correct DB in production
+if os.getenv("ENV") == "production":
+    DB_NAME = "arbrit-workdesk"  # REAL PRODUCTION DATABASE (36 users)
+    print("🔵 Environment: PRODUCTION - Using production database")
+else:
+    DB_NAME = "arbrit-workdesk-test_database"  # For preview and testing (33 users)
+    print("🔵 Environment: PREVIEW - Using test database")
 
 try:
     mongo_url = os.environ['MONGO_URL']
     print(f"🔵 Attempting MongoDB connection to: {mongo_url.split('@')[-1] if '@' in mongo_url else mongo_url}")
-    print(f"🔵 Using database name from environment: {DB_NAME}")
+    print(f"🔵 Selected database name: {DB_NAME}")
     client = AsyncIOMotorClient(
         mongo_url,
         serverSelectionTimeoutMS=5000,  # 5 second timeout
         connectTimeoutMS=10000,  # 10 second connection timeout
     )
-    db = client[DB_NAME]  # Use DB_NAME from environment variable
+    db = client[DB_NAME]  # Use environment-specific database name
     print(f"✅ MongoDB client initialized successfully for database: {DB_NAME}")
 except KeyError as e:
     print(f"❌ CRITICAL: Missing environment variable: {e}")
