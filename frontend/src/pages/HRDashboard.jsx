@@ -42,9 +42,9 @@ const HRDashboard = () => {
 
         const userInfo = response.data;
         
-        // Check if user has HR role
-        if (userInfo.role !== 'HR') {
-          toast.error('Access denied. HR role required.');
+        // Check if user has HR role or is COO/MD (with viewing access)
+        if (!['HR', 'COO', 'MD', 'CEO'].includes(userInfo.role)) {
+          toast.error('Access denied. HR access required.');
           navigate('/login');
           return;
         }
