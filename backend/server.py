@@ -2078,6 +2078,48 @@ async def get_academic_team(current_user: dict = Depends(get_current_user)):
 
 # ==================== CERTIFICATE GENERATION MODULE ====================
 
+# Certificate Template Model (NEW - ADDITIVE)
+class CertificateTemplate(BaseModel):
+    model_config = ConfigDict(extra="ignore")
+    
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    name: str
+    type: str = "INHOUSE"  # Default type
+    logo_url: Optional[str] = None
+    seal_url: Optional[str] = None
+    signature_url: Optional[str] = None
+    primary_color: Optional[str] = "#1a2f4d"
+    secondary_color: Optional[str] = "#f59e0b"
+    is_default: bool = False
+    created_by: str
+    created_by_name: str
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+    updated_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+    is_active: bool = True
+
+
+class CertificateTemplateCreate(BaseModel):
+    name: str
+    type: str = "INHOUSE"
+    logo_url: Optional[str] = None
+    seal_url: Optional[str] = None
+    signature_url: Optional[str] = None
+    primary_color: Optional[str] = "#1a2f4d"
+    secondary_color: Optional[str] = "#f59e0b"
+    is_default: bool = False
+
+
+class CertificateTemplateUpdate(BaseModel):
+    name: Optional[str] = None
+    logo_url: Optional[str] = None
+    seal_url: Optional[str] = None
+    signature_url: Optional[str] = None
+    primary_color: Optional[str] = None
+    secondary_color: Optional[str] = None
+    is_default: Optional[bool] = None
+    is_active: Optional[bool] = None
+
+
 class CertificateCandidate(BaseModel):
     model_config = ConfigDict(extra="ignore")
     
