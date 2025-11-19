@@ -9,6 +9,8 @@ import LeadAllocation from '@/components/sales/LeadAllocation';
 import QuotationApproval from '@/components/sales/QuotationApproval';
 import LeaveApprovals from '@/components/sales/LeaveApprovals';
 import RequestsView from '@/components/sales/RequestsView';
+import ExpenseSubmission from '@/components/expenses/ExpenseSubmission';
+import ExpenseApprovals from '@/components/expenses/ExpenseApprovals';
 import { toast } from 'sonner';
 import axios from 'axios';
 
