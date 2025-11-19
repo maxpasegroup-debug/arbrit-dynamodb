@@ -9,6 +9,8 @@ import AssignmentBoard from '@/components/dispatch/AssignmentBoard';
 import LiveDeliveries from '@/components/dispatch/LiveDeliveries';
 import DeliveryHistory from '@/components/dispatch/DeliveryHistory';
 import DispatchTeam from '@/components/dispatch/DispatchTeam';
+import ExpenseSubmission from '@/components/expenses/ExpenseSubmission';
+import ExpenseApprovals from '@/components/expenses/ExpenseApprovals';
 import { toast } from 'sonner';
 
 const DispatchHeadDashboard = () => {
