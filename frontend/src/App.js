@@ -15,6 +15,7 @@ import TrainerDashboard from "@/pages/TrainerDashboard";
 import DispatchHeadDashboard from "@/pages/DispatchHeadDashboard";
 import DispatchAssistantDashboard from "@/pages/DispatchAssistantDashboard";
 import AccountsDashboard from "@/pages/AccountsDashboard";
+import PublicAssessmentForm from "@/pages/PublicAssessmentForm";
 import { Toaster } from '@/components/ui/sonner';
 
 function App() {
