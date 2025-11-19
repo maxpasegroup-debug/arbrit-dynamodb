@@ -293,10 +293,10 @@ Delete Employee
 
 ## 📍 URLs
 
-- **Login**: https://academic-dashboard.preview.emergentagent.com/login
-- **COO Dashboard**: https://academic-dashboard.preview.emergentagent.com/dashboard/coo
-- **HR Dashboard**: https://academic-dashboard.preview.emergentagent.com/dashboard/hr
-- **HRM Modules** (COO access): https://academic-dashboard.preview.emergentagent.com/hrm
+- **Login**: https://safety-dashboard-15.preview.emergentagent.com/login
+- **COO Dashboard**: https://safety-dashboard-15.preview.emergentagent.com/dashboard/coo
+- **HR Dashboard**: https://safety-dashboard-15.preview.emergentagent.com/dashboard/hr
+- **HRM Modules** (COO access): https://safety-dashboard-15.preview.emergentagent.com/hrm
 
 ---
 

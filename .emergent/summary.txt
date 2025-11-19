@@ -1,92 +1,483 @@
-<analysis>
-My analysis of the trajectory indicates a phased, iterative development process for a full-stack business management application. The user provides detailed requirements for each phase, emphasizing production stability and non-destructive updates.
+<analysis>**original_problem_statement:**
+The user's primary goal is to finalize the Arbrit Safety application for pre-deployment by implementing three remaining dashboards: Managing Director (MD), Chief Operating Officer (COO), and Accounts. This must be done without altering or introducing regressions to any of the existing, stable modules (HR, Sales, Academic, Dispatch).
 
-**Phase 1:** The AI engineer successfully built the initial login page and a COO dashboard. Authentication is based on mobile number and the last 4 digits as a PIN.
+The project evolved through several phases:
+1.  **Academic Module:** Build dashboards for Academic Head, Academic Coordinator, and Trainer, fixing critical login and data integrity issues along the way.
+2.  **Dispatch Module:** Create a full-featured dispatch and delivery system for certificates, with dashboards for a Dispatch Head and Dispatch Assistant.
+3.  **Data Integrity Fixes:** Implement robust backend logic to handle employee deletion and re-onboarding, ensuring user accounts are correctly created, updated, and deleted to prevent data conflicts.
+4.  **Certificate System Enhancements:** Implement a custom certificate generation system with templates, QR code verification, and bulk generation capabilities.
+5.  **Executive & Accounts Dashboards (Current Phase):** Build the final set of dashboards for MD, COO, and Accounts, focusing on read-only analytics for the MD and a simplified navigation hub for the COO.
 
-**Phase 2 (HRM):** A comprehensive Human Resource Management (HRM) module was added, including employee management, attendance, and document handling. A separate HR role and dashboard were created, with access granted upon employee creation by the COO.
+**PRODUCT REQUIREMENTS (Final Pre-Deployment Phase):**
+-   **MD Dashboard:**
+    -   Create a non-employee superuser account for the MD (Brijith Shaji).
+    -   Build a read-only, high-level executive dashboard () with a royal feel (dark theme, gold accents).
+    -   The dashboard must display aggregated data from a new  endpoint, showing branch metrics, department snapshots, a sales funnel, critical alerts, and AI-style insights.
+-   **COO Dashboard:**
+    -   Restore/implement a simple navigation hub at .
+    -   The dashboard should contain four simple cards (Marketing & Sales, HRM, Academics, Accounts) that link to their respective detailed modules.
+    -   Ensure the existing, functional COO HRM module is correctly linked.
+-   **Accounts Dashboard:**
+    -   Finalize a minimal, tabbed dashboard at  for Accounts Head/Executives.
+    -   Tabs should include: Invoices, Payments, and Requests from Sales.
+    -   Implement functionality to create invoices and record payments. Reuse existing APIs where possible.
+-   **Safety:** All new development must be additive and modular, with no breaking changes to existing functionality. A full regression check is required upon completion.
 
-**Phase 3 (Sales):** The scope expanded to include dashboards for a Sales Head, Tele Sales, and Field Sales employees. This involved significant backend work to create new models and API endpoints for leads, quotations, and role-based access. The engineer implemented role-specific onboarding logic, where creating an employee with a Sales designation automatically provisions their account and dashboard access.
+**User's preferred language**: English
 
-**Current State & Issue:** The AI engineer fixed a critical frontend compilation error () in  caused by improperly escaped characters. The user has confirmed the backend is stable and has instructed the AI to complete the frontend UI for all sales dashboards. The AI was in the process of creating the required React components for lead management and quotation management just before this summary was requested.
+**what currently exists?**
+The application is a comprehensive, multi-role business management tool with a FastAPI backend and React frontend. All core modules are implemented and functional: HR (COO, HR), Sales (Head, Tele, Field), Academic (Head, Coordinator, Trainer), and Dispatch (Head, Assistant). Critical data integrity issues related to employee user accounts have been resolved.
 
-The user's primary language is English, and all future responses should be in English.
-</analysis>
+The agent has just begun implementing the final user request:
+-   **Backend:** New summary endpoints (, ) have been added to . Logic to create the MD superuser on startup has also been added.
+-   **Frontend:** New pages (, ) have been created, and routing has been updated in  and . The old, incorrect analytics-heavy  file has been deleted.
 
-<product_requirements>
-The project is to build a multi-role, full-stack business management application named Arbrit Safety.
+**Last working item**:
+-   **Last item agent was working:** The agent was implementing the new COO and MD dashboards. It successfully created the backend summary endpoints, added the frontend pages, updated routing, and performed a successful login test and screenshot verification for the new COO dashboard, confirming it loads with the correct data structure. The agent was preparing a completion summary before being interrupted by a new, more detailed prompt that clarified and finalized the requirements for the MD, COO, and Accounts dashboards.
+-   **Status:** IN PROGRESS
+-   **Agent Testing Done:** Y (Partial: COO backend endpoint tested with curl, and COO dashboard UI verified with a screenshot)
+-   **Which testing method agent to use?** both. The agent should use  to test the MD and any new Accounts endpoints, and the  tool to verify the UI and functionality of all three new dashboards (MD, COO, Accounts). A full manual regression test of other roles is also required.
+-   **User Testing Done:** N
 
-**Phase 1 (Completed):**
-- A pixel-perfect login page with mobile number and a 4-digit PIN (last 4 digits of the mobile number) for authentication.
-- A COO dashboard with four card-based modules: Marketing & Sales, HRM, Academics, and Accounts.
+**All Pending/In progress Issue list**:
+This list is empty as there are no outstanding bugs. The work is focused on new feature development.
 
-**Phase 2 (Completed):**
-- A full Human Resources Management (HRM) module accessible from the COO dashboard.
-- HRM features include: Employee Management (Add/Edit/Delete), Attendance Management (auto-recorded on login), Employee Records (document upload with expiry), and Company Document Management.
-- A dedicated HR dashboard with the same HRM features, accessible to users onboarded as HR.
+**In progress Task List**:
+-   **Task 1: Finalize MD, COO, and Accounts Dashboards (P0)**
+    -   **Description:** Implement the final set of dashboards as per the detailed requirements in the last user message. This is the main priority.
+    -   **Where to resume:**
+        1.  **MD Dashboard:** The backend endpoint and frontend page exist. Implement the UI as specified (dark, royal theme, 2x3 grid of analytics cards) and connect it to the  endpoint. Test the MD login ( / ) and dashboard rendering.
+        2.  **COO Dashboard:** The page exists and is fetching data. Update the UI to be a simple 2x2 grid of navigation cards (Marketing & Sales, HRM, Academics, Accounts) that link to the respective modules.
+        3.  **Accounts Dashboard:** Create/finalize the  page with a tabbed interface (Invoices, Payments, Requests from Sales). Implement the required backend endpoints if they don't already exist, and build the UI for creating invoices and recording payments.
+    -   **What will be achieved with this?** This will complete the final pre-deployment feature set requested by the user.
+    -   **Status:** IN PROGRESS
+    -   **Should Test frontend/backend/both after fix?** Both.
+    -   **Blocked on something:** None.
 
-**Phase 3 (In Progress):**
-- Role-based dashboards for Sales Head, Tele Sales, and Field Sales employees.
-- The Sales Head dashboard includes team attendance monitoring, lead management (assigning online leads, viewing self-generated leads), quotation creation/approval, and leave approvals.
-- Tele Sales and Field Sales dashboards need to be completed with functionalities for handling assigned leads, submitting self-generated leads, creating quotations, requesting trainer availability from the Academics department, and requesting invoices from the Accounts department.
-- The HR module was enhanced to include sales-specific fields (, ) and table filters (by branch, department).
-</product_requirements>
+**Upcoming and Future Tasks**
+-   **Upcoming Tasks:**
+    -   **P1: Complete Certificate System Enhancements:**
+        -   The backend work (models, endpoints for templates, QR codes, bulk generation) is mostly complete. The frontend implementation is pending.
+        -   **Certificate Templates UI:** Finalize  to allow creating, listing, and managing templates (logo, seal, signature).
+        -   **PDF Export & Print:** Add Download PDF and Print buttons to the certificate view, using a library like  to generate the PDF on the frontend.
+        -   **QR Code Rendering:** Integrate a QR code component to display the  on the certificate preview/PDF.
+        -   **Bulk Generation UI:** Add a Bulk Generate feature with CSV upload to create certificates for multiple candidates at once.
+-   **Future Tasks:**
+    -   None specified.
 
-<key_technical_concepts>
-- **Backend:** FastAPI (Python)
-- **Frontend:** React, Tailwind CSS, Shadcn/UI
-- **Database:** MongoDB
-- **Authentication:** JWT-based, using mobile number as username and the last 4 digits as a PIN.
-- **Architecture:** RESTful API with a role-based access control (RBAC) system. Backend serves a JSON API consumed by the React frontend.
-- **Key Frontend Libraries:**  for icons.
-- **Key Backend Libraries:** , ,  for JWT.
-</key_technical_concepts>
+**Completed work in this session**
+-   **Academic Module Completion:**
+    -   Fixed login failures for Academic Coordinator roles by implementing correct user account creation logic.
+    -   Created and routed dashboards for Academic Coordinator and Trainer roles.
+    -   Resolved login conflicts caused by duplicate mobile numbers and incorrect user data.
+-   **Dispatch & Delivery Module Implementation:**
+    -   Added Dispatch Head and Dispatch Assistant roles, including backend logic and HR form updates.
+    -   Created all necessary backend API endpoints under .
+    -   Built and integrated complete frontend dashboards for both Dispatch roles.
+-   **Critical Data Integrity Fixes:**
+    -   **Employee Deletion:** The  endpoint now correctly performs a cascading delete, removing the  record and the corresponding  account.
+    -   **Employee Re-onboarding:** The  endpoint now deletes any pre-existing user account with the same mobile number before creating a new one, preventing data conflicts.
+    -   **Employee Update:** The  endpoint now syncs changes to an employee's name or mobile number with their user account.
+    -   **Unique Constraint:** Added a unique index on the  field in the  collection to enforce data integrity at the database level.
+-   **Certificate System (Foundation):**
+    -   Implemented backend models and API endpoints for certificate templates, QR code verification, and bulk generation.
+    -   Created a placeholder  component.
+-   **Executive Dashboards (Foundation):**
+    -   Implemented backend summary endpoints for COO and MD dashboards.
+    -   Created new frontend pages for COO and MD, and updated all necessary routing.
 
-<code_architecture>
-The application follows a standard monorepo structure with separate  and  directories.
+**Earlier issues found/mentioned but not fixed**
+-   **Issue 1: Failed to fetch attendance data in Sales Head Dashboard**
+    -   **Description:** An error toast Failed to fetch attendance data appears in the Team tab of the Sales Head dashboard. The issue was mentioned in the initial handoff but was not addressed in this session.
+    -   **Debug checklist:**
+        1.  Inspect the network request in the browser's developer tools on the Sales Head Team tab ().
+        2.  Check the backend endpoint () for permission errors specific to the Sales Head role.
+        3.  Review  to analyze the API call and error handling.
+    -   **Why to solve this issue and what will be achieved with this?** This is a lingering bug that affects core functionality for a key role. Fixing it will ensure data visibility is correct and robust.
+    -   **Should Test frontend/backend/both after fix:** Both.
+    -   **Is recurring issue?** N.
+
+**Known issue recurrence from previous fork**
+-   No recurring issues from the previous fork were noted.
+
+**Code Architecture**
 
 
+**Key Technical Concepts**
+-   **Backend:** FastAPI (Python), Pydantic
+-   **Frontend:** React, Tailwind CSS, Shadcn/UI
+-   **Database:** MongoDB
+-   **Authentication:** JWT, Role-Based Access Control (RBAC). Mobile number + last 4 digits as PIN.
+-   **Architecture:** Monorepo, RESTful API, Additive/Modular Development.
 
-**Key Files & Recent Changes:**
+**key DB schema**
+-   : { (unique), , , , uid=0(root) gid=0(root) groups=0(root)}
+-   : {uid=0(root) gid=0(root) groups=0(root), , , , , ...}
+-   : (New) {, , , , , , ...}
+-   : (New) {uid=0(root) gid=0(root) groups=0(root), , , , , }
+-   : (Updated) Now includes , , and .
 
--   ****
-    -   **Importance:** This is the core of the backend, defining all FastAPI application logic, API endpoints, Pydantic models, and database interactions for all roles (COO, HR, Sales Head, Sales Employees).
-    -   **Changes:** It has been extensively modified to add models and API endpoints for all features, including employees, leads, quotations, and role-specific dashboard data. Recent edits added endpoints for self-lead submission and other sales-related functionalities (, , etc.).
+**changes in tech stack**
+-   None.
 
--   ****
-    -   **Importance:** Manages the application's client-side routing, directing users to the correct dashboard (, , , etc.) based on their role after login.
-    -   **Changes:** Updated multiple times to add routes for the newly created HR, Sales Head, Tele Sales, and Field Sales dashboards.
+**All files**
+-   **Created:**
+    -   , , , , , 
+    -    (4 components)
+    -    (4 components)
+    -    (5+ components)
+    -   , 
+-   **Updated:**
+    -   : Major updates to add Dispatch APIs, Executive summary APIs, Certificate enhancement APIs, and critical fixes for employee/user data synchronization. Added unique index creation on startup.
+    -   : Added routes for all new dashboards.
+    -   : Added routing logic for all new roles (Coordinator, Trainer, Dispatch, MD).
+    -   : Added Dispatch department and designations to dropdowns.
+    -   : Added new tabs for certificate features.
+-   **Deleted:**
+    -   : Replaced by the new .
 
--   ****
-    -   **Importance:** A critical component used in both the COO and HR dashboards for managing employees.
-    -   **Changes:** Recently updated to include new form fields (, ) for onboarding sales team members and to add filters for branch and department at the top of the employee table.
+**Areas that need refactoring**:
+-    is extremely large and monolithic. Splitting routes, models, and business logic into separate modules (e.g., , ) would significantly improve maintainability.
 
--   ****, ****, ****
-    -   **Importance:** These are the main pages for the different sales roles. They are responsible for laying out the UI and integrating the various functional components.
-    -   **Changes:** Created and updated to remove placeholder text. They are the target for integrating newly created sales components.
+**key api endpoints**
+-   : Full suite of CRUD endpoints for managing delivery tasks.
+-   , : (New) Read-only endpoints for executive dashboards.
+-   : (New) CRUD endpoints for certificate templates.
+-   : (New) Endpoint for bulk certificate creation.
+-   : (New) Public endpoint to verify a certificate via QR code.
+-   : The , , and  methods were significantly enhanced to ensure data integrity between  and  collections.
 
--   **** (New Directory)
-    -   **Importance:** This new directory centralizes all components related to the sales dashboards.
-    -   **Changes:** The AI just created , , and . These are the first components for building out the full sales functionality.  within this directory was also fixed due to a syntax error.
-</code_architecture>
+**Critical Info for New Agent**
+-   **Follow the Final Prompt:** The last user message (#296) is the definitive source of truth for the MD, COO, and Accounts dashboards. It contains very specific design and functional requirements.
+-   **MD is a Superuser:** The Managing Director is not an employee. Their user account is created via a startup script in  and should not appear in the HR module.
+-   **COO Dashboard is a Hub:** The user explicitly rejected a complex analytics dashboard for the COO. The new  must be a simple 2x2 grid of navigation cards.
+-   **Production Safety is Paramount:** The user has repeatedly stressed that no existing functionality should be broken. All changes must be additive. Rigorous testing and regression checks are mandatory before finishing.
 
-<pending_tasks>
--   Complete the frontend UI for the Tele Sales and Field Sales dashboards.
--   Integrate the  and  features, which require communication with the Academic and Accounts departments, respectively.
--   Implement the  feature for the Field Sales dashboard.
--   Verify and finalize the document expiry reminder system for both employee and company documents in the HR module.
--   Fully integrate the newly created sales components (, , etc.) into the respective sales dashboards.
-</pending_tasks>
+**documents created in this job**
+-   None.
 
-<current_work>
-The AI engineer was actively building the frontend components for the sales dashboards, as per the user's explicit instructions to complete the UI on top of the stable backend APIs. The immediate preceding actions were the creation of several new files within the  directory to handle complex sales functionalities.
+**Last 5 User Messages and any pending user messages**
+1.  **User:** Requests an in-house certificate generation system and a critical fix for employee data overlapping when an employee is deleted and re-onboarded.
+    -   *Status: Partially completed. The data integrity issue was fixed. The certificate system backend was built, but the frontend is incomplete.*
+2.  **User:** Reports a name mismatch issue where two different mobile numbers are associated with the same user name.
+    -   *Status: Completed. The agent fixed the specific data mismatch and implemented a permanent fix in the employee update endpoint.*
+3.  **User:** Provides requirements for certificate enhancements: templates, PDF export, QR codes, and bulk generation.
+    -   *Status: In Progress. Backend is mostly done, frontend is pending.*
+4.  **User:** Requests the creation of COO and MD dashboards with specific, high-level analytics and a royal design for the MD.
+    -   *Status: Superseded by the next message but partially acted upon (backend endpoints and pages created).*
+5.  **User:** Provides the final, detailed, pre-deployment instructions for the MD, COO, and Accounts dashboards, establishing them as the top priority and specifying rules for implementation.
+    -   *Status: This is the current, active task for the next agent.*
 
-Specifically, the last successful actions were:
-1.  Creation of  to allow sales users to submit their own leads.
-2.  Creation of  and  to manage leads and quotations.
+**Project Health Check:**
+-   **Broken:**
+    -   The Certificate Enhancement features are incomplete (frontend is missing).
+    -   The MD, COO, and Accounts dashboards are incomplete.
+-   **Mocked:**
+    -   No mocked components are in use.
 
-The very last action was an attempt to create the remaining components for trainer requests, invoice requests, and visit logs. This indicates the work is focused on systematically building out all required UI components for the sales modules before integrating them into the main dashboard pages ( and ). The backend is considered feature-complete and stable for this phase.
-</current_work>
+**Testing status**
+-   **Testing agent used after significant changes:** NO
+-   **Troubleshoot agent used after agent stuck in loop:** NO
+-   **Test files created:** None.
+-   **Known regressions:** None identified by the agent.
 
-<optional_next_step>
-Create the remaining frontend components for the sales dashboards: , , and , and then integrate all the new sales components into the  and  pages.
-</optional_next_step>
+**Credentials to test flow:**
+-   **MD:**
+    -   Mobile: 
+    -   PIN: 
+-   **COO / Other roles:** Find employee mobile numbers from the database. The PIN is always the last 4 digits of the mobile number.
+    -   Example command to find employees: </analysis> data appears in the Team tab of the Sales Head dashboard. The issue was mentioned in the initial handoff but was not addressed in this session.
+    -   **Debug checklist:**
+        1.  Inspect the network request in the browser's developer tools on the Sales Head Team tab ().
+        2.  Check the backend endpoint () for permission errors specific to the Sales Head role.
+        3.  Review  to analyze the API call and error handling.
+    -   **Why to solve this issue and what will be achieved with this?** This is a lingering bug that affects core functionality for a key role. Fixing it will ensure data visibility is correct and robust.
+    -   **Should Test frontend/backend/both after fix:** Both.
+    -   **Is recurring issue?** N.
+
+**Known issue recurrence from previous fork**
+-   No recurring issues from the previous fork were noted.
+
+**Code Architecture**
+
+
+**Key Technical Concepts**
+-   **Backend:** FastAPI (Python), Pydantic
+-   **Frontend:** React, Tailwind CSS, Shadcn/UI
+-   **Database:** MongoDB
+-   **Authentication:** JWT, Role-Based Access Control (RBAC). Mobile number + last 4 digits as PIN.
+-   **Architecture:** Monorepo, RESTful API, Additive/Modular Development.
+
+**key DB schema**
+-   : { (unique), , , , uid=0(root) gid=0(root) groups=0(root)}
+-   : {uid=0(root) gid=0(root) groups=0(root), , , , , ...}
+-   : (New) {, , , , , , ...}
+-   : (New) {uid=0(root) gid=0(root) groups=0(root), , , , , }
+-   : (Updated) Now includes , , and .
+
+**changes in tech stack**
+-   None.
+
+**All files**
+-   **Created:**
+    -   , , , , , 
+    -    (4 components)
+    -    (4 components)
+    -    (5+ components)
+    -   , 
+-   **Updated:**
+    -   : Major updates to add Dispatch APIs, Executive summary APIs, Certificate enhancement APIs, and critical fixes for employee/user data synchronization. Added unique index creation on startup.
+    -   : Added routes for all new dashboards.
+    -   : Added routing logic for all new roles (Coordinator, Trainer, Dispatch, MD).
+    -   : Added Dispatch department and designations to dropdowns.
+    -   : Added new tabs for certificate features.
+-   **Deleted:**
+    -   : Replaced by the new .
+
+**Areas that need refactoring**:
+-    is extremely large and monolithic. Splitting routes, models, and business logic into separate modules (e.g., , ) would significantly improve maintainability.
+
+**key api endpoints**
+-   : Full suite of CRUD endpoints for managing delivery tasks.
+-   , : (New) Read-only endpoints for executive dashboards.
+-   : (New) CRUD endpoints for certificate templates.
+-   : (New) Endpoint for bulk certificate creation.
+-   : (New) Public endpoint to verify a certificate via QR code.
+-   : The , , and  methods were significantly enhanced to ensure data integrity between  and  collections.
+
+**Critical Info for New Agent**
+-   **Follow the Final Prompt:** The last user message (#296) is the definitive source of truth for the MD, COO, and Accounts dashboards. It contains very specific design and functional requirements.
+-   **MD is a Superuser:** The Managing Director is not an employee. Their user account is created via a startup script in  and should not appear in the HR module.
+-   **COO Dashboard is a Hub:** The user explicitly rejected a complex analytics dashboard for the COO. The new  must be a simple 2x2 grid of navigation cards.
+-   **Production Safety is Paramount:** The user has repeatedly stressed that no existing functionality should be broken. All changes must be additive. Rigorous testing and regression checks are mandatory before finishing.
+
+**documents created in this job**
+-   None.
+
+**Last 5 User Messages and any pending user messages**
+1.  **User:** Requests an in-house certificate generation system and a critical fix for employee data overlapping when an employee is deleted and re-onboarded.
+    -   *Status: Partially completed. The data integrity issue was fixed. The certificate system backend was built, but the frontend is incomplete.*
+2.  **User:** Reports a name mismatch issue where two different mobile numbers are associated with the same user name.
+    -   *Status: Completed. The agent fixed the specific data mismatch and implemented a permanent fix in the employee update endpoint.*
+3.  **User:** Provides requirements for certificate enhancements: templates, PDF export, QR codes, and bulk generation.
+    -   *Status: In Progress. Backend is mostly done, frontend is pending.*
+4.  **User:** Requests the creation of COO and MD dashboards with specific, high-level analytics and a royal design for the MD.
+    -   *Status: Superseded by the next message but partially acted upon (backend endpoints and pages created).*
+5.  **User:** Provides the final, detailed, pre-deployment instructions for the MD, COO, and Accounts dashboards, establishing them as the top priority and specifying rules for implementation.
+    -   *Status: This is the current, active task for the next agent.*
+
+**Project Health Check:**
+-   **Broken:**
+    -   The Certificate Enhancement features are incomplete (frontend is missing).
+    -   The MD, COO, and Accounts dashboards are incomplete.
+-   **Mocked:**
+    -   No mocked components are in use.
+
+**Testing status**
+-   **Testing agent used after significant changes:** NO
+-   **Troubleshoot agent used after agent stuck in loop:** NO
+-   **Test files created:** None.
+-   **Known regressions:** None identified by the agent.
+
+**Credentials to test flow:**
+-   **MD:**
+    -   Mobile: 
+    -   PIN: 
+-   **COO / Other roles:** Find employee mobile numbers from the database. The PIN is always the last 4 digits of the mobile number.
+    -   Example command to find employees: </analysis> data appears in the Team tab of the Sales Head dashboard. The issue was mentioned in the initial handoff but was not addressed in this session.
+    -   **Debug checklist:**
+        1.  Inspect the network request in the browser's developer tools on the Sales Head Team tab ().
+        2.  Check the backend endpoint () for permission errors specific to the Sales Head role.
+        3.  Review  to analyze the API call and error handling.
+    -   **Why to solve this issue and what will be achieved with this?** This is a lingering bug that affects core functionality for a key role. Fixing it will ensure data visibility is correct and robust.
+    -   **Should Test frontend/backend/both after fix:** Both.
+    -   **Is recurring issue?** N.
+
+**Known issue recurrence from previous fork**
+-   No recurring issues from the previous fork were noted.
+
+**Code Architecture**
+
+
+**Key Technical Concepts**
+-   **Backend:** FastAPI (Python), Pydantic
+-   **Frontend:** React, Tailwind CSS, Shadcn/UI
+-   **Database:** MongoDB
+-   **Authentication:** JWT, Role-Based Access Control (RBAC). Mobile number + last 4 digits as PIN.
+-   **Architecture:** Monorepo, RESTful API, Additive/Modular Development.
+
+**key DB schema**
+-   : { (unique), , , , uid=0(root) gid=0(root) groups=0(root)}
+-   : {uid=0(root) gid=0(root) groups=0(root), , , , , ...}
+-   : (New) {, , , , , , ...}
+-   : (New) {uid=0(root) gid=0(root) groups=0(root), , , , , }
+-   : (Updated) Now includes , , and .
+
+**changes in tech stack**
+-   None.
+
+**All files**
+-   **Created:**
+    -   , , , , , 
+    -    (4 components)
+    -    (4 components)
+    -    (5+ components)
+    -   , 
+-   **Updated:**
+    -   : Major updates to add Dispatch APIs, Executive summary APIs, Certificate enhancement APIs, and critical fixes for employee/user data synchronization. Added unique index creation on startup.
+    -   : Added routes for all new dashboards.
+    -   : Added routing logic for all new roles (Coordinator, Trainer, Dispatch, MD).
+    -   : Added Dispatch department and designations to dropdowns.
+    -   : Added new tabs for certificate features.
+-   **Deleted:**
+    -   : Replaced by the new .
+
+**Areas that need refactoring**:
+-    is extremely large and monolithic. Splitting routes, models, and business logic into separate modules (e.g., , ) would significantly improve maintainability.
+
+**key api endpoints**
+-   : Full suite of CRUD endpoints for managing delivery tasks.
+-   , : (New) Read-only endpoints for executive dashboards.
+-   : (New) CRUD endpoints for certificate templates.
+-   : (New) Endpoint for bulk certificate creation.
+-   : (New) Public endpoint to verify a certificate via QR code.
+-   : The , , and  methods were significantly enhanced to ensure data integrity between  and  collections.
+
+**Critical Info for New Agent**
+-   **Follow the Final Prompt:** The last user message (#296) is the definitive source of truth for the MD, COO, and Accounts dashboards. It contains very specific design and functional requirements.
+-   **MD is a Superuser:** The Managing Director is not an employee. Their user account is created via a startup script in  and should not appear in the HR module.
+-   **COO Dashboard is a Hub:** The user explicitly rejected a complex analytics dashboard for the COO. The new  must be a simple 2x2 grid of navigation cards.
+-   **Production Safety is Paramount:** The user has repeatedly stressed that no existing functionality should be broken. All changes must be additive. Rigorous testing and regression checks are mandatory before finishing.
+
+**documents created in this job**
+-   None.
+
+**Last 5 User Messages and any pending user messages**
+1.  **User:** Requests an in-house certificate generation system and a critical fix for employee data overlapping when an employee is deleted and re-onboarded.
+    -   *Status: Partially completed. The data integrity issue was fixed. The certificate system backend was built, but the frontend is incomplete.*
+2.  **User:** Reports a name mismatch issue where two different mobile numbers are associated with the same user name.
+    -   *Status: Completed. The agent fixed the specific data mismatch and implemented a permanent fix in the employee update endpoint.*
+3.  **User:** Provides requirements for certificate enhancements: templates, PDF export, QR codes, and bulk generation.
+    -   *Status: In Progress. Backend is mostly done, frontend is pending.*
+4.  **User:** Requests the creation of COO and MD dashboards with specific, high-level analytics and a royal design for the MD.
+    -   *Status: Superseded by the next message but partially acted upon (backend endpoints and pages created).*
+5.  **User:** Provides the final, detailed, pre-deployment instructions for the MD, COO, and Accounts dashboards, establishing them as the top priority and specifying rules for implementation.
+    -   *Status: This is the current, active task for the next agent.*
+
+**Project Health Check:**
+-   **Broken:**
+    -   The Certificate Enhancement features are incomplete (frontend is missing).
+    -   The MD, COO, and Accounts dashboards are incomplete.
+-   **Mocked:**
+    -   No mocked components are in use.
+
+**Testing status**
+-   **Testing agent used after significant changes:** NO
+-   **Troubleshoot agent used after agent stuck in loop:** NO
+-   **Test files created:** None.
+-   **Known regressions:** None identified by the agent.
+
+**Credentials to test flow:**
+-   **MD:**
+    -   Mobile: 
+    -   PIN: 
+-   **COO / Other roles:** Find employee mobile numbers from the database. The PIN is always the last 4 digits of the mobile number.
+    -   Example command to find employees: </analysis> data appears in the Team tab of the Sales Head dashboard. The issue was mentioned in the initial handoff but was not addressed in this session.
+    -   **Debug checklist:**
+        1.  Inspect the network request in the browser's developer tools on the Sales Head Team tab ().
+        2.  Check the backend endpoint () for permission errors specific to the Sales Head role.
+        3.  Review  to analyze the API call and error handling.
+    -   **Why to solve this issue and what will be achieved with this?** This is a lingering bug that affects core functionality for a key role. Fixing it will ensure data visibility is correct and robust.
+    -   **Should Test frontend/backend/both after fix:** Both.
+    -   **Is recurring issue?** N.
+
+**Known issue recurrence from previous fork**
+-   No recurring issues from the previous fork were noted.
+
+**Code Architecture**
+
+
+**Key Technical Concepts**
+-   **Backend:** FastAPI (Python), Pydantic
+-   **Frontend:** React, Tailwind CSS, Shadcn/UI
+-   **Database:** MongoDB
+-   **Authentication:** JWT, Role-Based Access Control (RBAC). Mobile number + last 4 digits as PIN.
+-   **Architecture:** Monorepo, RESTful API, Additive/Modular Development.
+
+**key DB schema**
+-   : { (unique), , , , uid=0(root) gid=0(root) groups=0(root)}
+-   : {uid=0(root) gid=0(root) groups=0(root), , , , , ...}
+-   : (New) {, , , , , , ...}
+-   : (New) {uid=0(root) gid=0(root) groups=0(root), , , , , }
+-   : (Updated) Now includes , , and .
+
+**changes in tech stack**
+-   None.
+
+**All files**
+-   **Created:**
+    -   , , , , , 
+    -    (4 components)
+    -    (4 components)
+    -    (5+ components)
+    -   , 
+-   **Updated:**
+    -   : Major updates to add Dispatch APIs, Executive summary APIs, Certificate enhancement APIs, and critical fixes for employee/user data synchronization. Added unique index creation on startup.
+    -   : Added routes for all new dashboards.
+    -   : Added routing logic for all new roles (Coordinator, Trainer, Dispatch, MD).
+    -   : Added Dispatch department and designations to dropdowns.
+    -   : Added new tabs for certificate features.
+-   **Deleted:**
+    -   : Replaced by the new .
+
+**Areas that need refactoring**:
+-    is extremely large and monolithic. Splitting routes, models, and business logic into separate modules (e.g., , ) would significantly improve maintainability.
+
+**key api endpoints**
+-   : Full suite of CRUD endpoints for managing delivery tasks.
+-   , : (New) Read-only endpoints for executive dashboards.
+-   : (New) CRUD endpoints for certificate templates.
+-   : (New) Endpoint for bulk certificate creation.
+-   : (New) Public endpoint to verify a certificate via QR code.
+-   : The , , and  methods were significantly enhanced to ensure data integrity between  and  collections.
+
+**Critical Info for New Agent**
+-   **Follow the Final Prompt:** The last user message (#296) is the definitive source of truth for the MD, COO, and Accounts dashboards. It contains very specific design and functional requirements.
+-   **MD is a Superuser:** The Managing Director is not an employee. Their user account is created via a startup script in  and should not appear in the HR module.
+-   **COO Dashboard is a Hub:** The user explicitly rejected a complex analytics dashboard for the COO. The new  must be a simple 2x2 grid of navigation cards.
+-   **Production Safety is Paramount:** The user has repeatedly stressed that no existing functionality should be broken. All changes must be additive. Rigorous testing and regression checks are mandatory before finishing.
+
+**documents created in this job**
+-   None.
+
+**Last 5 User Messages and any pending user messages**
+1.  **User:** Requests an in-house certificate generation system and a critical fix for employee data overlapping when an employee is deleted and re-onboarded.
+    -   *Status: Partially completed. The data integrity issue was fixed. The certificate system backend was built, but the frontend is incomplete.*
+2.  **User:** Reports a name mismatch issue where two different mobile numbers are associated with the same user name.
+    -   *Status: Completed. The agent fixed the specific data mismatch and implemented a permanent fix in the employee update endpoint.*
+3.  **User:** Provides requirements for certificate enhancements: templates, PDF export, QR codes, and bulk generation.
+    -   *Status: In Progress. Backend is mostly done, frontend is pending.*
+4.  **User:** Requests the creation of COO and MD dashboards with specific, high-level analytics and a royal design for the MD.
+    -   *Status: Superseded by the next message but partially acted upon (backend endpoints and pages created).*
+5.  **User:** Provides the final, detailed, pre-deployment instructions for the MD, COO, and Accounts dashboards, establishing them as the top priority and specifying rules for implementation.
+    -   *Status: This is the current, active task for the next agent.*
+
+**Project Health Check:**
+-   **Broken:**
+    -   The Certificate Enhancement features are incomplete (frontend is missing).
+    -   The MD, COO, and Accounts dashboards are incomplete.
+-   **Mocked:**
+    -   No mocked components are in use.
+
+**Testing status**
+-   **Testing agent used after significant changes:** NO
+-   **Troubleshoot agent used after agent stuck in loop:** NO
+-   **Test files created:** None.
+-   **Known regressions:** None identified by the agent.
+
+**Credentials to test flow:**
+-   **MD:**
+    -   Mobile: 
+    -   PIN: 
+-   **COO / Other roles:** Find employee mobile numbers from the database. The PIN is always the last 4 digits of the mobile number.
+    -   Example command to find employees: </analysis>
