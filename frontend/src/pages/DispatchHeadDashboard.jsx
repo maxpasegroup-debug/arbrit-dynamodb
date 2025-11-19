@@ -260,7 +260,7 @@ const DispatchHeadDashboard = () => {
             </TabsContent>
 
             <TabsContent value="expense-approvals" className="mt-0">
-              <ExpenseApprovals />
+              <ExpenseApprovals userRole="Dispatch Head" />
             </TabsContent>
           </div>
         </Tabs>
