@@ -3649,6 +3649,296 @@ async def archive_assessment_form(form_id: str, current_user: dict = Depends(get
         raise HTTPException(status_code=500, detail="Failed to archive assessment form")
 
 
+
+
+# ==================== EXPENSE REIMBURSEMENT ENDPOINTS ====================
+
+def get_department_head_id(department: str, db_instance):
+    """Helper function to get department head ID based on department"""
+    dept_head_mapping = {
+        "Sales": "SALES_HEAD",
+        "Academic": "ACADEMIC_HEAD",
+        "HR": "HR_MANAGER",
+        "Accounts": "ACCOUNTS_HEAD",
+        "Dispatch": "DISPATCH_HEAD"
+    }
+    
+    designation = dept_head_mapping.get(department)
+    if not designation:
+        return None, None
+    
+    # Find employee with this designation
+    import asyncio
+    loop = asyncio.get_event_loop()
+    dept_head = loop.run_until_complete(
+        db_instance.employees.find_one({"designation": designation}, {"_id": 0})
+    )
+    
+    if dept_head:
+        return dept_head.get("id"), dept_head.get("name")
+    return None, None
+
+
+@api_router.post("/expenses/my-claims")
+async def create_expense_claim(claim_data: ExpenseClaimCreate, current_user: dict = Depends(get_current_user)):
+    """Employee submits new expense claim"""
+    try:
+        # Get employee details
+        employee = await db.employees.find_one({"id": current_user.get("employee_id")}, {"_id": 0})
+        
+        if not employee:
+            raise HTTPException(status_code=404, detail="Employee record not found")
+        
+        department = employee.get("department", "General")
+        branch = employee.get("branch", "Dubai")
+        
+        # Determine department head
+        is_dept_head = employee.get("designation") in [
+            "SALES_HEAD", "ACADEMIC_HEAD", "HR_MANAGER", "ACCOUNTS_HEAD", "DISPATCH_HEAD"
+        ]
+        
+        # Create claim
+        claim = ExpenseClaim(
+            employee_id=current_user["id"],
+            employee_name=current_user["name"],
+            mobile=employee.get("mobile", ""),
+            department=department,
+            branch=branch,
+            amount=claim_data.amount,
+            category=claim_data.category,
+            description=claim_data.description,
+            expense_date=claim_data.expense_date,
+            attachment_url=claim_data.attachment_url,
+            status="PENDING_HR" if is_dept_head else "PENDING_DEPT_HEAD"
+        )
+        
+        # If not a dept head, find and assign dept head
+        if not is_dept_head:
+            dept_head = await db.employees.find_one(
+                {"department": department, "designation": {"$in": ["SALES_HEAD", "ACADEMIC_HEAD", "HR_MANAGER", "ACCOUNTS_HEAD", "DISPATCH_HEAD"]}},
+                {"_id": 0}
+            )
+            if dept_head:
+                claim.dept_head_id = dept_head.get("id")
+                claim.dept_head_name = dept_head.get("name")
+        
+        claim_dict = claim.model_dump()
+        claim_dict['created_at'] = claim_dict['created_at'].isoformat()
+        claim_dict['updated_at'] = claim_dict['updated_at'].isoformat()
+        
+        await db.expense_claims.insert_one(claim_dict)
+        
+        return {"message": "Expense claim submitted successfully", "claim_id": claim.id}
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error creating expense claim: {e}")
+        raise HTTPException(status_code=500, detail="Failed to submit expense claim")
+
+
+@api_router.get("/expenses/my-claims")
+async def get_my_expense_claims(current_user: dict = Depends(get_current_user)):
+    """Get employee's own expense claims"""
+    try:
+        claims = await db.expense_claims.find(
+            {"employee_id": current_user["id"]},
+            {"_id": 0}
+        ).sort("created_at", -1).to_list(1000)
+        
+        return claims
+    except Exception as e:
+        logger.error(f"Error fetching expense claims: {e}")
+        raise HTTPException(status_code=500, detail="Failed to fetch expense claims")
+
+
+@api_router.get("/expenses/for-approval")
+async def get_expenses_for_approval(current_user: dict = Depends(get_current_user)):
+    """Get expense claims pending department head approval"""
+    allowed_roles = ["Sales Head", "Academic Head", "HR", "Accounts Head", "Dispatch Head", "COO", "MD"]
+    
+    if current_user.get("role") not in allowed_roles:
+        raise HTTPException(status_code=403, detail="Access denied. Department head access only.")
+    
+    try:
+        # For COO/MD, show all pending dept head claims
+        if current_user.get("role") in ["COO", "MD"]:
+            query = {"status": "PENDING_DEPT_HEAD"}
+        else:
+            # For dept heads, show only their department's claims
+            query = {
+                "status": "PENDING_DEPT_HEAD",
+                "dept_head_id": current_user.get("employee_id")
+            }
+        
+        claims = await db.expense_claims.find(query, {"_id": 0}).sort("created_at", -1).to_list(1000)
+        
+        return claims
+    except Exception as e:
+        logger.error(f"Error fetching expenses for approval: {e}")
+        raise HTTPException(status_code=500, detail="Failed to fetch expenses")
+
+
+@api_router.put("/expenses/for-approval/{claim_id}")
+async def approve_reject_expense(claim_id: str, status_update: ExpenseClaimUpdateStatus, current_user: dict = Depends(get_current_user)):
+    """Department head approves or rejects expense claim"""
+    allowed_roles = ["Sales Head", "Academic Head", "HR", "Accounts Head", "Dispatch Head", "COO", "MD"]
+    
+    if current_user.get("role") not in allowed_roles:
+        raise HTTPException(status_code=403, detail="Access denied. Department head access only.")
+    
+    try:
+        claim = await db.expense_claims.find_one({"id": claim_id}, {"_id": 0})
+        
+        if not claim:
+            raise HTTPException(status_code=404, detail="Expense claim not found")
+        
+        if claim.get("status") != "PENDING_DEPT_HEAD":
+            raise HTTPException(status_code=400, detail="Claim is not pending department head approval")
+        
+        # Update status
+        update_data = {
+            "dept_head_id": current_user.get("employee_id"),
+            "dept_head_name": current_user["name"],
+            "dept_head_decision": status_update.decision,
+            "dept_head_remarks": status_update.remarks,
+            "dept_head_reviewed_at": datetime.now(timezone.utc).isoformat(),
+            "updated_at": datetime.now(timezone.utc).isoformat()
+        }
+        
+        if status_update.decision == "reject":
+            update_data["status"] = "REJECTED"
+        elif status_update.decision == "approve":
+            update_data["status"] = "PENDING_HR"
+        
+        await db.expense_claims.update_one(
+            {"id": claim_id},
+            {"$set": update_data}
+        )
+        
+        return {"message": f"Expense claim {status_update.decision}d successfully"}
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error updating expense claim: {e}")
+        raise HTTPException(status_code=500, detail="Failed to update expense claim")
+
+
+@api_router.get("/expenses/hr-review")
+async def get_expenses_for_hr_review(current_user: dict = Depends(get_current_user)):
+    """Get expense claims pending HR review"""
+    if current_user.get("role") not in ["HR", "COO", "MD"]:
+        raise HTTPException(status_code=403, detail="Access denied. HR access only.")
+    
+    try:
+        claims = await db.expense_claims.find(
+            {"status": "PENDING_HR"},
+            {"_id": 0}
+        ).sort("created_at", -1).to_list(1000)
+        
+        return claims
+    except Exception as e:
+        logger.error(f"Error fetching expenses for HR review: {e}")
+        raise HTTPException(status_code=500, detail="Failed to fetch expenses")
+
+
+@api_router.put("/expenses/hr-review/{claim_id}")
+async def hr_review_expense(claim_id: str, status_update: ExpenseClaimUpdateStatus, current_user: dict = Depends(get_current_user)):
+    """HR approves or rejects expense claim"""
+    if current_user.get("role") not in ["HR", "COO", "MD"]:
+        raise HTTPException(status_code=403, detail="Access denied. HR access only.")
+    
+    try:
+        claim = await db.expense_claims.find_one({"id": claim_id}, {"_id": 0})
+        
+        if not claim:
+            raise HTTPException(status_code=404, detail="Expense claim not found")
+        
+        if claim.get("status") != "PENDING_HR":
+            raise HTTPException(status_code=400, detail="Claim is not pending HR review")
+        
+        # Update status
+        update_data = {
+            "hr_id": current_user.get("employee_id"),
+            "hr_name": current_user["name"],
+            "hr_decision": status_update.decision,
+            "hr_remarks": status_update.remarks,
+            "hr_reviewed_at": datetime.now(timezone.utc).isoformat(),
+            "updated_at": datetime.now(timezone.utc).isoformat()
+        }
+        
+        if status_update.decision == "reject":
+            update_data["status"] = "REJECTED"
+        elif status_update.decision == "approve":
+            update_data["status"] = "PENDING_ACCOUNTS"
+        
+        await db.expense_claims.update_one(
+            {"id": claim_id},
+            {"$set": update_data}
+        )
+        
+        return {"message": f"Expense claim {status_update.decision}d by HR successfully"}
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error updating expense claim: {e}")
+        raise HTTPException(status_code=500, detail="Failed to update expense claim")
+
+
+@api_router.get("/expenses/accounts-review")
+async def get_expenses_for_accounts_review(current_user: dict = Depends(get_current_user)):
+    """Get expense claims pending accounts payment"""
+    if current_user.get("role") not in ["Accounts Head", "Accountant", "COO", "MD"]:
+        raise HTTPException(status_code=403, detail="Access denied. Accounts access only.")
+    
+    try:
+        claims = await db.expense_claims.find(
+            {"status": {"$in": ["PENDING_ACCOUNTS", "PAID"]}},
+            {"_id": 0}
+        ).sort("created_at", -1).to_list(1000)
+        
+        return claims
+    except Exception as e:
+        logger.error(f"Error fetching expenses for accounts review: {e}")
+        raise HTTPException(status_code=500, detail="Failed to fetch expenses")
+
+
+@api_router.put("/expenses/accounts-review/{claim_id}/pay")
+async def mark_expense_paid(claim_id: str, payment_data: dict, current_user: dict = Depends(get_current_user)):
+    """Accounts marks expense as paid"""
+    if current_user.get("role") not in ["Accounts Head", "Accountant"]:
+        raise HTTPException(status_code=403, detail="Access denied. Accounts team access only.")
+    
+    try:
+        claim = await db.expense_claims.find_one({"id": claim_id}, {"_id": 0})
+        
+        if not claim:
+            raise HTTPException(status_code=404, detail="Expense claim not found")
+        
+        if claim.get("status") != "PENDING_ACCOUNTS":
+            raise HTTPException(status_code=400, detail="Claim is not pending payment")
+        
+        # Mark as paid
+        update_data = {
+            "status": "PAID",
+            "accounts_id": current_user.get("employee_id"),
+            "accounts_name": current_user["name"],
+            "payment_reference": payment_data.get("payment_reference", ""),
+            "paid_at": datetime.now(timezone.utc).isoformat(),
+            "updated_at": datetime.now(timezone.utc).isoformat()
+        }
+        
+        await db.expense_claims.update_one(
+            {"id": claim_id},
+            {"$set": update_data}
+        )
+        
+        return {"message": "Expense marked as paid successfully"}
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error marking expense as paid: {e}")
+        raise HTTPException(status_code=500, detail="Failed to mark expense as paid")
+
 # Include the router in the main app
 app.include_router(api_router)
 
