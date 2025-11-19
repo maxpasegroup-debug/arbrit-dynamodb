@@ -429,28 +429,43 @@ const EmployeeManagement = () => {
               />
             </div>
             <div>
-              <Label htmlFor="designation" className="text-gray-300">Designation</Label>
-              <Input
-                id="designation"
-                data-testid="employee-designation-input"
-                value={formData.designation}
-                onChange={(e) => setFormData({ ...formData, designation: e.target.value })}
-                className="bg-white/5 border-white/20 text-white mt-1"
-              />
-            </div>
-            <div>
-              <Label htmlFor="department" className="text-gray-300">Department</Label>
-              <Select value={formData.department} onValueChange={(value) => setFormData({ ...formData, department: value })}>
+              <Label htmlFor="department" className="text-gray-300">Department *</Label>
+              <Select 
+                value={formData.department} 
+                onValueChange={(value) => {
+                  setFormData({ ...formData, department: value, designation: '' });
+                }}
+              >
                 <SelectTrigger data-testid="employee-department-select" className="bg-white/5 border-white/20 text-white mt-1">
                   <SelectValue placeholder="Select department" />
                 </SelectTrigger>
                 <SelectContent className="bg-[#1a2f4d] border-white/20 text-white">
                   <SelectItem value="Sales">Sales</SelectItem>
-                  <SelectItem value="HR">HR</SelectItem>
                   <SelectItem value="Academic">Academic</SelectItem>
+                  <SelectItem value="HR">HR</SelectItem>
                   <SelectItem value="Accounts">Accounts</SelectItem>
-                  <SelectItem value="Marketing">Marketing</SelectItem>
                   <SelectItem value="Dispatch">Dispatch</SelectItem>
+                  <SelectItem value="Admin">Admin</SelectItem>
+                  <SelectItem value="Marketing">Marketing</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            <div>
+              <Label htmlFor="designation" className="text-gray-300">Designation *</Label>
+              <Select 
+                value={formData.designation} 
+                onValueChange={(value) => setFormData({ ...formData, designation: value })}
+                disabled={!formData.department}
+              >
+                <SelectTrigger data-testid="employee-designation-select" className="bg-white/5 border-white/20 text-white mt-1">
+                  <SelectValue placeholder={formData.department ? "Select designation" : "Select department first"} />
+                </SelectTrigger>
+                <SelectContent className="bg-[#1a2f4d] border-white/20 text-white">
+                  {formData.department && DESIGNATION_OPTIONS[formData.department]?.map((option) => (
+                    <SelectItem key={option.value} value={option.value}>
+                      {option.label}
+                    </SelectItem>
+                  ))}
                 </SelectContent>
               </Select>
             </div>
