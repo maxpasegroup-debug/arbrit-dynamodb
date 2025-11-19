@@ -2316,6 +2316,10 @@ async def generate_certificates(
     for idx, candidate in enumerate(cert_request.candidates):
         cert_no = f"ARB/{year}/{month}/{str(month_count + idx + 1).zfill(3)}"
         
+        # Generate unique verification code (NEW)
+        verification_code = str(uuid.uuid4())[:12].upper()  # Short unique code
+        verification_url = f"https://www.iceconnect.in/verify-certificate?code={verification_code}"
+        
         certificate = CertificateCandidate(
             certificate_no=cert_no,
             candidate_name=candidate.get("name"),
@@ -2331,7 +2335,13 @@ async def generate_certificates(
             remarks=candidate.get("remarks"),
             generated_by=current_user.get("id"),
             generated_by_name=current_user.get("name"),
-            status="generated"
+            status="generated",
+            # NEW FIELDS (backward compatible - optional)
+            template_id=cert_request.template_id,
+            verification_code=verification_code,
+            verification_url=verification_url,
+            candidate_email=candidate.get("email"),
+            candidate_id=candidate.get("id")
         )
         
         cert_dict = certificate.model_dump()
