@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { LogOut, Package, Users, Truck, FileCheck, UserCheck, BarChart3, LayoutDashboard } from 'lucide-react';
+import { LogOut, Package, Users, Truck, FileCheck, UserCheck, BarChart3, LayoutDashboard, Receipt, CheckSquare } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card } from '@/components/ui/card';
