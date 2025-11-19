@@ -148,8 +148,8 @@
 
 ## URLs
 
-- **HRM Dashboard**: https://safety-dashboard-15.preview.emergentagent.com/hrm
-- **COO Dashboard**: https://safety-dashboard-15.preview.emergentagent.com/dashboard/coo
+- **HRM Dashboard**: https://loginflow-4.preview.emergentagent.com/hrm
+- **COO Dashboard**: https://loginflow-4.preview.emergentagent.com/dashboard/coo
 
 ## Key Features
 
