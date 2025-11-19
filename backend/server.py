@@ -1539,6 +1539,83 @@ async def reject_leave_request(request_id: str, rejection_data: dict, current_us
     return {"message": "Leave request rejected successfully"}
 
 
+# Admin - Create Missing User Accounts for Sales Employees
+@api_router.post("/admin/create-sales-user-accounts")
+async def create_missing_sales_user_accounts(current_user: dict = Depends(get_current_user)):
+    if current_user["role"] not in ["COO"]:
+        raise HTTPException(status_code=403, detail="Access denied. COO only.")
+    
+    # Get all sales employees without filtering by mobile
+    all_employees = await db.employees.find({"department": "Sales"}, {"_id": 0}).to_list(1000)
+    
+    created_count = 0
+    skipped_count = 0
+    results = []
+    
+    for employee in all_employees:
+        mobile = employee.get("mobile")
+        name = employee.get("name")
+        sales_type = employee.get("sales_type", "")
+        
+        # Skip test users
+        if mobile and mobile.startswith("98765"):
+            continue
+        
+        if not mobile or not sales_type:
+            skipped_count += 1
+            results.append({"name": name, "status": "skipped", "reason": "Missing mobile or sales_type"})
+            continue
+        
+        # Determine role
+        if sales_type == "tele":
+            user_role = "Tele Sales"
+        elif sales_type == "field":
+            user_role = "Field Sales"
+        else:
+            skipped_count += 1
+            results.append({"name": name, "status": "skipped", "reason": "Invalid sales_type"})
+            continue
+        
+        # Check if user already exists with this mobile and role
+        existing_user = await db.users.find_one({"mobile": mobile, "role": user_role})
+        
+        if existing_user:
+            skipped_count += 1
+            results.append({"name": name, "mobile": mobile, "role": user_role, "status": "exists"})
+            continue
+        
+        # Create user account with PIN = last 4 digits of mobile
+        pin = mobile[-4:]
+        new_user = User(
+            id=employee["id"],  # Use same ID as employee
+            mobile=mobile,
+            pin_hash=hash_pin(pin),
+            name=name,
+            role=user_role
+        )
+        
+        user_dict = new_user.model_dump()
+        user_dict['created_at'] = user_dict['created_at'].isoformat()
+        await db.users.insert_one(user_dict)
+        
+        created_count += 1
+        results.append({
+            "name": name,
+            "mobile": mobile,
+            "pin": pin,
+            "role": user_role,
+            "status": "created"
+        })
+        logger.info(f"Created {user_role} user account for {name} (mobile: {mobile}, PIN: {pin})")
+    
+    return {
+        "message": "User account creation completed",
+        "created": created_count,
+        "skipped": skipped_count,
+        "results": results
+    }
+
+
 # Include the router in the main app
 app.include_router(api_router)
 
