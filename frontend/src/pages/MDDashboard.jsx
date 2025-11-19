@@ -154,8 +154,8 @@ const MDDashboard = () => {
                   <p className="text-sm text-amber-300/70">Sales</p>
                 </div>
                 <div className="text-center">
-                  <p className="text-3xl font-bold text-amber-100 mb-1">{dashboardData.corporate_health.operations_score.toFixed(0)}%</p>
-                  <p className="text-sm text-amber-300/70">Operations</p>
+                  <p className="text-2xl sm:text-3xl font-bold text-amber-100 mb-1">{dashboardData.corporate_health.operations_score.toFixed(0)}%</p>
+                  <p className="text-xs sm:text-sm text-amber-300/70">Operations</p>
                 </div>
                 <div className="text-center">
                   <p className="text-xl font-bold text-amber-400 mb-1">{dashboardData.corporate_health.rating}</p>
