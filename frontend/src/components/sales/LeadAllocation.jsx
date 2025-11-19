@@ -44,7 +44,7 @@ const LeadAllocation = () => {
 
   const handleAllocate = (lead) => {
     setSelectedLead(lead);
-    setSelectedEmployee(lead.assigned_to || '');
+    setSelectedEmployee(lead.assigned_to || undefined);
     setShowDialog(true);
   };
 
