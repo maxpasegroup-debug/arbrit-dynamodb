@@ -14,7 +14,7 @@ const TrainerAllocation = () => {
   const [trainers, setTrainers] = useState([]);
   const [filteredTrainers, setFilteredTrainers] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
-  const [branchFilter, setBranchFilter] = useState('');
+  const [branchFilter, setBranchFilter] = useState('all');
   const [attendance, setAttendance] = useState({});
 
   useEffect(() => {
