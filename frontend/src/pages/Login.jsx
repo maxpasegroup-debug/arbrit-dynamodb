@@ -81,7 +81,8 @@ const Login = () => {
         'Trainer': '/dashboard/trainer',
         'Accounts Head': '/dashboard/accounts',
         'Accountant': '/dashboard/accounts',
-        'Dispatch Head': '/dashboard/dispatch'
+        'Dispatch Head': '/dashboard/dispatch',
+        'Dispatch Assistant': '/dashboard/dispatch-assistant'
       };
       
       const route = roleToRoute[user.role] || '/dashboard';
