@@ -103,10 +103,15 @@
 #====================================================================================================
 
 user_problem_statement: |
-  Complete Phase 3 of the Arbrit Safety business management application:
-  - Create remaining frontend components for sales dashboards (TrainerRequest, InvoiceRequest, VisitLogs)
-  - Integrate all sales components into TeleSalesDashboard and FieldSalesDashboard
-  - Ensure backend APIs exist and work correctly for all sales features
+  Test the newly created MD, COO, and Accounts dashboards for the Arbrit Safety Training application:
+  - MD Dashboard - Royal-themed read-only analytics dashboard
+  - COO Dashboard - Simple 2x2 navigation hub linking to other modules  
+  - Accounts Dashboard - Tabbed interface for managing invoices and payments
+  
+  Test Credentials:
+  - MD: Mobile: 971564022503, PIN: 2503
+  - COO: Mobile: 971566374020, PIN: 4020
+  - Accounts: Mobile: 971501234567, PIN: 4567
 
 backend:
   - task: "Trainer Request API Endpoints"
