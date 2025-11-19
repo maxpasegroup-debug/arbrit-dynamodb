@@ -1,8 +1,10 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { LogOut, Users, TrendingUp, GraduationCap, DollarSign, ArrowRight } from 'lucide-react';
+import { LogOut, Users, TrendingUp, GraduationCap, DollarSign, ArrowRight, Receipt } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import ExpenseReadOnlyView from '@/components/expenses/ExpenseReadOnlyView';
 import { toast } from 'sonner';
 
 const COODashboard = () => {
