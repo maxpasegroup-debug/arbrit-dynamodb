@@ -181,6 +181,13 @@ const TeleSalesDashboard = () => {
               <DollarSign className="w-4 h-4 mr-2" />
               Invoice
             </TabsTrigger>
+            <TabsTrigger 
+              value="expenses"
+              className="data-[state=active]:bg-blue-500/20 data-[state=active]:text-white text-gray-300"
+            >
+              <Receipt className="w-4 h-4 mr-2" />
+              Expenses
+            </TabsTrigger>
           </TabsList>
 
           <div className="mt-6">
