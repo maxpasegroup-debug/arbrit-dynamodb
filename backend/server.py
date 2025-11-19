@@ -4071,40 +4071,64 @@ logger = logging.getLogger(__name__)
 
 @app.on_event("startup")
 async def startup_db():
-    # Create unique index on mobile field in users collection to prevent duplicates
+    """Initialize database connection and seed default users"""
     try:
-        await db.users.create_index("mobile", unique=True)
-        logger.info("Unique index created on users.mobile field")
+        # Test database connection
+        await db.command('ping')
+        logger.info("✅ Database connection successful")
+        print("✅ Database connection verified")
+        
+        # Create unique index on mobile field in users collection to prevent duplicates
+        try:
+            await db.users.create_index("mobile", unique=True)
+            logger.info("Unique index created on users.mobile field")
+        except Exception as e:
+            logger.info(f"Unique index on users.mobile already exists or creation failed: {e}")
+        
+        # Seed COO user if not exists
+        coo_exists = await db.users.find_one({"mobile": "971566374020"})
+        if not coo_exists:
+            coo_user = User(
+                mobile="971566374020",
+                pin_hash=hash_pin("4020"),
+                name="Sarada Gopalakrishnan",
+                role="COO"
+            )
+            user_dict = coo_user.model_dump()
+            user_dict['created_at'] = user_dict['created_at'].isoformat()
+            await db.users.insert_one(user_dict)
+            logger.info("COO user seeded successfully")
+            print("✅ COO user seeded")
+        else:
+            print("✅ COO user exists")
+        
+        # Seed MD user if not exists
+        md_exists = await db.users.find_one({"mobile": "971564022503"})
+        if not md_exists:
+            md_user = User(
+                mobile="971564022503",
+                pin_hash=hash_pin("2503"),
+                name="Brijith Shaji",
+                role="MD"
+            )
+            user_dict = md_user.model_dump()
+            user_dict['created_at'] = user_dict['created_at'].isoformat()
+            await db.users.insert_one(user_dict)
+            logger.info("MD user seeded successfully")
+            print("✅ MD user seeded")
+        else:
+            print("✅ MD user exists")
+        
+        # Count and log total users
+        user_count = await db.users.count_documents({})
+        logger.info(f"Database initialized. Total users: {user_count}")
+        print(f"✅ Database ready. Total users: {user_count}")
+        
     except Exception as e:
-        logger.info(f"Unique index on users.mobile already exists or creation failed: {e}")
-    
-    # Seed COO user if not exists
-    coo_exists = await db.users.find_one({"mobile": "971566374020"})
-    if not coo_exists:
-        coo_user = User(
-            mobile="971566374020",
-            pin_hash=hash_pin("4020"),
-            name="Sarada Gopalakrishnan",
-            role="COO"
-        )
-        user_dict = coo_user.model_dump()
-        user_dict['created_at'] = user_dict['created_at'].isoformat()
-        await db.users.insert_one(user_dict)
-        logger.info("COO user seeded successfully")
-    
-    # Seed MD user if not exists
-    md_exists = await db.users.find_one({"mobile": "971564022503"})
-    if not md_exists:
-        md_user = User(
-            mobile="971564022503",
-            pin_hash=hash_pin("2503"),
-            name="Brijith Shaji",
-            role="MD"
-        )
-        user_dict = md_user.model_dump()
-        user_dict['created_at'] = user_dict['created_at'].isoformat()
-        await db.users.insert_one(user_dict)
-        logger.info("MD user seeded successfully")
+        logger.error(f"❌ Database initialization failed: {e}")
+        print(f"❌ CRITICAL: Database initialization failed: {e}")
+        print(f"   MongoDB URL: {mongo_url.split('@')[-1] if '@' in mongo_url else mongo_url}")
+        raise
 
 
 @app.on_event("shutdown")
