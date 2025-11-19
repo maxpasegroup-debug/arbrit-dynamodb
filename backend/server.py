@@ -552,6 +552,7 @@ async def create_employee(employee: EmployeeCreate, current_user: dict = Depends
             'TELE_SALES_EXECUTIVE': 'Tele Sales',
             'FIELD_SALES_EXECUTIVE': 'Field Sales',
             'ACADEMIC_HEAD': 'Academic Head',
+            'ACADEMIC_COORDINATOR': 'Academic Coordinator',
             'TRAINER_FULLTIME': 'Trainer',
             'TRAINER_PARTTIME': 'Trainer',
             'HR_MANAGER': 'HR',
