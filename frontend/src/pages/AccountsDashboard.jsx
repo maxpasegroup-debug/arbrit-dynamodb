@@ -236,6 +236,10 @@ const AccountsDashboard = () => {
               <DollarSign className="w-4 h-4 mr-2" />
               Payments
             </TabsTrigger>
+            <TabsTrigger value="expenses" className="data-[state=active]:bg-blue-50">
+              <Wallet className="w-4 h-4 mr-2" />
+              Expense Payments
+            </TabsTrigger>
           </TabsList>
 
           {/* Invoice Requests Tab */}
