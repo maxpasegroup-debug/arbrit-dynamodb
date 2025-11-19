@@ -494,6 +494,107 @@ async def health_check():
         }
 
 
+@api_router.get("/admin/check-user/{mobile}")
+async def check_user_exists(mobile: str):
+    """Check if a user with specific mobile exists and show their info (for debugging)"""
+    try:
+        user = await db.users.find_one({"mobile": mobile}, {"_id": 0, "pin_hash": 0})
+        
+        if user:
+            return {
+                "exists": True,
+                "user": user,
+                "message": f"User {user['name']} found with role {user['role']}"
+            }
+        else:
+            return {
+                "exists": False,
+                "message": f"No user found with mobile {mobile}"
+            }
+    except Exception as e:
+        return {
+            "exists": False,
+            "error": str(e)
+        }
+
+
+@api_router.post("/admin/reset-default-users")
+async def reset_default_users():
+    """Reset MD and COO users with correct credentials (for production setup)"""
+    try:
+        results = []
+        
+        # Reset MD user
+        md_mobile = "971564022503"
+        md_exists = await db.users.find_one({"mobile": md_mobile})
+        
+        if md_exists:
+            # Update existing MD user with correct PIN
+            await db.users.update_one(
+                {"mobile": md_mobile},
+                {"$set": {
+                    "pin_hash": hash_pin("2503"),
+                    "name": "Brijith Shaji",
+                    "role": "MD"
+                }}
+            )
+            results.append(f"✅ MD user {md_mobile} updated with correct PIN")
+        else:
+            # Create new MD user
+            md_user = User(
+                mobile=md_mobile,
+                pin_hash=hash_pin("2503"),
+                name="Brijith Shaji",
+                role="MD"
+            )
+            user_dict = md_user.model_dump()
+            user_dict['created_at'] = user_dict['created_at'].isoformat()
+            await db.users.insert_one(user_dict)
+            results.append(f"✅ MD user {md_mobile} created with PIN 2503")
+        
+        # Reset COO user
+        coo_mobile = "971566374020"
+        coo_exists = await db.users.find_one({"mobile": coo_mobile})
+        
+        if coo_exists:
+            # Update existing COO user with correct PIN
+            await db.users.update_one(
+                {"mobile": coo_mobile},
+                {"$set": {
+                    "pin_hash": hash_pin("4020"),
+                    "name": "Sarada Gopalakrishnan",
+                    "role": "COO"
+                }}
+            )
+            results.append(f"✅ COO user {coo_mobile} updated with correct PIN")
+        else:
+            # Create new COO user
+            coo_user = User(
+                mobile=coo_mobile,
+                pin_hash=hash_pin("4020"),
+                name="Sarada Gopalakrishnan",
+                role="COO"
+            )
+            user_dict = coo_user.model_dump()
+            user_dict['created_at'] = user_dict['created_at'].isoformat()
+            await db.users.insert_one(user_dict)
+            results.append(f"✅ COO user {coo_mobile} created with PIN 4020")
+        
+        return {
+            "success": True,
+            "message": "Default users reset successfully",
+            "results": results,
+            "instructions": "You can now login with:\n- MD: 971564022503 / PIN: 2503\n- COO: 971566374020 / PIN: 4020"
+        }
+        
+    except Exception as e:
+        return {
+            "success": False,
+            "error": str(e),
+            "message": "Failed to reset users"
+        }
+
+
 @api_router.get("/diagnostics")
 async def diagnostics():
     """Diagnostic endpoint to check environment and connectivity"""
