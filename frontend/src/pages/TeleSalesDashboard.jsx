@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { LogOut, Phone, TrendingUp, FileText, GraduationCap, DollarSign, Calendar } from 'lucide-react';
+import { LogOut, Phone, TrendingUp, FileText, GraduationCap, DollarSign, Calendar, Receipt } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
