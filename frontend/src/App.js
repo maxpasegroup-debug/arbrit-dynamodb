@@ -16,12 +16,14 @@ import DispatchHeadDashboard from "@/pages/DispatchHeadDashboard";
 import DispatchAssistantDashboard from "@/pages/DispatchAssistantDashboard";
 import AccountsDashboard from "@/pages/AccountsDashboard";
 import PublicAssessmentForm from "@/pages/PublicAssessmentForm";
+import BrowserBackWarning from '@/components/common/BrowserBackWarning';
 import { Toaster } from '@/components/ui/sonner';
 
 function App() {
   return (
     <div className="App">
       <BrowserRouter>
+        <BrowserBackWarning />
         <Routes>
           <Route path="/" element={<Navigate to="/login" replace />} />
           <Route path="/login" element={<Login />} />
