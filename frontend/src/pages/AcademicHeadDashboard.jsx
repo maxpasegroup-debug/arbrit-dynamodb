@@ -14,6 +14,8 @@ import TeamMonitoring from '@/components/academic/TeamMonitoring';
 import AssessmentFormBuilder from '@/components/assessment/AssessmentFormBuilder';
 import AssessmentQRGenerator from '@/components/assessment/AssessmentQRGenerator';
 import AssessmentReports from '@/components/assessment/AssessmentReports';
+import ExpenseSubmission from '@/components/expenses/ExpenseSubmission';
+import ExpenseApprovals from '@/components/expenses/ExpenseApprovals';
 import { toast } from 'sonner';
 import axios from 'axios';
 
