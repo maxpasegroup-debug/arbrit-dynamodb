@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { LogOut, ClipboardList, History, Upload, User, LayoutDashboard } from 'lucide-react';
+import { LogOut, ClipboardList, History, Upload, User, LayoutDashboard, Receipt } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card } from '@/components/ui/card';
