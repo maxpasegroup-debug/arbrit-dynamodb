@@ -222,6 +222,14 @@ const SalesHeadDashboard = () => {
             <TabsContent value="leaves" className="mt-0">
               <LeaveApprovals />
             </TabsContent>
+
+            <TabsContent value="my-expenses" className="mt-0">
+              <ExpenseSubmission />
+            </TabsContent>
+
+            <TabsContent value="expense-approvals" className="mt-0">
+              <ExpenseApprovals userRole="Sales Head" />
+            </TabsContent>
           </div>
         </Tabs>
       </main>
