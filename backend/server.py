@@ -17,10 +17,24 @@ import base64
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
 
-# MongoDB connection
-mongo_url = os.environ['MONGO_URL']
-client = AsyncIOMotorClient(mongo_url)
-db = client[os.environ['DB_NAME']]
+# MongoDB connection with error handling
+try:
+    mongo_url = os.environ['MONGO_URL']
+    print(f"🔵 Attempting MongoDB connection to: {mongo_url.split('@')[-1] if '@' in mongo_url else mongo_url}")
+    client = AsyncIOMotorClient(
+        mongo_url,
+        serverSelectionTimeoutMS=5000,  # 5 second timeout
+        connectTimeoutMS=10000,  # 10 second connection timeout
+    )
+    db = client[os.environ['DB_NAME']]
+    print(f"✅ MongoDB client initialized successfully for database: {os.environ['DB_NAME']}")
+except KeyError as e:
+    print(f"❌ CRITICAL: Missing environment variable: {e}")
+    print(f"   Available env vars: {', '.join([k for k in os.environ.keys() if not k.startswith('_')])}")
+    raise
+except Exception as e:
+    print(f"❌ CRITICAL: Failed to initialize MongoDB client: {e}")
+    raise
 
 # Security
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
