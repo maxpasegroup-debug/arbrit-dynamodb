@@ -421,6 +421,63 @@ const Diagnostics = () => {
           )}
         </div>
 
+        {/* User vs Employee Comparison */}
+        {diagnostics && diagnostics.users_vs_employees && (
+          <div className="bg-purple-50 border border-purple-200 rounded-2xl p-6 mb-6">
+            <h2 className="text-xl font-semibold mb-4 text-purple-900">📊 Users vs Employees Analysis</h2>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="bg-white rounded-lg p-4 border border-purple-200">
+                <p className="text-sm text-gray-600 mb-1">Total Users (Login Accounts)</p>
+                <p className="text-3xl font-bold text-purple-600">{diagnostics.total_users || 0}</p>
+              </div>
+              <div className="bg-white rounded-lg p-4 border border-purple-200">
+                <p className="text-sm text-gray-600 mb-1">Total Employees (HR Records)</p>
+                <p className="text-3xl font-bold text-blue-600">{diagnostics.employees_count || 0}</p>
+              </div>
+              <div className="bg-white rounded-lg p-4 border border-purple-200">
+                <p className="text-sm text-gray-600 mb-1">Common (In Both)</p>
+                <p className="text-3xl font-bold text-green-600">{diagnostics.users_vs_employees.common_mobiles?.length || 0}</p>
+              </div>
+            </div>
+            
+            {diagnostics.users_vs_employees.employees_not_in_users && diagnostics.users_vs_employees.employees_not_in_users.length > 0 && (
+              <div className="mt-4 p-4 bg-orange-50 border border-orange-200 rounded-lg">
+                <p className="font-semibold text-orange-900 mb-2">
+                  ⚠️ {diagnostics.users_vs_employees.employees_not_in_users.length} Employee(s) WITHOUT Login Account
+                </p>
+                <p className="text-sm text-orange-800 mb-2">
+                  These employees exist in HR database but cannot login:
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  {diagnostics.users_vs_employees.employees_not_in_users.map((mobile, idx) => (
+                    <span key={idx} className="px-3 py-1 bg-orange-100 rounded text-sm font-mono">
+                      {mobile}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            )}
+            
+            {diagnostics.users_vs_employees.users_not_in_employees && diagnostics.users_vs_employees.users_not_in_employees.length > 0 && (
+              <div className="mt-4 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+                <p className="font-semibold text-yellow-900 mb-2">
+                  ℹ️ {diagnostics.users_vs_employees.users_not_in_employees.length} User(s) WITHOUT Employee Record
+                </p>
+                <p className="text-sm text-yellow-800 mb-2">
+                  These are login accounts (usually MD/COO/admins) without HR employee records:
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  {diagnostics.users_vs_employees.users_not_in_employees.map((mobile, idx) => (
+                    <span key={idx} className="px-3 py-1 bg-yellow-100 rounded text-sm font-mono">
+                      {mobile}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+        )}
+
         {/* All Users List */}
         {diagnostics && diagnostics.all_users && diagnostics.all_users.length > 0 && (
           <div className="bg-white rounded-2xl shadow-lg p-6 mb-6">
