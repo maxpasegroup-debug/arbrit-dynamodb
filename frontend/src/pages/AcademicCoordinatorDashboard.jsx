@@ -8,6 +8,7 @@ import TrainingCalendar from '@/components/coordinator/TrainingCalendar';
 import SessionDocumentation from '@/components/coordinator/SessionDocumentation';
 import CertificateCoordination from '@/components/coordinator/CertificateCoordination';
 import CoordinatorCommunication from '@/components/coordinator/CoordinatorCommunication';
+import ExpenseSubmission from '@/components/expenses/ExpenseSubmission';
 import { toast } from 'sonner';
 
 const AcademicCoordinatorDashboard = () => {
