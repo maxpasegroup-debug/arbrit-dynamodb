@@ -12,6 +12,48 @@ import axios from 'axios';
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
 
+// Department-to-Designation mapping
+const DESIGNATION_OPTIONS = {
+  'Sales': [
+    { value: 'SALES_HEAD', label: 'Sales Head' },
+    { value: 'BUSINESS_DEVELOPMENT_EXECUTIVE', label: 'Business Development Executive' },
+    { value: 'SALES_EXECUTIVE', label: 'Sales Executive' },
+    { value: 'TELE_SALES_EXECUTIVE', label: 'Tele Sales Executive' },
+    { value: 'FIELD_SALES_EXECUTIVE', label: 'Field Sales Executive' },
+    { value: 'SALES_MANAGER', label: 'Sales Manager' },
+    { value: 'ASSISTANT_SALES_MANAGER', label: 'Assistant Sales Manager' },
+    { value: 'TEAM_LEADER', label: 'Team Leader' }
+  ],
+  'Academic': [
+    { value: 'ACADEMIC_HEAD', label: 'Academic Head' },
+    { value: 'TRAINER_FULLTIME', label: 'Full Time Trainer' },
+    { value: 'TRAINER_PARTTIME', label: 'Part Time Trainer' },
+    { value: 'ACADEMIC_COORDINATOR', label: 'Academic Coordinator' }
+  ],
+  'HR': [
+    { value: 'HR_MANAGER', label: 'HR Manager' },
+    { value: 'HR_EXECUTIVE', label: 'HR Executive' }
+  ],
+  'Accounts': [
+    { value: 'ACCOUNTS_HEAD', label: 'Accounts Head' },
+    { value: 'ACCOUNTANT', label: 'Accountant' },
+    { value: 'ACCOUNTS_EXECUTIVE', label: 'Accounts Executive' }
+  ],
+  'Dispatch': [
+    { value: 'DISPATCH_HEAD', label: 'Dispatch Head' },
+    { value: 'DISPATCH_EXECUTIVE', label: 'Dispatch Executive' }
+  ],
+  'Admin': [
+    { value: 'COO', label: 'COO' },
+    { value: 'MD', label: 'MD' },
+    { value: 'CEO', label: 'CEO' }
+  ],
+  'Marketing': [
+    { value: 'MARKETING_HEAD', label: 'Marketing Head' },
+    { value: 'MARKETING_EXECUTIVE', label: 'Marketing Executive' }
+  ]
+};
+
 const EmployeeManagement = () => {
   const [employees, setEmployees] = useState([]);
   const [loading, setLoading] = useState(false);
