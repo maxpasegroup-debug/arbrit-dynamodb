@@ -2209,6 +2209,71 @@ class AssessmentSubmissionCreate(BaseModel):
 
 
 
+
+# ==================== EXPENSE REIMBURSEMENT MODELS ====================
+
+class ExpenseClaim(BaseModel):
+    """Expense claim/reimbursement model"""
+    model_config = ConfigDict(extra="ignore")
+    
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    employee_id: str
+    employee_name: str
+    mobile: str
+    department: str  # Sales, Academic, HR, Accounts, Dispatch
+    branch: str  # Dubai, Abu Dhabi, Saudi Arabia
+    
+    # Expense details
+    amount: float
+    currency: str = "AED"
+    category: str  # Travel, Food, Accommodation, Stationery, Others
+    description: str
+    expense_date: str  # Date of expense
+    attachment_url: Optional[str] = None  # Bill/receipt upload
+    
+    # Approval workflow
+    status: str = "PENDING_DEPT_HEAD"  # PENDING_DEPT_HEAD, REJECTED, PENDING_HR, PENDING_ACCOUNTS, PAID
+    
+    # Department Head
+    dept_head_id: Optional[str] = None
+    dept_head_name: Optional[str] = None
+    dept_head_decision: Optional[str] = None  # approve/reject
+    dept_head_remarks: Optional[str] = None
+    dept_head_reviewed_at: Optional[str] = None
+    
+    # HR
+    hr_id: Optional[str] = None
+    hr_name: Optional[str] = None
+    hr_decision: Optional[str] = None
+    hr_remarks: Optional[str] = None
+    hr_reviewed_at: Optional[str] = None
+    
+    # Accounts
+    accounts_id: Optional[str] = None
+    accounts_name: Optional[str] = None
+    payment_reference: Optional[str] = None
+    paid_at: Optional[str] = None
+    
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+    updated_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+
+
+class ExpenseClaimCreate(BaseModel):
+    """Create new expense claim"""
+    amount: float
+    category: str
+    description: str
+    expense_date: str
+    attachment_url: Optional[str] = None
+
+
+class ExpenseClaimUpdateStatus(BaseModel):
+    """Update expense claim status"""
+    decision: str  # approve or reject
+    remarks: Optional[str] = None
+
+
+
 class CertificateCandidate(BaseModel):
     model_config = ConfigDict(extra="ignore")
     
