@@ -692,8 +692,7 @@ async def diagnostics():
     """Diagnostic endpoint to check environment and connectivity"""
     diagnostics_data = {
         "environment": {
-            "db_name": DB_NAME,  # Show hardcoded database name
-            "db_name_from_env": os.environ.get('DB_NAME', 'NOT_SET'),  # Also show what env has
+            "db_name": DB_NAME,  # Show active database name
             "cors_origins": os.environ.get('CORS_ORIGINS', 'NOT_SET'),
             "jwt_secret_exists": bool(os.environ.get('JWT_SECRET_KEY')),
             "mongo_url_exists": bool(os.environ.get('MONGO_URL')),
