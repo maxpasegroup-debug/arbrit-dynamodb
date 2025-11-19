@@ -41,7 +41,7 @@ const DESIGNATION_OPTIONS = {
   ],
   'Dispatch': [
     { value: 'DISPATCH_HEAD', label: 'Dispatch Head' },
-    { value: 'DISPATCH_EXECUTIVE', label: 'Dispatch Executive' }
+    { value: 'DISPATCH_ASSISTANT', label: 'Dispatch Assistant' }
   ],
   'Admin': [
     { value: 'COO', label: 'COO' },
