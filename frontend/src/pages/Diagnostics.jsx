@@ -45,6 +45,32 @@ const Diagnostics = () => {
     await checkDiagnostics();
   };
 
+  const resetDefaultUsers = async () => {
+    setLoading(true);
+    setError(null);
+    setResetResult(null);
+    try {
+      const response = await axios.post(`${BACKEND_URL}/api/admin/reset-default-users`);
+      setResetResult(response.data);
+    } catch (err) {
+      setError(err.message);
+    }
+    setLoading(false);
+  };
+
+  const checkUserExists = async () => {
+    if (!searchMobile) return;
+    setLoading(true);
+    setSearchResult(null);
+    try {
+      const response = await axios.get(`${BACKEND_URL}/api/admin/check-user/${searchMobile}`);
+      setSearchResult(response.data);
+    } catch (err) {
+      setSearchResult({ exists: false, error: err.message });
+    }
+    setLoading(false);
+  };
+
   useEffect(() => {
     runAllChecks();
   }, []);
