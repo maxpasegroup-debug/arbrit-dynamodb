@@ -1772,6 +1772,258 @@ async def create_missing_sales_user_accounts(current_user: dict = Depends(get_cu
     }
 
 
+# ============================================
+# ACADEMIC HEAD MODULE - NEW ENDPOINTS
+# ============================================
+
+# Academic - Get All Trainer Requests from Sales
+@api_router.get("/academic/trainer-requests")
+async def get_all_trainer_requests(current_user: dict = Depends(get_current_user)):
+    if current_user["role"] != "Academic Head":
+        raise HTTPException(status_code=403, detail="Access denied. Academic Head only.")
+    
+    requests = await db.trainer_requests.find({}, {"_id": 0}).sort("created_at", -1).to_list(1000)
+    return requests
+
+
+# Academic - Approve Trainer Request
+@api_router.put("/academic/trainer-requests/{request_id}/approve")
+async def approve_trainer_request(request_id: str, approval_data: dict, current_user: dict = Depends(get_current_user)):
+    if current_user["role"] != "Academic Head":
+        raise HTTPException(status_code=403, detail="Access denied. Academic Head only.")
+    
+    remarks = approval_data.get("remarks", "")
+    confirmed_slots = approval_data.get("confirmed_slots", "")
+    
+    await db.trainer_requests.update_one(
+        {"id": request_id},
+        {"$set": {
+            "status": "Approved",
+            "confirmed_slots": confirmed_slots,
+            "academic_remarks": remarks,
+            "updated_at": datetime.now(timezone.utc).isoformat()
+        }}
+    )
+    
+    return {"message": "Trainer request approved successfully"}
+
+
+# Academic - Reject Trainer Request
+@api_router.put("/academic/trainer-requests/{request_id}/reject")
+async def reject_trainer_request(request_id: str, rejection_data: dict, current_user: dict = Depends(get_current_user)):
+    if current_user["role"] != "Academic Head":
+        raise HTTPException(status_code=403, detail="Access denied. Academic Head only.")
+    
+    remarks = rejection_data.get("remarks", "")
+    
+    await db.trainer_requests.update_one(
+        {"id": request_id},
+        {"$set": {
+            "status": "Rejected",
+            "academic_remarks": remarks,
+            "updated_at": datetime.now(timezone.utc).isoformat()
+        }}
+    )
+    
+    return {"message": "Trainer request rejected"}
+
+
+# Academic - Suggest Alternative for Trainer Request
+@api_router.put("/academic/trainer-requests/{request_id}/suggest-alternative")
+async def suggest_alternative_trainer_request(request_id: str, alternative_data: dict, current_user: dict = Depends(get_current_user)):
+    if current_user["role"] != "Academic Head":
+        raise HTTPException(status_code=403, detail="Access denied. Academic Head only.")
+    
+    alternative_dates = alternative_data.get("alternative_dates", "")
+    remarks = alternative_data.get("remarks", "")
+    
+    await db.trainer_requests.update_one(
+        {"id": request_id},
+        {"$set": {
+            "status": "Alternative Suggested",
+            "confirmed_slots": alternative_dates,
+            "academic_remarks": remarks,
+            "updated_at": datetime.now(timezone.utc).isoformat()
+        }}
+    )
+    
+    return {"message": "Alternative dates suggested"}
+
+
+# Academic - Assign Trainer to Request
+@api_router.put("/academic/trainer-requests/{request_id}/assign-trainer")
+async def assign_trainer_to_request(request_id: str, assignment_data: dict, current_user: dict = Depends(get_current_user)):
+    if current_user["role"] != "Academic Head":
+        raise HTTPException(status_code=403, detail="Access denied. Academic Head only.")
+    
+    trainer_id = assignment_data.get("trainer_id")
+    trainer_name = assignment_data.get("trainer_name")
+    confirmed_slots = assignment_data.get("confirmed_slots", "")
+    
+    await db.trainer_requests.update_one(
+        {"id": request_id},
+        {"$set": {
+            "status": "Trainer Assigned",
+            "trainer_id": trainer_id,
+            "trainer_name": trainer_name,
+            "confirmed_slots": confirmed_slots,
+            "updated_at": datetime.now(timezone.utc).isoformat()
+        }}
+    )
+    
+    return {"message": "Trainer assigned successfully"}
+
+
+# Academic - Get All Trainers
+@api_router.get("/academic/trainers")
+async def get_all_trainers(current_user: dict = Depends(get_current_user)):
+    if current_user["role"] != "Academic Head":
+        raise HTTPException(status_code=403, detail="Access denied. Academic Head only.")
+    
+    # Get employees with role/designation containing "Trainer"
+    trainers = await db.employees.find(
+        {"$or": [
+            {"designation": {"$regex": "trainer", "$options": "i"}},
+            {"role": {"$regex": "trainer", "$options": "i"}},
+            {"department": "Academic"}
+        ]},
+        {"_id": 0}
+    ).to_list(1000)
+    
+    return trainers
+
+
+# Academic - Get All Work Orders
+@api_router.get("/academic/work-orders")
+async def get_all_work_orders(current_user: dict = Depends(get_current_user)):
+    if current_user["role"] != "Academic Head":
+        raise HTTPException(status_code=403, detail="Access denied. Academic Head only.")
+    
+    work_orders = await db.work_orders.find({}, {"_id": 0}).sort("created_at", -1).to_list(1000)
+    return work_orders
+
+
+# Academic - Approve Work Order
+@api_router.put("/academic/work-orders/{work_order_id}/approve")
+async def approve_work_order(work_order_id: str, approval_data: dict, current_user: dict = Depends(get_current_user)):
+    if current_user["role"] != "Academic Head":
+        raise HTTPException(status_code=403, detail="Access denied. Academic Head only.")
+    
+    trainer_id = approval_data.get("trainer_id")
+    trainer_name = approval_data.get("trainer_name")
+    coordinator_id = approval_data.get("coordinator_id")
+    coordinator_name = approval_data.get("coordinator_name")
+    remarks = approval_data.get("remarks", "")
+    
+    await db.work_orders.update_one(
+        {"id": work_order_id},
+        {"$set": {
+            "status": "Approved",
+            "assigned_trainer_id": trainer_id,
+            "assigned_trainer_name": trainer_name,
+            "assigned_coordinator_id": coordinator_id,
+            "assigned_coordinator_name": coordinator_name,
+            "approved_by": current_user["id"],
+            "approved_by_name": current_user["name"],
+            "remarks": remarks,
+            "updated_at": datetime.now(timezone.utc).isoformat()
+        }}
+    )
+    
+    return {"message": "Work order approved successfully"}
+
+
+# Academic - Get All Training Sessions
+@api_router.get("/academic/training-sessions")
+async def get_all_training_sessions(current_user: dict = Depends(get_current_user)):
+    if current_user["role"] != "Academic Head":
+        raise HTTPException(status_code=403, detail="Access denied. Academic Head only.")
+    
+    sessions = await db.training_sessions.find({}, {"_id": 0}).sort("training_date", -1).to_list(1000)
+    return sessions
+
+
+# Academic - Update Training Session Status
+@api_router.put("/academic/training-sessions/{session_id}/update-status")
+async def update_training_session_status(session_id: str, status_data: dict, current_user: dict = Depends(get_current_user)):
+    if current_user["role"] != "Academic Head":
+        raise HTTPException(status_code=403, detail="Access denied. Academic Head only.")
+    
+    status = status_data.get("status")
+    notes = status_data.get("notes", "")
+    
+    await db.training_sessions.update_one(
+        {"id": session_id},
+        {"$set": {
+            "status": status,
+            "completion_notes": notes,
+            "updated_at": datetime.now(timezone.utc).isoformat()
+        }}
+    )
+    
+    return {"message": "Training session status updated"}
+
+
+# Academic - Get All Certificate Requests
+@api_router.get("/academic/certificate-requests")
+async def get_all_certificate_requests(current_user: dict = Depends(get_current_user)):
+    if current_user["role"] != "Academic Head":
+        raise HTTPException(status_code=403, detail="Access denied. Academic Head only.")
+    
+    requests = await db.certificate_requests.find({}, {"_id": 0}).sort("created_at", -1).to_list(1000)
+    return requests
+
+
+# Academic - Approve Certificate Request
+@api_router.put("/academic/certificate-requests/{request_id}/approve")
+async def approve_certificate_request(request_id: str, approval_data: dict, current_user: dict = Depends(get_current_user)):
+    if current_user["role"] != "Academic Head":
+        raise HTTPException(status_code=403, detail="Access denied. Academic Head only.")
+    
+    certificate_type = approval_data.get("certificate_type", "In-House")
+    remarks = approval_data.get("remarks", "")
+    
+    await db.certificate_requests.update_one(
+        {"id": request_id},
+        {"$set": {
+            "status": "Approved",
+            "certificate_type": certificate_type,
+            "approved_by": current_user["id"],
+            "approved_by_name": current_user["name"],
+            "remarks": remarks,
+            "updated_at": datetime.now(timezone.utc).isoformat()
+        }}
+    )
+    
+    return {"message": "Certificate request approved"}
+
+
+# Academic - Get Team Members
+@api_router.get("/academic/team")
+async def get_academic_team(current_user: dict = Depends(get_current_user)):
+    if current_user["role"] != "Academic Head":
+        raise HTTPException(status_code=403, detail="Access denied. Academic Head only.")
+    
+    team_members = await db.employees.find(
+        {"department": "Academic"},
+        {"_id": 0}
+    ).to_list(1000)
+    
+    # Get today's attendance for team
+    today = datetime.now(timezone.utc).date().isoformat()
+    attendance_records = await db.attendance.find(
+        {"date": today},
+        {"_id": 0}
+    ).to_list(1000)
+    
+    # Mark attendance status
+    attendance_map = {rec["employee_id"]: rec for rec in attendance_records}
+    for member in team_members:
+        member["attendance_today"] = "Present" if member["id"] in attendance_map else "Absent"
+    
+    return team_members
+
+
 # Include the router in the main app
 app.include_router(api_router)
 
