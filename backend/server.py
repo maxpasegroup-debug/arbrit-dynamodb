@@ -518,6 +518,38 @@ async def check_user_exists(mobile: str):
         }
 
 
+@api_router.delete("/admin/delete-user/{mobile}")
+async def delete_specific_user(mobile: str):
+    """Delete a specific user by mobile number (for manual cleanup)"""
+    try:
+        user = await db.users.find_one({"mobile": mobile}, {"_id": 0})
+        
+        if not user:
+            return {
+                "success": False,
+                "message": f"User with mobile {mobile} not found"
+            }
+        
+        await db.users.delete_one({"mobile": mobile})
+        
+        return {
+            "success": True,
+            "message": f"Successfully deleted user: {user.get('name')} ({mobile}) - {user.get('role')}",
+            "deleted_user": {
+                "mobile": mobile,
+                "name": user.get('name'),
+                "role": user.get('role')
+            }
+        }
+        
+    except Exception as e:
+        return {
+            "success": False,
+            "error": str(e),
+            "message": "Failed to delete user"
+        }
+
+
 @api_router.post("/admin/cleanup-demo-users")
 async def cleanup_demo_users():
     """Delete all demo/test users with fake mobile numbers"""
