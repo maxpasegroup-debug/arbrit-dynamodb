@@ -144,13 +144,13 @@ const MDDashboard = () => {
               </div>
             </CardHeader>
             <CardContent>
-              <div className="grid grid-cols-4 gap-6">
+              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
                 <div className="text-center">
-                  <p className="text-3xl font-bold text-amber-100 mb-1">{dashboardData.corporate_health.attendance_score.toFixed(0)}%</p>
-                  <p className="text-sm text-amber-300/70">Workforce</p>
+                  <p className="text-2xl sm:text-3xl font-bold text-amber-100 mb-1">{dashboardData.corporate_health.attendance_score.toFixed(0)}%</p>
+                  <p className="text-xs sm:text-sm text-amber-300/70">Workforce</p>
                 </div>
                 <div className="text-center">
-                  <p className="text-3xl font-bold text-amber-100 mb-1">{dashboardData.corporate_health.sales_score.toFixed(0)}%</p>
+                  <p className="text-2xl sm:text-3xl font-bold text-amber-100 mb-1">{dashboardData.corporate_health.sales_score.toFixed(0)}%</p>
                   <p className="text-sm text-amber-300/70">Sales</p>
                 </div>
                 <div className="text-center">
