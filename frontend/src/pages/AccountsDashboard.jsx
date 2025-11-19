@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { LogOut, FileText, DollarSign, Receipt, Plus, Search, Calendar, CheckCircle2, Clock, XCircle } from 'lucide-react';
+import { LogOut, FileText, DollarSign, Receipt, Plus, Search, Calendar, CheckCircle2, Clock, XCircle, Wallet } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
