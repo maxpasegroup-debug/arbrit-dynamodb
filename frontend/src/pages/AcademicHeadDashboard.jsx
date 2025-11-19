@@ -228,6 +228,13 @@ const AcademicHeadDashboard = () => {
               <UserCheck className="w-4 h-4 mr-2" />
               Team
             </TabsTrigger>
+            <TabsTrigger 
+              value="assessments"
+              className="data-[state=active]:bg-yellow-500/20 data-[state=active]:text-white text-gray-300"
+            >
+              <ClipboardCheck className="w-4 h-4 mr-2" />
+              Assessments
+            </TabsTrigger>
           </TabsList>
 
           <div className="mt-6">
