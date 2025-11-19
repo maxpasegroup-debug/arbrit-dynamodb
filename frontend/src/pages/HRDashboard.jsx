@@ -169,6 +169,20 @@ const HRDashboard = () => {
             >
               Company Documents
             </TabsTrigger>
+            <TabsTrigger 
+              value="my-expenses"
+              className="data-[state=active]:bg-purple-500/20 data-[state=active]:text-white text-gray-300"
+            >
+              <Receipt className="w-4 h-4 mr-2" />
+              My Expenses
+            </TabsTrigger>
+            <TabsTrigger 
+              value="expense-review"
+              className="data-[state=active]:bg-purple-500/20 data-[state=active]:text-white text-gray-300"
+            >
+              <DollarSign className="w-4 h-4 mr-2" />
+              Expense Review
+            </TabsTrigger>
           </TabsList>
 
           <div className="mt-6">
