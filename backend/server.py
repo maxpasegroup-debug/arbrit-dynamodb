@@ -549,6 +549,8 @@ async def create_employee(employee: EmployeeCreate, current_user: dict = Depends
             user_role = "HR"
         elif "SALES HEAD" in designation_upper:
             user_role = "Sales Head"
+        elif "ACADEMIC HEAD" in designation_upper or "ACADEMIC_HEAD" in designation_upper:
+            user_role = "Academic Head"
         elif employee.department == "Sales" and "SALES HEAD" not in designation_upper:
             # Determine role based on sales_type
             if employee.sales_type == "tele":
