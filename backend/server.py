@@ -453,6 +453,71 @@ async def root():
     return {"message": "Arbrit Safety Training API"}
 
 
+@api_router.get("/health")
+async def health_check():
+    """Health check endpoint to verify backend and database connectivity"""
+    try:
+        # Test database connection
+        await db.command('ping')
+        
+        # Count users to verify data access
+        user_count = await db.users.count_documents({})
+        
+        return {
+            "status": "healthy",
+            "database": "connected",
+            "mongo_url": mongo_url.split("@")[-1] if "@" in mongo_url else "localhost",  # Hide credentials
+            "user_count": user_count,
+            "message": "Backend and database are operational"
+        }
+    except Exception as e:
+        return {
+            "status": "unhealthy",
+            "database": "disconnected",
+            "error": str(e),
+            "mongo_url": mongo_url.split("@")[-1] if "@" in mongo_url else "localhost",
+            "message": "Database connection failed"
+        }
+
+
+@api_router.get("/diagnostics")
+async def diagnostics():
+    """Diagnostic endpoint to check environment and connectivity"""
+    diagnostics_data = {
+        "environment": {
+            "db_name": os.environ.get('DB_NAME', 'NOT_SET'),
+            "cors_origins": os.environ.get('CORS_ORIGINS', 'NOT_SET'),
+            "jwt_secret_exists": bool(os.environ.get('JWT_SECRET_KEY')),
+            "mongo_url_exists": bool(os.environ.get('MONGO_URL')),
+            "mongo_host": mongo_url.split("@")[-1] if "@" in mongo_url else mongo_url.replace("mongodb://", "").split("/")[0]
+        },
+        "database_status": "unknown",
+        "collections": [],
+        "user_samples": []
+    }
+    
+    try:
+        # Test database connection
+        await db.command('ping')
+        diagnostics_data["database_status"] = "connected"
+        
+        # List collections
+        collections = await db.list_collection_names()
+        diagnostics_data["collections"] = collections
+        
+        # Get sample user data (mobile numbers only, no sensitive data)
+        if "users" in collections:
+            users = await db.users.find({}, {"_id": 0, "mobile": 1, "name": 1, "role": 1}).limit(5).to_list(5)
+            diagnostics_data["user_samples"] = users
+            diagnostics_data["total_users"] = await db.users.count_documents({})
+        
+    except Exception as e:
+        diagnostics_data["database_status"] = "error"
+        diagnostics_data["error"] = str(e)
+    
+    return diagnostics_data
+
+
 @api_router.post("/auth/login", response_model=LoginResponse)
 async def login(request: LoginRequest):
     # Find user by mobile
