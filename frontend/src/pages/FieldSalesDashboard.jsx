@@ -226,6 +226,10 @@ const FieldSalesDashboard = () => {
             <TabsContent value="invoice" className="mt-0">
               <InvoiceRequest />
             </TabsContent>
+
+            <TabsContent value="expenses" className="mt-0">
+              <ExpenseSubmission />
+            </TabsContent>
           </div>
         </Tabs>
       </main>
