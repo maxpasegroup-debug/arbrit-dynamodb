@@ -524,10 +524,19 @@ async def cleanup_demo_users():
     try:
         # Demo mobile patterns to remove (comprehensive list)
         demo_patterns = [
-            # Common test patterns
+            # Common test patterns starting with 012345
             "0123456789",  # CEO demo
             "0123456790",  # COO demo
             "0123456791",  # MD demo
+            "0123456792",
+            "0123456793",
+            "0123456794",
+            "0123456795",
+            "0123456796",
+            "0123456797",
+            "0123456798",
+            "0123456799",
+            # UAE format demo numbers (055)
             "0550000001",  # Sales Head demo
             "0550000002",  # Tele Sales demo
             "0550000003",
@@ -538,18 +547,35 @@ async def cleanup_demo_users():
             "0550000008",
             "0550000009",
             "0550000010",
+            "0550000011",
+            "0550000012",
+            "0550000013",
+            "0550000014",
+            "0550000015",
+            "0550000016",
+            "0550000017",
+            "0550000018",
+            "0550000019",
+            "0550000020",
             # Other common test patterns
             "1234567890",
             "9876543210",
             "0000000000",
             "1111111111",
+            "2222222222",
+            "3333333333",
+            "4444444444",
             "5555555555",
+            "6666666666",
+            "7777777777",
+            "8888888888",
             "9999999999",
             # Test/demo keywords
             "test",
             "demo",
             "sample",
-            "dummy"
+            "dummy",
+            "fake"
         ]
         
         deleted_count = 0
