@@ -212,6 +212,13 @@ const AcademicHeadDashboard = () => {
               Certificates
             </TabsTrigger>
             <TabsTrigger 
+              value="generate"
+              className="data-[state=active]:bg-yellow-500/20 data-[state=active]:text-white text-gray-300"
+            >
+              <FileCheck className="w-4 h-4 mr-2" />
+              Generate
+            </TabsTrigger>
+            <TabsTrigger 
               value="team"
               className="data-[state=active]:bg-yellow-500/20 data-[state=active]:text-white text-gray-300"
             >
