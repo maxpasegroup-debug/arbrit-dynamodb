@@ -2544,6 +2544,194 @@ async def verify_certificate(code: str):
     }
 
 
+# ==================== EXECUTIVE DASHBOARDS (COO & MD) - NEW ====================
+
+@api_router.get("/executive/coo-dashboard")
+async def get_coo_dashboard_data(current_user: dict = Depends(get_current_user)):
+    """Get aggregated data for COO dashboard (READ-ONLY)"""
+    if current_user.get("role") not in ["COO", "Management", "MD", "CEO"]:
+        raise HTTPException(status_code=403, detail="Access denied. Executive access only.")
+    
+    try:
+        # HRM Overview
+        total_employees = await db.employees.count_documents({})
+        today = datetime.now(timezone.utc).date().isoformat()
+        present_today = await db.attendance.count_documents({"date": today, "status": "present"})
+        
+        # Document expiry alerts (within 30 days)
+        thirty_days_ahead = (datetime.now(timezone.utc) + timedelta(days=30)).isoformat()
+        expiring_docs = await db.employee_documents.count_documents({
+            "expiry_date": {"$lte": thirty_days_ahead, "$gte": datetime.now(timezone.utc).isoformat()}
+        })
+        
+        # Sales Performance
+        total_leads = await db.leads.count_documents({})
+        converted_leads = await db.leads.count_documents({"status": "converted"})
+        active_quotations = await db.quotations.count_documents({"status": {"$in": ["pending", "sent"]}})
+        
+        # Academic Operations
+        active_trainers = await db.employees.count_documents({
+            "department": "Academic",
+            "designation": {"$in": ["TRAINER_FULLTIME", "TRAINER_PARTTIME"]}
+        })
+        total_work_orders = await db.work_orders.count_documents({})
+        completed_sessions = await db.work_orders.count_documents({"status": "completed"})
+        certificates_generated = await db.certificate_candidates.count_documents({})
+        
+        # Dispatch Status
+        pending_dispatch = await db.delivery_tasks.count_documents({"status": "PENDING"})
+        out_for_delivery = await db.delivery_tasks.count_documents({"status": "OUT_FOR_DELIVERY"})
+        delivered_today_start = datetime.now(timezone.utc).replace(hour=0, minute=0, second=0, microsecond=0)
+        delivered_today = await db.delivery_tasks.count_documents({
+            "status": "DELIVERED",
+            "delivered_at": {"$gte": delivered_today_start.isoformat()}
+        })
+        
+        # Accounts snapshot (mock data - extend based on actual schema)
+        # This can be extended when invoice/payment modules are built
+        
+        return {
+            "hrm": {
+                "total_employees": total_employees,
+                "present_today": present_today,
+                "attendance_rate": round((present_today / total_employees * 100) if total_employees > 0 else 0, 1),
+                "expiring_documents": expiring_docs
+            },
+            "sales": {
+                "total_leads": total_leads,
+                "converted_leads": converted_leads,
+                "conversion_rate": round((converted_leads / total_leads * 100) if total_leads > 0 else 0, 1),
+                "active_quotations": active_quotations
+            },
+            "academic": {
+                "active_trainers": active_trainers,
+                "total_work_orders": total_work_orders,
+                "completed_sessions": completed_sessions,
+                "certificates_generated": certificates_generated
+            },
+            "dispatch": {
+                "pending_dispatch": pending_dispatch,
+                "out_for_delivery": out_for_delivery,
+                "delivered_today": delivered_today
+            },
+            "accounts": {
+                "total_invoices": 0,  # Placeholder
+                "pending_payments": 0,  # Placeholder
+                "revenue_this_month": 0  # Placeholder
+            }
+        }
+    except Exception as e:
+        logger.error(f"Error fetching COO dashboard data: {e}")
+        raise HTTPException(status_code=500, detail="Failed to fetch dashboard data")
+
+
+@api_router.get("/executive/md-dashboard")
+async def get_md_dashboard_data(current_user: dict = Depends(get_current_user)):
+    """Get aggregated executive intelligence data for MD dashboard (READ-ONLY)"""
+    if current_user.get("role") not in ["MD", "CEO", "Management"]:
+        raise HTTPException(status_code=403, detail="Access denied. MD/CEO access only.")
+    
+    try:
+        # Corporate Health Score (calculated based on multiple factors)
+        total_employees = await db.employees.count_documents({})
+        today = datetime.now(timezone.utc).date().isoformat()
+        present_today = await db.attendance.count_documents({"date": today, "status": "present"})
+        attendance_score = (present_today / total_employees * 100) if total_employees > 0 else 0
+        
+        total_leads = await db.leads.count_documents({})
+        converted_leads = await db.leads.count_documents({"status": "converted"})
+        sales_score = (converted_leads / total_leads * 100) if total_leads > 0 else 0
+        
+        delivered = await db.delivery_tasks.count_documents({"status": "DELIVERED"})
+        total_tasks = await db.delivery_tasks.count_documents({})
+        dispatch_score = (delivered / total_tasks * 100) if total_tasks > 0 else 0
+        
+        corporate_health = round((attendance_score + sales_score + dispatch_score) / 3, 1)
+        
+        # Executive Analytics
+        total_work_orders = await db.work_orders.count_documents({})
+        completed_work_orders = await db.work_orders.count_documents({"status": "completed"})
+        
+        # Workforce Intelligence
+        departments = await db.employees.distinct("department")
+        dept_counts = {}
+        for dept in departments:
+            count = await db.employees.count_documents({"department": dept})
+            dept_counts[dept] = count
+        
+        # Sales Intelligence
+        high_value_leads = await db.leads.count_documents({})  # Can filter by value threshold
+        lost_deals = await db.leads.count_documents({"status": "lost"})
+        
+        # Academic Excellence
+        certificates_generated = await db.certificate_candidates.count_documents({})
+        active_trainers = await db.employees.count_documents({
+            "department": "Academic",
+            "designation": {"$in": ["TRAINER_FULLTIME", "TRAINER_PARTTIME"]}
+        })
+        
+        # Executive Alerts (critical items)
+        pending_dispatch = await db.delivery_tasks.count_documents({"status": "PENDING"})
+        thirty_days_ahead = (datetime.now(timezone.utc) + timedelta(days=30)).isoformat()
+        expiring_docs = await db.employee_documents.count_documents({
+            "expiry_date": {"$lte": thirty_days_ahead, "$gte": datetime.now(timezone.utc).isoformat()}
+        })
+        
+        # AI-powered insights (rule-based for now, can be enhanced with ML)
+        insights = []
+        if sales_score < 30:
+            insights.append("⚠️ Low sales conversion rate detected. Consider reviewing sales strategy.")
+        if pending_dispatch > 10:
+            insights.append("🚨 High pending dispatches. Allocate more dispatch resources.")
+        if expiring_docs > 5:
+            insights.append("⏰ Multiple documents expiring soon. Initiate renewal process.")
+        if attendance_score < 80:
+            insights.append("👥 Low attendance rate. Review team engagement.")
+        if not insights:
+            insights.append("✅ All systems operating normally.")
+        
+        return {
+            "corporate_health": {
+                "score": corporate_health,
+                "rating": "Excellent" if corporate_health >= 80 else "Good" if corporate_health >= 60 else "Needs Attention",
+                "attendance_score": round(attendance_score, 1),
+                "sales_score": round(sales_score, 1),
+                "operations_score": round(dispatch_score, 1)
+            },
+            "executive_analytics": {
+                "total_employees": total_employees,
+                "total_work_orders": total_work_orders,
+                "completion_rate": round((completed_work_orders / total_work_orders * 100) if total_work_orders > 0 else 0, 1),
+                "revenue_growth": 0  # Placeholder
+            },
+            "workforce": {
+                "total": total_employees,
+                "by_department": dept_counts,
+                "active_trainers": active_trainers
+            },
+            "sales": {
+                "total_leads": total_leads,
+                "converted": converted_leads,
+                "lost": lost_deals,
+                "conversion_rate": round(sales_score, 1)
+            },
+            "academic": {
+                "certificates_issued": certificates_generated,
+                "active_trainers": active_trainers,
+                "completed_sessions": completed_work_orders
+            },
+            "alerts": {
+                "pending_dispatch": pending_dispatch,
+                "expiring_documents": expiring_docs,
+                "total_critical": pending_dispatch + expiring_docs
+            },
+            "ai_insights": insights
+        }
+    except Exception as e:
+        logger.error(f"Error fetching MD dashboard data: {e}")
+        raise HTTPException(status_code=500, detail="Failed to fetch dashboard data")
+
+
 # ==================== DISPATCH & DELIVERY MODULE ====================
 
 # Pydantic Models for Dispatch
