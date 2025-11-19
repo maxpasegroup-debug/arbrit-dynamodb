@@ -520,37 +520,61 @@ async def diagnostics():
 
 @api_router.post("/auth/login", response_model=LoginResponse)
 async def login(request: LoginRequest):
-    # Find user by mobile
-    user = await db.users.find_one({"mobile": request.mobile}, {"_id": 0})
-    
-    if not user:
+    try:
+        # Test database connection first
+        await db.command('ping')
+    except Exception as db_error:
+        logger.error(f"Database connection failed during login: {db_error}")
         raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Invalid mobile number or PIN"
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail=f"Database connection error. Please contact support. Error: {str(db_error)}"
         )
     
-    # Verify PIN
-    if not verify_pin(request.pin, user["pin_hash"]):
+    try:
+        # Find user by mobile
+        user = await db.users.find_one({"mobile": request.mobile}, {"_id": 0})
+        
+        if not user:
+            logger.warning(f"Login attempt with non-existent mobile: {request.mobile}")
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="Invalid mobile number or PIN"
+            )
+        
+        # Verify PIN
+        if not verify_pin(request.pin, user["pin_hash"]):
+            logger.warning(f"Failed PIN verification for mobile: {request.mobile}")
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="Invalid mobile number or PIN"
+            )
+        
+        # Create access token
+        access_token = create_access_token(data={"sub": user["id"]})
+        
+        logger.info(f"Successful login for user: {user['name']} ({user['role']})")
+        
+        # Return token and user info (without pin_hash)
+        user_response = {
+            "id": user["id"],
+            "mobile": user["mobile"],
+            "name": user["name"],
+            "role": user["role"]
+        }
+        
+        return {
+            "token": access_token,
+            "user": user_response
+        }
+    
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Unexpected error during login: {e}")
         raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Invalid mobile number or PIN"
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"An unexpected error occurred. Please try again later. Error: {str(e)}"
         )
-    
-    # Create access token
-    access_token = create_access_token(data={"sub": user["id"]})
-    
-    # Return token and user info (without pin_hash)
-    user_response = {
-        "id": user["id"],
-        "mobile": user["mobile"],
-        "name": user["name"],
-        "role": user["role"]
-    }
-    
-    return {
-        "token": access_token,
-        "user": user_response
-    }
 
 
 @api_router.get("/auth/me", response_model=UserResponse)
