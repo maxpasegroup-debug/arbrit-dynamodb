@@ -2045,6 +2045,163 @@ async def get_academic_team(current_user: dict = Depends(get_current_user)):
     return team_members
 
 
+# ==================== CERTIFICATE GENERATION MODULE ====================
+
+class CertificateCandidate(BaseModel):
+    model_config = ConfigDict(extra="ignore")
+    
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    certificate_no: str  # ARB/YY/MM/###
+    candidate_name: str
+    course_name: str
+    trainer_name: str
+    training_date: str
+    completion_date: str
+    issue_date: str
+    expiry_date: Optional[str] = None
+    work_order_id: Optional[str] = None
+    client_name: Optional[str] = None
+    grade: Optional[str] = None
+    remarks: Optional[str] = None
+    generated_by: str  # Employee ID
+    generated_by_name: str
+    generated_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+    status: str = "generated"  # generated, dispatched, delivered
+
+
+class CertificateGenerationRequest(BaseModel):
+    work_order_id: str
+    candidates: List[dict]  # List of {name, grade (optional)}
+    course_name: str
+    trainer_name: str
+    training_date: str
+    completion_date: str
+    expiry_date: Optional[str] = None
+
+
+@api_router.post("/academic/generate-certificates")
+async def generate_certificates(
+    cert_request: CertificateGenerationRequest,
+    current_user: dict = Depends(get_current_user)
+):
+    """Generate in-house certificates for training candidates"""
+    if current_user.get("role") not in ["Academic Head", "COO"]:
+        raise HTTPException(status_code=403, detail="Access denied. Academic Head or COO only.")
+    
+    # Get work order details
+    wo = await db.work_orders.find_one({"id": cert_request.work_order_id}, {"_id": 0})
+    if not wo:
+        raise HTTPException(status_code=404, detail="Work order not found")
+    
+    # Generate certificate numbers (ARB/YY/MM/###)
+    now = datetime.now(timezone.utc)
+    year = now.strftime("%y")
+    month = now.strftime("%m")
+    
+    # Get the count of certificates issued this month
+    month_start = now.replace(day=1, hour=0, minute=0, second=0, microsecond=0)
+    month_count = await db.certificate_candidates.count_documents({
+        "generated_at": {"$gte": month_start.isoformat()}
+    })
+    
+    generated_certificates = []
+    
+    for idx, candidate in enumerate(cert_request.candidates):
+        cert_no = f"ARB/{year}/{month}/{str(month_count + idx + 1).zfill(3)}"
+        
+        certificate = CertificateCandidate(
+            certificate_no=cert_no,
+            candidate_name=candidate.get("name"),
+            course_name=cert_request.course_name,
+            trainer_name=cert_request.trainer_name,
+            training_date=cert_request.training_date,
+            completion_date=cert_request.completion_date,
+            issue_date=now.strftime("%Y-%m-%d"),
+            expiry_date=cert_request.expiry_date,
+            work_order_id=cert_request.work_order_id,
+            client_name=wo.get("client_name"),
+            grade=candidate.get("grade"),
+            remarks=candidate.get("remarks"),
+            generated_by=current_user.get("id"),
+            generated_by_name=current_user.get("name"),
+            status="generated"
+        )
+        
+        cert_dict = certificate.model_dump()
+        cert_dict['generated_at'] = cert_dict['generated_at'].isoformat()
+        
+        await db.certificate_candidates.insert_one(cert_dict)
+        generated_certificates.append(cert_dict)
+        
+        # Also create an entry in the certificates collection for dispatch tracking
+        dispatch_cert = {
+            "id": str(uuid.uuid4()),
+            "work_order_id": cert_request.work_order_id,
+            "certificate_no": cert_no,
+            "candidate_name": candidate.get("name"),
+            "course_name": cert_request.course_name,
+            "client_name": wo.get("client_name"),
+            "status": "approved",  # Ready for dispatch
+            "approved_by": current_user.get("name"),
+            "approved_at": now.isoformat(),
+            "created_at": now.isoformat()
+        }
+        await db.certificates.insert_one(dispatch_cert)
+    
+    return {
+        "message": f"{len(generated_certificates)} certificates generated successfully",
+        "certificates": generated_certificates
+    }
+
+
+@api_router.get("/academic/generated-certificates")
+async def get_generated_certificates(
+    work_order_id: Optional[str] = None,
+    current_user: dict = Depends(get_current_user)
+):
+    """Get all generated certificates"""
+    if current_user.get("role") not in ["Academic Head", "Dispatch Head", "COO"]:
+        raise HTTPException(status_code=403, detail="Access denied.")
+    
+    query = {}
+    if work_order_id:
+        query["work_order_id"] = work_order_id
+    
+    certificates = await db.certificate_candidates.find(query, {"_id": 0}).to_list(1000)
+    return certificates
+
+
+@api_router.get("/academic/certificate/{certificate_no}")
+async def get_certificate_by_number(
+    certificate_no: str,
+    current_user: dict = Depends(get_current_user)
+):
+    """Get certificate details by certificate number"""
+    certificate = await db.certificate_candidates.find_one(
+        {"certificate_no": certificate_no},
+        {"_id": 0}
+    )
+    if not certificate:
+        raise HTTPException(status_code=404, detail="Certificate not found")
+    
+    return certificate
+
+
+@api_router.get("/academic/work-orders-for-certificates")
+async def get_work_orders_for_certificates(current_user: dict = Depends(get_current_user)):
+    """Get completed work orders that can have certificates generated"""
+    if current_user.get("role") not in ["Academic Head", "COO"]:
+        raise HTTPException(status_code=403, detail="Access denied. Academic Head or COO only.")
+    
+    # Get work orders with status completed or approved
+    work_orders = await db.work_orders.find(
+        {"status": {"$in": ["completed", "approved"]}},
+        {"_id": 0}
+    ).to_list(1000)
+    
+    return work_orders
+
+
 # ==================== DISPATCH & DELIVERY MODULE ====================
 
 # Pydantic Models for Dispatch
