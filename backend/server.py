@@ -522,8 +522,9 @@ async def check_user_exists(mobile: str):
 async def cleanup_demo_users():
     """Delete all demo/test users with fake mobile numbers"""
     try:
-        # Demo mobile patterns to remove
+        # Demo mobile patterns to remove (comprehensive list)
         demo_patterns = [
+            # Common test patterns
             "0123456789",  # CEO demo
             "0123456790",  # COO demo
             "0123456791",  # MD demo
@@ -531,7 +532,24 @@ async def cleanup_demo_users():
             "0550000002",  # Tele Sales demo
             "0550000003",
             "0550000004",
-            "0550000005"
+            "0550000005",
+            "0550000006",
+            "0550000007",
+            "0550000008",
+            "0550000009",
+            "0550000010",
+            # Other common test patterns
+            "1234567890",
+            "9876543210",
+            "0000000000",
+            "1111111111",
+            "5555555555",
+            "9999999999",
+            # Test/demo keywords
+            "test",
+            "demo",
+            "sample",
+            "dummy"
         ]
         
         deleted_count = 0
