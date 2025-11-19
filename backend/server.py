@@ -524,10 +524,46 @@ async def update_employee(employee_id: str, employee_update: EmployeeUpdate, cur
     if not existing:
         raise HTTPException(status_code=404, detail="Employee not found")
     
+    # Check if mobile number is being changed
+    mobile_changed = False
+    old_mobile = existing.get("mobile")
+    new_mobile = employee_update.mobile
+    if new_mobile and new_mobile != old_mobile:
+        mobile_changed = True
+    
     # Update fields
     update_data = {k: v for k, v in employee_update.model_dump().items() if v is not None}
     if update_data:
         await db.employees.update_one({"id": employee_id}, {"$set": update_data})
+    
+    # If mobile changed and employee is in Sales department, update user account
+    if mobile_changed and existing.get("department") == "Sales":
+        sales_type = existing.get("sales_type") or update_data.get("sales_type")
+        if sales_type:
+            # Delete old user account(s) for this employee
+            await db.users.delete_many({"id": employee_id})
+            
+            # Create new user account with new mobile
+            if sales_type == "tele":
+                user_role = "Tele Sales"
+            elif sales_type == "field":
+                user_role = "Field Sales"
+            else:
+                user_role = "Sales Employee"
+            
+            pin = new_mobile[-4:]
+            new_user = User(
+                id=employee_id,
+                mobile=new_mobile,
+                pin_hash=hash_pin(pin),
+                name=existing["name"],
+                role=user_role
+            )
+            
+            user_dict = new_user.model_dump()
+            user_dict['created_at'] = user_dict['created_at'].isoformat()
+            await db.users.insert_one(user_dict)
+            logger.info(f"User account updated for {existing['name']}: new mobile {new_mobile}, new PIN {pin}")
     
     # Return updated employee
     updated = await db.employees.find_one({"id": employee_id}, {"_id": 0})
