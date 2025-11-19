@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { LogOut, Calendar, ClipboardCheck, Award, Upload, LayoutDashboard } from 'lucide-react';
+import { LogOut, Calendar, ClipboardCheck, Award, Upload, LayoutDashboard, QrCode } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card } from '@/components/ui/card';
@@ -8,6 +8,7 @@ import TrainerSchedule from '@/components/trainer/TrainerSchedule';
 import AttendanceReport from '@/components/trainer/AttendanceReport';
 import CertificateRequest from '@/components/trainer/CertificateRequest';
 import TrainerUploads from '@/components/trainer/TrainerUploads';
+import AssessmentQRGenerator from '@/components/assessment/AssessmentQRGenerator';
 import { toast } from 'sonner';
 
 const TrainerDashboard = () => {
