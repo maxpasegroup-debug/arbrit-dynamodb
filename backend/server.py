@@ -1539,6 +1539,56 @@ async def reject_leave_request(request_id: str, rejection_data: dict, current_us
     return {"message": "Leave request rejected successfully"}
 
 
+# Admin - Fix User Account for Mobile Number Change
+@api_router.post("/admin/fix-user-account")
+async def fix_user_account_after_mobile_change(fix_data: dict, current_user: dict = Depends(get_current_user)):
+    if current_user["role"] not in ["COO"]:
+        raise HTTPException(status_code=403, detail="Access denied. COO only.")
+    
+    employee_id = fix_data.get("employee_id")
+    if not employee_id:
+        raise HTTPException(status_code=400, detail="employee_id required")
+    
+    # Get employee record
+    employee = await db.employees.find_one({"id": employee_id}, {"_id": 0})
+    if not employee:
+        raise HTTPException(status_code=404, detail="Employee not found")
+    
+    # Delete any old user accounts for this employee ID
+    await db.users.delete_many({"id": employee_id})
+    
+    # Create new user account with current mobile
+    mobile = employee["mobile"]
+    sales_type = employee.get("sales_type", "")
+    
+    if sales_type == "tele":
+        user_role = "Tele Sales"
+    elif sales_type == "field":
+        user_role = "Field Sales"
+    else:
+        raise HTTPException(status_code=400, detail="Invalid sales_type")
+    
+    pin = mobile[-4:]
+    new_user = User(
+        id=employee["id"],
+        mobile=mobile,
+        pin_hash=hash_pin(pin),
+        name=employee["name"],
+        role=user_role
+    )
+    
+    user_dict = new_user.model_dump()
+    user_dict['created_at'] = user_dict['created_at'].isoformat()
+    await db.users.insert_one(user_dict)
+    
+    return {
+        "message": f"User account fixed for {employee['name']}",
+        "mobile": mobile,
+        "pin": pin,
+        "role": user_role
+    }
+
+
 # Admin - Create Missing User Accounts for Sales Employees
 @api_router.post("/admin/create-sales-user-accounts")
 async def create_missing_sales_user_accounts(current_user: dict = Depends(get_current_user)):
