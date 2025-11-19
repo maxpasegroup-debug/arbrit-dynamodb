@@ -3274,6 +3274,316 @@ async def record_payment(payment_data: dict, current_user: dict = Depends(get_cu
         raise HTTPException(status_code=500, detail="Failed to record payment")
 
 
+
+# ==================== ASSESSMENT & FEEDBACK ENDPOINTS ====================
+
+@api_router.post("/assessment/forms")
+async def create_assessment_form(form_data: AssessmentFormCreate, current_user: dict = Depends(get_current_user)):
+    """Create a new assessment form (Academic Head only)"""
+    if current_user.get("role") not in ["Academic Head", "COO", "MD"]:
+        raise HTTPException(status_code=403, detail="Access denied. Academic Head access only.")
+    
+    try:
+        # Create form with QR code URL
+        form = AssessmentForm(
+            **form_data.model_dump(),
+            created_by=current_user["id"],
+            created_by_name=current_user["name"],
+            created_by_role=current_user["role"]
+        )
+        
+        # Generate QR code URL (public assessment link)
+        form.qr_code_url = f"/public/assessment/{form.id}"
+        
+        form_dict = form.model_dump()
+        form_dict['created_at'] = form_dict['created_at'].isoformat()
+        form_dict['updated_at'] = form_dict['updated_at'].isoformat()
+        
+        await db.assessment_forms.insert_one(form_dict)
+        
+        return {
+            "message": "Assessment form created successfully",
+            "form_id": form.id,
+            "qr_code_url": form.qr_code_url
+        }
+    except Exception as e:
+        logger.error(f"Error creating assessment form: {e}")
+        raise HTTPException(status_code=500, detail="Failed to create assessment form")
+
+
+@api_router.get("/assessment/forms")
+async def get_assessment_forms(current_user: dict = Depends(get_current_user)):
+    """Get assessment forms - Academic Head sees all, Trainers see only their own"""
+    if current_user.get("role") not in ["Academic Head", "Trainer", "COO", "MD"]:
+        raise HTTPException(status_code=403, detail="Access denied")
+    
+    try:
+        # Academic Head and COO/MD see all forms
+        if current_user.get("role") in ["Academic Head", "COO", "MD"]:
+            forms = await db.assessment_forms.find(
+                {"status": "active"},
+                {"_id": 0}
+            ).sort("created_at", -1).to_list(1000)
+        else:
+            # Trainers see only their assigned forms
+            forms = await db.assessment_forms.find(
+                {"trainer_id": current_user["employee_id"], "status": "active"},
+                {"_id": 0}
+            ).sort("created_at", -1).to_list(1000)
+        
+        return forms
+    except Exception as e:
+        logger.error(f"Error fetching assessment forms: {e}")
+        raise HTTPException(status_code=500, detail="Failed to fetch assessment forms")
+
+
+@api_router.get("/assessment/forms/{form_id}")
+async def get_assessment_form(form_id: str):
+    """Get single assessment form by ID (public endpoint for form display)"""
+    try:
+        form = await db.assessment_forms.find_one({"id": form_id}, {"_id": 0})
+        if not form:
+            raise HTTPException(status_code=404, detail="Assessment form not found")
+        
+        return form
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error fetching assessment form: {e}")
+        raise HTTPException(status_code=500, detail="Failed to fetch assessment form")
+
+
+@api_router.post("/assessment/submit")
+async def submit_assessment(submission_data: AssessmentSubmissionCreate):
+    """Public endpoint for submitting assessment (no authentication required)"""
+    try:
+        # Get form details
+        form = await db.assessment_forms.find_one({"id": submission_data.form_id}, {"_id": 0})
+        if not form:
+            raise HTTPException(status_code=404, detail="Assessment form not found")
+        
+        if form.get("status") != "active":
+            raise HTTPException(status_code=400, detail="This assessment form is no longer active")
+        
+        # Create submission
+        submission = AssessmentSubmission(
+            form_id=submission_data.form_id,
+            form_title=form.get("title", ""),
+            responses=submission_data.responses,
+            work_order_id=form.get("work_order_id"),
+            course_name=form.get("course_name"),
+            batch_name=form.get("batch_name"),
+            trainer_id=form.get("trainer_id"),
+            trainer_name=form.get("trainer_name"),
+            session_date=form.get("session_date"),
+            branch=form.get("branch"),
+            student_name=submission_data.student_name,
+            student_contact=submission_data.student_contact
+        )
+        
+        submission_dict = submission.model_dump()
+        submission_dict['submitted_at'] = submission_dict['submitted_at'].isoformat()
+        
+        await db.assessment_submissions.insert_one(submission_dict)
+        
+        return {
+            "message": "Assessment submitted successfully",
+            "submission_id": submission.id
+        }
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error submitting assessment: {e}")
+        raise HTTPException(status_code=500, detail="Failed to submit assessment")
+
+
+@api_router.get("/assessment/reports")
+async def get_assessment_reports(
+    current_user: dict = Depends(get_current_user),
+    form_id: Optional[str] = None,
+    trainer_id: Optional[str] = None,
+    branch: Optional[str] = None,
+    start_date: Optional[str] = None,
+    end_date: Optional[str] = None
+):
+    """Get assessment reports with filters (Academic Head only)"""
+    if current_user.get("role") not in ["Academic Head", "COO", "MD"]:
+        raise HTTPException(status_code=403, detail="Access denied. Academic Head access only.")
+    
+    try:
+        # Build query filters
+        query = {}
+        
+        if form_id:
+            query["form_id"] = form_id
+        if trainer_id:
+            query["trainer_id"] = trainer_id
+        if branch:
+            query["branch"] = branch
+        if start_date and end_date:
+            query["submitted_at"] = {
+                "$gte": start_date,
+                "$lte": end_date
+            }
+        
+        # Get submissions
+        submissions = await db.assessment_submissions.find(query, {"_id": 0}).sort("submitted_at", -1).to_list(10000)
+        
+        # Calculate analytics
+        total_responses = len(submissions)
+        
+        # Group by form
+        forms_summary = {}
+        for sub in submissions:
+            form_id = sub.get("form_id")
+            if form_id not in forms_summary:
+                forms_summary[form_id] = {
+                    "form_id": form_id,
+                    "form_title": sub.get("form_title"),
+                    "response_count": 0,
+                    "trainer_name": sub.get("trainer_name"),
+                    "course_name": sub.get("course_name"),
+                    "batch_name": sub.get("batch_name"),
+                    "responses": []
+                }
+            forms_summary[form_id]["response_count"] += 1
+            forms_summary[form_id]["responses"].append(sub)
+        
+        # Calculate average ratings for rating questions
+        for form_id, form_data in forms_summary.items():
+            rating_totals = {}
+            rating_counts = {}
+            
+            for submission in form_data["responses"]:
+                for response in submission.get("responses", []):
+                    if response.get("question_type") == "rating":
+                        q_id = response.get("question_id")
+                        answer = response.get("answer")
+                        
+                        if q_id not in rating_totals:
+                            rating_totals[q_id] = 0
+                            rating_counts[q_id] = 0
+                        
+                        try:
+                            rating_totals[q_id] += float(answer)
+                            rating_counts[q_id] += 1
+                        except:
+                            pass
+            
+            # Calculate averages
+            form_data["average_ratings"] = {}
+            for q_id in rating_totals:
+                if rating_counts[q_id] > 0:
+                    form_data["average_ratings"][q_id] = round(rating_totals[q_id] / rating_counts[q_id], 2)
+        
+        return {
+            "total_responses": total_responses,
+            "forms_summary": list(forms_summary.values()),
+            "all_submissions": submissions
+        }
+    except Exception as e:
+        logger.error(f"Error fetching assessment reports: {e}")
+        raise HTTPException(status_code=500, detail="Failed to fetch assessment reports")
+
+
+@api_router.get("/assessment/reports/export")
+async def export_assessment_reports(
+    current_user: dict = Depends(get_current_user),
+    form_id: Optional[str] = None,
+    trainer_id: Optional[str] = None
+):
+    """Export assessment reports to CSV (Academic Head only)"""
+    if current_user.get("role") not in ["Academic Head", "COO", "MD"]:
+        raise HTTPException(status_code=403, detail="Access denied. Academic Head access only.")
+    
+    try:
+        # Build query
+        query = {}
+        if form_id:
+            query["form_id"] = form_id
+        if trainer_id:
+            query["trainer_id"] = trainer_id
+        
+        submissions = await db.assessment_submissions.find(query, {"_id": 0}).sort("submitted_at", -1).to_list(10000)
+        
+        # Prepare CSV data
+        csv_data = []
+        for sub in submissions:
+            row = {
+                "Submission ID": sub.get("id"),
+                "Form Title": sub.get("form_title"),
+                "Submitted At": sub.get("submitted_at"),
+                "Student Name": sub.get("student_name", "Anonymous"),
+                "Student Contact": sub.get("student_contact", "N/A"),
+                "Course": sub.get("course_name", "N/A"),
+                "Batch": sub.get("batch_name", "N/A"),
+                "Trainer": sub.get("trainer_name", "N/A"),
+                "Branch": sub.get("branch", "N/A")
+            }
+            
+            # Add responses
+            for i, response in enumerate(sub.get("responses", []), 1):
+                row[f"Q{i}: {response.get('question_text', '')}"] = response.get("answer", "")
+            
+            csv_data.append(row)
+        
+        return {
+            "data": csv_data,
+            "total_records": len(csv_data)
+        }
+    except Exception as e:
+        logger.error(f"Error exporting assessment reports: {e}")
+        raise HTTPException(status_code=500, detail="Failed to export reports")
+
+
+@api_router.put("/assessment/forms/{form_id}")
+async def update_assessment_form(form_id: str, update_data: dict, current_user: dict = Depends(get_current_user)):
+    """Update assessment form (Academic Head only)"""
+    if current_user.get("role") not in ["Academic Head", "COO", "MD"]:
+        raise HTTPException(status_code=403, detail="Access denied. Academic Head access only.")
+    
+    try:
+        update_data["updated_at"] = datetime.now(timezone.utc).isoformat()
+        
+        result = await db.assessment_forms.update_one(
+            {"id": form_id},
+            {"$set": update_data}
+        )
+        
+        if result.matched_count == 0:
+            raise HTTPException(status_code=404, detail="Assessment form not found")
+        
+        return {"message": "Assessment form updated successfully"}
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error updating assessment form: {e}")
+        raise HTTPException(status_code=500, detail="Failed to update assessment form")
+
+
+@api_router.delete("/assessment/forms/{form_id}")
+async def archive_assessment_form(form_id: str, current_user: dict = Depends(get_current_user)):
+    """Archive assessment form (soft delete - Academic Head only)"""
+    if current_user.get("role") not in ["Academic Head", "COO", "MD"]:
+        raise HTTPException(status_code=403, detail="Access denied. Academic Head access only.")
+    
+    try:
+        result = await db.assessment_forms.update_one(
+            {"id": form_id},
+            {"$set": {"status": "archived", "updated_at": datetime.now(timezone.utc).isoformat()}}
+        )
+        
+        if result.matched_count == 0:
+            raise HTTPException(status_code=404, detail="Assessment form not found")
+        
+        return {"message": "Assessment form archived successfully"}
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error archiving assessment form: {e}")
+        raise HTTPException(status_code=500, detail="Failed to archive assessment form")
+
+
 # Include the router in the main app
 app.include_router(api_router)
 
