@@ -2419,6 +2419,131 @@ async def get_work_orders_for_certificates(current_user: dict = Depends(get_curr
     return work_orders
 
 
+@api_router.post("/academic/bulk-generate-certificates")
+async def bulk_generate_certificates(
+    bulk_request: BulkCertificateGenerationRequest,
+    current_user: dict = Depends(get_current_user)
+):
+    """Bulk generate certificates for multiple candidates (NEW - ADDITIVE)"""
+    if current_user.get("role") not in ["Academic Head", "COO"]:
+        raise HTTPException(status_code=403, detail="Access denied. Academic Head or COO only.")
+    
+    # Get work order details
+    wo = await db.work_orders.find_one({"id": bulk_request.work_order_id}, {"_id": 0})
+    if not wo:
+        raise HTTPException(status_code=404, detail="Work order not found")
+    
+    # Generate certificate numbers
+    now = datetime.now(timezone.utc)
+    year = now.strftime("%y")
+    month = now.strftime("%m")
+    
+    month_start = now.replace(day=1, hour=0, minute=0, second=0, microsecond=0)
+    month_count = await db.certificate_candidates.count_documents({
+        "generated_at": {"$gte": month_start.isoformat()}
+    })
+    
+    generated_certificates = []
+    errors = []
+    
+    for idx, candidate in enumerate(bulk_request.candidates):
+        try:
+            cert_no = f"ARB/{year}/{month}/{str(month_count + idx + 1).zfill(3)}"
+            
+            # Generate unique verification code
+            verification_code = str(uuid.uuid4())[:12].upper()
+            verification_url = f"https://www.iceconnect.in/verify-certificate?code={verification_code}"
+            
+            certificate = CertificateCandidate(
+                certificate_no=cert_no,
+                candidate_name=candidate.get("candidate_name"),
+                course_name=wo.get("course", ""),
+                trainer_name=wo.get("trainer_name", ""),
+                training_date=wo.get("training_date", ""),
+                completion_date=wo.get("completion_date", now.strftime("%Y-%m-%d")),
+                issue_date=now.strftime("%Y-%m-%d"),
+                expiry_date=candidate.get("expiry_date"),
+                work_order_id=bulk_request.work_order_id,
+                client_name=wo.get("client_name"),
+                grade=candidate.get("grade"),
+                generated_by=current_user.get("id"),
+                generated_by_name=current_user.get("name"),
+                status="generated",
+                template_id=bulk_request.template_id,
+                verification_code=verification_code,
+                verification_url=verification_url,
+                candidate_email=candidate.get("candidate_email"),
+                candidate_id=candidate.get("candidate_id")
+            )
+            
+            cert_dict = certificate.model_dump()
+            cert_dict['generated_at'] = cert_dict['generated_at'].isoformat()
+            
+            await db.certificate_candidates.insert_one(cert_dict)
+            generated_certificates.append(cert_dict)
+            
+            # Also create dispatch entry
+            dispatch_cert = {
+                "id": str(uuid.uuid4()),
+                "work_order_id": bulk_request.work_order_id,
+                "certificate_no": cert_no,
+                "candidate_name": candidate.get("candidate_name"),
+                "course_name": wo.get("course"),
+                "client_name": wo.get("client_name"),
+                "status": "approved",
+                "approved_by": current_user.get("name"),
+                "approved_at": now.isoformat(),
+                "created_at": now.isoformat()
+            }
+            await db.certificates.insert_one(dispatch_cert)
+            
+        except Exception as e:
+            errors.append({
+                "candidate": candidate.get("candidate_name"),
+                "error": str(e)
+            })
+    
+    return {
+        "message": f"Bulk generation completed",
+        "total_requested": len(bulk_request.candidates),
+        "generated": len(generated_certificates),
+        "errors": errors,
+        "certificates": generated_certificates
+    }
+
+
+@api_router.get("/certificates/verify")
+async def verify_certificate(code: str):
+    """Public endpoint to verify certificate by code (NEW - ADDITIVE)"""
+    certificate = await db.certificate_candidates.find_one(
+        {"verification_code": code},
+        {"_id": 0, "certificate_no": 1, "candidate_name": 1, "course_name": 1, 
+         "issue_date": 1, "status": 1, "client_name": 1, "expiry_date": 1}
+    )
+    
+    if not certificate:
+        return {
+            "valid": False,
+            "message": "Certificate not found or invalid verification code"
+        }
+    
+    # Check if expired
+    is_expired = False
+    if certificate.get("expiry_date"):
+        try:
+            expiry = datetime.fromisoformat(certificate["expiry_date"])
+            if expiry < datetime.now(timezone.utc):
+                is_expired = True
+        except:
+            pass
+    
+    return {
+        "valid": True,
+        "expired": is_expired,
+        "certificate": certificate
+    }
+
+
 # ==================== DISPATCH & DELIVERY MODULE ====================
 
 # Pydantic Models for Dispatch
