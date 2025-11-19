@@ -2051,6 +2051,329 @@ async def get_academic_team(current_user: dict = Depends(get_current_user)):
     return team_members
 
 
+# ==================== DISPATCH & DELIVERY MODULE ====================
+
+# Pydantic Models for Dispatch
+class DeliveryTask(BaseModel):
+    model_config = ConfigDict(extra="ignore")
+    
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    certificate_id: str
+    work_order_id: Optional[str] = None
+    client_name: str
+    client_branch: str  # Dubai, Abu Dhabi, Saudi Arabia
+    delivery_address: Optional[str] = None
+    contact_person: Optional[str] = None
+    contact_mobile: Optional[str] = None
+    assigned_to_employee_id: Optional[str] = None
+    assigned_to_employee_name: Optional[str] = None
+    status: str = "PENDING"  # PENDING, PICKUP_READY, OUT_FOR_DELIVERY, DELIVERED, FAILED, RETURNED
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+    updated_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+    due_date: Optional[datetime] = None
+    delivered_at: Optional[datetime] = None
+    proof_url: Optional[str] = None
+    remarks: Optional[str] = None
+
+
+class DeliveryTaskCreate(BaseModel):
+    certificate_ids: List[str]
+    assigned_to_employee_id: str
+    assigned_to_employee_name: str
+    due_date: Optional[str] = None
+    remarks: Optional[str] = None
+
+
+class DeliveryTaskUpdate(BaseModel):
+    status: Optional[str] = None
+    assigned_to_employee_id: Optional[str] = None
+    assigned_to_employee_name: Optional[str] = None
+    delivered_at: Optional[str] = None
+    proof_url: Optional[str] = None
+    remarks: Optional[str] = None
+
+
+# Dispatch Endpoints
+
+@api_router.get("/dispatch/certificates-ready")
+async def get_certificates_ready_for_dispatch(
+    branch: Optional[str] = None,
+    search: Optional[str] = None,
+    current_user: dict = Depends(get_current_user)
+):
+    """Get certificates that are ready for dispatch (approved by Academic Head)"""
+    if current_user.get("role") != "Dispatch Head":
+        raise HTTPException(status_code=403, detail="Access denied. Dispatch Head only.")
+    
+    # Find certificates with status "approved" that haven't been assigned to delivery yet
+    query = {"status": "approved"}
+    
+    certificates = await db.certificates.find(query, {"_id": 0}).to_list(1000)
+    
+    # Filter out certificates that already have delivery tasks
+    result = []
+    for cert in certificates:
+        # Check if delivery task exists
+        existing_task = await db.delivery_tasks.find_one({"certificate_id": cert.get("id")})
+        if not existing_task:
+            # Get work order details if available
+            if cert.get("work_order_id"):
+                wo = await db.work_orders.find_one({"id": cert.get("work_order_id")}, {"_id": 0})
+                if wo:
+                    cert["client_name"] = wo.get("client_name", "N/A")
+                    cert["client_branch"] = wo.get("branch", "N/A")
+                    cert["wo_ref_no"] = wo.get("wo_ref_no", "N/A")
+                    cert["course_name"] = wo.get("course", "N/A")
+            
+            # Apply filters
+            if branch and branch != "All":
+                if cert.get("client_branch") != branch:
+                    continue
+            
+            if search:
+                search_lower = search.lower()
+                if not (
+                    search_lower in cert.get("client_name", "").lower() or
+                    search_lower in cert.get("wo_ref_no", "").lower()
+                ):
+                    continue
+            
+            result.append(cert)
+    
+    return result
+
+
+@api_router.post("/dispatch/tasks")
+async def create_delivery_tasks(
+    task_data: DeliveryTaskCreate,
+    current_user: dict = Depends(get_current_user)
+):
+    """Create delivery tasks by assigning certificates to dispatch assistant"""
+    if current_user.get("role") != "Dispatch Head":
+        raise HTTPException(status_code=403, detail="Access denied. Dispatch Head only.")
+    
+    created_tasks = []
+    
+    for cert_id in task_data.certificate_ids:
+        # Get certificate details
+        certificate = await db.certificates.find_one({"id": cert_id}, {"_id": 0})
+        if not certificate:
+            continue
+        
+        # Get work order details
+        client_name = "N/A"
+        client_branch = "N/A"
+        work_order_id = None
+        
+        if certificate.get("work_order_id"):
+            wo = await db.work_orders.find_one({"id": certificate.get("work_order_id")}, {"_id": 0})
+            if wo:
+                client_name = wo.get("client_name", "N/A")
+                client_branch = wo.get("branch", "N/A")
+                work_order_id = wo.get("id")
+        
+        # Create delivery task
+        task = DeliveryTask(
+            certificate_id=cert_id,
+            work_order_id=work_order_id,
+            client_name=client_name,
+            client_branch=client_branch,
+            assigned_to_employee_id=task_data.assigned_to_employee_id,
+            assigned_to_employee_name=task_data.assigned_to_employee_name,
+            status="PENDING",
+            due_date=datetime.fromisoformat(task_data.due_date) if task_data.due_date else None,
+            remarks=task_data.remarks
+        )
+        
+        task_dict = task.model_dump()
+        task_dict['created_at'] = task_dict['created_at'].isoformat()
+        task_dict['updated_at'] = task_dict['updated_at'].isoformat()
+        if task_dict.get('due_date'):
+            task_dict['due_date'] = task_dict['due_date'].isoformat()
+        
+        await db.delivery_tasks.insert_one(task_dict)
+        created_tasks.append(task)
+        
+        # Update certificate status to indicate it's been assigned for delivery
+        await db.certificates.update_one(
+            {"id": cert_id},
+            {"$set": {"dispatch_status": "ASSIGNED"}}
+        )
+    
+    return {"message": f"{len(created_tasks)} delivery tasks created", "tasks": created_tasks}
+
+
+@api_router.get("/dispatch/tasks")
+async def get_all_delivery_tasks(
+    status: Optional[str] = None,
+    branch: Optional[str] = None,
+    current_user: dict = Depends(get_current_user)
+):
+    """Get all delivery tasks (Dispatch Head view)"""
+    if current_user.get("role") != "Dispatch Head":
+        raise HTTPException(status_code=403, detail="Access denied. Dispatch Head only.")
+    
+    query = {}
+    if status:
+        query["status"] = status
+    if branch and branch != "All":
+        query["client_branch"] = branch
+    
+    tasks = await db.delivery_tasks.find(query, {"_id": 0}).to_list(1000)
+    
+    # Convert datetime strings back for frontend
+    for task in tasks:
+        if isinstance(task.get('created_at'), str):
+            task['created_at'] = task['created_at']
+        if isinstance(task.get('due_date'), str):
+            task['due_date'] = task['due_date']
+    
+    return tasks
+
+
+@api_router.put("/dispatch/tasks/{task_id}")
+async def update_delivery_task(
+    task_id: str,
+    task_update: DeliveryTaskUpdate,
+    current_user: dict = Depends(get_current_user)
+):
+    """Update delivery task (Dispatch Head can reassign, update status, etc.)"""
+    if current_user.get("role") != "Dispatch Head":
+        raise HTTPException(status_code=403, detail="Access denied. Dispatch Head only.")
+    
+    update_data = {k: v for k, v in task_update.model_dump().items() if v is not None}
+    update_data["updated_at"] = datetime.now(timezone.utc).isoformat()
+    
+    result = await db.delivery_tasks.update_one(
+        {"id": task_id},
+        {"$set": update_data}
+    )
+    
+    if result.matched_count == 0:
+        raise HTTPException(status_code=404, detail="Delivery task not found")
+    
+    return {"message": "Delivery task updated successfully"}
+
+
+@api_router.get("/dispatch/summary")
+async def get_dispatch_summary(current_user: dict = Depends(get_current_user)):
+    """Get summary statistics for Dispatch Head dashboard"""
+    if current_user.get("role") != "Dispatch Head":
+        raise HTTPException(status_code=403, detail="Access denied. Dispatch Head only.")
+    
+    # Count by status
+    pending = await db.delivery_tasks.count_documents({"status": "PENDING"})
+    out_for_delivery = await db.delivery_tasks.count_documents({"status": "OUT_FOR_DELIVERY"})
+    
+    # Delivered today
+    today_start = datetime.now(timezone.utc).replace(hour=0, minute=0, second=0, microsecond=0)
+    delivered_today = await db.delivery_tasks.count_documents({
+        "status": "DELIVERED",
+        "delivered_at": {"$gte": today_start.isoformat()}
+    })
+    
+    # Overdue (tasks with due_date in the past and not delivered)
+    now = datetime.now(timezone.utc).isoformat()
+    overdue = await db.delivery_tasks.count_documents({
+        "status": {"$nin": ["DELIVERED", "FAILED", "RETURNED"]},
+        "due_date": {"$lt": now, "$ne": None}
+    })
+    
+    # Certificates ready for dispatch
+    certificates_ready = await db.certificates.count_documents({"status": "approved"})
+    existing_tasks_count = await db.delivery_tasks.count_documents({})
+    ready_for_assignment = max(0, certificates_ready - existing_tasks_count)
+    
+    return {
+        "pending_dispatch": pending,
+        "out_for_delivery": out_for_delivery,
+        "delivered_today": delivered_today,
+        "overdue": overdue,
+        "ready_for_assignment": ready_for_assignment
+    }
+
+
+@api_router.get("/dispatch/my-tasks")
+async def get_my_delivery_tasks(current_user: dict = Depends(get_current_user)):
+    """Get delivery tasks assigned to the logged-in dispatch assistant"""
+    if current_user.get("role") != "Dispatch Assistant":
+        raise HTTPException(status_code=403, detail="Access denied. Dispatch Assistant only.")
+    
+    # Find employee record to get employee_id
+    user_mobile = current_user.get("mobile")
+    employee = await db.employees.find_one({"mobile": user_mobile}, {"_id": 0})
+    
+    if not employee:
+        return []
+    
+    employee_id = employee.get("id")
+    
+    tasks = await db.delivery_tasks.find(
+        {"assigned_to_employee_id": employee_id},
+        {"_id": 0}
+    ).to_list(1000)
+    
+    return tasks
+
+
+@api_router.put("/dispatch/my-tasks/{task_id}")
+async def update_my_delivery_task(
+    task_id: str,
+    task_update: DeliveryTaskUpdate,
+    current_user: dict = Depends(get_current_user)
+):
+    """Update own delivery task (Dispatch Assistant)"""
+    if current_user.get("role") != "Dispatch Assistant":
+        raise HTTPException(status_code=403, detail="Access denied. Dispatch Assistant only.")
+    
+    # Find employee record
+    user_mobile = current_user.get("mobile")
+    employee = await db.employees.find_one({"mobile": user_mobile}, {"_id": 0})
+    
+    if not employee:
+        raise HTTPException(status_code=404, detail="Employee record not found")
+    
+    employee_id = employee.get("id")
+    
+    # Verify task belongs to this assistant
+    task = await db.delivery_tasks.find_one({"id": task_id}, {"_id": 0})
+    if not task:
+        raise HTTPException(status_code=404, detail="Delivery task not found")
+    
+    if task.get("assigned_to_employee_id") != employee_id:
+        raise HTTPException(status_code=403, detail="You can only update your own tasks")
+    
+    # Prepare update
+    update_data = {k: v for k, v in task_update.model_dump().items() if v is not None}
+    update_data["updated_at"] = datetime.now(timezone.utc).isoformat()
+    
+    # If status is DELIVERED, update certificate status
+    if task_update.status == "DELIVERED":
+        if not update_data.get("delivered_at"):
+            update_data["delivered_at"] = datetime.now(timezone.utc).isoformat()
+        
+        # Update certificate status
+        await db.certificates.update_one(
+            {"id": task.get("certificate_id")},
+            {"$set": {"status": "delivered", "delivered_at": update_data["delivered_at"]}}
+        )
+        
+        # Mark work order as completed if exists
+        if task.get("work_order_id"):
+            await db.work_orders.update_one(
+                {"id": task.get("work_order_id")},
+                {"$set": {"status": "completed", "completed_at": update_data["delivered_at"]}}
+            )
+    
+    # Update delivery task
+    result = await db.delivery_tasks.update_one(
+        {"id": task_id},
+        {"$set": update_data}
+    )
+    
+    return {"message": "Delivery task updated successfully"}
+
+
 # Include the router in the main app
 app.include_router(api_router)
 
