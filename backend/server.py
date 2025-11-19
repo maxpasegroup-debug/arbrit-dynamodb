@@ -697,7 +697,9 @@ async def diagnostics():
         "database_status": "unknown",
         "collections": [],
         "user_samples": [],
-        "all_users": []
+        "all_users": [],
+        "employees_count": 0,
+        "users_vs_employees": {}
     }
     
     try:
@@ -715,6 +717,22 @@ async def diagnostics():
             diagnostics_data["all_users"] = all_users
             diagnostics_data["user_samples"] = all_users[:5]  # First 5 for quick view
             diagnostics_data["total_users"] = len(all_users)
+        
+        # Get employees count
+        if "employees" in collections:
+            employees = await db.employees.find({}, {"_id": 0, "name": 1, "mobile": 1, "designation": 1, "department": 1}).to_list(1000)
+            diagnostics_data["employees_count"] = len(employees)
+            diagnostics_data["all_employees"] = employees
+            
+            # Compare users vs employees
+            user_mobiles = set(u.get('mobile') for u in diagnostics_data.get("all_users", []))
+            employee_mobiles = set(e.get('mobile') for e in employees)
+            
+            diagnostics_data["users_vs_employees"] = {
+                "users_not_in_employees": list(user_mobiles - employee_mobiles),
+                "employees_not_in_users": list(employee_mobiles - user_mobiles),
+                "common_mobiles": list(user_mobiles & employee_mobiles)
+            }
         
     except Exception as e:
         diagnostics_data["database_status"] = "error"
