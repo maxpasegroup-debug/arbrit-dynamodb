@@ -378,14 +378,22 @@ const Diagnostics = () => {
               {resetResult.success ? (
                 <div>
                   <p className="font-semibold text-green-900 mb-2">✅ {resetResult.message}</p>
+                  {resetResult.deleted_count !== undefined && (
+                    <p className="text-sm text-green-800 mb-2">Deleted {resetResult.deleted_count} demo users</p>
+                  )}
+                  {resetResult.deleted_users && resetResult.deleted_users.map((user, idx) => (
+                    <p key={idx} className="text-xs text-green-700">{user}</p>
+                  ))}
                   {resetResult.results && resetResult.results.map((result, idx) => (
                     <p key={idx} className="text-sm text-green-800">{result}</p>
                   ))}
-                  <div className="mt-3 p-3 bg-white rounded border border-green-300">
-                    <p className="text-sm font-semibold text-green-900 mb-1">You can now login with:</p>
-                    <p className="text-sm text-green-800">• MD: 971564022503 / PIN: 2503</p>
-                    <p className="text-sm text-green-800">• COO: 971566374020 / PIN: 4020</p>
-                  </div>
+                  {resetResult.instructions && (
+                    <div className="mt-3 p-3 bg-white rounded border border-green-300">
+                      <p className="text-sm font-semibold text-green-900 mb-1">You can now login with:</p>
+                      <p className="text-sm text-green-800">• MD: 971564022503 / PIN: 2503</p>
+                      <p className="text-sm text-green-800">• COO: 971566374020 / PIN: 4020</p>
+                    </div>
+                  )}
                 </div>
               ) : (
                 <div>
