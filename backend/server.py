@@ -586,21 +586,25 @@ async def create_employee(employee: EmployeeCreate, current_user: dict = Depends
                 user_role = "Sales Employee"
     
     if user_role:
-        # Check if user already exists
+        # Check if user already exists with this mobile
         existing_user = await db.users.find_one({"mobile": employee.mobile})
-        if not existing_user:
-            # Create user account with PIN = last 4 digits of mobile
-            pin = employee.mobile[-4:]
-            new_user = User(
-                mobile=employee.mobile,
-                pin_hash=hash_pin(pin),
-                name=employee.name,
-                role=user_role
-            )
-            user_dict = new_user.model_dump()
-            user_dict['created_at'] = user_dict['created_at'].isoformat()
-            await db.users.insert_one(user_dict)
-            logger.info(f"{user_role} user account created for {employee.name} with mobile {employee.mobile}")
+        if existing_user:
+            # Delete old user account to prevent data carry-over
+            await db.users.delete_one({"mobile": employee.mobile})
+            logger.info(f"Deleted old user account for mobile {employee.mobile} (was: {existing_user.get('name')}, role: {existing_user.get('role')})")
+        
+        # Create fresh new user account with PIN = last 4 digits of mobile
+        pin = employee.mobile[-4:]
+        new_user = User(
+            mobile=employee.mobile,
+            pin_hash=hash_pin(pin),
+            name=employee.name,
+            role=user_role
+        )
+        user_dict = new_user.model_dump()
+        user_dict['created_at'] = user_dict['created_at'].isoformat()
+        await db.users.insert_one(user_dict)
+        logger.info(f"{user_role} user account created for {employee.name} with mobile {employee.mobile}")
     
     return employee_obj
 
