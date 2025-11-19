@@ -507,7 +507,8 @@ async def diagnostics():
         },
         "database_status": "unknown",
         "collections": [],
-        "user_samples": []
+        "user_samples": [],
+        "all_users": []
     }
     
     try:
@@ -519,11 +520,12 @@ async def diagnostics():
         collections = await db.list_collection_names()
         diagnostics_data["collections"] = collections
         
-        # Get sample user data (mobile numbers only, no sensitive data)
+        # Get ALL user data (for production troubleshooting)
         if "users" in collections:
-            users = await db.users.find({}, {"_id": 0, "mobile": 1, "name": 1, "role": 1}).limit(5).to_list(5)
-            diagnostics_data["user_samples"] = users
-            diagnostics_data["total_users"] = await db.users.count_documents({})
+            all_users = await db.users.find({}, {"_id": 0, "mobile": 1, "name": 1, "role": 1}).to_list(1000)
+            diagnostics_data["all_users"] = all_users
+            diagnostics_data["user_samples"] = all_users[:5]  # First 5 for quick view
+            diagnostics_data["total_users"] = len(all_users)
         
     except Exception as e:
         diagnostics_data["database_status"] = "error"
