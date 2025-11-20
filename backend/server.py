@@ -4308,64 +4308,86 @@ logger = logging.getLogger(__name__)
 
 @app.on_event("startup")
 async def startup_db():
-    """Initialize database connection and seed default users"""
+    """Initialize database connection and seed default users (gracefully handles permission errors)"""
     try:
         # Test database connection
         await db.command('ping')
         logger.info("✅ Database connection successful")
         print("✅ Database connection verified")
         
-        # Create unique index on mobile field in users collection to prevent duplicates
+        # Try to create index (skip if unauthorized)
         try:
             await db.users.create_index("mobile", unique=True)
             logger.info("Unique index created on users.mobile field")
         except Exception as e:
-            logger.info(f"Unique index on users.mobile already exists or creation failed: {e}")
+            if "Unauthorized" in str(e) or "not authorized" in str(e):
+                logger.warning("⚠️  Skipping index creation - no permissions (database is read-only)")
+                print("⚠️  Database is read-only - skipping initialization")
+            else:
+                logger.info(f"Unique index on users.mobile already exists or creation failed: {e}")
         
-        # Seed COO user if not exists
-        coo_exists = await db.users.find_one({"mobile": "971566374020"})
-        if not coo_exists:
-            coo_user = User(
-                mobile="971566374020",
-                pin_hash=hash_pin("4020"),
-                name="Sarada Gopalakrishnan",
-                role="COO"
-            )
-            user_dict = coo_user.model_dump()
-            user_dict['created_at'] = user_dict['created_at'].isoformat()
-            await db.users.insert_one(user_dict)
-            logger.info("COO user seeded successfully")
-            print("✅ COO user seeded")
-        else:
-            print("✅ COO user exists")
-        
-        # Seed MD user if not exists
-        md_exists = await db.users.find_one({"mobile": "971564022503"})
-        if not md_exists:
-            md_user = User(
-                mobile="971564022503",
-                pin_hash=hash_pin("2503"),
-                name="Brijith Shaji",
-                role="MD"
-            )
-            user_dict = md_user.model_dump()
-            user_dict['created_at'] = user_dict['created_at'].isoformat()
-            await db.users.insert_one(user_dict)
-            logger.info("MD user seeded successfully")
-            print("✅ MD user seeded")
-        else:
-            print("✅ MD user exists")
-        
-        # Count and log total users
-        user_count = await db.users.count_documents({})
-        logger.info(f"Database initialized. Total users: {user_count}")
-        print(f"✅ Database ready. Total users: {user_count}")
+        # Try to seed users (skip if unauthorized)
+        try:
+            # Check if COO exists
+            coo_exists = await db.users.find_one({"mobile": "971566374020"})
+            if not coo_exists:
+                coo_user = User(
+                    mobile="971566374020",
+                    pin_hash=hash_pin("4020"),
+                    name="Sarada Gopalakrishnan",
+                    role="COO"
+                )
+                user_dict = coo_user.model_dump()
+                user_dict['created_at'] = user_dict['created_at'].isoformat()
+                await db.users.insert_one(user_dict)
+                logger.info("COO user seeded successfully")
+                print("✅ COO user seeded")
+            else:
+                print("✅ COO user exists")
+            
+            # Check if MD exists
+            md_exists = await db.users.find_one({"mobile": "971564022503"})
+            if not md_exists:
+                md_user = User(
+                    mobile="971564022503",
+                    pin_hash=hash_pin("2503"),
+                    name="Brijith Shaji",
+                    role="MD"
+                )
+                user_dict = md_user.model_dump()
+                user_dict['created_at'] = user_dict['created_at'].isoformat()
+                await db.users.insert_one(user_dict)
+                logger.info("MD user seeded successfully")
+                print("✅ MD user seeded")
+            else:
+                print("✅ MD user exists")
+            
+            # Count total users
+            user_count = await db.users.count_documents({})
+            logger.info(f"Database initialized. Total users: {user_count}")
+            print(f"✅ Database ready. Total users: {user_count}")
+            
+        except Exception as e:
+            if "Unauthorized" in str(e) or "not authorized" in str(e):
+                logger.warning("⚠️  Database is read-only - cannot seed users")
+                logger.warning("⚠️  Continuing startup with existing database data...")
+                print("⚠️  Database is read-only - using existing data")
+                print("✅ Backend starting without seeding (production mode)")
+            else:
+                # Re-raise non-permission errors
+                raise
         
     except Exception as e:
-        logger.error(f"❌ Database initialization failed: {e}")
-        print(f"❌ CRITICAL: Database initialization failed: {e}")
-        print(f"   MongoDB URL: {mongo_url.split('@')[-1] if '@' in mongo_url else mongo_url}")
-        raise
+        # Only crash if it's not a permission error
+        if "Unauthorized" in str(e) or "not authorized" in str(e):
+            logger.warning("⚠️  Database connection is read-only")
+            logger.warning("⚠️  Backend will start but cannot modify database")
+            print("⚠️  Read-only database access - backend starting anyway")
+        else:
+            logger.error(f"❌ Database initialization failed: {e}")
+            print(f"❌ CRITICAL: Database initialization failed: {e}")
+            print(f"   MongoDB URL: {mongo_url.split('@')[-1] if '@' in mongo_url else mongo_url}")
+            raise
 
 
 @app.on_event("shutdown")
