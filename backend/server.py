@@ -18,23 +18,35 @@ ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
 
 # MongoDB connection with error handling
-# Extract database name directly from MONGO_URL
+# Extract database name directly from MONGO_URL with robust parsing
 try:
     mongo_url = os.environ['MONGO_URL']
+    DB_NAME = os.environ.get('DB_NAME', 'arbrit-workdesk')  # Default fallback
     
-    # Parse database name from MONGO_URL
+    # Try to parse database name from MONGO_URL
     # Format: mongodb+srv://user:pass@host/DATABASE_NAME?options
-    if '/' in mongo_url.split('@')[-1]:
-        # Extract database name from URL
-        db_part = mongo_url.split('@')[-1].split('/')[1].split('?')[0]
-        DB_NAME = db_part if db_part else os.environ.get('DB_NAME', 'arbrit-workdesk')
-        print(f"🔵 Database name extracted from MONGO_URL: {DB_NAME}")
-    else:
-        # Fallback to environment variable or default
-        DB_NAME = os.environ.get('DB_NAME', 'arbrit-workdesk')
-        print(f"🔵 Database name from environment: {DB_NAME}")
+    try:
+        if '@' in mongo_url:
+            url_after_at = mongo_url.split('@')[-1]
+            if '/' in url_after_at:
+                parts = url_after_at.split('/')
+                if len(parts) > 1 and parts[1]:
+                    # Extract database name (before query params if any)
+                    db_part = parts[1].split('?')[0].strip()
+                    if db_part:
+                        DB_NAME = db_part
+                        print(f"🔵 Database name extracted from MONGO_URL: {DB_NAME}")
+                    else:
+                        print(f"🔵 Database name from environment (empty in URL): {DB_NAME}")
+                else:
+                    print(f"🔵 Database name from environment (not in URL): {DB_NAME}")
+            else:
+                print(f"🔵 Database name from environment (no / in URL): {DB_NAME}")
+    except Exception as parse_error:
+        print(f"⚠️  Failed to parse database from MONGO_URL: {parse_error}")
+        print(f"🔵 Using database name from environment: {DB_NAME}")
     
-    print(f"🔵 Attempting MongoDB connection to: {mongo_url.split('@')[-1] if '@' in mongo_url else mongo_url}")
+    print(f"🔵 Attempting MongoDB connection to: {mongo_url.split('@')[-1] if '@' in mongo_url else 'localhost'}")
     print(f"🔵 Using database: {DB_NAME}")
     
     client = AsyncIOMotorClient(
