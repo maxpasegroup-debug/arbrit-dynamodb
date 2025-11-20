@@ -293,10 +293,10 @@ Delete Employee
 
 ## 📍 URLs
 
-- **Login**: https://loginflow-4.preview.emergentagent.com/login
-- **COO Dashboard**: https://loginflow-4.preview.emergentagent.com/dashboard/coo
-- **HR Dashboard**: https://loginflow-4.preview.emergentagent.com/dashboard/hr
-- **HRM Modules** (COO access): https://loginflow-4.preview.emergentagent.com/hrm
+- **Login**: https://arbrit-dockerized.preview.emergentagent.com/login
+- **COO Dashboard**: https://arbrit-dockerized.preview.emergentagent.com/dashboard/coo
+- **HR Dashboard**: https://arbrit-dockerized.preview.emergentagent.com/dashboard/hr
+- **HRM Modules** (COO access): https://arbrit-dockerized.preview.emergentagent.com/hrm
 
 ---
 

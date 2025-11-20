@@ -396,10 +396,10 @@ Designation: "Sales Head"
 
 ## 📍 URLs
 
-- **Login**: https://loginflow-4.preview.emergentagent.com/login
-- **COO Dashboard**: https://loginflow-4.preview.emergentagent.com/dashboard/coo
-- **HR Dashboard**: https://loginflow-4.preview.emergentagent.com/dashboard/hr
-- **Sales Head Dashboard**: https://loginflow-4.preview.emergentagent.com/dashboard/sales-head
+- **Login**: https://arbrit-dockerized.preview.emergentagent.com/login
+- **COO Dashboard**: https://arbrit-dockerized.preview.emergentagent.com/dashboard/coo
+- **HR Dashboard**: https://arbrit-dockerized.preview.emergentagent.com/dashboard/hr
+- **Sales Head Dashboard**: https://arbrit-dockerized.preview.emergentagent.com/dashboard/sales-head
 
 ## ⚠️ Important Notes
 
