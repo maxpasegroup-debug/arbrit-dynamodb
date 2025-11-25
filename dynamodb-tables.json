@@ -1,0 +1,91 @@
+{
+  "tables": [
+    {
+      "TableName": "arbrit-users",
+      "KeySchema": [
+        {"AttributeName": "mobile", "KeyType": "HASH"}
+      ],
+      "AttributeDefinitions": [
+        {"AttributeName": "mobile", "AttributeType": "S"},
+        {"AttributeName": "id", "AttributeType": "S"}
+      ],
+      "GlobalSecondaryIndexes": [
+        {
+          "IndexName": "id-index",
+          "KeySchema": [{"AttributeName": "id", "KeyType": "HASH"}],
+          "Projection": {"ProjectionType": "ALL"}
+        }
+      ]
+    },
+    {
+      "TableName": "arbrit-employees",
+      "KeySchema": [
+        {"AttributeName": "id", "KeyType": "HASH"}
+      ],
+      "AttributeDefinitions": [
+        {"AttributeName": "id", "AttributeType": "S"},
+        {"AttributeName": "mobile", "AttributeType": "S"},
+        {"AttributeName": "department", "AttributeType": "S"}
+      ],
+      "GlobalSecondaryIndexes": [
+        {
+          "IndexName": "mobile-index",
+          "KeySchema": [{"AttributeName": "mobile", "KeyType": "HASH"}],
+          "Projection": {"ProjectionType": "ALL"}
+        },
+        {
+          "IndexName": "department-index",
+          "KeySchema": [{"AttributeName": "department", "KeyType": "HASH"}],
+          "Projection": {"ProjectionType": "ALL"}
+        }
+      ]
+    },
+    {
+      "TableName": "arbrit-attendance",
+      "KeySchema": [
+        {"AttributeName": "id", "KeyType": "HASH"}
+      ],
+      "AttributeDefinitions": [
+        {"AttributeName": "id", "AttributeType": "S"},
+        {"AttributeName": "employee_id", "AttributeType": "S"},
+        {"AttributeName": "date", "AttributeType": "S"}
+      ],
+      "GlobalSecondaryIndexes": [
+        {
+          "IndexName": "employee_id-index",
+          "KeySchema": [{"AttributeName": "employee_id", "KeyType": "HASH"}],
+          "Projection": {"ProjectionType": "ALL"}
+        },
+        {
+          "IndexName": "date-index",
+          "KeySchema": [{"AttributeName": "date", "KeyType": "HASH"}],
+          "Projection": {"ProjectionType": "ALL"}
+        }
+      ]
+    }
+  ],
+  "simple_tables": [
+    "arbrit-employee-documents",
+    "arbrit-company-documents",
+    "arbrit-leads",
+    "arbrit-quotations",
+    "arbrit-invoices",
+    "arbrit-invoice-requests",
+    "arbrit-payments",
+    "arbrit-training-sessions",
+    "arbrit-certificate-requests",
+    "arbrit-certificates",
+    "arbrit-certificate-templates",
+    "arbrit-certificate-candidates",
+    "arbrit-trainer-requests",
+    "arbrit-work-orders",
+    "arbrit-assessment-forms",
+    "arbrit-assessment-submissions",
+    "arbrit-visit-logs",
+    "arbrit-expense-claims",
+    "arbrit-leave-requests",
+    "arbrit-delivery-tasks"
+  ],
+  "notes": "Simple tables use 'id' as primary key. All tables use on-demand billing."
+}
+

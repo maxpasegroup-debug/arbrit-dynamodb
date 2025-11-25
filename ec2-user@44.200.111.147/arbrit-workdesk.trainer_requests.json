@@ -1,0 +1,96 @@
+[{
+  "_id": {
+    "$oid": "691cd7b07ad6c3c2b0f06c45"
+  },
+  "id": "272a6359-f899-4daa-be58-9819f1adab5e",
+  "client_name": "Emirates Steel Industries",
+  "course_type": "Fire Safety",
+  "preferred_date": "2025-09-20",
+  "location": "Dubai Industrial Area",
+  "duration": "2 days",
+  "remarks": "Urgent training needed for new project",
+  "requested_by": "e5a8399a-15af-4fb7-9866-acdc34a5a833",
+  "requested_by_name": "Test Sales User",
+  "status": "Pending",
+  "created_at": "2025-11-18T20:31:44.940776+00:00"
+},
+{
+  "_id": {
+    "$oid": "691cd8587ad6c3c2b0f06c57"
+  },
+  "id": "69137db7-27fb-4dcf-9d7c-9b0e6b3b978f",
+  "client_name": "Emirates Steel Industries",
+  "course_type": "Fire Safety",
+  "preferred_date": "2025-09-20",
+  "location": "Dubai Industrial Area",
+  "duration": "2 days",
+  "remarks": "Urgent training needed for new project",
+  "requested_by": "e5a8399a-15af-4fb7-9866-acdc34a5a833",
+  "requested_by_name": "Test Sales User",
+  "status": "Pending",
+  "created_at": "2025-11-18T20:34:32.255901+00:00"
+},
+{
+  "_id": {
+    "$oid": "691cdb282350af718377ff51"
+  },
+  "id": "866ceb89-3af0-4e99-ba04-9c909ef65a1a",
+  "client_name": "Emirates Steel Industries",
+  "course_type": "Fire Safety",
+  "preferred_date": "2025-09-20",
+  "location": "Dubai Industrial Area",
+  "duration": "2 days",
+  "remarks": "Urgent training needed for new project",
+  "requested_by": "e5a8399a-15af-4fb7-9866-acdc34a5a833",
+  "requested_by_name": "Test Sales User",
+  "status": "Pending",
+  "created_at": "2025-11-18T20:46:32.745691+00:00"
+},
+{
+  "_id": {
+    "$oid": "691cdb9ebf55f3bc03ea063c"
+  },
+  "id": "8002e66f-1319-4f85-9993-25526350066f",
+  "client_name": "Emirates Steel Industries",
+  "course_type": "Fire Safety",
+  "preferred_date": "2025-09-20",
+  "location": "Dubai Industrial Area",
+  "duration": "2 days",
+  "remarks": "Urgent training needed for new project",
+  "requested_by": "e5a8399a-15af-4fb7-9866-acdc34a5a833",
+  "requested_by_name": "Test Sales User",
+  "status": "Pending",
+  "created_at": "2025-11-18T20:48:30.139450+00:00"
+},
+{
+  "_id": {
+    "$oid": "691cdba5bf55f3bc03ea0649"
+  },
+  "id": "bf62c60d-0086-4916-8825-42cd2f8126a4",
+  "client_name": "Emirates Steel Industries",
+  "course_type": "Fire Safety",
+  "preferred_date": "2025-09-20",
+  "location": "Dubai Industrial Area",
+  "duration": "2 days",
+  "remarks": "Urgent training needed for new project",
+  "requested_by": "e5a8399a-15af-4fb7-9866-acdc34a5a833",
+  "requested_by_name": "Test Sales User",
+  "status": "Pending",
+  "created_at": "2025-11-18T20:48:37.369210+00:00"
+},
+{
+  "_id": {
+    "$oid": "691cdbaebf55f3bc03ea0656"
+  },
+  "id": "09dc57c1-a127-43fa-8f0e-ff5728f692a1",
+  "client_name": "Emirates Steel Industries",
+  "course_type": "Fire Safety",
+  "preferred_date": "2025-09-20",
+  "location": "Dubai Industrial Area",
+  "duration": "2 days",
+  "remarks": "Urgent training needed for new project",
+  "requested_by": "e5a8399a-15af-4fb7-9866-acdc34a5a833",
+  "requested_by_name": "Test Sales User",
+  "status": "Pending",
+  "created_at": "2025-11-18T20:48:46.276235+00:00"
+}]

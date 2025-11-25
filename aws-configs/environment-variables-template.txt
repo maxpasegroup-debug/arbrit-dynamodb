@@ -1,0 +1,51 @@
+# AWS Environment Configuration for Arbrit Safety Training System
+# Copy these variables and update with your actual values
+
+# ============================================
+# AWS CONFIGURATION
+# ============================================
+AWS_REGION=us-east-1
+AWS_ACCOUNT_ID=123456789012
+
+# ============================================
+# MONGODB CONFIGURATION (MongoDB Atlas)
+# ============================================
+MONGO_URL=mongodb+srv://username:password@cluster0.xxxxx.mongodb.net/arbrit-workdesk?retryWrites=true&w=majority
+DB_NAME=arbrit-workdesk
+
+# ============================================
+# APPLICATION SECURITY
+# ============================================
+# Generate a strong secret key: openssl rand -hex 32
+JWT_SECRET_KEY=your-super-secret-jwt-key-minimum-32-characters-long
+
+# ============================================
+# CORS CONFIGURATION
+# ============================================
+# Add your domain URLs (comma-separated, no spaces)
+CORS_ORIGINS=https://yourdomain.com,https://www.yourdomain.com
+
+# ============================================
+# FRONTEND CONFIGURATION
+# ============================================
+REACT_APP_BACKEND_URL=https://yourdomain.com/api
+
+# ============================================
+# ECS CONFIGURATION
+# ============================================
+ECS_CLUSTER_NAME=arbrit-cluster
+ECS_BACKEND_SERVICE=arbrit-backend-service
+ECS_FRONTEND_SERVICE=arbrit-frontend-service
+
+# ============================================
+# ECR REPOSITORIES
+# ============================================
+ECR_BACKEND_REPO=arbrit-backend
+ECR_FRONTEND_REPO=arbrit-frontend
+
+# ============================================
+# DOMAIN CONFIGURATION
+# ============================================
+DOMAIN_NAME=yourdomain.com
+WWW_DOMAIN=www.yourdomain.com
+

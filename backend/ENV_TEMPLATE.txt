@@ -1,0 +1,32 @@
+# Backend Environment Variables Template
+# Copy these to your ECS Task Definition or create a .env file
+
+# MongoDB Configuration
+# Replace with your existing MongoDB connection string
+MONGO_URL=mongodb+srv://username:password@cluster.mongodb.net/arbrit-workdesk?retryWrites=true&w=majority
+
+# Database name (should match the database in your MONGO_URL)
+DB_NAME=arbrit-workdesk
+
+# JWT Secret Key - Generate a random 32-character string
+# Generate with: openssl rand -hex 32
+JWT_SECRET_KEY=your-super-secret-jwt-key-change-this-to-random-32-chars
+
+# CORS Origins (comma-separated, no spaces)
+# Add your domain URLs here
+CORS_ORIGINS=https://yourdomain.com,https://www.yourdomain.com
+
+# ============================================
+# INSTRUCTIONS FOR AWS DEPLOYMENT
+# ============================================
+# 
+# You'll add these as environment variables in:
+# - ECS Task Definition (Step 10 in AWS_CONSOLE_ONLY_GUIDE.md)
+# 
+# Make sure to:
+# 1. Use your ACTUAL MongoDB connection string
+# 2. Generate a NEW random JWT secret key
+# 3. Update CORS_ORIGINS with your domain
+
+
+

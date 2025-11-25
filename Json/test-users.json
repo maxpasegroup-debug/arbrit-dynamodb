@@ -1,0 +1,76 @@
+[
+  {
+    "_id": {"$oid": "507f1f77bcf86cd799439011"},
+    "mobile": "971500000001",
+    "pin_hash": "$2b$12$LQv3c1yqBWVHxkd0LHAkCOYz6TtxMQJqhN8/LewY5GyYzpLpJ9Z.y",
+    "name": "HR Test User",
+    "role": "hr",
+    "created_at": {"$date": "2024-01-15T10:00:00Z"}
+  },
+  {
+    "_id": {"$oid": "507f1f77bcf86cd799439012"},
+    "mobile": "971500000002",
+    "pin_hash": "$2b$12$LQv3c1yqBWVHxkd0LHAkCOYz6TtxMQJqhN8/LewY5GyYzpLpJ9Z.y",
+    "name": "Sales Head Test",
+    "role": "sales_head",
+    "created_at": {"$date": "2024-01-15T10:00:00Z"}
+  },
+  {
+    "_id": {"$oid": "507f1f77bcf86cd799439013"},
+    "mobile": "971500000003",
+    "pin_hash": "$2b$12$LQv3c1yqBWVHxkd0LHAkCOYz6TtxMQJqhN8/LewY5GyYzpLpJ9Z.y",
+    "name": "Sales Employee Test",
+    "role": "sales",
+    "created_at": {"$date": "2024-01-15T10:00:00Z"}
+  },
+  {
+    "_id": {"$oid": "507f1f77bcf86cd799439014"},
+    "mobile": "971500000004",
+    "pin_hash": "$2b$12$LQv3c1yqBWVHxkd0LHAkCOYz6TtxMQJqhN8/LewY5GyYzpLpJ9Z.y",
+    "name": "Tele Sales Test",
+    "role": "tele_sales",
+    "created_at": {"$date": "2024-01-15T10:00:00Z"}
+  },
+  {
+    "_id": {"$oid": "507f1f77bcf86cd799439015"},
+    "mobile": "971500000005",
+    "pin_hash": "$2b$12$LQv3c1yqBWVHxkd0LHAkCOYz6TtxMQJqhN8/LewY5GyYzpLpJ9Z.y",
+    "name": "Field Sales Test",
+    "role": "field_sales",
+    "created_at": {"$date": "2024-01-15T10:00:00Z"}
+  },
+  {
+    "_id": {"$oid": "507f1f77bcf86cd799439016"},
+    "mobile": "971500000006",
+    "pin_hash": "$2b$12$LQv3c1yqBWVHxkd0LHAkCOYz6TtxMQJqhN8/LewY5GyYzpLpJ9Z.y",
+    "name": "Academic Head Test",
+    "role": "academic_head",
+    "created_at": {"$date": "2024-01-15T10:00:00Z"}
+  },
+  {
+    "_id": {"$oid": "507f1f77bcf86cd799439017"},
+    "mobile": "971500000007",
+    "pin_hash": "$2b$12$LQv3c1yqBWVHxkd0LHAkCOYz6TtxMQJqhN8/LewY5GyYzpLpJ9Z.y",
+    "name": "Accounts Test",
+    "role": "accounts",
+    "created_at": {"$date": "2024-01-15T10:00:00Z"}
+  },
+  {
+    "_id": {"$oid": "507f1f77bcf86cd799439018"},
+    "mobile": "971500000008",
+    "pin_hash": "$2b$12$LQv3c1yqBWVHxkd0LHAkCOYz6TtxMQJqhN8/LewY5GyYzpLpJ9Z.y",
+    "name": "Trainer Test",
+    "role": "trainer",
+    "created_at": {"$date": "2024-01-15T10:00:00Z"}
+  },
+  {
+    "_id": {"$oid": "507f1f77bcf86cd799439019"},
+    "mobile": "971500000009",
+    "pin_hash": "$2b$12$LQv3c1yqBWVHxkd0LHAkCOYz6TtxMQJqhN8/LewY5GyYzpLpJ9Z.y",
+    "name": "Dispatch Head Test",
+    "role": "dispatch_head",
+    "created_at": {"$date": "2024-01-15T10:00:00Z"}
+  }
+]
+
+
