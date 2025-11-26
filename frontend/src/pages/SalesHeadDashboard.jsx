@@ -6,6 +6,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import SalesOverview from '@/components/sales/SalesOverview';
 import EmployeeMonitoring from '@/components/sales/EmployeeMonitoring';
 import LeadAllocation from '@/components/sales/LeadAllocation';
+import LeadManagementEnhanced from '@/components/sales/LeadManagementEnhanced';
 import QuotationApproval from '@/components/sales/QuotationApproval';
 import LeaveApprovals from '@/components/sales/LeaveApprovals';
 import RequestsView from '@/components/sales/RequestsView';
@@ -208,7 +209,7 @@ const SalesHeadDashboard = () => {
             </TabsContent>
 
             <TabsContent value="leads" className="mt-0">
-              <LeadAllocation />
+              <LeadManagementEnhanced />
             </TabsContent>
 
             <TabsContent value="quotations" className="mt-0">

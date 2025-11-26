@@ -2,6 +2,7 @@ from fastapi import FastAPI, APIRouter, HTTPException, Depends, status, UploadFi
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from dotenv import load_dotenv
 from starlette.middleware.cors import CORSMiddleware
+from motor.motor_asyncio import AsyncIOMotorClient
 import os
 import logging
 from pathlib import Path
@@ -12,23 +13,55 @@ from datetime import datetime, timezone, timedelta
 from passlib.context import CryptContext
 import jwt
 import base64
-from dynamodb_layer import DynamoDBDatabase
 
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
 
-# DynamoDB connection
+# MongoDB connection with error handling
+# Extract database name directly from MONGO_URL with robust parsing
 try:
-    AWS_REGION = os.environ.get('AWS_REGION', 'us-east-1')
-    print(f"🔵 Initializing DynamoDB connection to region: {AWS_REGION}")
+    mongo_url = os.environ['MONGO_URL']
+    DB_NAME = os.environ.get('DB_NAME', 'arbrit-workdesk')  # Default fallback
     
-    # Initialize DynamoDB database
-    db = DynamoDBDatabase(region=AWS_REGION)
+    # Try to parse database name from MONGO_URL
+    # Format: mongodb+srv://user:pass@host/DATABASE_NAME?options
+    try:
+        if '@' in mongo_url:
+            url_after_at = mongo_url.split('@')[-1]
+            if '/' in url_after_at:
+                parts = url_after_at.split('/')
+                if len(parts) > 1 and parts[1]:
+                    # Extract database name (before query params if any)
+                    db_part = parts[1].split('?')[0].strip()
+                    if db_part:
+                        DB_NAME = db_part
+                        print(f"🔵 Database name extracted from MONGO_URL: {DB_NAME}")
+                    else:
+                        print(f"🔵 Database name from environment (empty in URL): {DB_NAME}")
+                else:
+                    print(f"🔵 Database name from environment (not in URL): {DB_NAME}")
+            else:
+                print(f"🔵 Database name from environment (no / in URL): {DB_NAME}")
+    except Exception as parse_error:
+        print(f"⚠️  Failed to parse database from MONGO_URL: {parse_error}")
+        print(f"🔵 Using database name from environment: {DB_NAME}")
     
-    print(f"✅ DynamoDB client initialized successfully for region: {AWS_REGION}")
-    print(f"🔵 Using DynamoDB tables with 'arbrit-' prefix")
+    print(f"🔵 Attempting MongoDB connection to: {mongo_url.split('@')[-1] if '@' in mongo_url else 'localhost'}")
+    print(f"🔵 Using database: {DB_NAME}")
+    
+    client = AsyncIOMotorClient(
+        mongo_url,
+        serverSelectionTimeoutMS=5000,  # 5 second timeout
+        connectTimeoutMS=10000,  # 10 second connection timeout
+    )
+    db = client[DB_NAME]  # Use parsed database name
+    print(f"✅ MongoDB client initialized successfully for database: {DB_NAME}")
+except KeyError as e:
+    print(f"❌ CRITICAL: Missing environment variable: {e}")
+    print(f"   Available env vars: {', '.join([k for k in os.environ.keys() if not k.startswith('_')])}")
+    raise
 except Exception as e:
-    print(f"❌ CRITICAL: Failed to initialize DynamoDB client: {e}")
+    print(f"❌ CRITICAL: Failed to initialize MongoDB client: {e}")
     raise
 
 # Security
@@ -475,8 +508,7 @@ async def health_check():
         return {
             "status": "healthy",
             "database": "connected",
-            "database_type": "DynamoDB",
-            "region": os.environ.get('AWS_REGION', 'us-east-1'),
+            "mongo_url": mongo_url.split("@")[-1] if "@" in mongo_url else "localhost",  # Hide credentials
             "user_count": user_count,
             "message": "Backend and database are operational"
         }
@@ -485,8 +517,7 @@ async def health_check():
             "status": "unhealthy",
             "database": "disconnected",
             "error": str(e),
-            "database_type": "DynamoDB",
-            "region": os.environ.get('AWS_REGION', 'us-east-1'),
+            "mongo_url": mongo_url.split("@")[-1] if "@" in mongo_url else "localhost",
             "message": "Database connection failed"
         }
 
@@ -1108,32 +1139,23 @@ async def get_employee_documents(employee_id: str, current_user: dict = Depends(
 
 @api_router.get("/hrm/employee-documents/alerts/all")
 async def get_employee_document_alerts(current_user: dict = Depends(get_current_user)):
-    try:
-        all_docs = await db.employee_documents.find({}, {"_id": 0}).to_list(1000)
-        
-        alerts = []
-        for doc in all_docs:
-            # Skip documents without expiry_date
-            if "expiry_date" not in doc or not doc["expiry_date"]:
-                continue
-                
-            days_until_expiry = calculate_days_until_expiry(doc["expiry_date"])
-            if days_until_expiry <= 30:  # Alert for docs expiring in 30 days or less
-                alerts.append({
-                    "id": doc.get("id", ""),
-                    "employee_id": doc.get("employee_id", ""),
-                    "employee_name": doc.get("employee_name", "Unknown"),
-                    "doc_type": doc.get("doc_type", "Unknown"),
-                    "expiry_date": doc["expiry_date"],
-                    "days_until_expiry": days_until_expiry,
-                    "severity": "critical" if days_until_expiry <= 7 else "warning" if days_until_expiry <= 15 else "info"
-                })
-        
-        return alerts
-    except Exception as e:
-        logger.error(f"Error fetching employee document alerts: {e}")
-        # Return empty array instead of error to prevent dashboard crash
-        return []
+    all_docs = await db.employee_documents.find({}, {"_id": 0}).to_list(1000)
+    
+    alerts = []
+    for doc in all_docs:
+        days_until_expiry = calculate_days_until_expiry(doc["expiry_date"])
+        if days_until_expiry <= 30:  # Alert for docs expiring in 30 days or less
+            alerts.append({
+                "id": doc["id"],
+                "employee_id": doc["employee_id"],
+                "employee_name": doc["employee_name"],
+                "doc_type": doc["doc_type"],
+                "expiry_date": doc["expiry_date"],
+                "days_until_expiry": days_until_expiry,
+                "severity": "critical" if days_until_expiry <= 7 else "warning" if days_until_expiry <= 15 else "info"
+            })
+    
+    return alerts
 
 
 @api_router.delete("/hrm/employee-documents/{doc_id}")
@@ -3028,7 +3050,7 @@ async def get_coo_dashboard_data(current_user: dict = Depends(get_current_user))
         # HRM Overview
         total_employees = await db.employees.count_documents({})
         today = datetime.now(timezone.utc).date().isoformat()
-        present_today = await db.attendance.count_documents({"date": today})
+        present_today = await db.attendance.count_documents({"date": today, "status": "present"})
         
         # Document expiry alerts (within 30 days)
         thirty_days_ahead = (datetime.now(timezone.utc) + timedelta(days=30)).isoformat()
@@ -3107,7 +3129,7 @@ async def get_md_dashboard_data(current_user: dict = Depends(get_current_user)):
         # Corporate Health Score (calculated based on multiple factors)
         total_employees = await db.employees.count_documents({})
         today = datetime.now(timezone.utc).date().isoformat()
-        present_today = await db.attendance.count_documents({"date": today})
+        present_today = await db.attendance.count_documents({"date": today, "status": "present"})
         attendance_score = (present_today / total_employees * 100) if total_employees > 0 else 0
         
         total_leads = await db.leads.count_documents({})
@@ -4293,9 +4315,16 @@ async def startup_db():
         logger.info("✅ Database connection successful")
         print("✅ Database connection verified")
         
-        # DynamoDB indexes are created at table creation time
-        logger.info("Using DynamoDB with pre-configured indexes")
-        print("✅ DynamoDB tables configured with GSI indexes")
+        # Try to create index (skip if unauthorized)
+        try:
+            await db.users.create_index("mobile", unique=True)
+            logger.info("Unique index created on users.mobile field")
+        except Exception as e:
+            if "Unauthorized" in str(e) or "not authorized" in str(e):
+                logger.warning("⚠️  Skipping index creation - no permissions (database is read-only)")
+                print("⚠️  Database is read-only - skipping initialization")
+            else:
+                logger.info(f"Unique index on users.mobile already exists or creation failed: {e}")
         
         # Try to seed users (skip if unauthorized)
         try:
