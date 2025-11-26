@@ -126,6 +126,22 @@ const COODashboard = () => {
           </TabsList>
 
           <TabsContent value="modules">
+            {/* Quick Actions */}
+            <div className="flex flex-wrap justify-center gap-4 mb-8">
+              <button
+                onClick={() => navigate('/dashboard/sales-head')}
+                className="px-6 py-3 bg-gradient-to-r from-blue-500 to-cyan-600 hover:from-blue-600 hover:to-cyan-700 text-white rounded-lg font-semibold shadow-lg transition-all flex items-center gap-2"
+              >
+                <span>📝</span> Submit New Lead
+              </button>
+              <button
+                onClick={() => navigate('/dashboard/accounts')}
+                className="px-6 py-3 bg-gradient-to-r from-purple-500 to-pink-600 hover:from-purple-600 hover:to-pink-700 text-white rounded-lg font-semibold shadow-lg transition-all flex items-center gap-2"
+              >
+                <span>💰</span> Submit Expense
+              </button>
+            </div>
+
             {/* Welcome Section */}
             <div className="mb-12 text-center">
               <h2 className="text-4xl font-bold text-white mb-3">
