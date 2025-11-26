@@ -17,43 +17,8 @@ import base64
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
 
-# MongoDB connection with error handling
-# Extract database name directly from MONGO_URL with robust parsing
-try:
-    mongo_url = os.environ['MONGO_URL']
-    DB_NAME = os.environ.get('DB_NAME', 'arbrit-workdesk')  # Default fallback
-    
-    # Try to parse database name from MONGO_URL
-    # Format: mongodb+srv://user:pass@host/DATABASE_NAME?options
-    try:
-        if '@' in mongo_url:
-            url_after_at = mongo_url.split('@')[-1]
-            if '/' in url_after_at:
-                parts = url_after_at.split('/')
-                if len(parts) > 1 and parts[1]:
-                    # Extract database name (before query params if any)
-                    db_part = parts[1].split('?')[0].strip()
-                    if db_part:
-                        DB_NAME = db_part
-                        print(f"🔵 Database name extracted from MONGO_URL: {DB_NAME}")
-                    else:
-                        print(f"🔵 Database name from environment (empty in URL): {DB_NAME}")
-                else:
-                    print(f"🔵 Database name from environment (not in URL): {DB_NAME}")
-            else:
-                print(f"🔵 Database name from environment (no / in URL): {DB_NAME}")
-    except Exception as parse_error:
-        print(f"⚠️  Failed to parse database from MONGO_URL: {parse_error}")
-        print(f"🔵 Using database name from environment: {DB_NAME}")
-    
-    print(f"🔵 Attempting MongoDB connection to: {mongo_url.split('@')[-1] if '@' in mongo_url else 'localhost'}")
-    print(f"🔵 Using database: {DB_NAME}")
-    
-        mongo_url,
-        serverSelectionTimeoutMS=5000,  # 5 second timeout
-        connectTimeoutMS=10000,  # 10 second connection timeout
-    )
-# Initialize DynamoDB
+# DynamoDB initialization
+# Uses boto3/aioboto3 for AWS DynamoDB access
 db = DynamoDBDatabase()
     print(f"✅ MongoDB client initialized successfully for database: {DB_NAME}")
 except KeyError as e:
@@ -508,7 +473,6 @@ async def health_check():
         return {
             "status": "healthy",
             "database": "connected",
-            "mongo_url": mongo_url.split("@")[-1] if "@" in mongo_url else "localhost",  # Hide credentials
             "user_count": user_count,
             "message": "Backend and database are operational"
         }
@@ -517,7 +481,6 @@ async def health_check():
             "status": "unhealthy",
             "database": "disconnected",
             "error": str(e),
-            "mongo_url": mongo_url.split("@")[-1] if "@" in mongo_url else "localhost",
             "message": "Database connection failed"
         }
 
@@ -719,8 +682,8 @@ async def diagnostics():
             "db_name": DB_NAME,  # Show active database name
             "cors_origins": os.environ.get('CORS_ORIGINS', 'NOT_SET'),
             "jwt_secret_exists": bool(os.environ.get('JWT_SECRET_KEY')),
-            "mongo_url_exists": bool(os.environ.get('MONGO_URL')),
-            "mongo_host": mongo_url.split("@")[-1] if "@" in mongo_url else mongo_url.replace("mongodb://", "").split("/")[0]
+            "dynamodb_region": os.environ.get('AWS_REGION', 'us-east-1'),
+            "dynamodb_tables": "arbrit-*",  #  # All tables prefixed with arbrit-
         },
         "database_status": "unknown",
         "collections": [],
@@ -4425,7 +4388,6 @@ async def startup_db():
         else:
             logger.error(f"❌ Database initialization failed: {e}")
             print(f"❌ CRITICAL: Database initialization failed: {e}")
-            print(f"   MongoDB URL: {mongo_url.split('@')[-1] if '@' in mongo_url else mongo_url}")
             raise
 
 
