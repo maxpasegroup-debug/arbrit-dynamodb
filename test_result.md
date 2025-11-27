@@ -103,15 +103,36 @@
 #====================================================================================================
 
 user_problem_statement: |
-  Test the newly created MD, COO, and Accounts dashboards for the Arbrit Safety Training application:
-  - MD Dashboard - Royal-themed read-only analytics dashboard
-  - COO Dashboard - Simple 2x2 navigation hub linking to other modules  
-  - Accounts Dashboard - Tabbed interface for managing invoices and payments
+  Test the Assessment & Feedback QR Generation workflow for the Arbrit Safety Training application:
   
-  Test Credentials:
-  - MD: Mobile: 971564022503, PIN: 2503
-  - COO: Mobile: 971566374020, PIN: 4020
-  - Accounts: Mobile: 971501234567, PIN: 4567
+  **Test Scenario 1: Academic Head - View & Manage Forms**
+  1. Login as Academic Head (Mobile: 971557213537, PIN: 3537)
+  2. Navigate to "Assessments" tab
+  3. Verify 3 forms are visible: Training Feedback Form, Course Assessment Form, Quick Trainer Evaluation
+  4. Take screenshot showing the form list
+  5. Click on one form to see details
+  6. Take screenshot of form details/edit interface
+
+  **Test Scenario 2: Trainer - Generate QR Code**
+  1. Logout and login as Trainer (Mobile: 971523834896, PIN: 4896)
+  2. Navigate to "QR Codes" tab
+  3. Verify forms are now available (should see 3 forms)
+  4. Select "Training Feedback Form"
+  5. Generate QR code
+  6. Take screenshot showing the generated QR code
+  7. Verify QR code image is visible
+
+  **Test Scenario 3: Question Bank Access**
+  1. Login as Academic Head
+  2. Go to Assessments → Create Form
+  3. Check if question bank/templates are accessible
+  4. Take screenshot
+
+  **Expected Results:**
+  - Academic Head can see all 3 forms
+  - Trainer can generate QR codes for forms
+  - QR code displays correctly with download option
+  - Forms can be edited (if edit button exists)
 
 backend:
   - task: "Trainer Request API Endpoints"
