@@ -2,7 +2,6 @@ from fastapi import FastAPI, APIRouter, HTTPException, Depends, status, UploadFi
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from dotenv import load_dotenv
 from starlette.middleware.cors import CORSMiddleware
-from motor.motor_asyncio import AsyncIOMotorClient
 import os
 import logging
 from pathlib import Path
@@ -17,51 +16,16 @@ import base64
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
 
-# MongoDB connection with error handling
-# Extract database name directly from MONGO_URL with robust parsing
+# DynamoDB connection
 try:
-    mongo_url = os.environ['MONGO_URL']
-    DB_NAME = os.environ.get('DB_NAME', 'arbrit-workdesk')  # Default fallback
-    
-    # Try to parse database name from MONGO_URL
-    # Format: mongodb+srv://user:pass@host/DATABASE_NAME?options
-    try:
-        if '@' in mongo_url:
-            url_after_at = mongo_url.split('@')[-1]
-            if '/' in url_after_at:
-                parts = url_after_at.split('/')
-                if len(parts) > 1 and parts[1]:
-                    # Extract database name (before query params if any)
-                    db_part = parts[1].split('?')[0].strip()
-                    if db_part:
-                        DB_NAME = db_part
-                        print(f"🔵 Database name extracted from MONGO_URL: {DB_NAME}")
-                    else:
-                        print(f"🔵 Database name from environment (empty in URL): {DB_NAME}")
-                else:
-                    print(f"🔵 Database name from environment (not in URL): {DB_NAME}")
-            else:
-                print(f"🔵 Database name from environment (no / in URL): {DB_NAME}")
-    except Exception as parse_error:
-        print(f"⚠️  Failed to parse database from MONGO_URL: {parse_error}")
-        print(f"🔵 Using database name from environment: {DB_NAME}")
-    
-    print(f"🔵 Attempting MongoDB connection to: {mongo_url.split('@')[-1] if '@' in mongo_url else 'localhost'}")
-    print(f"🔵 Using database: {DB_NAME}")
-    
-    client = AsyncIOMotorClient(
-        mongo_url,
-        serverSelectionTimeoutMS=5000,  # 5 second timeout
-        connectTimeoutMS=10000,  # 10 second connection timeout
-    )
-    db = client[DB_NAME]  # Use parsed database name
-    print(f"✅ MongoDB client initialized successfully for database: {DB_NAME}")
-except KeyError as e:
-    print(f"❌ CRITICAL: Missing environment variable: {e}")
-    print(f"   Available env vars: {', '.join([k for k in os.environ.keys() if not k.startswith('_')])}")
-    raise
+    from dynamodb_client import db
+    print(f"✅ DynamoDB client initialized successfully")
+    print(f"   Region: {os.environ.get('AWS_REGION', 'us-east-1')}")
+    print(f"   Table Prefix: {os.environ.get('DYNAMODB_TABLE_PREFIX', 'arbrit_workdesk')}")
 except Exception as e:
-    print(f"❌ CRITICAL: Failed to initialize MongoDB client: {e}")
+    print(f"❌ CRITICAL: Failed to initialize DynamoDB client: {e}")
+    print(f"   Make sure AWS credentials are configured in .env")
+    print(f"   Required: AWS_REGION, AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, DYNAMODB_TABLE_PREFIX")
     raise
 
 # Security
