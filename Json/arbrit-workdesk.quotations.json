@@ -1,0 +1,112 @@
+[{
+  "_id": {
+    "$oid": "691cd7b07ad6c3c2b0f06c44"
+  },
+  "id": "2ab3f2bd-a62b-485e-ad48-50f3a9ec6b7a",
+  "lead_id": null,
+  "client_name": "XYZ Manufacturing",
+  "items": "Fire Safety Training Course - 15 participants\nFirst Aid Kit - 5 units\nSafety Equipment Inspection",
+  "total_amount": 3500,
+  "created_by": "e5a8399a-15af-4fb7-9866-acdc34a5a833",
+  "created_by_name": "Test Sales User",
+  "approved_by": null,
+  "approved_by_name": null,
+  "status": "Approved",
+  "remarks": "Valid for 30 days from date of issue",
+  "created_at": "2025-11-18T20:31:44.850981+00:00",
+  "approved_at": null
+},
+{
+  "_id": {
+    "$oid": "691cd8587ad6c3c2b0f06c56"
+  },
+  "id": "6ca5e5c5-b41a-490a-900f-db241f845d46",
+  "lead_id": null,
+  "client_name": "XYZ Manufacturing",
+  "items": "Fire Safety Training Course - 15 participants\nFirst Aid Kit - 5 units\nSafety Equipment Inspection",
+  "total_amount": 3500,
+  "created_by": "e5a8399a-15af-4fb7-9866-acdc34a5a833",
+  "created_by_name": "Test Sales User",
+  "approved_by": null,
+  "approved_by_name": null,
+  "status": "Approved",
+  "remarks": "Valid for 30 days from date of issue",
+  "created_at": "2025-11-18T20:34:32.185132+00:00",
+  "approved_at": null
+},
+{
+  "_id": {
+    "$oid": "691cdb282350af718377ff50"
+  },
+  "id": "40d376ea-0ee1-4e7e-817d-58a09ee070bf",
+  "lead_id": null,
+  "client_name": "XYZ Manufacturing",
+  "items": "Fire Safety Training Course - 15 participants\nFirst Aid Kit - 5 units\nSafety Equipment Inspection",
+  "total_amount": 3500,
+  "created_by": "e5a8399a-15af-4fb7-9866-acdc34a5a833",
+  "created_by_name": "Test Sales User",
+  "approved_by": "053ffcc3-5991-44fd-8167-0bb3d67d5bde",
+  "approved_by_name": "Sarada Gopalakrishnan",
+  "status": "Rejected",
+  "remarks": "Valid for 30 days from date of issue",
+  "created_at": "2025-11-18T20:46:32.667700+00:00",
+  "approved_at": "2025-11-18T20:48:30.564572+00:00",
+  "approval_remarks": "Pricing needs revision - too high for current market"
+},
+{
+  "_id": {
+    "$oid": "691cdb9ebf55f3bc03ea063b"
+  },
+  "id": "f3f9804b-7d65-4289-bd1a-d0a2ed8b095a",
+  "lead_id": null,
+  "client_name": "XYZ Manufacturing",
+  "items": "Fire Safety Training Course - 15 participants\nFirst Aid Kit - 5 units\nSafety Equipment Inspection",
+  "total_amount": 3500,
+  "created_by": "e5a8399a-15af-4fb7-9866-acdc34a5a833",
+  "created_by_name": "Test Sales User",
+  "approved_by": "053ffcc3-5991-44fd-8167-0bb3d67d5bde",
+  "approved_by_name": "Sarada Gopalakrishnan",
+  "status": "Rejected",
+  "remarks": "Valid for 30 days from date of issue",
+  "created_at": "2025-11-18T20:48:30.068380+00:00",
+  "approved_at": "2025-11-18T20:48:37.777942+00:00",
+  "approval_remarks": "Pricing needs revision - too high for current market"
+},
+{
+  "_id": {
+    "$oid": "691cdba5bf55f3bc03ea0648"
+  },
+  "id": "cc6f273e-f671-4060-afab-1038fd07c397",
+  "lead_id": null,
+  "client_name": "XYZ Manufacturing",
+  "items": "Fire Safety Training Course - 15 participants\nFirst Aid Kit - 5 units\nSafety Equipment Inspection",
+  "total_amount": 3500,
+  "created_by": "e5a8399a-15af-4fb7-9866-acdc34a5a833",
+  "created_by_name": "Test Sales User",
+  "approved_by": "053ffcc3-5991-44fd-8167-0bb3d67d5bde",
+  "approved_by_name": "Sarada Gopalakrishnan",
+  "status": "Rejected",
+  "remarks": "Valid for 30 days from date of issue",
+  "created_at": "2025-11-18T20:48:37.297622+00:00",
+  "approved_at": "2025-11-18T20:48:46.723804+00:00",
+  "approval_remarks": "Pricing needs revision - too high for current market"
+},
+{
+  "_id": {
+    "$oid": "691cdbaebf55f3bc03ea0655"
+  },
+  "id": "2cb04dbd-0517-4d19-8714-cc7263745c5d",
+  "lead_id": null,
+  "client_name": "XYZ Manufacturing",
+  "items": "Fire Safety Training Course - 15 participants\nFirst Aid Kit - 5 units\nSafety Equipment Inspection",
+  "total_amount": 3500,
+  "created_by": "e5a8399a-15af-4fb7-9866-acdc34a5a833",
+  "created_by_name": "Test Sales User",
+  "approved_by": "053ffcc3-5991-44fd-8167-0bb3d67d5bde",
+  "approved_by_name": "Sarada Gopalakrishnan",
+  "status": "Approved",
+  "remarks": "Valid for 30 days from date of issue",
+  "created_at": "2025-11-18T20:48:46.204276+00:00",
+  "approved_at": "2025-11-18T20:48:46.687913+00:00",
+  "approval_remarks": "Approved by Sales Head - pricing looks good"
+}]

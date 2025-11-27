@@ -2,7 +2,7 @@ from fastapi import FastAPI, APIRouter, HTTPException, Depends, status, UploadFi
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from dotenv import load_dotenv
 from starlette.middleware.cors import CORSMiddleware
-from motor.motor_asyncio import AsyncIOMotorClient
+from dynamodb_layer import DynamoDBDatabase
 import os
 import logging
 from pathlib import Path
@@ -17,51 +17,17 @@ import base64
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
 
-# MongoDB connection with error handling
-# Extract database name directly from MONGO_URL with robust parsing
+# DynamoDB initialization
+# Uses boto3/aioboto3 for AWS DynamoDB access
 try:
-    mongo_url = os.environ['MONGO_URL']
-    DB_NAME = os.environ.get('DB_NAME', 'arbrit-workdesk')  # Default fallback
-    
-    # Try to parse database name from MONGO_URL
-    # Format: mongodb+srv://user:pass@host/DATABASE_NAME?options
-    try:
-        if '@' in mongo_url:
-            url_after_at = mongo_url.split('@')[-1]
-            if '/' in url_after_at:
-                parts = url_after_at.split('/')
-                if len(parts) > 1 and parts[1]:
-                    # Extract database name (before query params if any)
-                    db_part = parts[1].split('?')[0].strip()
-                    if db_part:
-                        DB_NAME = db_part
-                        print(f"🔵 Database name extracted from MONGO_URL: {DB_NAME}")
-                    else:
-                        print(f"🔵 Database name from environment (empty in URL): {DB_NAME}")
-                else:
-                    print(f"🔵 Database name from environment (not in URL): {DB_NAME}")
-            else:
-                print(f"🔵 Database name from environment (no / in URL): {DB_NAME}")
-    except Exception as parse_error:
-        print(f"⚠️  Failed to parse database from MONGO_URL: {parse_error}")
-        print(f"🔵 Using database name from environment: {DB_NAME}")
-    
-    print(f"🔵 Attempting MongoDB connection to: {mongo_url.split('@')[-1] if '@' in mongo_url else 'localhost'}")
-    print(f"🔵 Using database: {DB_NAME}")
-    
-    client = AsyncIOMotorClient(
-        mongo_url,
-        serverSelectionTimeoutMS=5000,  # 5 second timeout
-        connectTimeoutMS=10000,  # 10 second connection timeout
-    )
-    db = client[DB_NAME]  # Use parsed database name
-    print(f"✅ MongoDB client initialized successfully for database: {DB_NAME}")
+    db = DynamoDBDatabase()
+    print(f"✅ DynamoDB client initialized successfully")
 except KeyError as e:
     print(f"❌ CRITICAL: Missing environment variable: {e}")
     print(f"   Available env vars: {', '.join([k for k in os.environ.keys() if not k.startswith('_')])}")
     raise
 except Exception as e:
-    print(f"❌ CRITICAL: Failed to initialize MongoDB client: {e}")
+    print(f"❌ CRITICAL: Failed to initialize DynamoDB client: {e}")
     raise
 
 # Security
@@ -290,24 +256,6 @@ class QuotationApprove(BaseModel):
     remarks: Optional[str] = None
 
 
-class QuotationUpdate(BaseModel):
-    client_name: Optional[str] = None
-    items: Optional[str] = None
-    total_amount: Optional[float] = None
-    remarks: Optional[str] = None
-
-
-class InvoiceRequestUpdate(BaseModel):
-    payment_terms: Optional[str] = None
-    initial_amount: Optional[float] = None
-    notes: Optional[str] = None
-
-
-class DeletionApproval(BaseModel):
-    approved: bool
-    remarks: Optional[str] = None
-
-
 class LeaveRequest(BaseModel):
     model_config = ConfigDict(extra="ignore")
     
@@ -373,225 +321,6 @@ class InvoiceRequest(BaseModel):
     status: str = "Pending"  # Pending, Generated, Paid, Partially Paid, Overdue
     payment_confirmations: Optional[str] = None
     created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
-
-
-# Payment Model
-class Payment(BaseModel):
-    model_config = ConfigDict(extra="ignore")
-    
-    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
-    invoice_id: str
-    invoice_number: str
-    client_name: str
-    amount: float
-    payment_method: str  # Bank Transfer, Cash, Cheque, Card
-    payment_date: str  # YYYY-MM-DD
-    reference_number: Optional[str] = None
-    notes: Optional[str] = None
-    recorded_by: str
-    recorded_by_name: str
-    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
-
-
-class PaymentCreate(BaseModel):
-    invoice_id: str
-    amount: float
-    payment_method: str
-    payment_date: str
-    reference_number: Optional[str] = None
-    notes: Optional[str] = None
-
-
-# Client Account Model
-class ClientAccount(BaseModel):
-    model_config = ConfigDict(extra="ignore")
-    
-    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
-    client_name: str
-    email: Optional[str] = None
-    phone: Optional[str] = None
-    company: Optional[str] = None
-    credit_limit: float = 0.0
-    payment_terms: int = 30  # Days
-    outstanding_balance: float = 0.0
-    total_revenue: float = 0.0
-    currency: str = "AED"
-    status: str = "Active"  # Active, Suspended, Closed
-    notes: Optional[str] = None
-    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
-    updated_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
-
-
-class ClientAccountCreate(BaseModel):
-    client_name: str
-    email: Optional[str] = None
-    phone: Optional[str] = None
-    company: Optional[str] = None
-    credit_limit: float = 0.0
-    payment_terms: int = 30
-    currency: str = "AED"
-    notes: Optional[str] = None
-
-
-class ClientAccountUpdate(BaseModel):
-    client_name: Optional[str] = None
-    email: Optional[str] = None
-    phone: Optional[str] = None
-    credit_limit: Optional[float] = None
-    payment_terms: Optional[int] = None
-    status: Optional[str] = None
-    notes: Optional[str] = None
-
-
-# Vendor Model
-class Vendor(BaseModel):
-    model_config = ConfigDict(extra="ignore")
-    
-    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
-    vendor_name: str
-    vendor_type: str  # Trainer, Supplier, Service Provider
-    email: Optional[str] = None
-    phone: Optional[str] = None
-    bank_details: Optional[str] = None
-    payment_terms: int = 30
-    total_paid: float = 0.0
-    currency: str = "AED"
-    status: str = "Active"
-    notes: Optional[str] = None
-    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
-
-
-class VendorCreate(BaseModel):
-    vendor_name: str
-    vendor_type: str
-    email: Optional[str] = None
-    phone: Optional[str] = None
-    bank_details: Optional[str] = None
-    payment_terms: int = 30
-    currency: str = "AED"
-    notes: Optional[str] = None
-
-
-class VendorPayment(BaseModel):
-    model_config = ConfigDict(extra="ignore")
-    
-    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
-    vendor_id: str
-    vendor_name: str
-    amount: float
-    payment_method: str
-    payment_date: str
-    reference_number: Optional[str] = None
-    purpose: str  # Training Fee, Supplies, Services
-    notes: Optional[str] = None
-    paid_by: str
-    paid_by_name: str
-    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
-
-
-class VendorPaymentCreate(BaseModel):
-    vendor_id: str
-    amount: float
-    payment_method: str
-    payment_date: str
-    reference_number: Optional[str] = None
-    purpose: str
-    notes: Optional[str] = None
-
-
-# Petty Cash Model
-class PettyCash(BaseModel):
-    model_config = ConfigDict(extra="ignore")
-    
-    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
-    amount: float
-    category: str  # Office Supplies, Travel, Meals, Misc
-    description: str
-    expense_date: str
-    receipt_number: Optional[str] = None
-    recorded_by: str
-    recorded_by_name: str
-    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
-
-
-class PettyCashCreate(BaseModel):
-    amount: float
-    category: str
-    description: str
-    expense_date: str
-    receipt_number: Optional[str] = None
-
-
-# Credit Note Model
-class CreditNote(BaseModel):
-    model_config = ConfigDict(extra="ignore")
-    
-    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
-    credit_note_number: str
-    invoice_id: Optional[str] = None
-    invoice_number: Optional[str] = None
-    client_name: str
-    amount: float
-    reason: str  # Refund, Cancellation, Discount, Error Correction
-    description: str
-    issued_date: str
-    status: str = "Issued"  # Issued, Applied, Void
-    issued_by: str
-    issued_by_name: str
-    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
-
-
-class CreditNoteCreate(BaseModel):
-    credit_note_number: str
-    invoice_id: Optional[str] = None
-    client_name: str
-    amount: float
-    reason: str
-    description: str
-    issued_date: str
-
-
-# Recurring Invoice Model
-class RecurringInvoice(BaseModel):
-    model_config = ConfigDict(extra="ignore")
-    
-    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
-    client_name: str
-    client_id: Optional[str] = None
-    amount: float
-    description: str
-    frequency: str  # Monthly, Quarterly, Yearly
-    start_date: str
-    next_invoice_date: str
-    end_date: Optional[str] = None
-    status: str = "Active"  # Active, Paused, Completed
-    created_by: str
-    created_by_name: str
-    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
-
-
-class RecurringInvoiceCreate(BaseModel):
-    client_name: str
-    client_id: Optional[str] = None
-    amount: float
-    description: str
-    frequency: str
-    start_date: str
-    end_date: Optional[str] = None
-
-
-# Audit Log Model
-class AuditLog(BaseModel):
-    model_config = ConfigDict(extra="ignore")
-    
-    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
-    entity_type: str  # Invoice, Payment, Client, Vendor, etc.
-    entity_id: str
-    action: str  # Created, Updated, Deleted, Approved
-    changes: Optional[str] = None  # JSON string of what changed
-    performed_by: str
-    performed_by_name: str
-    timestamp: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 
 
 class VisitLog(BaseModel):
@@ -709,7 +438,7 @@ async def get_current_user(credentials: HTTPAuthorizationCredentials = Depends(s
     except jwt.JWTError:
         raise HTTPException(status_code=401, detail="Could not validate credentials")
     
-    user = await db.users.find_one({"id": user_id}, {"_id": 0})
+    user = await db.get_item('users', {"id": user_id}, {"_id": 0})
     if user is None:
         raise HTTPException(status_code=401, detail="User not found")
     return user
@@ -740,12 +469,11 @@ async def health_check():
         await db.command('ping')
         
         # Count users to verify data access
-        user_count = await db.users.count_documents({})
+        user_count = len(await db.scan_items('users', {}))
         
         return {
             "status": "healthy",
             "database": "connected",
-            "mongo_url": mongo_url.split("@")[-1] if "@" in mongo_url else "localhost",  # Hide credentials
             "user_count": user_count,
             "message": "Backend and database are operational"
         }
@@ -754,7 +482,6 @@ async def health_check():
             "status": "unhealthy",
             "database": "disconnected",
             "error": str(e),
-            "mongo_url": mongo_url.split("@")[-1] if "@" in mongo_url else "localhost",
             "message": "Database connection failed"
         }
 
@@ -763,7 +490,7 @@ async def health_check():
 async def check_user_exists(mobile: str):
     """Check if a user with specific mobile exists and show their info (for debugging)"""
     try:
-        user = await db.users.find_one({"mobile": mobile}, {"_id": 0, "pin_hash": 0})
+        user = await db.get_item('users', {"mobile": mobile}, {"_id": 0, "pin_hash": 0})
         
         if user:
             return {
@@ -787,7 +514,7 @@ async def check_user_exists(mobile: str):
 async def delete_specific_user(mobile: str):
     """Delete a specific user by mobile number (for manual cleanup)"""
     try:
-        user = await db.users.find_one({"mobile": mobile}, {"_id": 0})
+        user = await db.get_item('users', {"mobile": mobile}, {"_id": 0})
         
         if not user:
             return {
@@ -795,7 +522,7 @@ async def delete_specific_user(mobile: str):
                 "message": f"User with mobile {mobile} not found"
             }
         
-        await db.users.delete_one({"mobile": mobile})
+        await db.delete_item('users', {"mobile": mobile})
         
         return {
             "success": True,
@@ -879,9 +606,9 @@ async def cleanup_demo_users():
         deleted_users = []
         
         for mobile in demo_patterns:
-            user = await db.users.find_one({"mobile": mobile}, {"_id": 0})
+            user = await db.get_item('users', {"mobile": mobile}, {"_id": 0})
             if user:
-                await db.users.delete_one({"mobile": mobile})
+                await db.delete_item('users', {"mobile": mobile})
                 deleted_users.append(f"Deleted: {user.get('name', 'Unknown')} ({mobile}) - {user.get('role', 'Unknown')}")
                 deleted_count += 1
         
@@ -918,7 +645,7 @@ async def reset_default_users():
         )
         user_dict = md_user.model_dump()
         user_dict['created_at'] = user_dict['created_at'].isoformat()
-        await db.users.insert_one(user_dict)
+        await db.put_item('users', user_dict)
         results.append(f"✅ MD user 971564022503 created fresh with PIN 2503")
         
         # Create COO user fresh
@@ -930,7 +657,7 @@ async def reset_default_users():
         )
         user_dict = coo_user.model_dump()
         user_dict['created_at'] = user_dict['created_at'].isoformat()
-        await db.users.insert_one(user_dict)
+        await db.put_item('users', user_dict)
         results.append(f"✅ COO user 971566374020 created fresh with PIN 4020")
         
         return {
@@ -956,8 +683,8 @@ async def diagnostics():
             "db_name": DB_NAME,  # Show active database name
             "cors_origins": os.environ.get('CORS_ORIGINS', 'NOT_SET'),
             "jwt_secret_exists": bool(os.environ.get('JWT_SECRET_KEY')),
-            "mongo_url_exists": bool(os.environ.get('MONGO_URL')),
-            "mongo_host": mongo_url.split("@")[-1] if "@" in mongo_url else mongo_url.replace("mongodb://", "").split("/")[0]
+            "dynamodb_region": os.environ.get('AWS_REGION', 'us-east-1'),
+            "dynamodb_tables": "arbrit-*",  #  # All tables prefixed with arbrit-
         },
         "database_status": "unknown",
         "collections": [],
@@ -978,14 +705,14 @@ async def diagnostics():
         
         # Get ALL user data (for production troubleshooting)
         if "users" in collections:
-            all_users = await db.users.find({}, {"_id": 0, "mobile": 1, "name": 1, "role": 1}).to_list(1000)
+            all_users = await db.scan_items('users', {})
             diagnostics_data["all_users"] = all_users
             diagnostics_data["user_samples"] = all_users[:5]  # First 5 for quick view
             diagnostics_data["total_users"] = len(all_users)
         
         # Get employees count
         if "employees" in collections:
-            employees = await db.employees.find({}, {"_id": 0, "name": 1, "mobile": 1, "designation": 1, "department": 1}).to_list(1000)
+            employees = await db.scan_items('employees', {})
             diagnostics_data["employees_count"] = len(employees)
             diagnostics_data["all_employees"] = employees
             
@@ -1020,7 +747,7 @@ async def login(request: LoginRequest):
     
     try:
         # Find user by mobile
-        user = await db.users.find_one({"mobile": request.mobile}, {"_id": 0})
+        user = await db.get_item('users', {"mobile": request.mobile}, {"_id": 0})
         
         if not user:
             logger.warning(f"Login attempt with non-existent mobile: {request.mobile}")
@@ -1116,7 +843,7 @@ async def create_employee(employee: EmployeeCreate, current_user: dict = Depends
     employee_obj = Employee(**employee.model_dump())
     doc = employee_obj.model_dump()
     doc['created_at'] = doc['created_at'].isoformat()
-    await db.employees.insert_one(doc)
+    await db.put_item('employees', doc)
     
     # Auto-create user account based on designation
     user_role = None
@@ -1164,10 +891,10 @@ async def create_employee(employee: EmployeeCreate, current_user: dict = Depends
     
     if user_role:
         # Check if user already exists with this mobile
-        existing_user = await db.users.find_one({"mobile": employee.mobile})
+        existing_user = await db.get_item('users', {"mobile": employee.mobile})
         if existing_user:
             # Delete old user account to prevent data carry-over
-            await db.users.delete_one({"mobile": employee.mobile})
+            await db.delete_item('users', {"mobile": employee.mobile})
             logger.info(f"Deleted old user account for mobile {employee.mobile} (was: {existing_user.get('name')}, role: {existing_user.get('role')})")
         
         # Create fresh new user account with PIN = last 4 digits of mobile
@@ -1180,7 +907,7 @@ async def create_employee(employee: EmployeeCreate, current_user: dict = Depends
         )
         user_dict = new_user.model_dump()
         user_dict['created_at'] = user_dict['created_at'].isoformat()
-        await db.users.insert_one(user_dict)
+        await db.put_item('users', user_dict)
         logger.info(f"{user_role} user account created for {employee.name} with mobile {employee.mobile}")
     
     return employee_obj
@@ -1188,7 +915,7 @@ async def create_employee(employee: EmployeeCreate, current_user: dict = Depends
 
 @api_router.get("/hrm/employees", response_model=List[Employee])
 async def get_employees(current_user: dict = Depends(get_current_user)):
-    employees = await db.employees.find({}, {"_id": 0}).to_list(1000)
+    employees = await db.scan_items('employees', {})
     for emp in employees:
         if isinstance(emp.get('created_at'), str):
             emp['created_at'] = datetime.fromisoformat(emp['created_at'])
@@ -1198,7 +925,7 @@ async def get_employees(current_user: dict = Depends(get_current_user)):
 @api_router.put("/hrm/employees/{employee_id}", response_model=Employee)
 async def update_employee(employee_id: str, employee_update: EmployeeUpdate, current_user: dict = Depends(get_current_user)):
     # Get existing employee
-    existing = await db.employees.find_one({"id": employee_id}, {"_id": 0})
+    existing = await db.get_item('employees', {"id": employee_id}, {"_id": 0})
     if not existing:
         raise HTTPException(status_code=404, detail="Employee not found")
     
@@ -1250,12 +977,12 @@ async def update_employee(employee_id: str, employee_update: EmployeeUpdate, cur
             if user_role:
                 # Delete old user account(s) by old mobile
                 if mobile_changed:
-                    await db.users.delete_one({"mobile": old_mobile})
+                    await db.delete_item('users', {"mobile": old_mobile})
                     logger.info(f"Deleted old user account for mobile {old_mobile}")
                 
                 # If mobile changed, also delete any user with new mobile (clean slate)
                 if mobile_changed:
-                    await db.users.delete_one({"mobile": new_mobile})
+                    await db.delete_item('users', {"mobile": new_mobile})
                 
                 # Create/update user account with new mobile and/or name
                 final_mobile = new_mobile if new_mobile else old_mobile
@@ -1271,11 +998,11 @@ async def update_employee(employee_id: str, employee_update: EmployeeUpdate, cur
                 
                 user_dict = new_user.model_dump()
                 user_dict['created_at'] = user_dict['created_at'].isoformat()
-                await db.users.insert_one(user_dict)
+                await db.put_item('users', user_dict)
                 logger.info(f"User account synced for {final_name}: mobile {final_mobile}, PIN {pin}, role {user_role}")
     
     # Return updated employee
-    updated = await db.employees.find_one({"id": employee_id}, {"_id": 0})
+    updated = await db.get_item('employees', {"id": employee_id}, {"_id": 0})
     if isinstance(updated.get('created_at'), str):
         updated['created_at'] = datetime.fromisoformat(updated['created_at'])
     return updated
@@ -1284,12 +1011,12 @@ async def update_employee(employee_id: str, employee_update: EmployeeUpdate, cur
 @api_router.delete("/hrm/employees/{employee_id}")
 async def delete_employee(employee_id: str, current_user: dict = Depends(get_current_user)):
     # Get employee details before deletion
-    employee = await db.employees.find_one({"id": employee_id}, {"_id": 0})
+    employee = await db.get_item('employees', {"id": employee_id}, {"_id": 0})
     if not employee:
         raise HTTPException(status_code=404, detail="Employee not found")
     
     # Delete employee
-    result = await db.employees.delete_one({"id": employee_id})
+    result = await db.delete_item('employees', {"id": employee_id})
     
     # Delete related documents and attendance
     await db.employee_documents.delete_many({"employee_id": employee_id})
@@ -1298,7 +1025,7 @@ async def delete_employee(employee_id: str, current_user: dict = Depends(get_cur
     # CASCADING DELETION: Delete user account by mobile number (works for ALL roles)
     # This ensures clean deletion regardless of role changes or updates
     if employee.get("mobile"):
-        deleted_user = await db.users.delete_one({"mobile": employee["mobile"]})
+        deleted_user = await db.delete_item('users', {"mobile": employee["mobile"]})
         if deleted_user.deleted_count > 0:
             logger.info(f"User account deleted for {employee['name']} (mobile: {employee['mobile']})")
         else:
@@ -1311,7 +1038,7 @@ async def delete_employee(employee_id: str, current_user: dict = Depends(get_cur
 @api_router.post("/hrm/attendance", response_model=Attendance)
 async def record_attendance(attendance: AttendanceCreate, current_user: dict = Depends(get_current_user)):
     # Get employee details
-    employee = await db.employees.find_one({"id": attendance.employee_id}, {"_id": 0})
+    employee = await db.get_item('employees', {"id": attendance.employee_id}, {"_id": 0})
     if not employee:
         raise HTTPException(status_code=404, detail="Employee not found")
     
@@ -1329,7 +1056,7 @@ async def record_attendance(attendance: AttendanceCreate, current_user: dict = D
     
     doc = attendance_obj.model_dump()
     doc['timestamp'] = doc['timestamp'].isoformat()
-    await db.attendance.insert_one(doc)
+    await db.put_item('attendance', doc)
     return attendance_obj
 
 
@@ -1346,7 +1073,7 @@ async def get_attendance(current_user: dict = Depends(get_current_user)):
 @api_router.post("/hrm/employee-documents", response_model=EmployeeDocument)
 async def upload_employee_document(doc: EmployeeDocumentCreate, current_user: dict = Depends(get_current_user)):
     # Get employee details
-    employee = await db.employees.find_one({"id": doc.employee_id}, {"_id": 0})
+    employee = await db.get_item('employees', {"id": doc.employee_id}, {"_id": 0})
     if not employee:
         raise HTTPException(status_code=404, detail="Employee not found")
     
@@ -1361,13 +1088,13 @@ async def upload_employee_document(doc: EmployeeDocumentCreate, current_user: di
     
     doc_dict = doc_obj.model_dump()
     doc_dict['uploaded_at'] = doc_dict['uploaded_at'].isoformat()
-    await db.employee_documents.insert_one(doc_dict)
+    await db.put_item('employee_documents', doc_dict)
     return doc_obj
 
 
 @api_router.get("/hrm/employee-documents/{employee_id}", response_model=List[EmployeeDocument])
 async def get_employee_documents(employee_id: str, current_user: dict = Depends(get_current_user)):
-    docs = await db.employee_documents.find({"employee_id": employee_id}, {"_id": 0}).to_list(100)
+    docs = await db.scan_items('employee_documents', {"employee_id": employee_id})
     for doc in docs:
         if isinstance(doc.get('uploaded_at'), str):
             doc['uploaded_at'] = datetime.fromisoformat(doc['uploaded_at'])
@@ -1376,7 +1103,7 @@ async def get_employee_documents(employee_id: str, current_user: dict = Depends(
 
 @api_router.get("/hrm/employee-documents/alerts/all")
 async def get_employee_document_alerts(current_user: dict = Depends(get_current_user)):
-    all_docs = await db.employee_documents.find({}, {"_id": 0}).to_list(1000)
+    all_docs = await db.scan_items('employee_documents', {})
     
     alerts = []
     for doc in all_docs:
@@ -1397,7 +1124,7 @@ async def get_employee_document_alerts(current_user: dict = Depends(get_current_
 
 @api_router.delete("/hrm/employee-documents/{doc_id}")
 async def delete_employee_document(doc_id: str, current_user: dict = Depends(get_current_user)):
-    result = await db.employee_documents.delete_one({"id": doc_id})
+    result = await db.delete_item('employee_documents', {"id": doc_id})
     if result.deleted_count == 0:
         raise HTTPException(status_code=404, detail="Document not found")
     return {"message": "Document deleted successfully"}
@@ -1409,13 +1136,13 @@ async def upload_company_document(doc: CompanyDocumentCreate, current_user: dict
     doc_obj = CompanyDocument(**doc.model_dump())
     doc_dict = doc_obj.model_dump()
     doc_dict['uploaded_at'] = doc_dict['uploaded_at'].isoformat()
-    await db.company_documents.insert_one(doc_dict)
+    await db.put_item('company_documents', doc_dict)
     return doc_obj
 
 
 @api_router.get("/hrm/company-documents", response_model=List[CompanyDocument])
 async def get_company_documents(current_user: dict = Depends(get_current_user)):
-    docs = await db.company_documents.find({}, {"_id": 0}).to_list(100)
+    docs = await db.scan_items('company_documents', {})
     for doc in docs:
         if isinstance(doc.get('uploaded_at'), str):
             doc['uploaded_at'] = datetime.fromisoformat(doc['uploaded_at'])
@@ -1424,7 +1151,7 @@ async def get_company_documents(current_user: dict = Depends(get_current_user)):
 
 @api_router.get("/hrm/company-documents/alerts/all")
 async def get_company_document_alerts(current_user: dict = Depends(get_current_user)):
-    all_docs = await db.company_documents.find({}, {"_id": 0}).to_list(1000)
+    all_docs = await db.scan_items('company_documents', {})
     
     alerts = []
     for doc in all_docs:
@@ -1444,7 +1171,7 @@ async def get_company_document_alerts(current_user: dict = Depends(get_current_u
 
 @api_router.delete("/hrm/company-documents/{doc_id}")
 async def delete_company_document(doc_id: str, current_user: dict = Depends(get_current_user)):
-    result = await db.company_documents.delete_one({"id": doc_id})
+    result = await db.delete_item('company_documents', {"id": doc_id})
     if result.deleted_count == 0:
         raise HTTPException(status_code=404, detail="Document not found")
     return {"message": "Document deleted successfully"}
@@ -1475,7 +1202,7 @@ async def sales_employee_dashboard(current_user: dict = Depends(get_current_user
         )
     
     # Get employee details including badge
-    employee = await db.employees.find_one({"mobile": current_user["mobile"]}, {"_id": 0})
+    employee = await db.get_item('employees', {"mobile": current_user["mobile"]}, {"_id": 0})
     
     return {
         "message": "Welcome to Sales Employee Dashboard",
@@ -1494,7 +1221,7 @@ async def tele_sales_dashboard(current_user: dict = Depends(get_current_user)):
             detail="Access denied. Tele Sales role required."
         )
     
-    employee = await db.employees.find_one({"mobile": current_user["mobile"]}, {"_id": 0})
+    employee = await db.get_item('employees', {"mobile": current_user["mobile"]}, {"_id": 0})
     
     return {
         "message": "Welcome to Tele Sales Dashboard",
@@ -1514,7 +1241,7 @@ async def field_sales_dashboard(current_user: dict = Depends(get_current_user)):
             detail="Access denied. Field Sales role required."
         )
     
-    employee = await db.employees.find_one({"mobile": current_user["mobile"]}, {"_id": 0})
+    employee = await db.get_item('employees', {"mobile": current_user["mobile"]}, {"_id": 0})
     
     return {
         "message": "Welcome to Field Sales Dashboard",
@@ -1543,7 +1270,7 @@ async def get_sales_employees(
     if badge_title:
         query["badge_title"] = badge_title
     
-    employees = await db.employees.find(query, {"_id": 0}).to_list(1000)
+    employees = await db.scan_items('employees', query)
     for emp in employees:
         if isinstance(emp.get('created_at'), str):
             emp['created_at'] = datetime.fromisoformat(emp['created_at'])
@@ -1557,11 +1284,11 @@ async def get_live_attendance(current_user: dict = Depends(get_current_user)):
         raise HTTPException(status_code=403, detail="Access denied")
     
     # Get all sales employees
-    employees = await db.employees.find({"department": "Sales"}, {"_id": 0}).to_list(1000)
+    employees = await db.scan_items('employees', {"department": "Sales"})
     
     # Get today's attendance
     today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
-    attendance_records = await db.attendance.find({"date": today}, {"_id": 0}).to_list(1000)
+    attendance_records = await db.scan_items('attendance', {"date": today})
     
     # Create attendance map
     attendance_map = {record["employee_id"]: record for record in attendance_records}
@@ -1588,7 +1315,7 @@ async def assign_badge(employee_id: str, badge_data: dict, current_user: dict = 
     if current_user["role"] != "Sales Head":
         raise HTTPException(status_code=403, detail="Access denied")
     
-    existing = await db.employees.find_one({"id": employee_id}, {"_id": 0})
+    existing = await db.get_item('employees', {"id": employee_id}, {"_id": 0})
     if not existing:
         raise HTTPException(status_code=404, detail="Employee not found")
     
@@ -1607,13 +1334,13 @@ async def assign_badge(employee_id: str, badge_data: dict, current_user: dict = 
 # Sales Head - Lead Management
 @api_router.post("/sales-head/leads", response_model=Lead)
 async def create_lead(lead: LeadCreate, current_user: dict = Depends(get_current_user)):
-    if current_user["role"] not in ["Sales Head", "COO", "MD", "CEO"]:
+    if current_user["role"] != "Sales Head":
         raise HTTPException(status_code=403, detail="Access denied")
     
     # Get assigned employee name if provided
     assigned_to_name = None
     if lead.assigned_to:
-        emp = await db.employees.find_one({"id": lead.assigned_to}, {"_id": 0})
+        emp = await db.get_item('employees', {"id": lead.assigned_to}, {"_id": 0})
         if emp:
             assigned_to_name = emp["name"]
     
@@ -1627,7 +1354,7 @@ async def create_lead(lead: LeadCreate, current_user: dict = Depends(get_current
     doc = lead_obj.model_dump()
     doc['created_at'] = doc['created_at'].isoformat()
     doc['updated_at'] = doc['updated_at'].isoformat()
-    await db.leads.insert_one(doc)
+    await db.put_item('leads', doc)
     
     return lead_obj
 
@@ -1638,7 +1365,7 @@ async def get_leads(
     status: Optional[str] = None,
     current_user: dict = Depends(get_current_user)
 ):
-    if current_user["role"] not in ["Sales Head", "COO", "MD", "CEO"]:
+    if current_user["role"] != "Sales Head":
         raise HTTPException(status_code=403, detail="Access denied")
     
     query = {}
@@ -1659,10 +1386,10 @@ async def get_leads(
 
 @api_router.put("/sales-head/leads/{lead_id}", response_model=Lead)
 async def update_lead(lead_id: str, lead_update: LeadUpdate, current_user: dict = Depends(get_current_user)):
-    if current_user["role"] not in ["Sales Head", "COO", "MD", "CEO"]:
+    if current_user["role"] != "Sales Head":
         raise HTTPException(status_code=403, detail="Access denied")
     
-    existing = await db.leads.find_one({"id": lead_id}, {"_id": 0})
+    existing = await db.get_item('leads', {"id": lead_id}, {"_id": 0})
     if not existing:
         raise HTTPException(status_code=404, detail="Lead not found")
     
@@ -1670,7 +1397,7 @@ async def update_lead(lead_id: str, lead_update: LeadUpdate, current_user: dict 
     
     # Update assigned_to_name if assigned_to changed
     if "assigned_to" in update_data and update_data["assigned_to"]:
-        emp = await db.employees.find_one({"id": update_data["assigned_to"]}, {"_id": 0})
+        emp = await db.get_item('employees', {"id": update_data["assigned_to"]}, {"_id": 0})
         if emp:
             update_data["assigned_to_name"] = emp["name"]
     
@@ -1679,7 +1406,7 @@ async def update_lead(lead_id: str, lead_update: LeadUpdate, current_user: dict 
     if update_data:
         await db.leads.update_one({"id": lead_id}, {"$set": update_data})
     
-    updated = await db.leads.find_one({"id": lead_id}, {"_id": 0})
+    updated = await db.get_item('leads', {"id": lead_id}, {"_id": 0})
     if isinstance(updated.get('created_at'), str):
         updated['created_at'] = datetime.fromisoformat(updated['created_at'])
     if isinstance(updated.get('updated_at'), str):
@@ -1690,10 +1417,10 @@ async def update_lead(lead_id: str, lead_update: LeadUpdate, current_user: dict 
 
 @api_router.delete("/sales-head/leads/{lead_id}")
 async def delete_lead(lead_id: str, current_user: dict = Depends(get_current_user)):
-    if current_user["role"] not in ["Sales Head", "COO", "MD", "CEO"]:
+    if current_user["role"] != "Sales Head":
         raise HTTPException(status_code=403, detail="Access denied")
     
-    result = await db.leads.delete_one({"id": lead_id})
+    result = await db.delete_item('leads', {"id": lead_id})
     if result.deleted_count == 0:
         raise HTTPException(status_code=404, detail="Lead not found")
     
@@ -1703,7 +1430,7 @@ async def delete_lead(lead_id: str, current_user: dict = Depends(get_current_use
 # Sales Head - Quotation Management
 @api_router.post("/sales-head/quotations", response_model=Quotation)
 async def create_quotation(quotation: QuotationCreate, current_user: dict = Depends(get_current_user)):
-    if current_user["role"] not in ["Sales Head", "COO", "MD", "CEO"]:
+    if current_user["role"] != "Sales Head":
         raise HTTPException(status_code=403, detail="Access denied")
     
     quot_obj = Quotation(
@@ -1717,7 +1444,7 @@ async def create_quotation(quotation: QuotationCreate, current_user: dict = Depe
     doc['created_at'] = doc['created_at'].isoformat()
     if doc.get('approved_at'):
         doc['approved_at'] = doc['approved_at'].isoformat()
-    await db.quotations.insert_one(doc)
+    await db.put_item('quotations', doc)
     
     return quot_obj
 
@@ -1749,7 +1476,7 @@ async def approve_quotation(quot_id: str, approval: QuotationApprove, current_us
     if current_user["role"] != "Sales Head":
         raise HTTPException(status_code=403, detail="Access denied")
     
-    existing = await db.quotations.find_one({"id": quot_id}, {"_id": 0})
+    existing = await db.get_item('quotations', {"id": quot_id}, {"_id": 0})
     if not existing:
         raise HTTPException(status_code=404, detail="Quotation not found")
     
@@ -1766,54 +1493,6 @@ async def approve_quotation(quot_id: str, approval: QuotationApprove, current_us
     await db.quotations.update_one({"id": quot_id}, {"$set": update_data})
     
     return {"message": f"Quotation {approval.status.lower()} successfully"}
-
-
-# Sales Head/COO/MD - Edit Quotation
-@api_router.put("/sales-head/quotations/{quot_id}")
-async def update_quotation(quot_id: str, update_data: QuotationUpdate, current_user: dict = Depends(get_current_user)):
-    if current_user["role"] not in ["Sales Head", "COO", "MD", "CEO"]:
-        raise HTTPException(status_code=403, detail="Access denied")
-    
-    existing = await db.quotations.find_one({"id": quot_id}, {"_id": 0})
-    if not existing:
-        raise HTTPException(status_code=404, detail="Quotation not found")
-    
-    update_dict = {k: v for k, v in update_data.model_dump().items() if v is not None}
-    
-    if update_dict:
-        await db.quotations.update_one({"id": quot_id}, {"$set": update_dict})
-    
-    updated = await db.quotations.find_one({"id": quot_id}, {"_id": 0})
-    return updated
-
-
-# Sales Head/COO/MD - Delete Quotation
-@api_router.delete("/sales-head/quotations/{quot_id}")
-async def delete_quotation_request(quot_id: str, current_user: dict = Depends(get_current_user)):
-    if current_user["role"] not in ["Sales Head", "COO", "MD", "CEO"]:
-        raise HTTPException(status_code=403, detail="Access denied")
-    
-    existing = await db.quotations.find_one({"id": quot_id}, {"_id": 0})
-    if not existing:
-        raise HTTPException(status_code=404, detail="Quotation not found")
-    
-    # COO/MD/CEO can delete immediately, Sales Head needs approval
-    if current_user["role"] in ["COO", "MD", "CEO"]:
-        # Direct deletion for senior management
-        await db.quotations.delete_one({"id": quot_id})
-        return {"message": "Quotation deleted successfully", "immediate": True}
-    else:
-        # Mark as pending deletion for Sales Head
-        await db.quotations.update_one(
-            {"id": quot_id},
-            {"$set": {
-                "status": "Pending Deletion",
-                "deletion_requested_by": current_user["id"],
-                "deletion_requested_by_name": current_user["name"],
-                "deletion_requested_at": datetime.now(timezone.utc).isoformat()
-            }}
-        )
-        return {"message": "Deletion request submitted. Awaiting COO/MD approval.", "immediate": False}
 
 
 # Sales Head - Leave Approvals
@@ -1845,7 +1524,7 @@ async def approve_leave_request(request_id: str, action: LeaveApprovalAction, cu
     if current_user["role"] != "Sales Head":
         raise HTTPException(status_code=403, detail="Access denied")
     
-    existing = await db.leave_requests.find_one({"id": request_id}, {"_id": 0})
+    existing = await db.get_item('leave_requests', {"id": request_id}, {"_id": 0})
     if not existing:
         raise HTTPException(status_code=404, detail="Leave request not found")
     
@@ -1867,7 +1546,7 @@ async def approve_leave_request(request_id: str, action: LeaveApprovalAction, cu
 @api_router.post("/employee/leave-request", response_model=LeaveRequest)
 async def submit_leave_request(leave_req: LeaveRequestCreate, current_user: dict = Depends(get_current_user)):
     # Get employee details
-    employee = await db.employees.find_one({"mobile": current_user["mobile"]}, {"_id": 0})
+    employee = await db.get_item('employees', {"mobile": current_user["mobile"]}, {"_id": 0})
     if not employee:
         raise HTTPException(status_code=404, detail="Employee record not found")
     
@@ -1881,7 +1560,7 @@ async def submit_leave_request(leave_req: LeaveRequestCreate, current_user: dict
     doc = leave_obj.model_dump()
     doc['created_at'] = doc['created_at'].isoformat()
     doc['updated_at'] = doc['updated_at'].isoformat()
-    await db.leave_requests.insert_one(doc)
+    await db.put_item('leave_requests', doc)
     
     return leave_obj
 
@@ -1892,7 +1571,7 @@ async def submit_self_lead(lead_data: SelfLeadCreate, current_user: dict = Depen
     if current_user["role"] not in ["Sales Head", "Tele Sales", "Field Sales"]:
         raise HTTPException(status_code=403, detail="Access denied")
     
-    employee = await db.employees.find_one({"mobile": current_user["mobile"]}, {"_id": 0})
+    employee = await db.get_item('employees', {"mobile": current_user["mobile"]}, {"_id": 0})
     if not employee:
         raise HTTPException(status_code=404, detail="Employee record not found")
     
@@ -1916,7 +1595,7 @@ async def submit_self_lead(lead_data: SelfLeadCreate, current_user: dict = Depen
     doc['lead_type'] = lead_data.lead_type or "Individual"
     doc['created_at'] = doc['created_at'].isoformat()
     doc['updated_at'] = doc['updated_at'].isoformat()
-    await db.leads.insert_one(doc)
+    await db.put_item('leads', doc)
     
     return {"message": "Self lead submitted successfully", "lead_id": lead_obj.id}
 
@@ -1927,7 +1606,7 @@ async def get_my_leads(current_user: dict = Depends(get_current_user)):
     if current_user["role"] not in ["Tele Sales", "Field Sales"]:
         raise HTTPException(status_code=403, detail="Access denied")
     
-    employee = await db.employees.find_one({"mobile": current_user["mobile"]}, {"_id": 0})
+    employee = await db.get_item('employees', {"mobile": current_user["mobile"]}, {"_id": 0})
     if not employee:
         raise HTTPException(status_code=404, detail="Employee record not found")
     
@@ -1947,7 +1626,7 @@ async def update_my_lead(lead_id: str, update_data: dict, current_user: dict = D
     if current_user["role"] not in ["Tele Sales", "Field Sales"]:
         raise HTTPException(status_code=403, detail="Access denied")
     
-    existing = await db.leads.find_one({"id": lead_id}, {"_id": 0})
+    existing = await db.get_item('leads', {"id": lead_id}, {"_id": 0})
     if not existing:
         raise HTTPException(status_code=404, detail="Lead not found")
     
@@ -1974,7 +1653,7 @@ async def create_sales_quotation(quot_data: QuotationCreate, current_user: dict 
     doc['created_at'] = doc['created_at'].isoformat()
     if doc.get('approved_at'):
         doc['approved_at'] = doc['approved_at'].isoformat()
-    await db.quotations.insert_one(doc)
+    await db.put_item('quotations', doc)
     
     return {"message": "Quotation created successfully", "quotation_id": quot_obj.id}
 
@@ -2015,7 +1694,7 @@ async def request_trainer(request_data: dict, current_user: dict = Depends(get_c
     
     doc = trainer_req.model_dump()
     doc['created_at'] = doc['created_at'].isoformat()
-    await db.trainer_requests.insert_one(doc)
+    await db.put_item('trainer_requests', doc)
     
     return {"message": "Trainer availability request submitted", "request_id": trainer_req.id}
 
@@ -2052,7 +1731,7 @@ async def request_invoice(request_data: dict, current_user: dict = Depends(get_c
     
     doc = invoice_req.model_dump()
     doc['created_at'] = doc['created_at'].isoformat()
-    await db.invoice_requests.insert_one(doc)
+    await db.put_item('invoice_requests', doc)
     
     return {"message": "Invoice request submitted", "request_id": invoice_req.id}
 
@@ -2102,7 +1781,7 @@ async def log_visit(visit_data: dict, current_user: dict = Depends(get_current_u
     
     doc = visit_log.model_dump()
     doc['created_at'] = doc['created_at'].isoformat()
-    await db.visit_logs.insert_one(doc)
+    await db.put_item('visit_logs', doc)
     
     return {"message": "Visit logged successfully", "visit_id": visit_log.id}
 
@@ -2141,7 +1820,7 @@ async def create_trainer_request_simple(request_data: dict, current_user: dict =
         "created_at": datetime.now(timezone.utc).isoformat()
     }
     
-    await db.trainer_requests.insert_one(trainer_req)
+    await db.put_item('trainer_requests', trainer_req)
     
     return {"message": "Trainer request submitted successfully", "request_id": trainer_req["id"]}
 
@@ -2165,7 +1844,7 @@ async def create_invoice_request_simple(request_data: dict, current_user: dict =
         "created_at": datetime.now(timezone.utc).isoformat()
     }
     
-    await db.invoice_requests.insert_one(invoice_req)
+    await db.put_item('invoice_requests', invoice_req)
     
     return {"message": "Invoice request submitted successfully", "request_id": invoice_req["id"]}
 
@@ -2190,7 +1869,7 @@ async def create_visit_log_simple(visit_data: dict, current_user: dict = Depends
         "created_at": datetime.now(timezone.utc).isoformat()
     }
     
-    await db.visit_logs.insert_one(visit_log)
+    await db.put_item('visit_logs', visit_log)
     
     return {"message": "Visit log submitted successfully", "visit_id": visit_log["id"]}
 
@@ -2221,7 +1900,7 @@ async def assign_lead(lead_id: str, assign_data: dict, current_user: dict = Depe
     if not employee_id:
         raise HTTPException(status_code=400, detail="employee_id required")
     
-    employee = await db.employees.find_one({"id": employee_id}, {"_id": 0})
+    employee = await db.get_item('employees', {"id": employee_id}, {"_id": 0})
     if not employee:
         raise HTTPException(status_code=404, detail="Employee not found")
     
@@ -2333,7 +2012,7 @@ async def fix_user_account_after_mobile_change(fix_data: dict, current_user: dic
         raise HTTPException(status_code=400, detail="employee_id required")
     
     # Get employee record
-    employee = await db.employees.find_one({"id": employee_id}, {"_id": 0})
+    employee = await db.get_item('employees', {"id": employee_id}, {"_id": 0})
     if not employee:
         raise HTTPException(status_code=404, detail="Employee not found")
     
@@ -2362,7 +2041,7 @@ async def fix_user_account_after_mobile_change(fix_data: dict, current_user: dic
     
     user_dict = new_user.model_dump()
     user_dict['created_at'] = user_dict['created_at'].isoformat()
-    await db.users.insert_one(user_dict)
+    await db.put_item('users', user_dict)
     
     return {
         "message": f"User account fixed for {employee['name']}",
@@ -2379,7 +2058,7 @@ async def create_missing_sales_user_accounts(current_user: dict = Depends(get_cu
         raise HTTPException(status_code=403, detail="Access denied. COO only.")
     
     # Get all sales employees without filtering by mobile
-    all_employees = await db.employees.find({"department": "Sales"}, {"_id": 0}).to_list(1000)
+    all_employees = await db.scan_items('employees', {"department": "Sales"})
     
     created_count = 0
     skipped_count = 0
@@ -2410,7 +2089,7 @@ async def create_missing_sales_user_accounts(current_user: dict = Depends(get_cu
             continue
         
         # Check if user already exists with this mobile and role
-        existing_user = await db.users.find_one({"mobile": mobile, "role": user_role})
+        existing_user = await db.get_item('users', {"mobile": mobile, "role": user_role})
         
         if existing_user:
             skipped_count += 1
@@ -2429,7 +2108,7 @@ async def create_missing_sales_user_accounts(current_user: dict = Depends(get_cu
         
         user_dict = new_user.model_dump()
         user_dict['created_at'] = user_dict['created_at'].isoformat()
-        await db.users.insert_one(user_dict)
+        await db.put_item('users', user_dict)
         
         created_count += 1
         results.append({
@@ -2558,14 +2237,12 @@ async def get_all_trainers(current_user: dict = Depends(get_current_user)):
         raise HTTPException(status_code=403, detail="Access denied. Academic Head only.")
     
     # Get employees with role/designation containing "Trainer"
-    trainers = await db.employees.find(
+    trainers = await db.scan_items('employees', 
         {"$or": [
             {"designation": {"$regex": "trainer", "$options": "i"}},
             {"role": {"$regex": "trainer", "$options": "i"}},
             {"department": "Academic"}
-        ]},
-        {"_id": 0}
-    ).to_list(1000)
+        ]})
     
     return trainers
 
@@ -2681,17 +2358,11 @@ async def get_academic_team(current_user: dict = Depends(get_current_user)):
     if current_user["role"] != "Academic Head":
         raise HTTPException(status_code=403, detail="Access denied. Academic Head only.")
     
-    team_members = await db.employees.find(
-        {"department": "Academic"},
-        {"_id": 0}
-    ).to_list(1000)
+    team_members = await db.scan_items('employees', {"department": "Academic"})
     
     # Get today's attendance for team
     today = datetime.now(timezone.utc).date().isoformat()
-    attendance_records = await db.attendance.find(
-        {"date": today},
-        {"_id": 0}
-    ).to_list(1000)
+    attendance_records = await db.scan_items('attendance', {"date": today})
     
     # Mark attendance status
     attendance_map = {rec["employee_id"]: rec for rec in attendance_records}
@@ -2952,10 +2623,7 @@ async def get_certificate_templates(current_user: dict = Depends(get_current_use
     if current_user.get("role") not in ["Academic Head", "COO"]:
         raise HTTPException(status_code=403, detail="Access denied. Academic Head or COO only.")
     
-    templates = await db.certificate_templates.find(
-        {"is_active": True},
-        {"_id": 0}
-    ).to_list(1000)
+    templates = await db.scan_items('certificate_templates', {"is_active": True})
     
     return templates
 
@@ -2963,7 +2631,7 @@ async def get_certificate_templates(current_user: dict = Depends(get_current_use
 @api_router.get("/academic/templates/default")
 async def get_default_template(current_user: dict = Depends(get_current_user)):
     """Get the default certificate template"""
-    template = await db.certificate_templates.find_one(
+    template = await db.get_item('certificate_templates', 
         {"is_default": True, "is_active": True},
         {"_id": 0}
     )
@@ -3006,7 +2674,7 @@ async def create_certificate_template(
     template_dict['created_at'] = template_dict['created_at'].isoformat()
     template_dict['updated_at'] = template_dict['updated_at'].isoformat()
     
-    await db.certificate_templates.insert_one(template_dict)
+    await db.put_item('certificate_templates', template_dict)
     
     return {"message": "Template created successfully", "template": template}
 
@@ -3075,7 +2743,7 @@ async def generate_certificates(
         raise HTTPException(status_code=403, detail="Access denied. Academic Head or COO only.")
     
     # Get work order details
-    wo = await db.work_orders.find_one({"id": cert_request.work_order_id}, {"_id": 0})
+    wo = await db.get_item('work_orders', {"id": cert_request.work_order_id}, {"_id": 0})
     if not wo:
         raise HTTPException(status_code=404, detail="Work order not found")
     
@@ -3086,9 +2754,9 @@ async def generate_certificates(
     
     # Get the count of certificates issued this month
     month_start = now.replace(day=1, hour=0, minute=0, second=0, microsecond=0)
-    month_count = await db.certificate_candidates.count_documents({
+    month_count = len(await db.scan_items('certificate_candidates', {
         "generated_at": {"$gte": month_start.isoformat()}
-    })
+    }))
     
     generated_certificates = []
     
@@ -3126,7 +2794,7 @@ async def generate_certificates(
         cert_dict = certificate.model_dump()
         cert_dict['generated_at'] = cert_dict['generated_at'].isoformat()
         
-        await db.certificate_candidates.insert_one(cert_dict)
+        await db.put_item('certificate_candidates', cert_dict)
         generated_certificates.append(cert_dict)
         
         # Also create an entry in the certificates collection for dispatch tracking
@@ -3142,7 +2810,7 @@ async def generate_certificates(
             "approved_at": now.isoformat(),
             "created_at": now.isoformat()
         }
-        await db.certificates.insert_one(dispatch_cert)
+        await db.put_item('certificates', dispatch_cert)
     
     return {
         "message": f"{len(generated_certificates)} certificates generated successfully",
@@ -3163,7 +2831,7 @@ async def get_generated_certificates(
     if work_order_id:
         query["work_order_id"] = work_order_id
     
-    certificates = await db.certificate_candidates.find(query, {"_id": 0}).to_list(1000)
+    certificates = await db.scan_items('certificate_candidates', query)
     return certificates
 
 
@@ -3173,7 +2841,7 @@ async def get_certificate_by_number(
     current_user: dict = Depends(get_current_user)
 ):
     """Get certificate details by certificate number"""
-    certificate = await db.certificate_candidates.find_one(
+    certificate = await db.get_item('certificate_candidates', 
         {"certificate_no": certificate_no},
         {"_id": 0}
     )
@@ -3190,10 +2858,8 @@ async def get_work_orders_for_certificates(current_user: dict = Depends(get_curr
         raise HTTPException(status_code=403, detail="Access denied. Academic Head or COO only.")
     
     # Get work orders with status completed or approved
-    work_orders = await db.work_orders.find(
-        {"status": {"$in": ["completed", "approved"]}},
-        {"_id": 0}
-    ).to_list(1000)
+    work_orders = await db.scan_items('work_orders', 
+        {"status": {"$in": ["completed", "approved"]}})
     
     return work_orders
 
@@ -3208,7 +2874,7 @@ async def bulk_generate_certificates(
         raise HTTPException(status_code=403, detail="Access denied. Academic Head or COO only.")
     
     # Get work order details
-    wo = await db.work_orders.find_one({"id": bulk_request.work_order_id}, {"_id": 0})
+    wo = await db.get_item('work_orders', {"id": bulk_request.work_order_id}, {"_id": 0})
     if not wo:
         raise HTTPException(status_code=404, detail="Work order not found")
     
@@ -3218,9 +2884,9 @@ async def bulk_generate_certificates(
     month = now.strftime("%m")
     
     month_start = now.replace(day=1, hour=0, minute=0, second=0, microsecond=0)
-    month_count = await db.certificate_candidates.count_documents({
+    month_count = len(await db.scan_items('certificate_candidates', {
         "generated_at": {"$gte": month_start.isoformat()}
-    })
+    }))
     
     generated_certificates = []
     errors = []
@@ -3258,7 +2924,7 @@ async def bulk_generate_certificates(
             cert_dict = certificate.model_dump()
             cert_dict['generated_at'] = cert_dict['generated_at'].isoformat()
             
-            await db.certificate_candidates.insert_one(cert_dict)
+            await db.put_item('certificate_candidates', cert_dict)
             generated_certificates.append(cert_dict)
             
             # Also create dispatch entry
@@ -3274,7 +2940,7 @@ async def bulk_generate_certificates(
                 "approved_at": now.isoformat(),
                 "created_at": now.isoformat()
             }
-            await db.certificates.insert_one(dispatch_cert)
+            await db.put_item('certificates', dispatch_cert)
             
         except Exception as e:
             errors.append({
@@ -3294,7 +2960,7 @@ async def bulk_generate_certificates(
 @api_router.get("/certificates/verify")
 async def verify_certificate(code: str):
     """Public endpoint to verify certificate by code (NEW - ADDITIVE)"""
-    certificate = await db.certificate_candidates.find_one(
+    certificate = await db.get_item('certificate_candidates', 
         {"verification_code": code},
         {"_id": 0, "certificate_no": 1, "candidate_name": 1, "course_name": 1, 
          "issue_date": 1, "status": 1, "client_name": 1, "expiry_date": 1}
@@ -3333,38 +2999,41 @@ async def get_coo_dashboard_data(current_user: dict = Depends(get_current_user))
     
     try:
         # HRM Overview
-        total_employees = await db.employees.count_documents({})
+        total_employees = len(await db.scan_items('employees', {}))
         today = datetime.now(timezone.utc).date().isoformat()
-        present_today = await db.attendance.count_documents({"date": today, "status": "present"})
+        present_today = len(await db.scan_items('attendance', {}))
         
         # Document expiry alerts (within 30 days)
         thirty_days_ahead = (datetime.now(timezone.utc) + timedelta(days=30)).isoformat()
-        expiring_docs = await db.employee_documents.count_documents({
+        expiring_docs = len(await db.scan_items('employee_documents', {
             "expiry_date": {"$lte": thirty_days_ahead, "$gte": datetime.now(timezone.utc).isoformat()}
-        })
+        }))
         
         # Sales Performance
-        total_leads = await db.leads.count_documents({})
-        converted_leads = await db.leads.count_documents({"status": "converted"})
-        active_quotations = await db.quotations.count_documents({"status": {"$in": ["pending", "sent"]}})
+        total_leads = len(await db.scan_items('leads', {}))
+        converted_leads = len(await db.scan_items('leads', {}))
+        active_quotations = len(await db.scan_items('quotations', {"status": {"$in": ["pending", "sent"]}} if {"status": {"$in": ["pending", "sent"]}} else {}))
         
         # Academic Operations
-        active_trainers = await db.employees.count_documents({
+        active_trainers = len(await db.scan_items('employees', {
             "department": "Academic",
             "designation": {"$in": ["TRAINER_FULLTIME", "TRAINER_PARTTIME"]}
-        })
-        total_work_orders = await db.work_orders.count_documents({})
-        completed_sessions = await db.work_orders.count_documents({"status": "completed"})
-        certificates_generated = await db.certificate_candidates.count_documents({})
+        } if {
+            "department": "Academic",
+            "designation": {"$in": ["TRAINER_FULLTIME", "TRAINER_PARTTIME"]}
+        } else {}))
+        total_work_orders = len(await db.scan_items('work_orders', {}))
+        completed_sessions = len(await db.scan_items('work_orders', {}))
+        certificates_generated = len(await db.scan_items('certificate_candidates', {}))
         
         # Dispatch Status
-        pending_dispatch = await db.delivery_tasks.count_documents({"status": "PENDING"})
-        out_for_delivery = await db.delivery_tasks.count_documents({"status": "OUT_FOR_DELIVERY"})
+        pending_dispatch = len(await db.scan_items('delivery_tasks', {}))
+        out_for_delivery = len(await db.scan_items('delivery_tasks', {}))
         delivered_today_start = datetime.now(timezone.utc).replace(hour=0, minute=0, second=0, microsecond=0)
-        delivered_today = await db.delivery_tasks.count_documents({
+        delivered_today = len(await db.scan_items('delivery_tasks', {
             "status": "DELIVERED",
             "delivered_at": {"$gte": delivered_today_start.isoformat()}
-        })
+        }))
         
         # Accounts snapshot (mock data - extend based on actual schema)
         # This can be extended when invoice/payment modules are built
@@ -3412,49 +3081,52 @@ async def get_md_dashboard_data(current_user: dict = Depends(get_current_user)):
     
     try:
         # Corporate Health Score (calculated based on multiple factors)
-        total_employees = await db.employees.count_documents({})
+        total_employees = len(await db.scan_items('employees', {}))
         today = datetime.now(timezone.utc).date().isoformat()
-        present_today = await db.attendance.count_documents({"date": today, "status": "present"})
+        present_today = len(await db.scan_items('attendance', {}))
         attendance_score = (present_today / total_employees * 100) if total_employees > 0 else 0
         
-        total_leads = await db.leads.count_documents({})
-        converted_leads = await db.leads.count_documents({"status": "converted"})
+        total_leads = len(await db.scan_items('leads', {}))
+        converted_leads = len(await db.scan_items('leads', {}))
         sales_score = (converted_leads / total_leads * 100) if total_leads > 0 else 0
         
-        delivered = await db.delivery_tasks.count_documents({"status": "DELIVERED"})
-        total_tasks = await db.delivery_tasks.count_documents({})
+        delivered = len(await db.scan_items('delivery_tasks', {}))
+        total_tasks = len(await db.scan_items('delivery_tasks', {}))
         dispatch_score = (delivered / total_tasks * 100) if total_tasks > 0 else 0
         
         corporate_health = round((attendance_score + sales_score + dispatch_score) / 3, 1)
         
         # Executive Analytics
-        total_work_orders = await db.work_orders.count_documents({})
-        completed_work_orders = await db.work_orders.count_documents({"status": "completed"})
+        total_work_orders = len(await db.scan_items('work_orders', {}))
+        completed_work_orders = len(await db.scan_items('work_orders', {}))
         
         # Workforce Intelligence
         departments = await db.employees.distinct("department")
         dept_counts = {}
         for dept in departments:
-            count = await db.employees.count_documents({"department": dept})
+            count = len(await db.scan_items('employees', {}))
             dept_counts[dept] = count
         
         # Sales Intelligence
-        high_value_leads = await db.leads.count_documents({})  # Can filter by value threshold
-        lost_deals = await db.leads.count_documents({"status": "lost"})
+        high_value_leads = len(await db.scan_items('leads', {}))  # Can filter by value threshold
+        lost_deals = len(await db.scan_items('leads', {}))
         
         # Academic Excellence
-        certificates_generated = await db.certificate_candidates.count_documents({})
-        active_trainers = await db.employees.count_documents({
+        certificates_generated = len(await db.scan_items('certificate_candidates', {}))
+        active_trainers = len(await db.scan_items('employees', {
             "department": "Academic",
             "designation": {"$in": ["TRAINER_FULLTIME", "TRAINER_PARTTIME"]}
-        })
+        } if {
+            "department": "Academic",
+            "designation": {"$in": ["TRAINER_FULLTIME", "TRAINER_PARTTIME"]}
+        } else {}))
         
         # Executive Alerts (critical items)
-        pending_dispatch = await db.delivery_tasks.count_documents({"status": "PENDING"})
+        pending_dispatch = len(await db.scan_items('delivery_tasks', {"status": "PENDING"}))
         thirty_days_ahead = (datetime.now(timezone.utc) + timedelta(days=30)).isoformat()
-        expiring_docs = await db.employee_documents.count_documents({
+        expiring_docs = len(await db.scan_items('employee_documents', {
             "expiry_date": {"$lte": thirty_days_ahead, "$gte": datetime.now(timezone.utc).isoformat()}
-        })
+        }))
         
         # AI-powered insights (rule-based for now, can be enhanced with ML)
         insights = []
@@ -3509,87 +3181,6 @@ async def get_md_dashboard_data(current_user: dict = Depends(get_current_user)):
     except Exception as e:
         logger.error(f"Error fetching MD dashboard data: {e}")
         raise HTTPException(status_code=500, detail="Failed to fetch dashboard data")
-
-
-# COO/MD - Get Pending Deletions
-@api_router.get("/executive/pending-deletions")
-async def get_pending_deletions(current_user: dict = Depends(get_current_user)):
-    """Get all items pending deletion approval (quotations and invoices)"""
-    if current_user.get("role") not in ["COO", "MD", "CEO"]:
-        raise HTTPException(status_code=403, detail="Access denied. COO/MD role required.")
-    
-    try:
-        # Get quotations pending deletion
-        quotations = await db.quotations.find(
-            {"status": "Pending Deletion"},
-            {"_id": 0}
-        ).to_list(1000)
-        
-        # Get invoices pending deletion
-        invoices = await db.invoices.find(
-            {"status": "Pending Deletion"},
-            {"_id": 0}
-        ).to_list(1000)
-        
-        return {
-            "quotations": quotations,
-            "invoices": invoices,
-            "total_pending": len(quotations) + len(invoices)
-        }
-    except Exception as e:
-        logger.error(f"Error fetching pending deletions: {e}")
-        raise HTTPException(status_code=500, detail="Failed to fetch pending deletions")
-
-
-# COO/MD - Approve/Reject Deletion
-@api_router.post("/executive/approve-deletion")
-async def approve_deletion(
-    item_type: str,  # "quotation" or "invoice"
-    item_id: str,
-    approval: DeletionApproval,
-    current_user: dict = Depends(get_current_user)
-):
-    """Approve or reject deletion request for quotation or invoice"""
-    if current_user.get("role") not in ["COO", "MD", "CEO"]:
-        raise HTTPException(status_code=403, detail="Access denied. COO/MD role required.")
-    
-    try:
-        collection = db.quotations if item_type == "quotation" else db.invoices
-        
-        existing = await collection.find_one({"id": item_id}, {"_id": 0})
-        if not existing:
-            raise HTTPException(status_code=404, detail=f"{item_type.capitalize()} not found")
-        
-        if existing.get("status") != "Pending Deletion":
-            raise HTTPException(status_code=400, detail="Item is not pending deletion")
-        
-        if approval.approved:
-            # Permanently delete the item
-            await collection.delete_one({"id": item_id})
-            message = f"{item_type.capitalize()} deleted successfully"
-        else:
-            # Restore to previous status (assuming it was "Pending" or "Draft")
-            await collection.update_one(
-                {"id": item_id},
-                {"$set": {
-                    "status": "Draft",  # Restore to Draft
-                    "deletion_rejected_by": current_user["id"],
-                    "deletion_rejected_by_name": current_user["name"],
-                    "deletion_rejected_at": datetime.now(timezone.utc).isoformat(),
-                    "deletion_remarks": approval.remarks
-                },
-                "$unset": {
-                    "deletion_requested_by": "",
-                    "deletion_requested_by_name": "",
-                    "deletion_requested_at": ""
-                }}
-            )
-            message = f"{item_type.capitalize()} deletion rejected, restored to Draft status"
-        
-        return {"message": message}
-    except Exception as e:
-        logger.error(f"Error processing deletion approval: {e}")
-        raise HTTPException(status_code=500, detail="Failed to process deletion approval")
 
 
 # ==================== DISPATCH & DELIVERY MODULE ====================
@@ -3649,17 +3240,17 @@ async def get_certificates_ready_for_dispatch(
     # Find certificates with status "approved" that haven't been assigned to delivery yet
     query = {"status": "approved"}
     
-    certificates = await db.certificates.find(query, {"_id": 0}).to_list(1000)
+    certificates = await db.scan_items('certificates', query)
     
     # Filter out certificates that already have delivery tasks
     result = []
     for cert in certificates:
         # Check if delivery task exists
-        existing_task = await db.delivery_tasks.find_one({"certificate_id": cert.get("id")})
+        existing_task = await db.get_item('delivery_tasks', {"certificate_id": cert.get("id")})
         if not existing_task:
             # Get work order details if available
             if cert.get("work_order_id"):
-                wo = await db.work_orders.find_one({"id": cert.get("work_order_id")}, {"_id": 0})
+                wo = await db.get_item('work_orders', {"id": cert.get("work_order_id")}, {"_id": 0})
                 if wo:
                     cert["client_name"] = wo.get("client_name", "N/A")
                     cert["client_branch"] = wo.get("branch", "N/A")
@@ -3697,7 +3288,7 @@ async def create_delivery_tasks(
     
     for cert_id in task_data.certificate_ids:
         # Get certificate details
-        certificate = await db.certificates.find_one({"id": cert_id}, {"_id": 0})
+        certificate = await db.get_item('certificates', {"id": cert_id}, {"_id": 0})
         if not certificate:
             continue
         
@@ -3707,7 +3298,7 @@ async def create_delivery_tasks(
         work_order_id = None
         
         if certificate.get("work_order_id"):
-            wo = await db.work_orders.find_one({"id": certificate.get("work_order_id")}, {"_id": 0})
+            wo = await db.get_item('work_orders', {"id": certificate.get("work_order_id")}, {"_id": 0})
             if wo:
                 client_name = wo.get("client_name", "N/A")
                 client_branch = wo.get("branch", "N/A")
@@ -3732,7 +3323,7 @@ async def create_delivery_tasks(
         if task_dict.get('due_date'):
             task_dict['due_date'] = task_dict['due_date'].isoformat()
         
-        await db.delivery_tasks.insert_one(task_dict)
+        await db.put_item('delivery_tasks', task_dict)
         created_tasks.append(task)
         
         # Update certificate status to indicate it's been assigned for delivery
@@ -3760,7 +3351,7 @@ async def get_all_delivery_tasks(
     if branch and branch != "All":
         query["client_branch"] = branch
     
-    tasks = await db.delivery_tasks.find(query, {"_id": 0}).to_list(1000)
+    tasks = await db.scan_items('delivery_tasks', query)
     
     # Convert datetime strings back for frontend
     for task in tasks:
@@ -3803,26 +3394,29 @@ async def get_dispatch_summary(current_user: dict = Depends(get_current_user)):
         raise HTTPException(status_code=403, detail="Access denied. Dispatch Head only.")
     
     # Count by status
-    pending = await db.delivery_tasks.count_documents({"status": "PENDING"})
-    out_for_delivery = await db.delivery_tasks.count_documents({"status": "OUT_FOR_DELIVERY"})
+    pending = len(await db.scan_items('delivery_tasks', {}))
+    out_for_delivery = len(await db.scan_items('delivery_tasks', {}))
     
     # Delivered today
     today_start = datetime.now(timezone.utc).replace(hour=0, minute=0, second=0, microsecond=0)
-    delivered_today = await db.delivery_tasks.count_documents({
+    delivered_today = len(await db.scan_items('delivery_tasks', {
         "status": "DELIVERED",
         "delivered_at": {"$gte": today_start.isoformat()}
-    })
+    }))
     
     # Overdue (tasks with due_date in the past and not delivered)
     now = datetime.now(timezone.utc).isoformat()
-    overdue = await db.delivery_tasks.count_documents({
+    overdue = len(await db.scan_items('delivery_tasks', {
         "status": {"$nin": ["DELIVERED", "FAILED", "RETURNED"]},
         "due_date": {"$lt": now, "$ne": None}
-    })
+    } if {
+        "status": {"$nin": ["DELIVERED", "FAILED", "RETURNED"]},
+        "due_date": {"$lt": now, "$ne": None}
+    } else {}))
     
     # Certificates ready for dispatch
-    certificates_ready = await db.certificates.count_documents({"status": "approved"})
-    existing_tasks_count = await db.delivery_tasks.count_documents({})
+    certificates_ready = len(await db.scan_items('certificates', {}))
+    existing_tasks_count = len(await db.scan_items('delivery_tasks', {}))
     ready_for_assignment = max(0, certificates_ready - existing_tasks_count)
     
     return {
@@ -3842,17 +3436,14 @@ async def get_my_delivery_tasks(current_user: dict = Depends(get_current_user)):
     
     # Find employee record to get employee_id
     user_mobile = current_user.get("mobile")
-    employee = await db.employees.find_one({"mobile": user_mobile}, {"_id": 0})
+    employee = await db.get_item('employees', {"mobile": user_mobile}, {"_id": 0})
     
     if not employee:
         return []
     
     employee_id = employee.get("id")
     
-    tasks = await db.delivery_tasks.find(
-        {"assigned_to_employee_id": employee_id},
-        {"_id": 0}
-    ).to_list(1000)
+    tasks = await db.scan_items('delivery_tasks', {"assigned_to_employee_id": employee_id})
     
     return tasks
 
@@ -3869,7 +3460,7 @@ async def update_my_delivery_task(
     
     # Find employee record
     user_mobile = current_user.get("mobile")
-    employee = await db.employees.find_one({"mobile": user_mobile}, {"_id": 0})
+    employee = await db.get_item('employees', {"mobile": user_mobile}, {"_id": 0})
     
     if not employee:
         raise HTTPException(status_code=404, detail="Employee record not found")
@@ -3877,7 +3468,7 @@ async def update_my_delivery_task(
     employee_id = employee.get("id")
     
     # Verify task belongs to this assistant
-    task = await db.delivery_tasks.find_one({"id": task_id}, {"_id": 0})
+    task = await db.get_item('delivery_tasks', {"id": task_id}, {"_id": 0})
     if not task:
         raise HTTPException(status_code=404, detail="Delivery task not found")
     
@@ -3953,126 +3544,24 @@ async def create_invoice(invoice_data: dict, current_user: dict = Depends(get_cu
         raise HTTPException(status_code=403, detail="Access denied. Accounts team access only.")
     
     try:
-        # Calculate VAT if enabled
-        subtotal = float(invoice_data["amount"])
-        vat_enabled = invoice_data.get("vat_enabled", True)
-        vat_rate = float(invoice_data.get("vat_rate", 5.0))  # Default 5% UAE VAT
-        vat_amount = (subtotal * vat_rate / 100) if vat_enabled else 0.0
-        total_amount = subtotal + vat_amount
-        
         invoice = {
             "id": str(uuid.uuid4()),
             "client_name": invoice_data["client_name"],
-            "client_id": invoice_data.get("client_id"),
             "invoice_number": invoice_data["invoice_number"],
-            "subtotal": subtotal,
-            "vat_enabled": vat_enabled,
-            "vat_rate": vat_rate,
-            "vat_amount": vat_amount,
-            "total_amount": total_amount,
-            "amount": total_amount,  # Keep for backward compatibility
-            "currency": invoice_data.get("currency", "AED"),
+            "amount": float(invoice_data["amount"]),
             "description": invoice_data.get("description", ""),
             "due_date": invoice_data.get("due_date"),
             "status": "Pending",
-            "payment_status": "Unpaid",
-            "paid_amount": 0.0,
             "created_by": current_user["id"],
             "created_by_name": current_user["name"],
             "created_at": datetime.now(timezone.utc).isoformat()
         }
         
-        await db.invoices.insert_one(invoice)
-        
-        # Log audit trail
-        await db.audit_logs.insert_one({
-            "id": str(uuid.uuid4()),
-            "entity_type": "Invoice",
-            "entity_id": invoice["id"],
-            "action": "Created",
-            "changes": f"Invoice {invoice['invoice_number']} created for {invoice['client_name']}",
-            "performed_by": current_user["id"],
-            "performed_by_name": current_user["name"],
-            "timestamp": datetime.now(timezone.utc).isoformat()
-        })
-        
+        await db.put_item('invoices', invoice)
         return {"message": "Invoice created successfully", "invoice_id": invoice["id"]}
     except Exception as e:
         logger.error(f"Error creating invoice: {e}")
         raise HTTPException(status_code=500, detail="Failed to create invoice")
-
-
-# Accounts/COO/MD - Edit Invoice
-@api_router.put("/accounts/invoices/{invoice_id}")
-async def update_invoice(invoice_id: str, invoice_data: dict, current_user: dict = Depends(get_current_user)):
-    """Update an existing invoice"""
-    if current_user.get("role") not in ["Accounts Head", "Accountant", "COO", "MD", "CEO"]:
-        raise HTTPException(status_code=403, detail="Access denied")
-    
-    try:
-        existing = await db.invoices.find_one({"id": invoice_id}, {"_id": 0})
-        if not existing:
-            raise HTTPException(status_code=404, detail="Invoice not found")
-        
-        update_fields = {}
-        if "client_name" in invoice_data:
-            update_fields["client_name"] = invoice_data["client_name"]
-        if "invoice_number" in invoice_data:
-            update_fields["invoice_number"] = invoice_data["invoice_number"]
-        if "amount" in invoice_data:
-            update_fields["amount"] = float(invoice_data["amount"])
-        if "description" in invoice_data:
-            update_fields["description"] = invoice_data["description"]
-        if "due_date" in invoice_data:
-            update_fields["due_date"] = invoice_data["due_date"]
-        if "status" in invoice_data:
-            update_fields["status"] = invoice_data["status"]
-        
-        update_fields["updated_at"] = datetime.now(timezone.utc).isoformat()
-        update_fields["updated_by"] = current_user["id"]
-        update_fields["updated_by_name"] = current_user["name"]
-        
-        await db.invoices.update_one({"id": invoice_id}, {"$set": update_fields})
-        
-        updated = await db.invoices.find_one({"id": invoice_id}, {"_id": 0})
-        return {"message": "Invoice updated successfully", "invoice": updated}
-    except Exception as e:
-        logger.error(f"Error updating invoice: {e}")
-        raise HTTPException(status_code=500, detail="Failed to update invoice")
-
-
-# Accounts/COO/MD - Delete Invoice
-@api_router.delete("/accounts/invoices/{invoice_id}")
-async def delete_invoice_request(invoice_id: str, current_user: dict = Depends(get_current_user)):
-    """Delete invoice - COO/MD delete immediately, Accounts needs approval"""
-    if current_user.get("role") not in ["Accounts Head", "Accountant", "COO", "MD", "CEO"]:
-        raise HTTPException(status_code=403, detail="Access denied")
-    
-    try:
-        existing = await db.invoices.find_one({"id": invoice_id}, {"_id": 0})
-        if not existing:
-            raise HTTPException(status_code=404, detail="Invoice not found")
-        
-        # COO/MD/CEO can delete immediately, Accounts needs approval
-        if current_user.get("role") in ["COO", "MD", "CEO"]:
-            # Direct deletion for senior management
-            await db.invoices.delete_one({"id": invoice_id})
-            return {"message": "Invoice deleted successfully", "immediate": True}
-        else:
-            # Mark as pending deletion for Accounts team
-            await db.invoices.update_one(
-                {"id": invoice_id},
-                {"$set": {
-                    "status": "Pending Deletion",
-                    "deletion_requested_by": current_user["id"],
-                    "deletion_requested_by_name": current_user["name"],
-                    "deletion_requested_at": datetime.now(timezone.utc).isoformat()
-                }}
-            )
-            return {"message": "Deletion request submitted. Awaiting COO/MD approval.", "immediate": False}
-    except Exception as e:
-        logger.error(f"Error requesting invoice deletion: {e}")
-        raise HTTPException(status_code=500, detail="Failed to process deletion")
 
 
 @api_router.get("/accounts/payments")
@@ -4100,7 +3589,7 @@ async def record_payment(payment_data: dict, current_user: dict = Depends(get_cu
         payment_amount = float(payment_data["amount"])
         
         # Get the invoice
-        invoice = await db.invoices.find_one({"id": invoice_id}, {"_id": 0})
+        invoice = await db.get_item('invoices', {"id": invoice_id}, {"_id": 0})
         if not invoice:
             raise HTTPException(status_code=404, detail="Invoice not found")
         
@@ -4117,14 +3606,14 @@ async def record_payment(payment_data: dict, current_user: dict = Depends(get_cu
             "payment_date": datetime.now(timezone.utc).isoformat()
         }
         
-        await db.payments.insert_one(payment)
+        await db.put_item('payments', payment)
         
         # Update invoice status
         invoice_total = float(invoice.get("amount", 0))
         total_paid = payment_amount
         
         # Calculate total payments for this invoice
-        existing_payments = await db.payments.find({"invoice_id": invoice_id}, {"_id": 0}).to_list(1000)
+        existing_payments = await db.scan_items('payments', {"invoice_id": invoice_id})
         total_paid = sum(float(p.get("amount", 0)) for p in existing_payments)
         
         if total_paid >= invoice_total:
@@ -4146,485 +3635,6 @@ async def record_payment(payment_data: dict, current_user: dict = Depends(get_cu
         logger.error(f"Error recording payment: {e}")
         raise HTTPException(status_code=500, detail="Failed to record payment")
 
-
-
-# ==================== COMPREHENSIVE ACCOUNTING ENDPOINTS ====================
-
-# Payment Management (Enhanced)
-@api_router.post("/accounts/payments/record")
-async def record_payment_enhanced(payment_data: PaymentCreate, current_user: dict = Depends(get_current_user)):
-    """Record payment with full tracking"""
-    if current_user.get("role") not in ["Accounts Head", "Accountant", "COO", "MD", "CEO"]:
-        raise HTTPException(status_code=403, detail="Access denied")
-    
-    try:
-        # Get invoice
-        invoice = await db.invoices.find_one({"id": payment_data.invoice_id}, {"_id": 0})
-        if not invoice:
-            raise HTTPException(status_code=404, detail="Invoice not found")
-        
-        # Create payment
-        payment = {
-            "id": str(uuid.uuid4()),
-            "invoice_id": payment_data.invoice_id,
-            "invoice_number": invoice.get("invoice_number"),
-            "client_name": invoice.get("client_name"),
-            "amount": payment_data.amount,
-            "payment_method": payment_data.payment_method,
-            "payment_date": payment_data.payment_date,
-            "reference_number": payment_data.reference_number,
-            "notes": payment_data.notes,
-            "recorded_by": current_user["id"],
-            "recorded_by_name": current_user["name"],
-            "created_at": datetime.now(timezone.utc).isoformat()
-        }
-        
-        await db.payments.insert_one(payment)
-        
-        # Update invoice payment status
-        total_paid = payment_data.amount
-        existing_payments = await db.payments.find({"invoice_id": payment_data.invoice_id}, {"_id": 0}).to_list(1000)
-        total_paid = sum(float(p.get("amount", 0)) for p in existing_payments)
-        
-        invoice_total = float(invoice.get("total_amount", invoice.get("amount", 0)))
-        
-        if total_paid >= invoice_total:
-            payment_status = "Paid"
-        elif total_paid > 0:
-            payment_status = "Partially Paid"
-        else:
-            payment_status = "Unpaid"
-        
-        await db.invoices.update_one(
-            {"id": payment_data.invoice_id},
-            {"$set": {
-                "payment_status": payment_status,
-                "paid_amount": total_paid,
-                "status": payment_status if payment_status == "Paid" else invoice.get("status")
-            }}
-        )
-        
-        # Audit log
-        await db.audit_logs.insert_one({
-            "id": str(uuid.uuid4()),
-            "entity_type": "Payment",
-            "entity_id": payment["id"],
-            "action": "Created",
-            "changes": f"Payment of {payment_data.amount} recorded for invoice {invoice.get('invoice_number')}",
-            "performed_by": current_user["id"],
-            "performed_by_name": current_user["name"],
-            "timestamp": datetime.now(timezone.utc).isoformat()
-        })
-        
-        return {"message": "Payment recorded successfully", "payment": payment}
-    except Exception as e:
-        logger.error(f"Error recording payment: {e}")
-        raise HTTPException(status_code=500, detail=str(e))
-
-
-# Financial Dashboard & Reports
-@api_router.get("/accounts/financial-dashboard")
-async def get_financial_dashboard(
-    start_date: Optional[str] = None,
-    end_date: Optional[str] = None,
-    current_user: dict = Depends(get_current_user)
-):
-    """Get comprehensive financial overview"""
-    if current_user.get("role") not in ["Accounts Head", "Accountant", "COO", "MD", "CEO"]:
-        raise HTTPException(status_code=403, detail="Access denied")
-    
-    try:
-        # Calculate revenue
-        total_invoices = await db.invoices.count_documents({})
-        total_revenue = 0
-        paid_invoices = await db.invoices.find({"payment_status": "Paid"}, {"_id": 0}).to_list(10000)
-        total_revenue = sum(float(inv.get("total_amount", inv.get("amount", 0))) for inv in paid_invoices)
-        
-        # Calculate expenses
-        expense_claims = await db.expense_claims.find({"status": "Paid"}, {"_id": 0}).to_list(10000)
-        total_expenses = sum(float(exp.get("amount", 0)) for exp in expense_claims)
-        
-        # Add vendor payments to expenses
-        vendor_payments = await db.vendor_payments.find({}, {"_id": 0}).to_list(10000)
-        total_expenses += sum(float(vp.get("amount", 0)) for vp in vendor_payments)
-        
-        # Add petty cash to expenses
-        petty_cash = await db.petty_cash.find({}, {"_id": 0}).to_list(10000)
-        total_expenses += sum(float(pc.get("amount", 0)) for pc in petty_cash)
-        
-        # Outstanding receivables
-        pending_invoices = await db.invoices.find(
-            {"payment_status": {"$in": ["Unpaid", "Partially Paid"]}},
-            {"_id": 0}
-        ).to_list(10000)
-        outstanding_amount = sum(
-            float(inv.get("total_amount", inv.get("amount", 0))) - float(inv.get("paid_amount", 0))
-            for inv in pending_invoices
-        )
-        
-        # VAT collected
-        total_vat = sum(float(inv.get("vat_amount", 0)) for inv in paid_invoices if inv.get("vat_enabled"))
-        
-        return {
-            "summary": {
-                "total_revenue": round(total_revenue, 2),
-                "total_expenses": round(total_expenses, 2),
-                "profit": round(total_revenue - total_expenses, 2),
-                "outstanding_receivables": round(outstanding_amount, 2),
-                "vat_collected": round(total_vat, 2)
-            },
-            "invoice_stats": {
-                "total_invoices": total_invoices,
-                "paid_count": len(paid_invoices),
-                "pending_count": len(pending_invoices)
-            }
-        }
-    except Exception as e:
-        logger.error(f"Error fetching financial dashboard: {e}")
-        raise HTTPException(status_code=500, detail=str(e))
-
-
-# VAT Reports
-@api_router.get("/accounts/vat-report")
-async def get_vat_report(
-    start_date: str,
-    end_date: str,
-    current_user: dict = Depends(get_current_user)
-):
-    """Generate VAT report for TRA submission"""
-    if current_user.get("role") not in ["Accounts Head", "Accountant", "COO", "MD", "CEO"]:
-        raise HTTPException(status_code=403, detail="Access denied")
-    
-    try:
-        # Get all paid invoices in date range
-        invoices = await db.invoices.find({
-            "payment_status": "Paid",
-            "vat_enabled": True,
-            "created_at": {"$gte": start_date, "$lte": end_date}
-        }, {"_id": 0}).to_list(10000)
-        
-        total_sales = sum(float(inv.get("subtotal", 0)) for inv in invoices)
-        total_vat = sum(float(inv.get("vat_amount", 0)) for inv in invoices)
-        total_with_vat = sum(float(inv.get("total_amount", 0)) for inv in invoices)
-        
-        return {
-            "period": {"start_date": start_date, "end_date": end_date},
-            "summary": {
-                "total_sales_excluding_vat": round(total_sales, 2),
-                "total_vat_collected": round(total_vat, 2),
-                "total_sales_including_vat": round(total_with_vat, 2),
-                "vat_rate": 5.0,
-                "invoice_count": len(invoices)
-            },
-            "invoices": invoices
-        }
-    except Exception as e:
-        logger.error(f"Error generating VAT report: {e}")
-        raise HTTPException(status_code=500, detail=str(e))
-
-
-# Client Account Management
-@api_router.post("/accounts/clients")
-async def create_client_account(client_data: ClientAccountCreate, current_user: dict = Depends(get_current_user)):
-    """Create new client account"""
-    if current_user.get("role") not in ["Accounts Head", "Accountant", "COO", "MD", "CEO"]:
-        raise HTTPException(status_code=403, detail="Access denied")
-    
-    try:
-        client = {
-            **client_data.model_dump(),
-            "id": str(uuid.uuid4()),
-            "outstanding_balance": 0.0,
-            "total_revenue": 0.0,
-            "status": "Active",
-            "created_at": datetime.now(timezone.utc).isoformat(),
-            "updated_at": datetime.now(timezone.utc).isoformat()
-        }
-        
-        await db.client_accounts.insert_one(client)
-        
-        await db.audit_logs.insert_one({
-            "id": str(uuid.uuid4()),
-            "entity_type": "ClientAccount",
-            "entity_id": client["id"],
-            "action": "Created",
-            "changes": f"Client account created for {client_data.client_name}",
-            "performed_by": current_user["id"],
-            "performed_by_name": current_user["name"],
-            "timestamp": datetime.now(timezone.utc).isoformat()
-        })
-        
-        return {"message": "Client account created", "client": client}
-    except Exception as e:
-        logger.error(f"Error creating client: {e}")
-        raise HTTPException(status_code=500, detail=str(e))
-
-
-@api_router.get("/accounts/clients")
-async def get_all_clients(current_user: dict = Depends(get_current_user)):
-    """Get all client accounts"""
-    if current_user.get("role") not in ["Accounts Head", "Accountant", "COO", "MD", "CEO", "Sales Head"]:
-        raise HTTPException(status_code=403, detail="Access denied")
-    
-    try:
-        clients = await db.client_accounts.find({}, {"_id": 0}).sort("client_name", 1).to_list(10000)
-        return clients
-    except Exception as e:
-        logger.error(f"Error fetching clients: {e}")
-        raise HTTPException(status_code=500, detail=str(e))
-
-
-@api_router.put("/accounts/clients/{client_id}")
-async def update_client_account(
-    client_id: str,
-    client_data: ClientAccountUpdate,
-    current_user: dict = Depends(get_current_user)
-):
-    """Update client account"""
-    if current_user.get("role") not in ["Accounts Head", "Accountant", "COO", "MD", "CEO"]:
-        raise HTTPException(status_code=403, detail="Access denied")
-    
-    try:
-        update_dict = {k: v for k, v in client_data.model_dump().items() if v is not None}
-        update_dict["updated_at"] = datetime.now(timezone.utc).isoformat()
-        
-        await db.client_accounts.update_one({"id": client_id}, {"$set": update_dict})
-        
-        await db.audit_logs.insert_one({
-            "id": str(uuid.uuid4()),
-            "entity_type": "ClientAccount",
-            "entity_id": client_id,
-            "action": "Updated",
-            "changes": str(update_dict),
-            "performed_by": current_user["id"],
-            "performed_by_name": current_user["name"],
-            "timestamp": datetime.now(timezone.utc).isoformat()
-        })
-        
-        return {"message": "Client updated successfully"}
-    except Exception as e:
-        logger.error(f"Error updating client: {e}")
-        raise HTTPException(status_code=500, detail=str(e))
-
-
-# Vendor Management
-@api_router.post("/accounts/vendors")
-async def create_vendor(vendor_data: VendorCreate, current_user: dict = Depends(get_current_user)):
-    """Create new vendor"""
-    if current_user.get("role") not in ["Accounts Head", "Accountant", "COO", "MD", "CEO"]:
-        raise HTTPException(status_code=403, detail="Access denied")
-    
-    try:
-        vendor = {
-            **vendor_data.model_dump(),
-            "id": str(uuid.uuid4()),
-            "total_paid": 0.0,
-            "status": "Active",
-            "created_at": datetime.now(timezone.utc).isoformat()
-        }
-        
-        await db.vendors.insert_one(vendor)
-        return {"message": "Vendor created", "vendor": vendor}
-    except Exception as e:
-        logger.error(f"Error creating vendor: {e}")
-        raise HTTPException(status_code=500, detail=str(e))
-
-
-@api_router.get("/accounts/vendors")
-async def get_all_vendors(current_user: dict = Depends(get_current_user)):
-    """Get all vendors"""
-    if current_user.get("role") not in ["Accounts Head", "Accountant", "COO", "MD", "CEO"]:
-        raise HTTPException(status_code=403, detail="Access denied")
-    
-    try:
-        vendors = await db.vendors.find({}, {"_id": 0}).sort("vendor_name", 1).to_list(10000)
-        return vendors
-    except Exception as e:
-        logger.error(f"Error fetching vendors: {e}")
-        raise HTTPException(status_code=500, detail=str(e))
-
-
-@api_router.post("/accounts/vendor-payments")
-async def record_vendor_payment(payment_data: VendorPaymentCreate, current_user: dict = Depends(get_current_user)):
-    """Record payment to vendor"""
-    if current_user.get("role") not in ["Accounts Head", "Accountant", "COO", "MD", "CEO"]:
-        raise HTTPException(status_code=403, detail="Access denied")
-    
-    try:
-        vendor = await db.vendors.find_one({"id": payment_data.vendor_id}, {"_id": 0})
-        if not vendor:
-            raise HTTPException(status_code=404, detail="Vendor not found")
-        
-        payment = {
-            **payment_data.model_dump(),
-            "id": str(uuid.uuid4()),
-            "vendor_name": vendor["vendor_name"],
-            "paid_by": current_user["id"],
-            "paid_by_name": current_user["name"],
-            "created_at": datetime.now(timezone.utc).isoformat()
-        }
-        
-        await db.vendor_payments.insert_one(payment)
-        
-        # Update vendor total
-        total_paid = vendor.get("total_paid", 0) + payment_data.amount
-        await db.vendors.update_one({"id": payment_data.vendor_id}, {"$set": {"total_paid": total_paid}})
-        
-        return {"message": "Vendor payment recorded", "payment": payment}
-    except Exception as e:
-        logger.error(f"Error recording vendor payment: {e}")
-        raise HTTPException(status_code=500, detail=str(e))
-
-
-@api_router.get("/accounts/vendor-payments")
-async def get_vendor_payments(current_user: dict = Depends(get_current_user)):
-    """Get all vendor payments"""
-    if current_user.get("role") not in ["Accounts Head", "Accountant", "COO", "MD", "CEO"]:
-        raise HTTPException(status_code=403, detail="Access denied")
-    
-    try:
-        payments = await db.vendor_payments.find({}, {"_id": 0}).sort("payment_date", -1).to_list(10000)
-        return payments
-    except Exception as e:
-        logger.error(f"Error fetching vendor payments: {e}")
-        raise HTTPException(status_code=500, detail=str(e))
-
-
-# Petty Cash Management
-@api_router.post("/accounts/petty-cash")
-async def record_petty_cash(cash_data: PettyCashCreate, current_user: dict = Depends(get_current_user)):
-    """Record petty cash expense"""
-    if current_user.get("role") not in ["Accounts Head", "Accountant", "COO", "MD", "CEO"]:
-        raise HTTPException(status_code=403, detail="Access denied")
-    
-    try:
-        record = {
-            **cash_data.model_dump(),
-            "id": str(uuid.uuid4()),
-            "recorded_by": current_user["id"],
-            "recorded_by_name": current_user["name"],
-            "created_at": datetime.now(timezone.utc).isoformat()
-        }
-        
-        await db.petty_cash.insert_one(record)
-        return {"message": "Petty cash recorded", "record": record}
-    except Exception as e:
-        logger.error(f"Error recording petty cash: {e}")
-        raise HTTPException(status_code=500, detail=str(e))
-
-
-@api_router.get("/accounts/petty-cash")
-async def get_petty_cash(current_user: dict = Depends(get_current_user)):
-    """Get all petty cash records"""
-    if current_user.get("role") not in ["Accounts Head", "Accountant", "COO", "MD", "CEO"]:
-        raise HTTPException(status_code=403, detail="Access denied")
-    
-    try:
-        records = await db.petty_cash.find({}, {"_id": 0}).sort("expense_date", -1).to_list(10000)
-        return records
-    except Exception as e:
-        logger.error(f"Error fetching petty cash: {e}")
-        raise HTTPException(status_code=500, detail=str(e))
-
-
-# Credit Notes
-@api_router.post("/accounts/credit-notes")
-async def create_credit_note(note_data: CreditNoteCreate, current_user: dict = Depends(get_current_user)):
-    """Create credit note"""
-    if current_user.get("role") not in ["Accounts Head", "Accountant", "COO", "MD", "CEO"]:
-        raise HTTPException(status_code=403, detail="Access denied")
-    
-    try:
-        credit_note = {
-            **note_data.model_dump(),
-            "id": str(uuid.uuid4()),
-            "status": "Issued",
-            "issued_by": current_user["id"],
-            "issued_by_name": current_user["name"],
-            "created_at": datetime.now(timezone.utc).isoformat()
-        }
-        
-        await db.credit_notes.insert_one(credit_note)
-        return {"message": "Credit note created", "credit_note": credit_note}
-    except Exception as e:
-        logger.error(f"Error creating credit note: {e}")
-        raise HTTPException(status_code=500, detail=str(e))
-
-
-@api_router.get("/accounts/credit-notes")
-async def get_credit_notes(current_user: dict = Depends(get_current_user)):
-    """Get all credit notes"""
-    if current_user.get("role") not in ["Accounts Head", "Accountant", "COO", "MD", "CEO"]:
-        raise HTTPException(status_code=403, detail="Access denied")
-    
-    try:
-        notes = await db.credit_notes.find({}, {"_id": 0}).sort("issued_date", -1).to_list(10000)
-        return notes
-    except Exception as e:
-        logger.error(f"Error fetching credit notes: {e}")
-        raise HTTPException(status_code=500, detail=str(e))
-
-
-# Recurring Invoices
-@api_router.post("/accounts/recurring-invoices")
-async def create_recurring_invoice(invoice_data: RecurringInvoiceCreate, current_user: dict = Depends(get_current_user)):
-    """Create recurring invoice schedule"""
-    if current_user.get("role") not in ["Accounts Head", "Accountant", "COO", "MD", "CEO"]:
-        raise HTTPException(status_code=403, detail="Access denied")
-    
-    try:
-        recurring = {
-            **invoice_data.model_dump(),
-            "id": str(uuid.uuid4()),
-            "next_invoice_date": invoice_data.start_date,
-            "status": "Active",
-            "created_by": current_user["id"],
-            "created_by_name": current_user["name"],
-            "created_at": datetime.now(timezone.utc).isoformat()
-        }
-        
-        await db.recurring_invoices.insert_one(recurring)
-        return {"message": "Recurring invoice created", "recurring_invoice": recurring}
-    except Exception as e:
-        logger.error(f"Error creating recurring invoice: {e}")
-        raise HTTPException(status_code=500, detail=str(e))
-
-
-@api_router.get("/accounts/recurring-invoices")
-async def get_recurring_invoices(current_user: dict = Depends(get_current_user)):
-    """Get all recurring invoices"""
-    if current_user.get("role") not in ["Accounts Head", "Accountant", "COO", "MD", "CEO"]:
-        raise HTTPException(status_code=403, detail="Access denied")
-    
-    try:
-        invoices = await db.recurring_invoices.find({}, {"_id": 0}).sort("created_at", -1).to_list(10000)
-        return invoices
-    except Exception as e:
-        logger.error(f"Error fetching recurring invoices: {e}")
-        raise HTTPException(status_code=500, detail=str(e))
-
-
-# Audit Logs
-@api_router.get("/accounts/audit-logs")
-async def get_audit_logs(
-    entity_type: Optional[str] = None,
-    limit: int = 100,
-    current_user: dict = Depends(get_current_user)
-):
-    """Get audit trail logs"""
-    if current_user.get("role") not in ["Accounts Head", "Accountant", "COO", "MD", "CEO"]:
-        raise HTTPException(status_code=403, detail="Access denied")
-    
-    try:
-        query = {}
-        if entity_type:
-            query["entity_type"] = entity_type
-        
-        logs = await db.audit_logs.find(query, {"_id": 0}).sort("timestamp", -1).limit(limit).to_list(limit)
-        return logs
-    except Exception as e:
-        logger.error(f"Error fetching audit logs: {e}")
-        raise HTTPException(status_code=500, detail=str(e))
 
 
 # ==================== ASSESSMENT & FEEDBACK ENDPOINTS ====================
@@ -4651,7 +3661,7 @@ async def create_assessment_form(form_data: AssessmentFormCreate, current_user: 
         form_dict['created_at'] = form_dict['created_at'].isoformat()
         form_dict['updated_at'] = form_dict['updated_at'].isoformat()
         
-        await db.assessment_forms.insert_one(form_dict)
+        await db.put_item('assessment_forms', form_dict)
         
         return {
             "message": "Assessment form created successfully",
@@ -4693,7 +3703,7 @@ async def get_assessment_forms(current_user: dict = Depends(get_current_user)):
 async def get_assessment_form(form_id: str):
     """Get single assessment form by ID (public endpoint for form display)"""
     try:
-        form = await db.assessment_forms.find_one({"id": form_id}, {"_id": 0})
+        form = await db.get_item('assessment_forms', {"id": form_id}, {"_id": 0})
         if not form:
             raise HTTPException(status_code=404, detail="Assessment form not found")
         
@@ -4710,7 +3720,7 @@ async def submit_assessment(submission_data: AssessmentSubmissionCreate):
     """Public endpoint for submitting assessment (no authentication required)"""
     try:
         # Get form details
-        form = await db.assessment_forms.find_one({"id": submission_data.form_id}, {"_id": 0})
+        form = await db.get_item('assessment_forms', {"id": submission_data.form_id}, {"_id": 0})
         if not form:
             raise HTTPException(status_code=404, detail="Assessment form not found")
         
@@ -4736,7 +3746,7 @@ async def submit_assessment(submission_data: AssessmentSubmissionCreate):
         submission_dict = submission.model_dump()
         submission_dict['submitted_at'] = submission_dict['submitted_at'].isoformat()
         
-        await db.assessment_submissions.insert_one(submission_dict)
+        await db.put_item('assessment_submissions', submission_dict)
         
         return {
             "message": "Assessment submitted successfully",
@@ -4973,13 +3983,13 @@ async def create_expense_claim(claim_data: ExpenseClaimCreate, current_user: dic
         # Get employee details - try by employee_id first, then by mobile
         employee = None
         if current_user.get("employee_id"):
-            employee = await db.employees.find_one({"id": current_user.get("employee_id")}, {"_id": 0})
+            employee = await db.get_item('employees', {"id": current_user.get("employee_id")}, {"_id": 0})
         
         if not employee:
             # Try finding by mobile number
-            user = await db.users.find_one({"id": current_user["id"]}, {"_id": 0})
+            user = await db.get_item('users', {"id": current_user["id"]}, {"_id": 0})
             if user and user.get("mobile"):
-                employee = await db.employees.find_one({"mobile": user["mobile"]}, {"_id": 0})
+                employee = await db.get_item('employees', {"mobile": user["mobile"]}, {"_id": 0})
         
         if not employee:
             raise HTTPException(status_code=404, detail="Employee record not found. Please contact HR.")
@@ -5009,7 +4019,7 @@ async def create_expense_claim(claim_data: ExpenseClaimCreate, current_user: dic
         
         # If not a dept head, find and assign dept head
         if not is_dept_head:
-            dept_head = await db.employees.find_one(
+            dept_head = await db.get_item('employees', 
                 {"department": department, "designation": {"$in": ["SALES_HEAD", "ACADEMIC_HEAD", "HR_MANAGER", "ACCOUNTS_HEAD", "DISPATCH_HEAD"]}},
                 {"_id": 0}
             )
@@ -5021,7 +4031,7 @@ async def create_expense_claim(claim_data: ExpenseClaimCreate, current_user: dic
         claim_dict['created_at'] = claim_dict['created_at'].isoformat()
         claim_dict['updated_at'] = claim_dict['updated_at'].isoformat()
         
-        await db.expense_claims.insert_one(claim_dict)
+        await db.put_item('expense_claims', claim_dict)
         
         return {"message": "Expense claim submitted successfully", "claim_id": claim.id}
     except HTTPException:
@@ -5082,7 +4092,7 @@ async def approve_reject_expense(claim_id: str, status_update: ExpenseClaimUpdat
         raise HTTPException(status_code=403, detail="Access denied. Department head access only.")
     
     try:
-        claim = await db.expense_claims.find_one({"id": claim_id}, {"_id": 0})
+        claim = await db.get_item('expense_claims', {"id": claim_id}, {"_id": 0})
         
         if not claim:
             raise HTTPException(status_code=404, detail="Expense claim not found")
@@ -5143,7 +4153,7 @@ async def hr_review_expense(claim_id: str, status_update: ExpenseClaimUpdateStat
         raise HTTPException(status_code=403, detail="Access denied. HR access only.")
     
     try:
-        claim = await db.expense_claims.find_one({"id": claim_id}, {"_id": 0})
+        claim = await db.get_item('expense_claims', {"id": claim_id}, {"_id": 0})
         
         if not claim:
             raise HTTPException(status_code=404, detail="Expense claim not found")
@@ -5204,7 +4214,7 @@ async def mark_expense_paid(claim_id: str, payment_data: dict, current_user: dic
         raise HTTPException(status_code=403, detail="Access denied. Accounts team access only.")
     
     try:
-        claim = await db.expense_claims.find_one({"id": claim_id}, {"_id": 0})
+        claim = await db.get_item('expense_claims', {"id": claim_id}, {"_id": 0})
         
         if not claim:
             raise HTTPException(status_code=404, detail="Expense claim not found")
@@ -5276,7 +4286,7 @@ async def startup_db():
         # Try to seed users (skip if unauthorized)
         try:
             # Check if COO exists
-            coo_exists = await db.users.find_one({"mobile": "971566374020"})
+            coo_exists = await db.get_item('users', {"mobile": "971566374020"})
             if not coo_exists:
                 coo_user = User(
                     mobile="971566374020",
@@ -5286,14 +4296,14 @@ async def startup_db():
                 )
                 user_dict = coo_user.model_dump()
                 user_dict['created_at'] = user_dict['created_at'].isoformat()
-                await db.users.insert_one(user_dict)
+                await db.put_item('users', user_dict)
                 logger.info("COO user seeded successfully")
                 print("✅ COO user seeded")
             else:
                 print("✅ COO user exists")
             
             # Check if MD exists
-            md_exists = await db.users.find_one({"mobile": "971564022503"})
+            md_exists = await db.get_item('users', {"mobile": "971564022503"})
             if not md_exists:
                 md_user = User(
                     mobile="971564022503",
@@ -5303,14 +4313,14 @@ async def startup_db():
                 )
                 user_dict = md_user.model_dump()
                 user_dict['created_at'] = user_dict['created_at'].isoformat()
-                await db.users.insert_one(user_dict)
+                await db.put_item('users', user_dict)
                 logger.info("MD user seeded successfully")
                 print("✅ MD user seeded")
             else:
                 print("✅ MD user exists")
             
             # Count total users
-            user_count = await db.users.count_documents({})
+            user_count = len(await db.scan_items('users', {}))
             logger.info(f"Database initialized. Total users: {user_count}")
             print(f"✅ Database ready. Total users: {user_count}")
             
@@ -5333,7 +4343,6 @@ async def startup_db():
         else:
             logger.error(f"❌ Database initialization failed: {e}")
             print(f"❌ CRITICAL: Database initialization failed: {e}")
-            print(f"   MongoDB URL: {mongo_url.split('@')[-1] if '@' in mongo_url else mongo_url}")
             raise
 
 

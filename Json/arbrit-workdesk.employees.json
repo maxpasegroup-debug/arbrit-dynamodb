@@ -1,0 +1,521 @@
+[{
+  "_id": {
+    "$oid": "691cb13b6e8dfbb8c6e6d2d1"
+  },
+  "id": "25610a1d-1ea8-4c74-910d-89bc9670bf68",
+  "name": "Melita Dsouza",
+  "mobile": "971547558749",
+  "branch": "Dubai",
+  "email": "hr@arbritsafety.com",
+  "designation": "HR",
+  "created_at": "2025-11-18T17:47:39.533948+00:00"
+},
+{
+  "_id": {
+    "$oid": "691cbdceb302560cba04040d"
+  },
+  "id": "e541a97f-51f2-40b4-ae18-cf9596f19450",
+  "name": "Mohammad Akbar",
+  "mobile": "971545844387",
+  "branch": "Dubai",
+  "email": "salehead@arbritsafety.com",
+  "designation": "Sales Head",
+  "department": null,
+  "badge_title": null,
+  "created_at": "2025-11-18T18:41:18.041126+00:00"
+},
+{
+  "_id": {
+    "$oid": "691cca692b5f77ef8a9b4a05"
+  },
+  "id": "d7f18be0-ca3d-4ebf-b166-9bf907712599",
+  "name": "Sherook Mohammed",
+  "mobile": "971501631280",
+  "branch": "Dubai",
+  "email": "",
+  "designation": "Sales ",
+  "department": "Sales",
+  "badge_title": "",
+  "sales_type": "field",
+  "created_at": "2025-11-18T19:35:05.439392+00:00"
+},
+{
+  "_id": {
+    "$oid": "691cca9e2b5f77ef8a9b4a07"
+  },
+  "id": "a75bf7f8-2400-462d-aa5a-69504a47d994",
+  "name": "Biju Prabhakaran",
+  "mobile": "971563981453",
+  "branch": "Dubai",
+  "email": "",
+  "designation": "",
+  "department": "Sales",
+  "badge_title": "Sales Manager",
+  "sales_type": "field",
+  "created_at": "2025-11-18T19:35:58.941131+00:00"
+},
+{
+  "_id": {
+    "$oid": "691ccac62b5f77ef8a9b4a08"
+  },
+  "id": "c9a87000-3727-43ab-9655-23e52cd830d6",
+  "name": "Saqib Abdullah",
+  "mobile": "966593341476",
+  "branch": "Saudi",
+  "email": "",
+  "designation": "",
+  "department": "Sales",
+  "badge_title": "Assistant Sales Manager",
+  "sales_type": "tele",
+  "created_at": "2025-11-18T19:36:38.479175+00:00"
+},
+{
+  "_id": {
+    "$oid": "691ccaff2b5f77ef8a9b4a09"
+  },
+  "id": "476e1d29-3aa5-4f7a-8dc1-9543be30a4d7",
+  "name": "Afshaan Syeda",
+  "mobile": "971557638082",
+  "branch": "Dubai",
+  "email": "",
+  "designation": "",
+  "department": "Sales",
+  "badge_title": "Team Leader",
+  "sales_type": "tele",
+  "created_at": "2025-11-18T19:37:35.469375+00:00"
+},
+{
+  "_id": {
+    "$oid": "691ccb292b5f77ef8a9b4a0a"
+  },
+  "id": "0a0f5493-0d14-4cb2-b803-ba078517b0d0",
+  "name": "Sunaina Fathima",
+  "mobile": "971563981429",
+  "branch": "Abu Dhabi",
+  "email": "",
+  "designation": "",
+  "department": "Sales",
+  "badge_title": "Business Development Executive",
+  "sales_type": "tele",
+  "created_at": "2025-11-18T19:38:17.277627+00:00"
+},
+{
+  "_id": {
+    "$oid": "691ccb4f2b5f77ef8a9b4a0b"
+  },
+  "id": "df8cdc44-a0f9-4007-8e2b-dcd174e00708",
+  "name": "Afshan Firdose",
+  "mobile": "971545844386",
+  "branch": "Abu Dhabi",
+  "email": "",
+  "designation": "",
+  "department": "Sales",
+  "badge_title": "Business Development Executive",
+  "sales_type": "field",
+  "created_at": "2025-11-18T19:38:55.917202+00:00"
+},
+{
+  "_id": {
+    "$oid": "691ccb782b5f77ef8a9b4a0c"
+  },
+  "id": "f8e61735-cc76-41ee-bf5e-5a8d7d0ebac0",
+  "name": "Prashobha KP",
+  "mobile": "971566838967",
+  "branch": "Dubai",
+  "email": "",
+  "designation": "",
+  "department": "Sales",
+  "badge_title": "",
+  "sales_type": "tele",
+  "created_at": "2025-11-18T19:39:36.286516+00:00"
+},
+{
+  "_id": {
+    "$oid": "691ccbaa2b5f77ef8a9b4a0d"
+  },
+  "id": "7af836f4-092b-4510-9754-24e7d8126965",
+  "name": "Arun Babu",
+  "mobile": "9715663981061",
+  "branch": "Dubai",
+  "email": "",
+  "designation": "",
+  "department": "Sales",
+  "badge_title": "Sales Executive",
+  "sales_type": "field",
+  "created_at": "2025-11-18T19:40:26.636328+00:00"
+},
+{
+  "_id": {
+    "$oid": "691ccbcd2b5f77ef8a9b4a0e"
+  },
+  "id": "713081f8-4d61-46d7-81d5-4c0b120b2767",
+  "name": "Bretty M Benny",
+  "mobile": "971502425495",
+  "branch": "Abu Dhabi",
+  "email": "",
+  "designation": "",
+  "department": "Sales",
+  "badge_title": "Tele Caller Executive",
+  "sales_type": "tele",
+  "created_at": "2025-11-18T19:41:01.538257+00:00"
+},
+{
+  "_id": {
+    "$oid": "691ccbf92b5f77ef8a9b4a0f"
+  },
+  "id": "147693d4-7c39-4fa9-bf9b-a7e9eba04129",
+  "name": "Shezin Shaker",
+  "mobile": "971501631387",
+  "branch": "Abu Dhabi",
+  "email": "",
+  "designation": "",
+  "department": "Sales",
+  "badge_title": "Sales Executive",
+  "sales_type": "field",
+  "created_at": "2025-11-18T19:41:45.963331+00:00"
+},
+{
+  "_id": {
+    "$oid": "691ccc2b2b5f77ef8a9b4a10"
+  },
+  "id": "cddb7c8b-16ee-4930-9f56-91ea3545f122",
+  "name": "Anjaly Krishnan",
+  "mobile": "971501631924",
+  "branch": "Dubai",
+  "email": "",
+  "designation": "",
+  "department": "Sales",
+  "badge_title": "Tele Caller Executive",
+  "sales_type": "tele",
+  "created_at": "2025-11-18T19:42:35.037476+00:00"
+},
+{
+  "_id": {
+    "$oid": "691ccc562b5f77ef8a9b4a11"
+  },
+  "id": "ae3e9866-73a6-4bc3-8f60-3a002b3ef36a",
+  "name": "Shahid Yousuf",
+  "mobile": "971545844385",
+  "branch": "Dubai",
+  "email": "",
+  "designation": "",
+  "department": "Sales",
+  "badge_title": "Sales Executive",
+  "sales_type": "field",
+  "created_at": "2025-11-18T19:43:18.693619+00:00"
+},
+{
+  "_id": {
+    "$oid": "691ccc762b5f77ef8a9b4a12"
+  },
+  "id": "6ebb58b2-4459-42d6-ae3a-fa6230664940",
+  "name": "Punya ET",
+  "mobile": "971564017266",
+  "branch": "Dubai",
+  "email": "",
+  "designation": "",
+  "department": "Sales",
+  "badge_title": "Tele Caller Executive",
+  "sales_type": "tele",
+  "created_at": "2025-11-18T19:43:50.923863+00:00"
+},
+{
+  "_id": {
+    "$oid": "691ccc9c2b5f77ef8a9b4a13"
+  },
+  "id": "2e52f758-1a0e-4f31-bdf4-c2416f6e5e97",
+  "name": "Akheela Moideen Kpya",
+  "mobile": "971564171124",
+  "branch": "Dubai",
+  "email": "",
+  "designation": "",
+  "department": "Sales",
+  "badge_title": "Tele Caller Executive",
+  "sales_type": "tele",
+  "created_at": "2025-11-18T19:44:28.510605+00:00"
+},
+{
+  "_id": {
+    "$oid": "691d616242087abda0ac2434"
+  },
+  "id": "a23d2252-1e99-4cce-b8e2-08e2c094ca06",
+  "name": "Abdu Sahad",
+  "mobile": "971557213537",
+  "branch": "Dubai",
+  "email": "",
+  "designation": "ACADEMIC_HEAD",
+  "department": "Academic",
+  "badge_title": "",
+  "sales_type": "",
+  "created_at": "2025-11-19T06:19:14.041560+00:00"
+},
+{
+  "_id": {
+    "$oid": "691d71ef766d251155b90762"
+  },
+  "id": "fcf1b606-6c7d-45c4-97c6-c11f93672a98",
+  "name": "Arshad Mohammed",
+  "mobile": "971521528047",
+  "branch": "Dubai",
+  "email": "",
+  "designation": "ACADEMIC_COORDINATOR",
+  "department": "Academic",
+  "badge_title": "",
+  "sales_type": "",
+  "created_at": "2025-11-19T07:29:51.906532+00:00"
+},
+{
+  "_id": {
+    "$oid": "691d721e766d251155b90763"
+  },
+  "id": "a6a5eb5a-76f8-427e-ba72-8ed38ee5418f",
+  "name": "Muhammed Farooq",
+  "mobile": "971505779823",
+  "branch": "Abu Dhabi",
+  "email": "",
+  "designation": "ACADEMIC_COORDINATOR",
+  "department": "Academic",
+  "badge_title": "",
+  "sales_type": "",
+  "created_at": "2025-11-19T07:30:38.633860+00:00"
+},
+{
+  "_id": {
+    "$oid": "691d7255766d251155b90764"
+  },
+  "id": "24b35169-c9ac-4c81-b1e5-63940936996c",
+  "name": "Anjusha P",
+  "mobile": "971566838977",
+  "branch": "Dubai",
+  "email": "",
+  "designation": "ACADEMIC_COORDINATOR",
+  "department": "Academic",
+  "badge_title": "",
+  "sales_type": "",
+  "created_at": "2025-11-19T07:31:33.066641+00:00"
+},
+{
+  "_id": {
+    "$oid": "691d7289766d251155b90765"
+  },
+  "id": "97842a6c-c67a-4ce3-92d9-fc73cd570cea",
+  "name": "Dhanya M Sathyavrathan",
+  "mobile": "971564169729",
+  "branch": "Dubai",
+  "email": "",
+  "designation": "ACADEMIC_COORDINATOR",
+  "department": "Academic",
+  "badge_title": "",
+  "sales_type": "",
+  "created_at": "2025-11-19T07:32:25.271232+00:00"
+},
+{
+  "_id": {
+    "$oid": "691d7cc684b2e328aefbbcad"
+  },
+  "id": "20636756-4edd-4ea4-bc70-7efd5ac865f7",
+  "name": "Ishitaq hasham",
+  "mobile": "971562408799",
+  "branch": "Dubai",
+  "email": "",
+  "designation": "TRAINER_FULLTIME",
+  "department": "Academic",
+  "badge_title": "",
+  "sales_type": "",
+  "created_at": "2025-11-19T08:16:06.272520+00:00"
+},
+{
+  "_id": {
+    "$oid": "691d7d0084b2e328aefbbcaf"
+  },
+  "id": "0a734b56-dcd5-4fca-a474-0b543f617de1",
+  "name": "Anshad rahim",
+  "mobile": "971547939729",
+  "branch": "Dubai",
+  "email": "",
+  "designation": "TRAINER_FULLTIME",
+  "department": "Academic",
+  "badge_title": "",
+  "sales_type": "",
+  "created_at": "2025-11-19T08:17:04.783381+00:00"
+},
+{
+  "_id": {
+    "$oid": "691d7d3d84b2e328aefbbcb1"
+  },
+  "id": "ef022d56-70f0-4319-a23f-27afa8821b5e",
+  "name": "Dharson Dhasan",
+  "mobile": "971523834896",
+  "branch": "Dubai",
+  "email": "",
+  "designation": "TRAINER_FULLTIME",
+  "department": "Academic",
+  "badge_title": "",
+  "sales_type": "",
+  "created_at": "2025-11-19T08:18:05.609397+00:00"
+},
+{
+  "_id": {
+    "$oid": "691d7d5d84b2e328aefbbcb3"
+  },
+  "id": "4c135b33-0c1c-41f1-8792-7569760221b0",
+  "name": "Jaseer Sakariya",
+  "mobile": "971505779753",
+  "branch": "Dubai",
+  "email": "",
+  "designation": "TRAINER_FULLTIME",
+  "department": "Academic",
+  "badge_title": "",
+  "sales_type": "",
+  "created_at": "2025-11-19T08:18:37.354015+00:00"
+},
+{
+  "_id": {
+    "$oid": "691d7d7f84b2e328aefbbcb5"
+  },
+  "id": "9f0761a5-5070-4aca-a921-2654624108a3",
+  "name": "Nadir Khan",
+  "mobile": "971547560619",
+  "branch": "Dubai",
+  "email": "",
+  "designation": "TRAINER_FULLTIME",
+  "department": "Academic",
+  "badge_title": "",
+  "sales_type": "",
+  "created_at": "2025-11-19T08:19:11.557938+00:00"
+},
+{
+  "_id": {
+    "$oid": "691d7d9d84b2e328aefbbcb7"
+  },
+  "id": "c1a025a9-f605-4138-b098-929ced01bd69",
+  "name": "Sameer Khan ",
+  "mobile": "971564186729",
+  "branch": "Dubai",
+  "email": "",
+  "designation": "TRAINER_FULLTIME",
+  "department": "Academic",
+  "badge_title": "",
+  "sales_type": "",
+  "created_at": "2025-11-19T08:19:41.956948+00:00"
+},
+{
+  "_id": {
+    "$oid": "691d7dbb84b2e328aefbbcb9"
+  },
+  "id": "398b9155-8245-470f-bb15-29bb6407ec54",
+  "name": "Shazzat Ali",
+  "mobile": "971564170179",
+  "branch": "Dubai",
+  "email": "",
+  "designation": "TRAINER_FULLTIME",
+  "department": "Academic",
+  "badge_title": "",
+  "sales_type": "",
+  "created_at": "2025-11-19T08:20:11.085021+00:00"
+},
+{
+  "_id": {
+    "$oid": "691d9a5b803c85c4825502a8"
+  },
+  "id": "7526e12a-4033-4933-84b8-29c9150c0390",
+  "name": "Ahmed Al Mansouri",
+  "mobile": "971555111222",
+  "branch": "Dubai",
+  "email": "ahmed.dispatch@arbrit.com",
+  "designation": "DISPATCH_HEAD",
+  "department": "Dispatch",
+  "badge_title": "Dispatch Head",
+  "sales_type": null,
+  "created_at": "2025-11-19T10:22:19.740011+00:00"
+},
+{
+  "_id": {
+    "$oid": "691d9a5b803c85c4825502aa"
+  },
+  "id": "85bd4265-ba09-4e08-a085-b47e2f45bc86",
+  "name": "Khalid Hassan",
+  "mobile": "971555333444",
+  "branch": "Dubai",
+  "email": "khalid.dispatch@arbrit.com",
+  "designation": "DISPATCH_ASSISTANT",
+  "department": "Dispatch",
+  "badge_title": "Dispatch Assistant",
+  "sales_type": null,
+  "created_at": "2025-11-19T10:22:19.991782+00:00"
+},
+{
+  "_id": {
+    "$oid": "691d9c4b78d341aa52183fb2"
+  },
+  "id": "cb9597fa-b7ad-4653-a29e-95e2a0b1c528",
+  "name": "Sajeev Pillai",
+  "mobile": "971522145962",
+  "branch": "Dubai",
+  "email": "",
+  "designation": "DISPATCH_HEAD",
+  "department": "Dispatch",
+  "badge_title": "",
+  "sales_type": "",
+  "created_at": "2025-11-19T10:30:35.805197+00:00"
+},
+{
+  "_id": {
+    "$oid": "691d9d1f78d341aa52183fb6"
+  },
+  "id": "21076346-989f-4827-a17c-63dac8a4d8b0",
+  "name": "Thara P Sasikumar",
+  "mobile": "971547560063",
+  "branch": "Dubai",
+  "email": "",
+  "designation": "DISPATCH_ASSISTANT",
+  "department": "Dispatch",
+  "badge_title": "",
+  "sales_type": "",
+  "created_at": "2025-11-19T10:34:07.278562+00:00"
+},
+{
+  "_id": {
+    "$oid": "691d9e4d78d341aa52183fb8"
+  },
+  "id": "23bc36ff-1350-4d11-a40a-b2899a562da2",
+  "name": "Himash Dhanuskha",
+  "mobile": "971521237859",
+  "branch": "Dubai",
+  "email": "",
+  "designation": "DISPATCH_ASSISTANT",
+  "department": "Dispatch",
+  "badge_title": "",
+  "sales_type": "",
+  "created_at": "2025-11-19T10:39:09.156692+00:00"
+},
+{
+  "_id": {
+    "$oid": "691e01cfc194bdedbb5b2841"
+  },
+  "id": "8212266c-db32-4118-891b-934e9cf4e255",
+  "name": "Kiron George Chenikkal",
+  "mobile": "919061295668",
+  "branch": "Dubai",
+  "email": "",
+  "designation": "ACCOUNTS_HEAD",
+  "department": "Accounts",
+  "badge_title": "",
+  "sales_type": "",
+  "created_at": "2025-11-19T17:43:43.127171+00:00"
+},
+{
+  "_id": {
+    "$oid": "691e01f6c194bdedbb5b2843"
+  },
+  "id": "81cfbc1a-1243-4da6-9eda-005b2f668528",
+  "name": "Sanu K Manoj",
+  "mobile": "971521237806",
+  "branch": "Dubai",
+  "email": "",
+  "designation": "ACCOUNTANT",
+  "department": "Accounts",
+  "badge_title": "",
+  "sales_type": "",
+  "created_at": "2025-11-19T17:44:22.809152+00:00"
+}]

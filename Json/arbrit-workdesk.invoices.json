@@ -1,0 +1,15 @@
+[{
+  "_id": {
+    "$oid": "691db0fd80ac48e6f7093597"
+  },
+  "id": "e3a6ef8d-8595-4646-a5f2-a415be9ef589",
+  "client_name": "Test Client Ltd",
+  "invoice_number": "INV-TEST-001",
+  "amount": 5000,
+  "description": "Safety Training Services",
+  "due_date": "2025-12-31",
+  "status": "Pending",
+  "created_by": "acc-test-123",
+  "created_by_name": "Test Accountant",
+  "created_at": "2025-11-19T11:58:53.606854+00:00"
+}]

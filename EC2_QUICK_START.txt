@@ -1,0 +1,134 @@
+================================================================================
+  🚀 EC2 Import to DynamoDB - Quick Reference
+================================================================================
+
+STEP 1: LAUNCH EC2 INSTANCE
+────────────────────────────────────────────────────────────────────────────
+1. Go to: https://console.aws.amazon.com/ec2/
+2. Click "Launch Instance"
+3. Settings:
+   - Name: arbrit-dynamodb-import
+   - AMI: Amazon Linux 2023
+   - Type: t2.micro (free tier)
+   - Key pair: Create new or select existing
+4. Click "Launch"
+
+STEP 2: ATTACH IAM ROLE
+────────────────────────────────────────────────────────────────────────────
+1. Select your EC2 instance
+2. Actions → Security → Modify IAM role
+3. Create new role if needed:
+   - Service: EC2
+   - Policy: AmazonDynamoDBFullAccess
+   - Name: EC2-DynamoDB-Import-Role
+4. Select role → Update
+
+STEP 3: UPLOAD FILES AND RUN
+────────────────────────────────────────────────────────────────────────────
+
+Replace YOUR-KEY.pem and YOUR-EC2-IP with your actual values!
+
+# Upload files from your Mac:
+scp -i ~/Downloads/YOUR-KEY.pem -r \
+  /Users/sms01/Downloads/arbrit-safety-export/Json/ \
+  ec2-user@YOUR-EC2-IP:~/Json/
+
+scp -i ~/Downloads/YOUR-KEY.pem \
+  /Users/sms01/Downloads/arbrit-safety-export/scripts/ec2-import-dynamodb.sh \
+  ec2-user@YOUR-EC2-IP:~/
+
+# SSH into EC2:
+ssh -i ~/Downloads/YOUR-KEY.pem ec2-user@YOUR-EC2-IP
+
+# Run import:
+chmod +x ~/ec2-import-dynamodb.sh
+./ec2-import-dynamodb.sh
+
+# Wait for completion (5-15 minutes)
+
+STEP 4: VERIFY
+────────────────────────────────────────────────────────────────────────────
+# On EC2, verify tables created:
+aws dynamodb list-tables --region us-east-1
+
+# Count items:
+aws dynamodb scan --table-name arbrit-users --select COUNT --region us-east-1
+
+# Or check in browser:
+https://console.aws.amazon.com/dynamodb/
+
+STEP 5: CLEANUP (Optional)
+────────────────────────────────────────────────────────────────────────────
+# Terminate EC2 instance to avoid charges:
+1. Go to EC2 Console
+2. Select instance
+3. Instance state → Terminate instance
+
+================================================================================
+  📝 NOTES
+================================================================================
+
+• IAM role is more secure than using access keys
+• t2.micro is free tier eligible (750 hours/month free)
+• Import typically takes 5-15 minutes depending on data size
+• Script automatically installs all dependencies
+• Script automatically creates all 23 DynamoDB tables
+• Cost: ~$0.01 for import + ~$0.12 for EC2 (if not using free tier)
+
+================================================================================
+  🆘 TROUBLESHOOTING
+================================================================================
+
+Connection refused?
+  → Check security group allows SSH (port 22)
+  → Verify public IP is correct
+
+No AWS credentials?
+  → Attach IAM role to EC2 instance
+  → Or: export AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY
+
+No JSON files found?
+  → Verify upload: ls -lh ~/Json/
+  → Re-upload files if needed
+
+Access denied (DynamoDB)?
+  → Add AmazonDynamoDBFullAccess policy to IAM role
+
+================================================================================
+  📚 FULL GUIDE
+================================================================================
+
+For detailed step-by-step instructions, see:
+  EC2_IMPORT_GUIDE.md
+
+================================================================================
+  ✅ EXPECTED RESULT
+================================================================================
+
+After running the script, you should see:
+
+✅ 23 DynamoDB tables created (arbrit-*)
+✅ 14 collections imported with data
+✅ 9 empty tables created (for future use)
+✅ Total import time: 5-15 minutes
+✅ All data viewable in AWS DynamoDB Console
+
+================================================================================
+  🎯 QUICK COPY-PASTE
+================================================================================
+
+# Replace YOUR-KEY.pem and YOUR-EC2-IP first!
+
+# Local machine - upload files:
+cd /Users/sms01/Downloads/arbrit-safety-export
+scp -i ~/Downloads/YOUR-KEY.pem -r Json/ ec2-user@YOUR-EC2-IP:~/Json/
+scp -i ~/Downloads/YOUR-KEY.pem scripts/ec2-import-dynamodb.sh ec2-user@YOUR-EC2-IP:~/
+
+# SSH and run:
+ssh -i ~/Downloads/YOUR-KEY.pem ec2-user@YOUR-EC2-IP
+chmod +x ~/ec2-import-dynamodb.sh
+./ec2-import-dynamodb.sh
+
+================================================================================
+
+

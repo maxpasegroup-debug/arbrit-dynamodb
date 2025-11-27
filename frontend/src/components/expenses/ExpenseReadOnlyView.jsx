@@ -46,11 +46,11 @@ const ExpenseReadOnlyView = () => {
 
   const getStatusBadge = (status) => {
     const statusConfig = {
-      'PENDING_DEPT_HEAD': { color: 'bg-yellow-500/20 text-yellow-300 border-yellow-500/30', label: 'Pending Dept Head' },
-      'PENDING_HR': { color: 'bg-blue-500/20 text-blue-300 border-blue-500/30', label: 'Pending HR' },
-      'PENDING_ACCOUNTS': { color: 'bg-purple-500/20 text-purple-300 border-purple-500/30', label: 'Pending Accounts' },
-      'PAID': { color: 'bg-green-500/20 text-green-300 border-green-500/30', label: 'Paid' },
-      'REJECTED': { color: 'bg-red-500/20 text-red-300 border-red-500/30', label: 'Rejected' }
+      'PENDING_DEPT_HEAD': { color: 'bg-yellow-500/20 text-yellow-600 border-yellow-400/50', label: 'Pending Dept Head' },
+      'PENDING_HR': { color: 'bg-blue-500/20 text-blue-600 border-blue-400/50', label: 'Pending HR' },
+      'PENDING_ACCOUNTS': { color: 'bg-purple-500/20 text-purple-600 border-purple-400/50', label: 'Pending Accounts' },
+      'PAID': { color: 'bg-green-500/20 text-green-600 border-green-400/50', label: 'Paid' },
+      'REJECTED': { color: 'bg-red-500/20 text-red-600 border-red-400/50', label: 'Rejected' }
     };
     return <Badge className={statusConfig[status]?.color || ''}>{statusConfig[status]?.label || status}</Badge>;
   };
@@ -62,12 +62,12 @@ const ExpenseReadOnlyView = () => {
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <h2 className="text-2xl font-bold text-white">All Expense Claims (Read-Only)</h2>
+        <h2 className="text-2xl font-bold text-slate-900">All Expense Claims (Read-Only)</h2>
         <div className="flex gap-2">
           <select
             value={filter}
             onChange={(e) => setFilter(e.target.value)}
-            className="bg-slate-800 border border-slate-600 text-white rounded-md p-2 text-sm"
+            className="border border-slate-300 rounded-md p-2 text-sm"
           >
             <option value="all">All Status</option>
             <option value="PENDING_DEPT_HEAD">Pending Dept Head</option>
@@ -79,54 +79,48 @@ const ExpenseReadOnlyView = () => {
         </div>
       </div>
 
-      <div className="bg-white/5 backdrop-blur-sm rounded-xl border border-white/10 overflow-hidden">
-        <div className="px-6 py-4 bg-white/5 border-b border-white/10">
-          <h3 className="text-lg font-semibold text-white flex items-center gap-2">
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
             <Eye className="w-5 h-5" />
             Expense Overview ({filteredClaims.length})
-          </h3>
-        </div>
-        <div className="p-6">
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
           {loading ? (
-            <p className="text-center py-8 text-gray-400">Loading...</p>
+            <p className="text-center py-8 text-slate-600">Loading...</p>
           ) : filteredClaims.length === 0 ? (
-            <p className="text-center py-8 text-gray-400">No expense claims found</p>
+            <p className="text-center py-8 text-slate-500">No expense claims found</p>
           ) : (
-            <div className="space-y-4">
+            <div className="space-y-3">
               {filteredClaims.map((claim) => (
-                <div key={claim.id} className="bg-white/5 border border-white/10 rounded-lg p-5 hover:bg-white/10 transition-all">
+                <div key={claim.id} className="border border-slate-200 rounded-lg p-4">
                   <div className="flex justify-between items-start">
                     <div className="flex-1">
-                      <div className="flex items-center gap-2 mb-3">
-                        <h3 className="font-semibold text-white text-lg">{claim.employee_name}</h3>
+                      <div className="flex items-center gap-2 mb-2">
+                        <h3 className="font-semibold text-slate-900">{claim.employee_name}</h3>
                         {getStatusBadge(claim.status)}
                       </div>
-                      <div className="grid grid-cols-3 gap-4 text-sm">
+                      <div className="grid grid-cols-3 gap-3 text-sm text-slate-600">
                         <div>
-                          <span className="text-gray-400 font-medium">Amount:</span>
-                          <span className="text-green-400 ml-2 font-semibold">AED {claim.amount?.toFixed(2)}</span>
+                          <span className="font-medium">Amount:</span> AED {claim.amount?.toFixed(2)}
                         </div>
                         <div>
-                          <span className="text-gray-400 font-medium">Category:</span>
-                          <span className="text-white ml-2">{claim.category}</span>
+                          <span className="font-medium">Category:</span> {claim.category}
                         </div>
                         <div>
-                          <span className="text-gray-400 font-medium">Department:</span>
-                          <span className="text-white ml-2">{claim.department}</span>
+                          <span className="font-medium">Department:</span> {claim.department}
                         </div>
                       </div>
-                      <div className="mt-3 p-3 bg-white/5 rounded border border-white/10">
-                        <p className="text-sm text-gray-400">Description:</p>
-                        <p className="text-white mt-1">{claim.description}</p>
-                      </div>
+                      <p className="text-sm text-slate-600 mt-2">{claim.description}</p>
                     </div>
                   </div>
                 </div>
               ))}
             </div>
           )}
-        </div>
-      </div>
+        </CardContent>
+      </Card>
     </div>
   );
 };

@@ -76,63 +76,55 @@ const ExpenseApprovals = ({ userRole }) => {
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <h2 className="text-2xl font-bold text-white">Expense Approvals</h2>
-        <Badge className="bg-yellow-500/20 text-yellow-300 border-yellow-500/30 text-base px-4 py-2">
+        <h2 className="text-2xl font-bold text-slate-900">Expense Approvals</h2>
+        <Badge variant="outline" className="text-base">
           {claims.length} pending
         </Badge>
       </div>
 
-      <div className="bg-white/5 backdrop-blur-sm rounded-xl border border-white/10 overflow-hidden">
-        <div className="px-6 py-4 bg-white/5 border-b border-white/10">
-          <h3 className="text-lg font-semibold text-white">Pending Expense Claims</h3>
-        </div>
-        <div className="p-6">
+      <Card>
+        <CardHeader>
+          <CardTitle>Pending Expense Claims</CardTitle>
+        </CardHeader>
+        <CardContent>
           {loading ? (
-            <p className="text-center py-8 text-gray-400">Loading...</p>
+            <p className="text-center py-8 text-slate-600">Loading...</p>
           ) : claims.length === 0 ? (
-            <div className="text-center py-12">
-              <CheckCircle className="w-16 h-16 mx-auto mb-4 text-green-400 opacity-50" />
-              <p className="text-gray-400 text-lg">No pending expense claims</p>
-            </div>
+            <p className="text-center py-8 text-slate-500">No pending expense claims</p>
           ) : (
-            <div className="space-y-4">
+            <div className="space-y-3">
               {claims.map((claim) => (
-                <div key={claim.id} className="bg-white/5 border border-white/10 rounded-lg p-5 hover:bg-white/10 transition-all">
+                <div key={claim.id} className="border border-slate-200 rounded-lg p-4">
                   <div className="flex justify-between items-start">
                     <div className="flex-1">
-                      <div className="flex items-center gap-2 mb-3">
-                        <h3 className="font-semibold text-white text-lg">{claim.employee_name}</h3>
-                        <Badge className="bg-blue-500/20 text-blue-300 border-blue-500/30">{claim.department}</Badge>
+                      <div className="flex items-center gap-2 mb-2">
+                        <h3 className="font-semibold text-slate-900">{claim.employee_name}</h3>
+                        <Badge className="bg-slate-200 text-slate-700">{claim.department}</Badge>
                       </div>
                       
-                      <div className="grid grid-cols-2 gap-4 text-sm">
+                      <div className="grid grid-cols-2 gap-3 text-sm text-slate-600">
                         <div>
-                          <span className="text-gray-400">Category:</span>
-                          <span className="text-white ml-2 font-medium">{claim.category}</span>
+                          <span className="font-medium">Category:</span> {claim.category}
                         </div>
                         <div>
-                          <span className="text-gray-400">Amount:</span>
-                          <span className="text-green-400 ml-2 font-semibold">AED {claim.amount.toFixed(2)}</span>
+                          <span className="font-medium">Amount:</span> AED {claim.amount.toFixed(2)}
                         </div>
                         <div>
-                          <span className="text-gray-400">Date:</span>
-                          <span className="text-white ml-2">{new Date(claim.expense_date).toLocaleDateString()}</span>
+                          <span className="font-medium">Date:</span> {new Date(claim.expense_date).toLocaleDateString()}
                         </div>
                         <div>
-                          <span className="text-gray-400">Branch:</span>
-                          <span className="text-white ml-2">{claim.branch}</span>
+                          <span className="font-medium">Branch:</span> {claim.branch}
                         </div>
                       </div>
                       
-                      <div className="mt-3 p-3 bg-white/5 rounded border border-white/10">
-                        <p className="text-sm text-gray-400">Description:</p>
-                        <p className="text-white mt-1">{claim.description}</p>
-                      </div>
+                      <p className="text-sm text-slate-600 mt-2">
+                        <span className="font-medium">Description:</span> {claim.description}
+                      </p>
                       
                       {claim.attachment_url && (
-                        <p className="text-sm text-blue-400 mt-2 hover:text-blue-300">
+                        <p className="text-sm text-blue-600 mt-1">
                           <a href={claim.attachment_url} target="_blank" rel="noopener noreferrer">
-                            📎 View Attachment
+                            View Attachment
                           </a>
                         </p>
                       )}
@@ -142,15 +134,15 @@ const ExpenseApprovals = ({ userRole }) => {
                       <Button
                         size="sm"
                         onClick={() => openApprovalDialog(claim, 'approve')}
-                        className="bg-green-500 hover:bg-green-600"
+                        className="bg-green-600 hover:bg-green-700"
                       >
                         <CheckCircle className="w-4 h-4 mr-1" />
                         Approve
                       </Button>
                       <Button
                         size="sm"
+                        variant="destructive"
                         onClick={() => openApprovalDialog(claim, 'reject')}
-                        className="bg-red-500 hover:bg-red-600"
                       >
                         <XCircle className="w-4 h-4 mr-1" />
                         Reject
@@ -161,50 +153,46 @@ const ExpenseApprovals = ({ userRole }) => {
               ))}
             </div>
           )}
-        </div>
-      </div>
+        </CardContent>
+      </Card>
 
       {/* Approval Dialog */}
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-        <DialogContent className="bg-slate-900 border-slate-700 text-white">
+        <DialogContent>
           <DialogHeader>
-            <DialogTitle className="text-xl text-white">
+            <DialogTitle>
               {decision === 'approve' ? 'Approve' : 'Reject'} Expense Claim
             </DialogTitle>
-            <DialogDescription className="text-gray-400">
+            <DialogDescription>
               {selectedClaim && (
-                <div className="mt-3 p-4 bg-white/5 rounded-lg border border-white/10">
-                  <p className="font-semibold text-white text-lg">
+                <>
+                  <p className="font-medium text-slate-900 mt-2">
                     {selectedClaim.employee_name} - AED {selectedClaim.amount.toFixed(2)}
                   </p>
-                  <p className="text-sm text-gray-400 mt-1">{selectedClaim.category}</p>
-                </div>
+                  <p className="text-sm">{selectedClaim.category}</p>
+                </>
               )}
             </DialogDescription>
           </DialogHeader>
           
           <div className="space-y-4">
             <div>
-              <label className="text-sm font-medium text-white">Remarks (Optional)</label>
+              <label className="text-sm font-medium text-slate-700">Remarks (Optional)</label>
               <textarea
                 value={remarks}
                 onChange={(e) => setRemarks(e.target.value)}
-                className="w-full bg-slate-800 border border-slate-600 rounded-md p-3 mt-2 min-h-[80px] text-white placeholder:text-gray-500"
+                className="w-full border border-slate-300 rounded-md p-2 mt-1 min-h-[80px]"
                 placeholder="Add any notes or comments..."
               />
             </div>
             
             <div className="flex gap-2">
-              <Button 
-                variant="outline" 
-                onClick={() => setDialogOpen(false)} 
-                className="flex-1 border-slate-600 text-white hover:bg-slate-800"
-              >
+              <Button variant="outline" onClick={() => setDialogOpen(false)} className="flex-1">
                 Cancel
               </Button>
               <Button
                 onClick={handleApproveReject}
-                className={`flex-1 ${decision === 'approve' ? 'bg-green-500 hover:bg-green-600' : 'bg-red-500 hover:bg-red-600'}`}
+                className={`flex-1 ${decision === 'approve' ? 'bg-green-600 hover:bg-green-700' : 'bg-red-600 hover:bg-red-700'}`}
               >
                 Confirm {decision === 'approve' ? 'Approval' : 'Rejection'}
               </Button>

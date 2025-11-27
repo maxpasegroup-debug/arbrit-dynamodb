@@ -1,0 +1,96 @@
+[{
+  "_id": {
+    "$oid": "691cd8447ad6c3c2b0f06c4e"
+  },
+  "id": "fe9c718c-bc94-4001-8788-5bd0906d8c13",
+  "client_name": "Petrochemical Industries",
+  "location": "Dubai Marina Office Tower",
+  "visit_date": "2025-09-15",
+  "visit_time": "10:00",
+  "purpose": "Product demonstration and safety consultation",
+  "outcome": "Client showed strong interest in comprehensive safety package",
+  "next_action": "Follow up with detailed proposal next week",
+  "logged_by": "c63f32a5-60fe-48bc-bc93-eb37f1c96817",
+  "logged_by_name": "Test Field Sales User",
+  "created_at": "2025-11-18T20:34:12.301046+00:00"
+},
+{
+  "_id": {
+    "$oid": "691cd8587ad6c3c2b0f06c59"
+  },
+  "id": "30572936-410a-40ed-a32e-df8239d3673b",
+  "client_name": "Petrochemical Industries",
+  "location": "Dubai Marina Office Tower",
+  "visit_date": "2025-09-15",
+  "visit_time": "10:00",
+  "purpose": "Product demonstration and safety consultation",
+  "outcome": "Client showed strong interest in comprehensive safety package",
+  "next_action": "Follow up with detailed proposal next week",
+  "logged_by": "c63f32a5-60fe-48bc-bc93-eb37f1c96817",
+  "logged_by_name": "Test Field Sales User",
+  "created_at": "2025-11-18T20:34:32.401502+00:00"
+},
+{
+  "_id": {
+    "$oid": "691cdb282350af718377ff53"
+  },
+  "id": "8622f90e-cb15-4da8-9cfd-7b5fa4e3b353",
+  "client_name": "Petrochemical Industries",
+  "location": "Dubai Marina Office Tower",
+  "visit_date": "2025-09-15",
+  "visit_time": "10:00",
+  "purpose": "Product demonstration and safety consultation",
+  "outcome": "Client showed strong interest in comprehensive safety package",
+  "next_action": "Follow up with detailed proposal next week",
+  "logged_by": "c63f32a5-60fe-48bc-bc93-eb37f1c96817",
+  "logged_by_name": "Test Field Sales User",
+  "created_at": "2025-11-18T20:46:32.893582+00:00"
+},
+{
+  "_id": {
+    "$oid": "691cdb9ebf55f3bc03ea063e"
+  },
+  "id": "44b88bf3-3a1e-4472-8d7b-99888c9ad662",
+  "client_name": "Petrochemical Industries",
+  "location": "Dubai Marina Office Tower",
+  "visit_date": "2025-09-15",
+  "visit_time": "10:00",
+  "purpose": "Product demonstration and safety consultation",
+  "outcome": "Client showed strong interest in comprehensive safety package",
+  "next_action": "Follow up with detailed proposal next week",
+  "logged_by": "c63f32a5-60fe-48bc-bc93-eb37f1c96817",
+  "logged_by_name": "Test Field Sales User",
+  "created_at": "2025-11-18T20:48:30.289895+00:00"
+},
+{
+  "_id": {
+    "$oid": "691cdba5bf55f3bc03ea064b"
+  },
+  "id": "2255e2eb-31f7-4a22-978f-7633ef462518",
+  "client_name": "Petrochemical Industries",
+  "location": "Dubai Marina Office Tower",
+  "visit_date": "2025-09-15",
+  "visit_time": "10:00",
+  "purpose": "Product demonstration and safety consultation",
+  "outcome": "Client showed strong interest in comprehensive safety package",
+  "next_action": "Follow up with detailed proposal next week",
+  "logged_by": "c63f32a5-60fe-48bc-bc93-eb37f1c96817",
+  "logged_by_name": "Test Field Sales User",
+  "created_at": "2025-11-18T20:48:37.517494+00:00"
+},
+{
+  "_id": {
+    "$oid": "691cdbaebf55f3bc03ea0658"
+  },
+  "id": "05bd15df-611c-4955-b64d-93c922fcad05",
+  "client_name": "Petrochemical Industries",
+  "location": "Dubai Marina Office Tower",
+  "visit_date": "2025-09-15",
+  "visit_time": "10:00",
+  "purpose": "Product demonstration and safety consultation",
+  "outcome": "Client showed strong interest in comprehensive safety package",
+  "next_action": "Follow up with detailed proposal next week",
+  "logged_by": "c63f32a5-60fe-48bc-bc93-eb37f1c96817",
+  "logged_by_name": "Test Field Sales User",
+  "created_at": "2025-11-18T20:48:46.417953+00:00"
+}]

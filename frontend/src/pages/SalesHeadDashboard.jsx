@@ -7,7 +7,7 @@ import SalesOverview from '@/components/sales/SalesOverview';
 import EmployeeMonitoring from '@/components/sales/EmployeeMonitoring';
 import LeadAllocation from '@/components/sales/LeadAllocation';
 import LeadManagementEnhanced from '@/components/sales/LeadManagementEnhanced';
-import QuotationManagementEnhanced from '@/components/sales/QuotationManagementEnhanced';
+import QuotationApproval from '@/components/sales/QuotationApproval';
 import LeaveApprovals from '@/components/sales/LeaveApprovals';
 import RequestsView from '@/components/sales/RequestsView';
 import ExpenseSubmission from '@/components/expenses/ExpenseSubmission';
@@ -213,7 +213,7 @@ const SalesHeadDashboard = () => {
             </TabsContent>
 
             <TabsContent value="quotations" className="mt-0">
-              <QuotationManagementEnhanced />
+              <QuotationApproval />
             </TabsContent>
 
             <TabsContent value="requests" className="mt-0">

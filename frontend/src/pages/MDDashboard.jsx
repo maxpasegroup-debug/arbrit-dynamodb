@@ -1,14 +1,9 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { LogOut, TrendingUp, Users, GraduationCap, AlertTriangle, Lightbulb, Building2, BarChart4, Shield, Plus, DollarSign } from 'lucide-react';
+import { LogOut, TrendingUp, Users, GraduationCap, AlertTriangle, Lightbulb, Building2, BarChart4, Shield } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import LeadSubmissionModal from '@/components/coo/LeadSubmissionModal';
-import ExpenseSubmissionModal from '@/components/coo/ExpenseSubmissionModal';
-import DeletionApprovals from '@/components/executive/DeletionApprovals';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { FileText, Trash2 } from 'lucide-react';
 import { toast } from 'sonner';
 import axios from 'axios';
 
@@ -20,8 +15,6 @@ const MDDashboard = () => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [dashboardData, setDashboardData] = useState(null);
-  const [leadModalOpen, setLeadModalOpen] = useState(false);
-  const [expenseModalOpen, setExpenseModalOpen] = useState(false);
 
   useEffect(() => {
     const storedUser = localStorage.getItem('user');
@@ -136,32 +129,21 @@ const MDDashboard = () => {
           </div>
         </div>
 
-        {/* Tabs Navigation */}
-        <Tabs defaultValue="dashboard" className="mb-8">
-          <TabsList className="bg-white/10 border border-white/20">
-            <TabsTrigger value="dashboard">Dashboard</TabsTrigger>
-            <TabsTrigger value="deletions">
-              <Trash2 className="w-4 h-4 mr-2" />
-              Deletion Approvals
-            </TabsTrigger>
-          </TabsList>
-
-          <TabsContent value="dashboard">
-            {/* Quick Actions */}
-            <div className="flex flex-wrap justify-center gap-4 mb-8">
-              <button
-                onClick={() => setLeadModalOpen(true)}
-                className="px-6 py-3 bg-gradient-to-r from-blue-500 to-cyan-600 hover:from-blue-600 hover:to-cyan-700 text-white rounded-lg font-semibold shadow-lg transition-all flex items-center gap-2"
-              >
-                <Plus className="w-5 h-5" /> Submit New Lead
-              </button>
-              <button
-                onClick={() => setExpenseModalOpen(true)}
-                className="px-6 py-3 bg-gradient-to-r from-purple-500 to-pink-600 hover:from-purple-600 hover:to-pink-700 text-white rounded-lg font-semibold shadow-lg transition-all flex items-center gap-2"
-              >
-                <DollarSign className="w-5 h-5" /> Submit Expense
-              </button>
-            </div>
+        {/* Quick Actions */}
+        <div className="flex flex-wrap justify-center gap-4 mb-8">
+          <button
+            onClick={() => navigate('/dashboard/sales-head')}
+            className="px-6 py-3 bg-gradient-to-r from-blue-500 to-cyan-600 hover:from-blue-600 hover:to-cyan-700 text-white rounded-lg font-semibold shadow-lg transition-all flex items-center gap-2"
+          >
+            <span>📝</span> Submit New Lead
+          </button>
+          <button
+            onClick={() => navigate('/dashboard/accounts')}
+            className="px-6 py-3 bg-gradient-to-r from-purple-500 to-pink-600 hover:from-purple-600 hover:to-pink-700 text-white rounded-lg font-semibold shadow-lg transition-all flex items-center gap-2"
+          >
+            <span>💰</span> Submit Expense
+          </button>
+        </div>
 
         {/* Top Row - Corporate Health */}
         <div className="mb-8">
@@ -359,17 +341,7 @@ const MDDashboard = () => {
             </CardContent>
           </Card>
         </div>
-          </TabsContent>
-
-          <TabsContent value="deletions">
-            <DeletionApprovals />
-          </TabsContent>
-        </Tabs>
       </main>
-
-      {/* Modals */}
-      <LeadSubmissionModal open={leadModalOpen} onOpenChange={setLeadModalOpen} />
-      <ExpenseSubmissionModal open={expenseModalOpen} onOpenChange={setExpenseModalOpen} />
     </div>
   );
 };
