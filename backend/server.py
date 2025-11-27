@@ -2191,8 +2191,8 @@ async def create_visit_log_simple(visit_data: dict, current_user: dict = Depends
 # Sales Head - Get All Leads
 @api_router.get("/sales/leads")
 async def get_all_leads(current_user: dict = Depends(get_current_user)):
-    if current_user["role"] not in ["COO", "Sales Head"]:
-        raise HTTPException(status_code=403, detail="Access denied. Sales Head or COO role required.")
+    if current_user["role"] not in ["COO", "Sales Head", "MD", "CEO"]:
+        raise HTTPException(status_code=403, detail="Access denied. Sales Head, COO, MD, or CEO role required.")
     
     query_result = await db.leads.find({})
     leads = await query_result.sort("created_at", -1).to_list(1000)
