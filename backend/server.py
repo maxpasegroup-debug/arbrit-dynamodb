@@ -3668,6 +3668,74 @@ async def create_invoice(invoice_data: dict, current_user: dict = Depends(get_cu
         raise HTTPException(status_code=500, detail="Failed to create invoice")
 
 
+# Accounts/COO/MD - Edit Invoice
+@api_router.put("/accounts/invoices/{invoice_id}")
+async def update_invoice(invoice_id: str, invoice_data: dict, current_user: dict = Depends(get_current_user)):
+    """Update an existing invoice"""
+    if current_user.get("role") not in ["Accounts Head", "Accountant", "COO", "MD", "CEO"]:
+        raise HTTPException(status_code=403, detail="Access denied")
+    
+    try:
+        existing = await db.invoices.find_one({"id": invoice_id}, {"_id": 0})
+        if not existing:
+            raise HTTPException(status_code=404, detail="Invoice not found")
+        
+        update_fields = {}
+        if "client_name" in invoice_data:
+            update_fields["client_name"] = invoice_data["client_name"]
+        if "invoice_number" in invoice_data:
+            update_fields["invoice_number"] = invoice_data["invoice_number"]
+        if "amount" in invoice_data:
+            update_fields["amount"] = float(invoice_data["amount"])
+        if "description" in invoice_data:
+            update_fields["description"] = invoice_data["description"]
+        if "due_date" in invoice_data:
+            update_fields["due_date"] = invoice_data["due_date"]
+        if "status" in invoice_data:
+            update_fields["status"] = invoice_data["status"]
+        
+        update_fields["updated_at"] = datetime.now(timezone.utc).isoformat()
+        update_fields["updated_by"] = current_user["id"]
+        update_fields["updated_by_name"] = current_user["name"]
+        
+        await db.invoices.update_one({"id": invoice_id}, {"$set": update_fields})
+        
+        updated = await db.invoices.find_one({"id": invoice_id}, {"_id": 0})
+        return {"message": "Invoice updated successfully", "invoice": updated}
+    except Exception as e:
+        logger.error(f"Error updating invoice: {e}")
+        raise HTTPException(status_code=500, detail="Failed to update invoice")
+
+
+# Accounts - Request Invoice Deletion (Pending Approval)
+@api_router.delete("/accounts/invoices/{invoice_id}")
+async def delete_invoice_request(invoice_id: str, current_user: dict = Depends(get_current_user)):
+    """Request invoice deletion - requires COO/MD approval"""
+    if current_user.get("role") not in ["Accounts Head", "Accountant"]:
+        raise HTTPException(status_code=403, detail="Access denied. Accounts team access only.")
+    
+    try:
+        existing = await db.invoices.find_one({"id": invoice_id}, {"_id": 0})
+        if not existing:
+            raise HTTPException(status_code=404, detail="Invoice not found")
+        
+        # Mark as pending deletion
+        await db.invoices.update_one(
+            {"id": invoice_id},
+            {"$set": {
+                "status": "Pending Deletion",
+                "deletion_requested_by": current_user["id"],
+                "deletion_requested_by_name": current_user["name"],
+                "deletion_requested_at": datetime.now(timezone.utc).isoformat()
+            }}
+        )
+        
+        return {"message": "Deletion request submitted. Awaiting COO/MD approval."}
+    except Exception as e:
+        logger.error(f"Error requesting invoice deletion: {e}")
+        raise HTTPException(status_code=500, detail="Failed to request deletion")
+
+
 @api_router.get("/accounts/payments")
 async def get_all_payments(current_user: dict = Depends(get_current_user)):
     """Get all payment records for Accounts dashboard"""
