@@ -74,29 +74,29 @@ class DynamoDBClient:
         """
         Find a single document matching the query
         MongoDB: db.collection.find_one({"key": "value"}, {"_id": 0})
-        DynamoDB: table.get_item(Key={'key': 'value'})
+        DynamoDB: table.get_item(Key={'key': 'value'}) or table.scan()
         Note: projection with {"_id": 0} is ignored as DynamoDB doesn't have _id
         """
         try:
-            # Determine primary key from query
-            if 'mobile' in query and self.table_name == 'users':
-                # Use mobile as primary key for users table
+            item = None
+            
+            # Check if we can use get_item (primary key query)
+            if self.table_name == 'users' and 'mobile' in query and len(query) == 1:
+                # Primary key query for users table
                 response = self.table.get_item(Key={'mobile': query['mobile']})
                 item = response.get('Item')
-            elif 'id' in query and self.table_name != 'users':
-                # For non-users tables, id is the primary key
+            elif self.table_name != 'users' and 'id' in query and len(query) == 1:
+                # Primary key query for other tables
                 response = self.table.get_item(Key={'id': query['id']})
                 item = response.get('Item')
             else:
-                # Fallback to scan with filter (for users queried by id field)
+                # Need to scan - querying by non-primary-key field
                 response = self.table.scan(
                     FilterExpression=self._build_filter_expression(query),
                     Limit=1
                 )
                 if response.get('Items'):
                     item = response['Items'][0]
-                else:
-                    return None
             
             # Remove sensitive fields based on projection
             if item and projection:
