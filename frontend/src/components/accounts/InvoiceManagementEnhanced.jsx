@@ -234,7 +234,7 @@ const InvoiceManagementEnhanced = () => {
                 <TableRow key={invoice.id} className="border-white/10">
                   <TableCell className="text-white font-medium">{invoice.invoice_number}</TableCell>
                   <TableCell className="text-white">{invoice.client_name}</TableCell>
-                  <TableCell className="text-white">AED {parseFloat(invoice.amount || 0).toLocaleString()}</TableCell>
+                  <TableCell className="text-white">{invoice.currency || 'AED'} {parseFloat(invoice.amount || 0).toLocaleString()}</TableCell>
                   <TableCell className="text-gray-300">{formatDate(invoice.due_date)}</TableCell>
                   <TableCell>
                     <Badge className={getStatusColor(invoice.status)}>{invoice.status}</Badge>
