@@ -116,6 +116,38 @@ class DynamoDBClient:
                 except Exception as e:
                     logger.error(f"DynamoDB get_item error: {str(e)}")
                     raise
+            
+            elif self.table_name == 'users' and 'id' in query and len(query) == 1:
+                # Use GSI for users table when querying by id (efficient)
+                logger.debug(f"Using GSI 'id-index' for user lookup by id")
+                try:
+                    response = self.table.query(
+                        IndexName='id-index',
+                        KeyConditionExpression='id = :id_val',
+                        ExpressionAttributeValues={
+                            ':id_val': query['id']
+                        }
+                    )
+                    items = response.get('Items', [])
+                    item = items[0] if items else None
+                    
+                    if item:
+                        logger.debug(f"Found user via GSI: {item.get('name', 'N/A')}")
+                    else:
+                        logger.debug(f"User not found with id: {query['id']}")
+                        
+                except self.table.meta.client.exceptions.ResourceNotFoundException:
+                    logger.warning(f"GSI 'id-index' not found, falling back to scan")
+                    # Fallback to scan if GSI doesn't exist yet
+                    response = self.table.scan()
+                    all_items = response.get('Items', [])
+                    for potential_item in all_items:
+                        if potential_item.get('id') == query['id']:
+                            item = potential_item
+                            break
+                except Exception as e:
+                    logger.error(f"DynamoDB GSI query error: {str(e)}")
+                    raise
                     
             elif self.table_name != 'users' and 'id' in query and len(query) == 1:
                 # Primary key query for other tables (efficient)
