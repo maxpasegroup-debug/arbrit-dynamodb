@@ -213,7 +213,7 @@ const SalesHeadDashboard = () => {
             </TabsContent>
 
             <TabsContent value="quotations" className="mt-0">
-              <QuotationApproval />
+              <QuotationManagementEnhanced />
             </TabsContent>
 
             <TabsContent value="requests" className="mt-0">
