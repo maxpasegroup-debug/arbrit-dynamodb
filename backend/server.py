@@ -4148,6 +4148,485 @@ async def record_payment(payment_data: dict, current_user: dict = Depends(get_cu
 
 
 
+# ==================== COMPREHENSIVE ACCOUNTING ENDPOINTS ====================
+
+# Payment Management (Enhanced)
+@api_router.post("/accounts/payments/record")
+async def record_payment_enhanced(payment_data: PaymentCreate, current_user: dict = Depends(get_current_user)):
+    """Record payment with full tracking"""
+    if current_user.get("role") not in ["Accounts Head", "Accountant", "COO", "MD", "CEO"]:
+        raise HTTPException(status_code=403, detail="Access denied")
+    
+    try:
+        # Get invoice
+        invoice = await db.invoices.find_one({"id": payment_data.invoice_id}, {"_id": 0})
+        if not invoice:
+            raise HTTPException(status_code=404, detail="Invoice not found")
+        
+        # Create payment
+        payment = {
+            "id": str(uuid.uuid4()),
+            "invoice_id": payment_data.invoice_id,
+            "invoice_number": invoice.get("invoice_number"),
+            "client_name": invoice.get("client_name"),
+            "amount": payment_data.amount,
+            "payment_method": payment_data.payment_method,
+            "payment_date": payment_data.payment_date,
+            "reference_number": payment_data.reference_number,
+            "notes": payment_data.notes,
+            "recorded_by": current_user["id"],
+            "recorded_by_name": current_user["name"],
+            "created_at": datetime.now(timezone.utc).isoformat()
+        }
+        
+        await db.payments.insert_one(payment)
+        
+        # Update invoice payment status
+        total_paid = payment_data.amount
+        existing_payments = await db.payments.find({"invoice_id": payment_data.invoice_id}, {"_id": 0}).to_list(1000)
+        total_paid = sum(float(p.get("amount", 0)) for p in existing_payments)
+        
+        invoice_total = float(invoice.get("total_amount", invoice.get("amount", 0)))
+        
+        if total_paid >= invoice_total:
+            payment_status = "Paid"
+        elif total_paid > 0:
+            payment_status = "Partially Paid"
+        else:
+            payment_status = "Unpaid"
+        
+        await db.invoices.update_one(
+            {"id": payment_data.invoice_id},
+            {"$set": {
+                "payment_status": payment_status,
+                "paid_amount": total_paid,
+                "status": payment_status if payment_status == "Paid" else invoice.get("status")
+            }}
+        )
+        
+        # Audit log
+        await db.audit_logs.insert_one({
+            "id": str(uuid.uuid4()),
+            "entity_type": "Payment",
+            "entity_id": payment["id"],
+            "action": "Created",
+            "changes": f"Payment of {payment_data.amount} recorded for invoice {invoice.get('invoice_number')}",
+            "performed_by": current_user["id"],
+            "performed_by_name": current_user["name"],
+            "timestamp": datetime.now(timezone.utc).isoformat()
+        })
+        
+        return {"message": "Payment recorded successfully", "payment": payment}
+    except Exception as e:
+        logger.error(f"Error recording payment: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+# Financial Dashboard & Reports
+@api_router.get("/accounts/financial-dashboard")
+async def get_financial_dashboard(
+    start_date: Optional[str] = None,
+    end_date: Optional[str] = None,
+    current_user: dict = Depends(get_current_user)
+):
+    """Get comprehensive financial overview"""
+    if current_user.get("role") not in ["Accounts Head", "Accountant", "COO", "MD", "CEO"]:
+        raise HTTPException(status_code=403, detail="Access denied")
+    
+    try:
+        # Calculate revenue
+        total_invoices = await db.invoices.count_documents({})
+        total_revenue = 0
+        paid_invoices = await db.invoices.find({"payment_status": "Paid"}, {"_id": 0}).to_list(10000)
+        total_revenue = sum(float(inv.get("total_amount", inv.get("amount", 0))) for inv in paid_invoices)
+        
+        # Calculate expenses
+        expense_claims = await db.expense_claims.find({"status": "Paid"}, {"_id": 0}).to_list(10000)
+        total_expenses = sum(float(exp.get("amount", 0)) for exp in expense_claims)
+        
+        # Add vendor payments to expenses
+        vendor_payments = await db.vendor_payments.find({}, {"_id": 0}).to_list(10000)
+        total_expenses += sum(float(vp.get("amount", 0)) for vp in vendor_payments)
+        
+        # Add petty cash to expenses
+        petty_cash = await db.petty_cash.find({}, {"_id": 0}).to_list(10000)
+        total_expenses += sum(float(pc.get("amount", 0)) for pc in petty_cash)
+        
+        # Outstanding receivables
+        pending_invoices = await db.invoices.find(
+            {"payment_status": {"$in": ["Unpaid", "Partially Paid"]}},
+            {"_id": 0}
+        ).to_list(10000)
+        outstanding_amount = sum(
+            float(inv.get("total_amount", inv.get("amount", 0))) - float(inv.get("paid_amount", 0))
+            for inv in pending_invoices
+        )
+        
+        # VAT collected
+        total_vat = sum(float(inv.get("vat_amount", 0)) for inv in paid_invoices if inv.get("vat_enabled"))
+        
+        return {
+            "summary": {
+                "total_revenue": round(total_revenue, 2),
+                "total_expenses": round(total_expenses, 2),
+                "profit": round(total_revenue - total_expenses, 2),
+                "outstanding_receivables": round(outstanding_amount, 2),
+                "vat_collected": round(total_vat, 2)
+            },
+            "invoice_stats": {
+                "total_invoices": total_invoices,
+                "paid_count": len(paid_invoices),
+                "pending_count": len(pending_invoices)
+            }
+        }
+    except Exception as e:
+        logger.error(f"Error fetching financial dashboard: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+# VAT Reports
+@api_router.get("/accounts/vat-report")
+async def get_vat_report(
+    start_date: str,
+    end_date: str,
+    current_user: dict = Depends(get_current_user)
+):
+    """Generate VAT report for TRA submission"""
+    if current_user.get("role") not in ["Accounts Head", "Accountant", "COO", "MD", "CEO"]:
+        raise HTTPException(status_code=403, detail="Access denied")
+    
+    try:
+        # Get all paid invoices in date range
+        invoices = await db.invoices.find({
+            "payment_status": "Paid",
+            "vat_enabled": True,
+            "created_at": {"$gte": start_date, "$lte": end_date}
+        }, {"_id": 0}).to_list(10000)
+        
+        total_sales = sum(float(inv.get("subtotal", 0)) for inv in invoices)
+        total_vat = sum(float(inv.get("vat_amount", 0)) for inv in invoices)
+        total_with_vat = sum(float(inv.get("total_amount", 0)) for inv in invoices)
+        
+        return {
+            "period": {"start_date": start_date, "end_date": end_date},
+            "summary": {
+                "total_sales_excluding_vat": round(total_sales, 2),
+                "total_vat_collected": round(total_vat, 2),
+                "total_sales_including_vat": round(total_with_vat, 2),
+                "vat_rate": 5.0,
+                "invoice_count": len(invoices)
+            },
+            "invoices": invoices
+        }
+    except Exception as e:
+        logger.error(f"Error generating VAT report: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+# Client Account Management
+@api_router.post("/accounts/clients")
+async def create_client_account(client_data: ClientAccountCreate, current_user: dict = Depends(get_current_user)):
+    """Create new client account"""
+    if current_user.get("role") not in ["Accounts Head", "Accountant", "COO", "MD", "CEO"]:
+        raise HTTPException(status_code=403, detail="Access denied")
+    
+    try:
+        client = {
+            **client_data.model_dump(),
+            "id": str(uuid.uuid4()),
+            "outstanding_balance": 0.0,
+            "total_revenue": 0.0,
+            "status": "Active",
+            "created_at": datetime.now(timezone.utc).isoformat(),
+            "updated_at": datetime.now(timezone.utc).isoformat()
+        }
+        
+        await db.client_accounts.insert_one(client)
+        
+        await db.audit_logs.insert_one({
+            "id": str(uuid.uuid4()),
+            "entity_type": "ClientAccount",
+            "entity_id": client["id"],
+            "action": "Created",
+            "changes": f"Client account created for {client_data.client_name}",
+            "performed_by": current_user["id"],
+            "performed_by_name": current_user["name"],
+            "timestamp": datetime.now(timezone.utc).isoformat()
+        })
+        
+        return {"message": "Client account created", "client": client}
+    except Exception as e:
+        logger.error(f"Error creating client: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@api_router.get("/accounts/clients")
+async def get_all_clients(current_user: dict = Depends(get_current_user)):
+    """Get all client accounts"""
+    if current_user.get("role") not in ["Accounts Head", "Accountant", "COO", "MD", "CEO", "Sales Head"]:
+        raise HTTPException(status_code=403, detail="Access denied")
+    
+    try:
+        clients = await db.client_accounts.find({}, {"_id": 0}).sort("client_name", 1).to_list(10000)
+        return clients
+    except Exception as e:
+        logger.error(f"Error fetching clients: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@api_router.put("/accounts/clients/{client_id}")
+async def update_client_account(
+    client_id: str,
+    client_data: ClientAccountUpdate,
+    current_user: dict = Depends(get_current_user)
+):
+    """Update client account"""
+    if current_user.get("role") not in ["Accounts Head", "Accountant", "COO", "MD", "CEO"]:
+        raise HTTPException(status_code=403, detail="Access denied")
+    
+    try:
+        update_dict = {k: v for k, v in client_data.model_dump().items() if v is not None}
+        update_dict["updated_at"] = datetime.now(timezone.utc).isoformat()
+        
+        await db.client_accounts.update_one({"id": client_id}, {"$set": update_dict})
+        
+        await db.audit_logs.insert_one({
+            "id": str(uuid.uuid4()),
+            "entity_type": "ClientAccount",
+            "entity_id": client_id,
+            "action": "Updated",
+            "changes": str(update_dict),
+            "performed_by": current_user["id"],
+            "performed_by_name": current_user["name"],
+            "timestamp": datetime.now(timezone.utc).isoformat()
+        })
+        
+        return {"message": "Client updated successfully"}
+    except Exception as e:
+        logger.error(f"Error updating client: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+# Vendor Management
+@api_router.post("/accounts/vendors")
+async def create_vendor(vendor_data: VendorCreate, current_user: dict = Depends(get_current_user)):
+    """Create new vendor"""
+    if current_user.get("role") not in ["Accounts Head", "Accountant", "COO", "MD", "CEO"]:
+        raise HTTPException(status_code=403, detail="Access denied")
+    
+    try:
+        vendor = {
+            **vendor_data.model_dump(),
+            "id": str(uuid.uuid4()),
+            "total_paid": 0.0,
+            "status": "Active",
+            "created_at": datetime.now(timezone.utc).isoformat()
+        }
+        
+        await db.vendors.insert_one(vendor)
+        return {"message": "Vendor created", "vendor": vendor}
+    except Exception as e:
+        logger.error(f"Error creating vendor: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@api_router.get("/accounts/vendors")
+async def get_all_vendors(current_user: dict = Depends(get_current_user)):
+    """Get all vendors"""
+    if current_user.get("role") not in ["Accounts Head", "Accountant", "COO", "MD", "CEO"]:
+        raise HTTPException(status_code=403, detail="Access denied")
+    
+    try:
+        vendors = await db.vendors.find({}, {"_id": 0}).sort("vendor_name", 1).to_list(10000)
+        return vendors
+    except Exception as e:
+        logger.error(f"Error fetching vendors: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@api_router.post("/accounts/vendor-payments")
+async def record_vendor_payment(payment_data: VendorPaymentCreate, current_user: dict = Depends(get_current_user)):
+    """Record payment to vendor"""
+    if current_user.get("role") not in ["Accounts Head", "Accountant", "COO", "MD", "CEO"]:
+        raise HTTPException(status_code=403, detail="Access denied")
+    
+    try:
+        vendor = await db.vendors.find_one({"id": payment_data.vendor_id}, {"_id": 0})
+        if not vendor:
+            raise HTTPException(status_code=404, detail="Vendor not found")
+        
+        payment = {
+            **payment_data.model_dump(),
+            "id": str(uuid.uuid4()),
+            "vendor_name": vendor["vendor_name"],
+            "paid_by": current_user["id"],
+            "paid_by_name": current_user["name"],
+            "created_at": datetime.now(timezone.utc).isoformat()
+        }
+        
+        await db.vendor_payments.insert_one(payment)
+        
+        # Update vendor total
+        total_paid = vendor.get("total_paid", 0) + payment_data.amount
+        await db.vendors.update_one({"id": payment_data.vendor_id}, {"$set": {"total_paid": total_paid}})
+        
+        return {"message": "Vendor payment recorded", "payment": payment}
+    except Exception as e:
+        logger.error(f"Error recording vendor payment: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@api_router.get("/accounts/vendor-payments")
+async def get_vendor_payments(current_user: dict = Depends(get_current_user)):
+    """Get all vendor payments"""
+    if current_user.get("role") not in ["Accounts Head", "Accountant", "COO", "MD", "CEO"]:
+        raise HTTPException(status_code=403, detail="Access denied")
+    
+    try:
+        payments = await db.vendor_payments.find({}, {"_id": 0}).sort("payment_date", -1).to_list(10000)
+        return payments
+    except Exception as e:
+        logger.error(f"Error fetching vendor payments: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+# Petty Cash Management
+@api_router.post("/accounts/petty-cash")
+async def record_petty_cash(cash_data: PettyCashCreate, current_user: dict = Depends(get_current_user)):
+    """Record petty cash expense"""
+    if current_user.get("role") not in ["Accounts Head", "Accountant", "COO", "MD", "CEO"]:
+        raise HTTPException(status_code=403, detail="Access denied")
+    
+    try:
+        record = {
+            **cash_data.model_dump(),
+            "id": str(uuid.uuid4()),
+            "recorded_by": current_user["id"],
+            "recorded_by_name": current_user["name"],
+            "created_at": datetime.now(timezone.utc).isoformat()
+        }
+        
+        await db.petty_cash.insert_one(record)
+        return {"message": "Petty cash recorded", "record": record}
+    except Exception as e:
+        logger.error(f"Error recording petty cash: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@api_router.get("/accounts/petty-cash")
+async def get_petty_cash(current_user: dict = Depends(get_current_user)):
+    """Get all petty cash records"""
+    if current_user.get("role") not in ["Accounts Head", "Accountant", "COO", "MD", "CEO"]:
+        raise HTTPException(status_code=403, detail="Access denied")
+    
+    try:
+        records = await db.petty_cash.find({}, {"_id": 0}).sort("expense_date", -1).to_list(10000)
+        return records
+    except Exception as e:
+        logger.error(f"Error fetching petty cash: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+# Credit Notes
+@api_router.post("/accounts/credit-notes")
+async def create_credit_note(note_data: CreditNoteCreate, current_user: dict = Depends(get_current_user)):
+    """Create credit note"""
+    if current_user.get("role") not in ["Accounts Head", "Accountant", "COO", "MD", "CEO"]:
+        raise HTTPException(status_code=403, detail="Access denied")
+    
+    try:
+        credit_note = {
+            **note_data.model_dump(),
+            "id": str(uuid.uuid4()),
+            "status": "Issued",
+            "issued_by": current_user["id"],
+            "issued_by_name": current_user["name"],
+            "created_at": datetime.now(timezone.utc).isoformat()
+        }
+        
+        await db.credit_notes.insert_one(credit_note)
+        return {"message": "Credit note created", "credit_note": credit_note}
+    except Exception as e:
+        logger.error(f"Error creating credit note: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@api_router.get("/accounts/credit-notes")
+async def get_credit_notes(current_user: dict = Depends(get_current_user)):
+    """Get all credit notes"""
+    if current_user.get("role") not in ["Accounts Head", "Accountant", "COO", "MD", "CEO"]:
+        raise HTTPException(status_code=403, detail="Access denied")
+    
+    try:
+        notes = await db.credit_notes.find({}, {"_id": 0}).sort("issued_date", -1).to_list(10000)
+        return notes
+    except Exception as e:
+        logger.error(f"Error fetching credit notes: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+# Recurring Invoices
+@api_router.post("/accounts/recurring-invoices")
+async def create_recurring_invoice(invoice_data: RecurringInvoiceCreate, current_user: dict = Depends(get_current_user)):
+    """Create recurring invoice schedule"""
+    if current_user.get("role") not in ["Accounts Head", "Accountant", "COO", "MD", "CEO"]:
+        raise HTTPException(status_code=403, detail="Access denied")
+    
+    try:
+        recurring = {
+            **invoice_data.model_dump(),
+            "id": str(uuid.uuid4()),
+            "next_invoice_date": invoice_data.start_date,
+            "status": "Active",
+            "created_by": current_user["id"],
+            "created_by_name": current_user["name"],
+            "created_at": datetime.now(timezone.utc).isoformat()
+        }
+        
+        await db.recurring_invoices.insert_one(recurring)
+        return {"message": "Recurring invoice created", "recurring_invoice": recurring}
+    except Exception as e:
+        logger.error(f"Error creating recurring invoice: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@api_router.get("/accounts/recurring-invoices")
+async def get_recurring_invoices(current_user: dict = Depends(get_current_user)):
+    """Get all recurring invoices"""
+    if current_user.get("role") not in ["Accounts Head", "Accountant", "COO", "MD", "CEO"]:
+        raise HTTPException(status_code=403, detail="Access denied")
+    
+    try:
+        invoices = await db.recurring_invoices.find({}, {"_id": 0}).sort("created_at", -1).to_list(10000)
+        return invoices
+    except Exception as e:
+        logger.error(f"Error fetching recurring invoices: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+# Audit Logs
+@api_router.get("/accounts/audit-logs")
+async def get_audit_logs(
+    entity_type: Optional[str] = None,
+    limit: int = 100,
+    current_user: dict = Depends(get_current_user)
+):
+    """Get audit trail logs"""
+    if current_user.get("role") not in ["Accounts Head", "Accountant", "COO", "MD", "CEO"]:
+        raise HTTPException(status_code=403, detail="Access denied")
+    
+    try:
+        query = {}
+        if entity_type:
+            query["entity_type"] = entity_type
+        
+        logs = await db.audit_logs.find(query, {"_id": 0}).sort("timestamp", -1).limit(limit).to_list(limit)
+        return logs
+    except Exception as e:
+        logger.error(f"Error fetching audit logs: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
 # ==================== ASSESSMENT & FEEDBACK ENDPOINTS ====================
 
 @api_router.post("/assessment/forms")
