@@ -142,6 +142,12 @@ const FieldSalesDashboard = () => {
           </p>
         </div>
 
+        {/* Performance Widgets */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+          <MyLeadsTracker />
+          <SalesLeaderboard />
+        </div>
+
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
           <TabsList className="grid w-full grid-cols-8 bg-white/5 border border-white/10">
             <TabsTrigger 
