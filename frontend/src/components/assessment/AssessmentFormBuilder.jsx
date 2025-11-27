@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { Plus, Trash2, Save, ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { toast } from 'sonner';
@@ -51,7 +50,6 @@ const AssessmentFormBuilder = ({ onBack, onFormCreated }) => {
       questions: [...prev.questions, newQuestion]
     }));
 
-    // Reset current question
     setCurrentQuestion({
       question_text: '',
       question_type: 'rating',
@@ -83,17 +81,16 @@ const AssessmentFormBuilder = ({ onBack, onFormCreated }) => {
 
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.post(`${API}/assessment/forms`, formData, {
+      const response = await axios.post(`${API}/academic/assessment-forms`, formData, {
         headers: { Authorization: `Bearer ${token}` }
       });
-
+      
       toast.success('Assessment form created successfully!');
-      if (onFormCreated) {
-        onFormCreated(response.data);
-      }
+      if (onFormCreated) onFormCreated(response.data);
+      if (onBack) onBack();
     } catch (error) {
       console.error('Error creating form:', error);
-      toast.error(error.response?.data?.detail || 'Failed to create form');
+      toast.error(error.response?.data?.detail || 'Failed to create assessment form');
     }
   };
 
@@ -119,179 +116,199 @@ const AssessmentFormBuilder = ({ onBack, onFormCreated }) => {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <Button variant="outline" size="sm" onClick={onBack}>
+      <div className="flex justify-between items-center">
+        <h2 className="text-2xl font-bold text-slate-100">Create Assessment Form</h2>
+        <div className="flex gap-2">
+          <Button variant="outline" onClick={onBack} className="border-white/20 hover:bg-white/10">
             <ArrowLeft className="w-4 h-4 mr-2" />
             Back
           </Button>
-          <h2 className="text-2xl font-bold text-slate-900">Create Assessment Form</h2>
+          <Button onClick={handleSaveForm} className="bg-green-600 hover:bg-green-700">
+            <Save className="w-4 h-4 mr-2" />
+            Save Form
+          </Button>
         </div>
-        <Button onClick={handleSaveForm} className="bg-blue-600 hover:bg-blue-700">
-          <Save className="w-4 h-4 mr-2" />
-          Save Form
-        </Button>
       </div>
 
       {/* Form Details */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Form Details</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-4">
+      <div className="bg-slate-900/50 backdrop-blur-sm rounded-xl border border-white/10 p-6">
+        <h3 className="text-lg font-semibold text-slate-100 mb-4">Form Details</h3>
+        <div className="space-y-4">
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <Label>Form Title *</Label>
+              <Label htmlFor="title" className="text-slate-300">Form Title *</Label>
               <Input
+                id="title"
                 value={formData.title}
-                onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                placeholder="e.g., Fire Safety Training Feedback"
+                onChange={(e) => setFormData({...formData, title: e.target.value})}
+                placeholder="e.g., Training Feedback Form"
+                className="bg-slate-800 border-white/10 text-slate-100"
               />
             </div>
             <div>
-              <Label>Course Name</Label>
+              <Label htmlFor="course_name" className="text-slate-300">Course Name</Label>
               <Input
+                id="course_name"
                 value={formData.course_name}
-                onChange={(e) => setFormData({ ...formData, course_name: e.target.value })}
-                placeholder="e.g., Fire Safety Level 1"
+                onChange={(e) => setFormData({...formData, course_name: e.target.value})}
+                className="bg-slate-800 border-white/10 text-slate-100"
               />
             </div>
           </div>
 
           <div>
-            <Label>Description</Label>
-            <Input
+            <Label htmlFor="description" className="text-slate-300">Description</Label>
+            <textarea
+              id="description"
               value={formData.description}
-              onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-              placeholder="Brief description of this assessment"
+              onChange={(e) => setFormData({...formData, description: e.target.value})}
+              className="w-full bg-slate-800 border border-white/10 text-slate-100 rounded-md p-2 min-h-[80px]"
+              placeholder="Brief description of the assessment..."
             />
           </div>
 
           <div className="grid grid-cols-3 gap-4">
             <div>
-              <Label>Batch Name</Label>
+              <Label htmlFor="batch_name" className="text-slate-300">Batch Name</Label>
               <Input
+                id="batch_name"
                 value={formData.batch_name}
-                onChange={(e) => setFormData({ ...formData, batch_name: e.target.value })}
-                placeholder="e.g., Batch A"
+                onChange={(e) => setFormData({...formData, batch_name: e.target.value})}
+                className="bg-slate-800 border-white/10 text-slate-100"
               />
             </div>
             <div>
-              <Label>Trainer Name</Label>
+              <Label htmlFor="session_date" className="text-slate-300">Session Date</Label>
               <Input
-                value={formData.trainer_name}
-                onChange={(e) => setFormData({ ...formData, trainer_name: e.target.value })}
-                placeholder="Trainer's name"
-              />
-            </div>
-            <div>
-              <Label>Session Date</Label>
-              <Input
+                id="session_date"
                 type="date"
                 value={formData.session_date}
-                onChange={(e) => setFormData({ ...formData, session_date: e.target.value })}
+                onChange={(e) => setFormData({...formData, session_date: e.target.value})}
+                className="bg-slate-800 border-white/10 text-slate-100"
               />
             </div>
+            <div>
+              <Label htmlFor="branch" className="text-slate-300">Branch</Label>
+              <select
+                id="branch"
+                value={formData.branch}
+                onChange={(e) => setFormData({...formData, branch: e.target.value})}
+                className="w-full bg-slate-800 border border-white/10 text-slate-100 rounded-md p-2"
+              >
+                <option value="Dubai">Dubai</option>
+                <option value="Abu Dhabi">Abu Dhabi</option>
+                <option value="Sharjah">Sharjah</option>
+              </select>
+            </div>
           </div>
+        </div>
+      </div>
 
+      {/* Add Question */}
+      <div className="bg-slate-900/50 backdrop-blur-sm rounded-xl border border-white/10 p-6">
+        <h3 className="text-lg font-semibold text-slate-100 mb-4">Add Question</h3>
+        <div className="space-y-4">
           <div>
-            <Label>Branch</Label>
-            <select
-              value={formData.branch}
-              onChange={(e) => setFormData({ ...formData, branch: e.target.value })}
-              className="w-full border border-slate-300 rounded-md p-2"
-            >
-              <option value="Dubai">Dubai</option>
-              <option value="Abu Dhabi">Abu Dhabi</option>
-              <option value="Saudi Arabia">Saudi Arabia</option>
-            </select>
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* Add Question Section */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Add Question</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <div>
-            <Label>Question Text *</Label>
+            <Label htmlFor="question_text" className="text-slate-300">Question Text *</Label>
             <Input
+              id="question_text"
               value={currentQuestion.question_text}
-              onChange={(e) => setCurrentQuestion({ ...currentQuestion, question_text: e.target.value })}
-              placeholder="Enter your question"
+              onChange={(e) => setCurrentQuestion({...currentQuestion, question_text: e.target.value})}
+              placeholder="Enter your question..."
+              className="bg-slate-800 border-white/10 text-slate-100"
             />
           </div>
 
-          <div>
-            <Label>Question Type</Label>
-            <select
-              value={currentQuestion.question_type}
-              onChange={(e) => setCurrentQuestion({ ...currentQuestion, question_type: e.target.value, options: e.target.value === 'multiple_choice' ? [''] : [] })}
-              className="w-full border border-slate-300 rounded-md p-2"
-            >
-              <option value="rating">Rating (1-5)</option>
-              <option value="multiple_choice">Multiple Choice</option>
-              <option value="free_text">Free Text</option>
-            </select>
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <Label htmlFor="question_type" className="text-slate-300">Question Type</Label>
+              <select
+                id="question_type"
+                value={currentQuestion.question_type}
+                onChange={(e) => setCurrentQuestion({...currentQuestion, question_type: e.target.value})}
+                className="w-full bg-slate-800 border border-white/10 text-slate-100 rounded-md p-2"
+              >
+                <option value="rating">Rating (1-5)</option>
+                <option value="text">Text Answer</option>
+                <option value="multiple_choice">Multiple Choice</option>
+                <option value="yes_no">Yes/No</option>
+              </select>
+            </div>
+            <div className="flex items-end">
+              <label className="flex items-center gap-2 text-slate-300">
+                <input
+                  type="checkbox"
+                  checked={currentQuestion.required}
+                  onChange={(e) => setCurrentQuestion({...currentQuestion, required: e.target.checked})}
+                  className="w-4 h-4"
+                />
+                Required Question
+              </label>
+            </div>
           </div>
 
           {currentQuestion.question_type === 'multiple_choice' && (
-            <div className="space-y-2">
-              <Label>Options</Label>
-              {currentQuestion.options.map((option, index) => (
-                <div key={index} className="flex gap-2">
-                  <Input
-                    value={option}
-                    onChange={(e) => updateOption(index, e.target.value)}
-                    placeholder={`Option ${index + 1}`}
-                  />
-                  {currentQuestion.options.length > 1 && (
+            <div>
+              <Label className="text-slate-300">Options</Label>
+              <div className="space-y-2 mt-2">
+                {currentQuestion.options.map((option, index) => (
+                  <div key={index} className="flex gap-2">
+                    <Input
+                      value={option}
+                      onChange={(e) => updateOption(index, e.target.value)}
+                      placeholder={`Option ${index + 1}`}
+                      className="bg-slate-800 border-white/10 text-slate-100"
+                    />
                     <Button
                       type="button"
                       variant="outline"
                       size="sm"
                       onClick={() => removeOption(index)}
+                      disabled={currentQuestion.options.length === 1}
+                      className="border-white/20 hover:bg-red-500/20"
                     >
                       <Trash2 className="w-4 h-4" />
                     </Button>
-                  )}
-                </div>
-              ))}
-              <Button type="button" variant="outline" size="sm" onClick={addOption}>
-                <Plus className="w-4 h-4 mr-2" />
-                Add Option
-              </Button>
+                  </div>
+                ))}
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  onClick={addOption}
+                  className="border-white/20 hover:bg-white/10"
+                >
+                  <Plus className="w-4 h-4 mr-2" />
+                  Add Option
+                </Button>
+              </div>
             </div>
           )}
 
-          <Button onClick={addQuestion} className="w-full">
+          <Button onClick={addQuestion} className="w-full bg-blue-600 hover:bg-blue-700">
             <Plus className="w-4 h-4 mr-2" />
-            Add Question
+            Add Question to Form
           </Button>
-        </CardContent>
-      </Card>
+        </div>
+      </div>
 
       {/* Questions List */}
       {formData.questions.length > 0 && (
-        <Card>
-          <CardHeader>
-            <CardTitle>Questions ({formData.questions.length})</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-3">
-              {formData.questions.map((question, index) => (
-                <div key={question.id} className="border border-slate-200 rounded-lg p-4 flex justify-between items-start">
+        <div className="bg-slate-900/50 backdrop-blur-sm rounded-xl border border-white/10 p-6">
+          <h3 className="text-lg font-semibold text-slate-100 mb-4">Questions ({formData.questions.length})</h3>
+          <div className="space-y-3">
+            {formData.questions.map((question, index) => (
+              <div key={question.id} className="bg-white/5 border border-white/10 rounded-lg p-4">
+                <div className="flex justify-between items-start">
                   <div className="flex-1">
-                    <p className="font-medium text-slate-900">
+                    <p className="font-medium text-slate-100">
                       {index + 1}. {question.question_text}
                     </p>
-                    <p className="text-sm text-slate-500 mt-1">
-                      Type: {question.question_type === 'rating' ? 'Rating (1-5)' : question.question_type === 'multiple_choice' ? 'Multiple Choice' : 'Free Text'}
+                    <p className="text-sm text-slate-400 mt-1">
+                      Type: {question.question_type} {question.required && '• Required'}
                     </p>
                     {question.options && (
-                      <div className="mt-2 text-sm text-slate-600">
+                      <div className="mt-2 text-sm text-slate-300">
                         Options: {question.options.join(', ')}
                       </div>
                     )}
@@ -300,14 +317,15 @@ const AssessmentFormBuilder = ({ onBack, onFormCreated }) => {
                     variant="outline"
                     size="sm"
                     onClick={() => removeQuestion(index)}
+                    className="border-white/20 hover:bg-red-500/20"
                   >
                     <Trash2 className="w-4 h-4" />
                   </Button>
                 </div>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
+              </div>
+            ))}
+          </div>
+        </div>
       )}
     </div>
   );
