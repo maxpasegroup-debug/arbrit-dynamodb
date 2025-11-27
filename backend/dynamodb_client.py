@@ -95,16 +95,23 @@ class DynamoDBClient:
                 item = response.get('Item')
             else:
                 # Need to scan - querying by non-primary-key field
-                logger.debug(f"Using scan with filter expression")
-                filter_expr = self._build_filter_expression(query)
-                response = self.table.scan(
-                    FilterExpression=filter_expr,
-                    Limit=1
-                )
-                logger.debug(f"Scan response: {len(response.get('Items', []))} items")
-                if response.get('Items'):
-                    item = response['Items'][0]
-                    logger.debug(f"Found item: {item.get('name', 'N/A')}")
+                # For better reliability, scan all items and filter in Python
+                logger.debug(f"Using full scan and filtering in Python")
+                response = self.table.scan()
+                all_items = response.get('Items', [])
+                logger.debug(f"Scanned {len(all_items)} total items")
+                
+                # Filter in Python
+                for potential_item in all_items:
+                    match = True
+                    for key, value in query.items():
+                        if potential_item.get(key) != value:
+                            match = False
+                            break
+                    if match:
+                        item = potential_item
+                        logger.debug(f"Found matching item: {item.get('name', 'N/A')}")
+                        break
             
             # Remove sensitive fields based on projection
             if item and projection:
