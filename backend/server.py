@@ -1401,7 +1401,7 @@ async def get_leads(
     status: Optional[str] = None,
     current_user: dict = Depends(get_current_user)
 ):
-    if current_user["role"] != "Sales Head":
+    if current_user["role"] not in ["Sales Head", "COO", "MD", "CEO"]:
         raise HTTPException(status_code=403, detail="Access denied")
     
     query = {}
