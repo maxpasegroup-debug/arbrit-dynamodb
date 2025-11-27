@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
-import { Plus, Upload, DollarSign, Calendar, FileText } from 'lucide-react';
+import { Plus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
@@ -45,7 +44,6 @@ const ExpenseSubmission = () => {
       setClaims(response.data);
     } catch (error) {
       console.error('Error fetching claims:', error);
-      // Silent fail - no toast on empty data
     } finally {
       setLoading(false);
     }
@@ -86,11 +84,11 @@ const ExpenseSubmission = () => {
 
   const getStatusBadge = (status) => {
     const statusConfig = {
-      'PENDING_DEPT_HEAD': { color: 'bg-yellow-500/20 text-yellow-600 border-yellow-400/50', label: 'Pending Dept Head' },
-      'PENDING_HR': { color: 'bg-blue-500/20 text-blue-600 border-blue-400/50', label: 'Pending HR' },
-      'PENDING_ACCOUNTS': { color: 'bg-purple-500/20 text-purple-600 border-purple-400/50', label: 'Pending Accounts' },
-      'PAID': { color: 'bg-green-500/20 text-green-600 border-green-400/50', label: 'Paid' },
-      'REJECTED': { color: 'bg-red-500/20 text-red-600 border-red-400/50', label: 'Rejected' }
+      'PENDING_DEPT_HEAD': { color: 'bg-yellow-500/20 text-yellow-300 border-yellow-400/50', label: 'Pending Dept Head' },
+      'PENDING_HR': { color: 'bg-blue-500/20 text-blue-300 border-blue-400/50', label: 'Pending HR' },
+      'PENDING_ACCOUNTS': { color: 'bg-purple-500/20 text-purple-300 border-purple-400/50', label: 'Pending Accounts' },
+      'PAID': { color: 'bg-green-500/20 text-green-300 border-green-400/50', label: 'Paid' },
+      'REJECTED': { color: 'bg-red-500/20 text-red-300 border-red-400/50', label: 'Rejected' }
     };
     
     const config = statusConfig[status] || statusConfig['PENDING_DEPT_HEAD'];
@@ -100,7 +98,7 @@ const ExpenseSubmission = () => {
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <h2 className="text-2xl font-bold text-slate-900">My Expense Claims</h2>
+        <h2 className="text-2xl font-bold text-slate-100">My Expense Claims</h2>
         <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
           <DialogTrigger asChild>
             <Button className="bg-blue-600 hover:bg-blue-700">
@@ -108,32 +106,33 @@ const ExpenseSubmission = () => {
               Submit Expense
             </Button>
           </DialogTrigger>
-          <DialogContent className="max-w-md">
+          <DialogContent className="max-w-md bg-slate-900 border-white/10">
             <DialogHeader>
-              <DialogTitle>Submit Expense Claim</DialogTitle>
-              <DialogDescription>
+              <DialogTitle className="text-slate-100">Submit Expense Claim</DialogTitle>
+              <DialogDescription className="text-slate-400">
                 Submit your expense for reimbursement
               </DialogDescription>
             </DialogHeader>
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
-                <Label htmlFor="expense_date">Expense Date *</Label>
+                <Label htmlFor="expense_date" className="text-slate-300">Expense Date *</Label>
                 <Input
                   id="expense_date"
                   type="date"
                   value={formData.expense_date}
                   onChange={(e) => setFormData({ ...formData, expense_date: e.target.value })}
+                  className="bg-slate-800 border-white/10 text-slate-100"
                   required
                 />
               </div>
               
               <div>
-                <Label htmlFor="category">Category *</Label>
+                <Label htmlFor="category" className="text-slate-300">Category *</Label>
                 <select
                   id="category"
                   value={formData.category}
                   onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-                  className="w-full border border-slate-300 rounded-md p-2"
+                  className="w-full bg-slate-800 border border-white/10 text-slate-100 rounded-md p-2"
                   required
                 >
                   <option value="Travel">Travel</option>
@@ -145,7 +144,7 @@ const ExpenseSubmission = () => {
               </div>
 
               <div>
-                <Label htmlFor="amount">Amount (AED) *</Label>
+                <Label htmlFor="amount" className="text-slate-300">Amount (AED) *</Label>
                 <Input
                   id="amount"
                   type="number"
@@ -153,39 +152,41 @@ const ExpenseSubmission = () => {
                   value={formData.amount}
                   onChange={(e) => setFormData({ ...formData, amount: e.target.value })}
                   placeholder="0.00"
+                  className="bg-slate-800 border-white/10 text-slate-100"
                   required
                 />
               </div>
 
               <div>
-                <Label htmlFor="description">Description *</Label>
+                <Label htmlFor="description" className="text-slate-300">Description *</Label>
                 <textarea
                   id="description"
                   value={formData.description}
                   onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                  className="w-full border border-slate-300 rounded-md p-2 min-h-[80px]"
+                  className="w-full bg-slate-800 border border-white/10 text-slate-100 rounded-md p-2 min-h-[80px]"
                   placeholder="Describe the expense..."
                   required
                 />
               </div>
 
               <div>
-                <Label htmlFor="attachment">Attachment (Optional)</Label>
+                <Label htmlFor="attachment" className="text-slate-300">Attachment (Optional)</Label>
                 <Input
                   id="attachment"
                   type="text"
                   value={formData.attachment_url}
                   onChange={(e) => setFormData({ ...formData, attachment_url: e.target.value })}
                   placeholder="Upload URL or file reference"
+                  className="bg-slate-800 border-white/10 text-slate-100"
                 />
-                <p className="text-xs text-slate-500 mt-1">Upload bill/receipt and paste the URL here</p>
+                <p className="text-xs text-slate-400 mt-1">Upload bill/receipt and paste the URL here</p>
               </div>
 
               <div className="flex gap-2 pt-4">
-                <Button type="button" variant="outline" onClick={() => setDialogOpen(false)} className="flex-1">
+                <Button type="button" variant="outline" onClick={() => setDialogOpen(false)} className="flex-1 border-white/20 hover:bg-white/10">
                   Cancel
                 </Button>
-                <Button type="submit" className="flex-1">Submit Claim</Button>
+                <Button type="submit" className="flex-1 bg-blue-600 hover:bg-blue-700">Submit Claim</Button>
               </div>
             </form>
           </DialogContent>
@@ -193,51 +194,47 @@ const ExpenseSubmission = () => {
       </div>
 
       {/* Claims List */}
-      <Card>
-        <CardHeader>
-          <CardTitle>My Submitted Claims</CardTitle>
-        </CardHeader>
-        <CardContent>
-          {loading ? (
-            <p className="text-center py-8 text-slate-600">Loading...</p>
-          ) : claims.length === 0 ? (
-            <p className="text-center py-8 text-slate-500">No expense claims yet</p>
-          ) : (
-            <div className="space-y-3">
-              {claims.map((claim) => (
-                <div key={claim.id} className="border border-slate-200 rounded-lg p-4 hover:bg-slate-50 transition-colors">
-                  <div className="flex justify-between items-start mb-2">
-                    <div className="flex-1">
-                      <div className="flex items-center gap-2 mb-1">
-                        <h3 className="font-semibold text-slate-900">{claim.category}</h3>
-                        {getStatusBadge(claim.status)}
-                      </div>
-                      <p className="text-sm text-slate-600">{claim.description}</p>
+      <div className="bg-slate-900/50 backdrop-blur-sm rounded-xl border border-white/10 p-6">
+        <h3 className="text-lg font-semibold text-slate-100 mb-4">My Submitted Claims</h3>
+        {loading ? (
+          <p className="text-center py-8 text-slate-400">Loading...</p>
+        ) : claims.length === 0 ? (
+          <p className="text-center py-8 text-slate-400">No expense claims yet</p>
+        ) : (
+          <div className="space-y-3">
+            {claims.map((claim) => (
+              <div key={claim.id} className="bg-white/5 border border-white/10 rounded-lg p-4 hover:bg-white/10 transition-all">
+                <div className="flex justify-between items-start mb-2">
+                  <div className="flex-1">
+                    <div className="flex items-center gap-2 mb-1">
+                      <h3 className="font-semibold text-slate-100">{claim.category}</h3>
+                      {getStatusBadge(claim.status)}
                     </div>
-                    <div className="text-right">
-                      <p className="text-xl font-bold text-slate-900">AED {claim.amount.toFixed(2)}</p>
-                      <p className="text-xs text-slate-500">{new Date(claim.expense_date).toLocaleDateString()}</p>
-                    </div>
+                    <p className="text-sm text-slate-300">{claim.description}</p>
                   </div>
-                  
-                  <div className="mt-3 pt-3 border-t border-slate-200 text-xs text-slate-500">
-                    <p>Submitted: {new Date(claim.created_at).toLocaleString()}</p>
-                    {claim.dept_head_remarks && (
-                      <p className="mt-1"><strong>Dept Head:</strong> {claim.dept_head_remarks}</p>
-                    )}
-                    {claim.hr_remarks && (
-                      <p className="mt-1"><strong>HR:</strong> {claim.hr_remarks}</p>
-                    )}
-                    {claim.payment_reference && (
-                      <p className="mt-1"><strong>Payment Ref:</strong> {claim.payment_reference}</p>
-                    )}
+                  <div className="text-right">
+                    <p className="text-xl font-bold text-slate-100">AED {claim.amount?.toFixed(2) || '0.00'}</p>
+                    <p className="text-xs text-slate-400">{new Date(claim.expense_date).toLocaleDateString()}</p>
                   </div>
                 </div>
-              ))}
-            </div>
-          )}
-        </CardContent>
-      </Card>
+                
+                <div className="mt-3 pt-3 border-t border-white/10 text-xs text-slate-400">
+                  <p>Submitted: {new Date(claim.created_at).toLocaleString()}</p>
+                  {claim.dept_head_remarks && (
+                    <p className="mt-1 text-slate-300"><strong>Dept Head:</strong> {claim.dept_head_remarks}</p>
+                  )}
+                  {claim.hr_remarks && (
+                    <p className="mt-1 text-slate-300"><strong>HR:</strong> {claim.hr_remarks}</p>
+                  )}
+                  {claim.payment_reference && (
+                    <p className="mt-1 text-slate-300"><strong>Payment Ref:</strong> {claim.payment_reference}</p>
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
     </div>
   );
 };

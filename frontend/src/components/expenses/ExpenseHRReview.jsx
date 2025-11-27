@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { CheckCircle, XCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import {
   Dialog,
@@ -38,7 +37,6 @@ const ExpenseHRReview = () => {
       setClaims(response.data);
     } catch (error) {
       console.error('Error fetching claims:', error);
-      // Silent fail - no toast on empty data
     } finally {
       setLoading(false);
     }
@@ -76,100 +74,96 @@ const ExpenseHRReview = () => {
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <h2 className="text-2xl font-bold text-slate-900">HR Expense Authorisation</h2>
-        <Badge variant="outline" className="text-base">
+        <h2 className="text-2xl font-bold text-slate-100">HR Expense Authorisation</h2>
+        <Badge variant="outline" className="text-base border-white/20">
           {claims.length} pending
         </Badge>
       </div>
 
-      <Card>
-        <CardHeader>
-          <CardTitle>Pending HR Review</CardTitle>
-        </CardHeader>
-        <CardContent>
-          {loading ? (
-            <p className="text-center py-8 text-slate-600">Loading...</p>
-          ) : claims.length === 0 ? (
-            <p className="text-center py-8 text-slate-500">No pending expense claims for HR review</p>
-          ) : (
-            <div className="space-y-3">
-              {claims.map((claim) => (
-                <div key={claim.id} className="border border-slate-200 rounded-lg p-4">
-                  <div className="flex justify-between items-start">
-                    <div className="flex-1">
-                      <div className="flex items-center gap-2 mb-2">
-                        <h3 className="font-semibold text-slate-900">{claim.employee_name}</h3>
-                        <Badge className="bg-slate-200 text-slate-700">{claim.department}</Badge>
-                      </div>
-                      
-                      <div className="grid grid-cols-2 gap-3 text-sm text-slate-600">
-                        <div>
-                          <span className="font-medium">Category:</span> {claim.category}
-                        </div>
-                        <div>
-                          <span className="font-medium">Amount:</span> AED {claim.amount.toFixed(2)}
-                        </div>
-                        <div>
-                          <span className="font-medium">Date:</span> {new Date(claim.expense_date).toLocaleDateString()}
-                        </div>
-                        <div>
-                          <span className="font-medium">Branch:</span> {claim.branch}
-                        </div>
-                      </div>
-                      
-                      <p className="text-sm text-slate-600 mt-2">
-                        <span className="font-medium">Description:</span> {claim.description}
-                      </p>
-                      
-                      {claim.dept_head_remarks && (
-                        <div className="mt-2 p-2 bg-blue-50 border border-blue-200 rounded">
-                          <p className="text-xs text-slate-600">
-                            <strong>Dept Head:</strong> {claim.dept_head_remarks}
-                          </p>
-                        </div>
-                      )}
+      <div className="bg-slate-900/50 backdrop-blur-sm rounded-xl border border-white/10 p-6">
+        <h3 className="text-lg font-semibold text-slate-100 mb-4">Pending HR Review</h3>
+        {loading ? (
+          <p className="text-center py-8 text-slate-400">Loading...</p>
+        ) : claims.length === 0 ? (
+          <p className="text-center py-8 text-slate-400">No pending expense claims for HR review</p>
+        ) : (
+          <div className="space-y-3">
+            {claims.map((claim) => (
+              <div key={claim.id} className="bg-white/5 border border-white/10 rounded-lg p-4 hover:bg-white/10 transition-all">
+                <div className="flex justify-between items-start">
+                  <div className="flex-1">
+                    <div className="flex items-center gap-2 mb-2">
+                      <h3 className="font-semibold text-slate-100">{claim.employee_name}</h3>
+                      <Badge className="bg-blue-500/20 text-blue-300 border-blue-400/50">{claim.department}</Badge>
                     </div>
                     
-                    <div className="flex gap-2 ml-4">
-                      <Button
-                        size="sm"
-                        onClick={() => openApprovalDialog(claim, 'approve')}
-                        className="bg-green-600 hover:bg-green-700"
-                      >
-                        <CheckCircle className="w-4 h-4 mr-1" />
-                        Approve
-                      </Button>
-                      <Button
-                        size="sm"
-                        variant="destructive"
-                        onClick={() => openApprovalDialog(claim, 'reject')}
-                      >
-                        <XCircle className="w-4 h-4 mr-1" />
-                        Reject
-                      </Button>
+                    <div className="grid grid-cols-2 gap-3 text-sm text-slate-300">
+                      <div>
+                        <span className="font-medium">Category:</span> {claim.category}
+                      </div>
+                      <div>
+                        <span className="font-medium">Amount:</span> AED {claim.amount?.toFixed(2) || '0.00'}
+                      </div>
+                      <div>
+                        <span className="font-medium">Date:</span> {new Date(claim.expense_date).toLocaleDateString()}
+                      </div>
+                      <div>
+                        <span className="font-medium">Branch:</span> {claim.branch}
+                      </div>
                     </div>
+                    
+                    <p className="text-sm text-slate-300 mt-2">
+                      <span className="font-medium">Description:</span> {claim.description}
+                    </p>
+                    
+                    {claim.dept_head_remarks && (
+                      <div className="mt-2 p-2 bg-blue-500/10 border border-blue-400/30 rounded">
+                        <p className="text-xs text-slate-300">
+                          <strong>Dept Head:</strong> {claim.dept_head_remarks}
+                        </p>
+                      </div>
+                    )}
+                  </div>
+                  
+                  <div className="flex gap-2 ml-4">
+                    <Button
+                      size="sm"
+                      onClick={() => openApprovalDialog(claim, 'approve')}
+                      className="bg-green-600 hover:bg-green-700"
+                    >
+                      <CheckCircle className="w-4 h-4 mr-1" />
+                      Approve
+                    </Button>
+                    <Button
+                      size="sm"
+                      variant="destructive"
+                      onClick={() => openApprovalDialog(claim, 'reject')}
+                    >
+                      <XCircle className="w-4 h-4 mr-1" />
+                      Reject
+                    </Button>
                   </div>
                 </div>
-              ))}
-            </div>
-          )}
-        </CardContent>
-      </Card>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
 
       {/* Approval Dialog */}
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-        <DialogContent>
+        <DialogContent className="bg-slate-900 border-white/10">
           <DialogHeader>
-            <DialogTitle>
+            <DialogTitle className="text-slate-100">
               HR {decision === 'approve' ? 'Approval' : 'Rejection'}
             </DialogTitle>
             <DialogDescription>
               {selectedClaim && (
                 <>
-                  <p className="font-medium text-slate-900 mt-2">
-                    {selectedClaim.employee_name} - AED {selectedClaim.amount.toFixed(2)}
+                  <p className="font-medium text-slate-200 mt-2">
+                    {selectedClaim.employee_name} - AED {selectedClaim.amount?.toFixed(2) || '0.00'}
                   </p>
-                  <p className="text-sm">{selectedClaim.category}</p>
+                  <p className="text-sm text-slate-400">{selectedClaim.category}</p>
                 </>
               )}
             </DialogDescription>
@@ -177,17 +171,17 @@ const ExpenseHRReview = () => {
           
           <div className="space-y-4">
             <div>
-              <label className="text-sm font-medium text-slate-700">HR Remarks (Optional)</label>
+              <label className="text-sm font-medium text-slate-300">HR Remarks (Optional)</label>
               <textarea
                 value={remarks}
                 onChange={(e) => setRemarks(e.target.value)}
-                className="w-full border border-slate-300 rounded-md p-2 mt-1 min-h-[80px]"
+                className="w-full bg-slate-800 border border-white/10 text-slate-100 rounded-md p-2 mt-1 min-h-[80px]"
                 placeholder="Add any notes or comments..."
               />
             </div>
             
             <div className="flex gap-2">
-              <Button variant="outline" onClick={() => setDialogOpen(false)} className="flex-1">
+              <Button variant="outline" onClick={() => setDialogOpen(false)} className="flex-1 border-white/20 hover:bg-white/10">
                 Cancel
               </Button>
               <Button
