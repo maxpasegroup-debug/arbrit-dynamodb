@@ -916,11 +916,12 @@ async def diagnostics():
     """Diagnostic endpoint to check environment and connectivity"""
     diagnostics_data = {
         "environment": {
-            "db_name": DB_NAME,  # Show active database name
+            "database_type": "DynamoDB",
+            "aws_region": os.environ.get('AWS_REGION', 'us-east-1'),
+            "table_prefix": os.environ.get('DYNAMODB_TABLE_PREFIX', 'arbrit_workdesk'),
             "cors_origins": os.environ.get('CORS_ORIGINS', 'NOT_SET'),
             "jwt_secret_exists": bool(os.environ.get('JWT_SECRET_KEY')),
-            "mongo_url_exists": bool(os.environ.get('MONGO_URL')),
-            "mongo_host": mongo_url.split("@")[-1] if "@" in mongo_url else mongo_url.replace("mongodb://", "").split("/")[0]
+            "aws_credentials_configured": bool(os.environ.get('AWS_ACCESS_KEY_ID'))
         },
         "database_status": "unknown",
         "collections": [],
