@@ -327,7 +327,7 @@ const InvoiceManagementEnhanced = () => {
 
               <div className="space-y-2">
                 <Label htmlFor="currency">Currency</Label>
-                <Select value={formData.currency} onValueChange={(val) => setFormData({...formData, currency: val})}>
+                <Select value={formData.currency || 'AED'} onValueChange={(val) => setFormData({...formData, currency: val})}>
                   <SelectTrigger className="bg-slate-800 border-slate-600 text-white">
                     <SelectValue />
                   </SelectTrigger>
