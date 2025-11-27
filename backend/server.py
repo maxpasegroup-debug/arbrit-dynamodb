@@ -1453,7 +1453,7 @@ async def update_lead(lead_id: str, lead_update: LeadUpdate, current_user: dict 
 
 @api_router.delete("/sales-head/leads/{lead_id}")
 async def delete_lead(lead_id: str, current_user: dict = Depends(get_current_user)):
-    if current_user["role"] != "Sales Head":
+    if current_user["role"] not in ["Sales Head", "COO", "MD", "CEO"]:
         raise HTTPException(status_code=403, detail="Access denied")
     
     result = await db.leads.delete_one({"id": lead_id})
