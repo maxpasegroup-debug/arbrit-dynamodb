@@ -4896,7 +4896,7 @@ async def get_assessment_forms(current_user: dict = Depends(get_current_user)):
         else:
             # Trainers see only their assigned forms
             query_result = await db.assessment_forms.find(
-                {"trainer_id": current_user["employee_id"], "status": "active"},
+                {"trainer_id": current_user["id"], "status": "active"},
                 {"_id": 0}
             )
 
