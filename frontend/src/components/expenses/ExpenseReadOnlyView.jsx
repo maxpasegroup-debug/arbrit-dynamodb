@@ -62,12 +62,12 @@ const ExpenseReadOnlyView = () => {
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <h2 className="text-2xl font-bold text-slate-900">All Expense Claims (Read-Only)</h2>
+        <h2 className="text-2xl font-bold text-white">All Expense Claims (Read-Only)</h2>
         <div className="flex gap-2">
           <select
             value={filter}
             onChange={(e) => setFilter(e.target.value)}
-            className="border border-slate-300 rounded-md p-2 text-sm"
+            className="bg-slate-800 border border-slate-600 text-white rounded-md p-2 text-sm"
           >
             <option value="all">All Status</option>
             <option value="PENDING_DEPT_HEAD">Pending Dept Head</option>
@@ -79,48 +79,54 @@ const ExpenseReadOnlyView = () => {
         </div>
       </div>
 
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
+      <div className="bg-white/5 backdrop-blur-sm rounded-xl border border-white/10 overflow-hidden">
+        <div className="px-6 py-4 bg-white/5 border-b border-white/10">
+          <h3 className="text-lg font-semibold text-white flex items-center gap-2">
             <Eye className="w-5 h-5" />
             Expense Overview ({filteredClaims.length})
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
+          </h3>
+        </div>
+        <div className="p-6">
           {loading ? (
-            <p className="text-center py-8 text-slate-600">Loading...</p>
+            <p className="text-center py-8 text-gray-400">Loading...</p>
           ) : filteredClaims.length === 0 ? (
-            <p className="text-center py-8 text-slate-500">No expense claims found</p>
+            <p className="text-center py-8 text-gray-400">No expense claims found</p>
           ) : (
-            <div className="space-y-3">
+            <div className="space-y-4">
               {filteredClaims.map((claim) => (
-                <div key={claim.id} className="border border-slate-200 rounded-lg p-4">
+                <div key={claim.id} className="bg-white/5 border border-white/10 rounded-lg p-5 hover:bg-white/10 transition-all">
                   <div className="flex justify-between items-start">
                     <div className="flex-1">
-                      <div className="flex items-center gap-2 mb-2">
-                        <h3 className="font-semibold text-slate-900">{claim.employee_name}</h3>
+                      <div className="flex items-center gap-2 mb-3">
+                        <h3 className="font-semibold text-white text-lg">{claim.employee_name}</h3>
                         {getStatusBadge(claim.status)}
                       </div>
-                      <div className="grid grid-cols-3 gap-3 text-sm text-slate-600">
+                      <div className="grid grid-cols-3 gap-4 text-sm">
                         <div>
-                          <span className="font-medium">Amount:</span> AED {claim.amount?.toFixed(2)}
+                          <span className="text-gray-400 font-medium">Amount:</span>
+                          <span className="text-green-400 ml-2 font-semibold">AED {claim.amount?.toFixed(2)}</span>
                         </div>
                         <div>
-                          <span className="font-medium">Category:</span> {claim.category}
+                          <span className="text-gray-400 font-medium">Category:</span>
+                          <span className="text-white ml-2">{claim.category}</span>
                         </div>
                         <div>
-                          <span className="font-medium">Department:</span> {claim.department}
+                          <span className="text-gray-400 font-medium">Department:</span>
+                          <span className="text-white ml-2">{claim.department}</span>
                         </div>
                       </div>
-                      <p className="text-sm text-slate-600 mt-2">{claim.description}</p>
+                      <div className="mt-3 p-3 bg-white/5 rounded border border-white/10">
+                        <p className="text-sm text-gray-400">Description:</p>
+                        <p className="text-white mt-1">{claim.description}</p>
+                      </div>
                     </div>
                   </div>
                 </div>
               ))}
             </div>
           )}
-        </CardContent>
-      </Card>
+        </div>
+      </div>
     </div>
   );
 };
