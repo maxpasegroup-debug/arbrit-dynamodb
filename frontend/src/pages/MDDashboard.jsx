@@ -346,6 +346,10 @@ const MDDashboard = () => {
           </Card>
         </div>
       </main>
+
+      {/* Modals */}
+      <LeadSubmissionModal open={leadModalOpen} onOpenChange={setLeadModalOpen} />
+      <ExpenseSubmissionModal open={expenseModalOpen} onOpenChange={setExpenseModalOpen} />
     </div>
   );
 };
