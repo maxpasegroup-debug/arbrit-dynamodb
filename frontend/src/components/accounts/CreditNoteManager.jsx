@@ -74,14 +74,23 @@ const CreditNoteManager = () => {
   };
 
   const handleInvoiceSelect = (invoiceId) => {
-    const invoice = invoices.find(inv => inv.id === invoiceId);
-    if (invoice) {
+    if (invoiceId === 'none') {
       setFormData(prev => ({
         ...prev,
-        invoice_id: invoiceId,
-        client_name: invoice.client_name,
-        amount: (invoice.total_amount || invoice.amount).toString()
+        invoice_id: '',
+        client_name: '',
+        amount: ''
       }));
+    } else {
+      const invoice = invoices.find(inv => inv.id === invoiceId);
+      if (invoice) {
+        setFormData(prev => ({
+          ...prev,
+          invoice_id: invoiceId,
+          client_name: invoice.client_name,
+          amount: (invoice.total_amount || invoice.amount).toString()
+        }));
+      }
     }
   };
 
