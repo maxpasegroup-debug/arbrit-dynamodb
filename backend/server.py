@@ -1370,7 +1370,7 @@ async def assign_badge(employee_id: str, badge_data: dict, current_user: dict = 
 # Sales Head - Lead Management
 @api_router.post("/sales-head/leads", response_model=Lead)
 async def create_lead(lead: LeadCreate, current_user: dict = Depends(get_current_user)):
-    if current_user["role"] != "Sales Head":
+    if current_user["role"] not in ["Sales Head", "COO", "MD", "CEO"]:
         raise HTTPException(status_code=403, detail="Access denied")
     
     # Get assigned employee name if provided
