@@ -12,6 +12,8 @@ import InvoiceRequest from '@/components/sales/InvoiceRequest';
 import VisitLogs from '@/components/sales/VisitLogs';
 import FollowUps from '@/components/sales/FollowUps';
 import ExpenseSubmission from '@/components/expenses/ExpenseSubmission';
+import MyLeadsTracker from '@/components/sales/MyLeadsTracker';
+import SalesLeaderboard from '@/components/sales/SalesLeaderboard';
 import { toast } from 'sonner';
 import axios from 'axios';
 
