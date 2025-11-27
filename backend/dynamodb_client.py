@@ -44,16 +44,33 @@ logger.info(f"✅ DynamoDB client initialized with table prefix: {TABLE_PREFIX}"
 
 class QueryResult:
     """
-    Wrapper to provide MongoDB-like .to_list() method
+    Wrapper to provide MongoDB-like .to_list() and .sort() methods
     """
     def __init__(self, items: List[Dict], limit: int = 1000):
         self.items = items[:limit]  # Apply limit
+        self._sort_field = None
+        self._sort_direction = 1
     
     async def to_list(self, length: int = None) -> List[Dict]:
         """MongoDB compatibility: cursor.to_list(1000)"""
+        items = self.items
+        
+        # Apply sorting if sort was called
+        if self._sort_field:
+            try:
+                items = sorted(items, key=lambda x: x.get(self._sort_field, ''), reverse=(self._sort_direction == -1))
+            except Exception as e:
+                logger.error(f"Error sorting: {e}")
+        
         if length:
-            return self.items[:length]
-        return self.items
+            return items[:length]
+        return items
+    
+    def sort(self, field: str, direction: int = 1):
+        """MongoDB compatibility: cursor.sort("field", -1)"""
+        self._sort_field = field
+        self._sort_direction = direction
+        return self
     
     def __iter__(self):
         return iter(self.items)
