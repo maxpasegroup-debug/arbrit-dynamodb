@@ -359,6 +359,12 @@ const MDDashboard = () => {
             </CardContent>
           </Card>
         </div>
+          </TabsContent>
+
+          <TabsContent value="deletions">
+            <DeletionApprovals />
+          </TabsContent>
+        </Tabs>
       </main>
 
       {/* Modals */}
