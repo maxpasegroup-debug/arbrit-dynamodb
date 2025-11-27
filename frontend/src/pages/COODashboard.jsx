@@ -218,6 +218,10 @@ const COODashboard = () => {
         </div>
       </TabsContent>
 
+      <TabsContent value="quotations">
+        <QuotationManagementEnhanced />
+      </TabsContent>
+
       <TabsContent value="deletions">
         <DeletionApprovals />
       </TabsContent>
