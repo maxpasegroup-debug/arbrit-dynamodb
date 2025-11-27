@@ -128,15 +128,19 @@ const COODashboard = () => {
             <TabsTrigger value="modules">Modules</TabsTrigger>
             <TabsTrigger value="leads">
               <FileText className="w-4 h-4 mr-2" />
-              Lead Management
+              Leads
+            </TabsTrigger>
+            <TabsTrigger value="quotations">
+              <FileText className="w-4 h-4 mr-2" />
+              Quotations
             </TabsTrigger>
             <TabsTrigger value="deletions">
               <LogOut className="w-4 h-4 mr-2" />
-              Deletion Approvals
+              Deletions
             </TabsTrigger>
             <TabsTrigger value="expenses">
               <Receipt className="w-4 h-4 mr-2" />
-              Expense Overview
+              Expenses
             </TabsTrigger>
           </TabsList>
 
