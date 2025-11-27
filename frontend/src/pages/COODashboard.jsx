@@ -129,6 +129,10 @@ const COODashboard = () => {
               <FileText className="w-4 h-4 mr-2" />
               Lead Management
             </TabsTrigger>
+            <TabsTrigger value="deletions">
+              <LogOut className="w-4 h-4 mr-2" />
+              Deletion Approvals
+            </TabsTrigger>
             <TabsTrigger value="expenses">
               <Receipt className="w-4 h-4 mr-2" />
               Expense Overview
