@@ -317,6 +317,7 @@ class DynamoDBClient:
         Delete a single document
         MongoDB: db.collection.delete_one({"id": id})
         DynamoDB: table.delete_item(Key={'id': id})
+        Returns: {"deleted_count": 1} if deleted, {"deleted_count": 0} if not found
         """
         try:
             # Determine key
@@ -327,8 +328,21 @@ class DynamoDBClient:
             else:
                 raise ValueError(f"Cannot determine key from query: {query}")
             
+            # First check if item exists
+            try:
+                response = self.table.get_item(Key=key)
+                if 'Item' not in response:
+                    logger.warning(f"Item not found for deletion: {key}")
+                    return {"deleted_count": 0}
+            except Exception as e:
+                logger.warning(f"Item check failed: {e}")
+                return {"deleted_count": 0}
+            
+            # Delete the item
             self.table.delete_item(Key=key)
+            logger.debug(f"Successfully deleted item: {key}")
             return {"deleted_count": 1}
+            
         except Exception as e:
             logger.error(f"Error in delete_one: {e}")
             raise
