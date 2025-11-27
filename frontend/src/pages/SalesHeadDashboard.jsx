@@ -7,7 +7,7 @@ import SalesOverview from '@/components/sales/SalesOverview';
 import EmployeeMonitoring from '@/components/sales/EmployeeMonitoring';
 import LeadAllocation from '@/components/sales/LeadAllocation';
 import LeadManagementEnhanced from '@/components/sales/LeadManagementEnhanced';
-import QuotationApproval from '@/components/sales/QuotationApproval';
+import QuotationManagementEnhanced from '@/components/sales/QuotationManagementEnhanced';
 import LeaveApprovals from '@/components/sales/LeaveApprovals';
 import RequestsView from '@/components/sales/RequestsView';
 import ExpenseSubmission from '@/components/expenses/ExpenseSubmission';
