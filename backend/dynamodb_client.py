@@ -80,24 +80,31 @@ class DynamoDBClient:
         """
         try:
             item = None
+            logger.debug(f"find_one called on table '{self.table_name}' with query: {query}")
             
             # Check if we can use get_item (primary key query)
             if self.table_name == 'users' and 'mobile' in query and len(query) == 1:
                 # Primary key query for users table
+                logger.debug(f"Using get_item with mobile key")
                 response = self.table.get_item(Key={'mobile': query['mobile']})
                 item = response.get('Item')
             elif self.table_name != 'users' and 'id' in query and len(query) == 1:
                 # Primary key query for other tables
+                logger.debug(f"Using get_item with id key")
                 response = self.table.get_item(Key={'id': query['id']})
                 item = response.get('Item')
             else:
                 # Need to scan - querying by non-primary-key field
+                logger.debug(f"Using scan with filter expression")
+                filter_expr = self._build_filter_expression(query)
                 response = self.table.scan(
-                    FilterExpression=self._build_filter_expression(query),
+                    FilterExpression=filter_expr,
                     Limit=1
                 )
+                logger.debug(f"Scan response: {len(response.get('Items', []))} items")
                 if response.get('Items'):
                     item = response['Items'][0]
+                    logger.debug(f"Found item: {item.get('name', 'N/A')}")
             
             # Remove sensitive fields based on projection
             if item and projection:
@@ -106,9 +113,10 @@ class DynamoDBClient:
                     if value == 0 and key in item and key != '_id':  # _id doesn't exist in DynamoDB
                         del item[key]
             
+            logger.debug(f"Returning item: {'Found' if item else 'Not found'}")
             return item
         except Exception as e:
-            logger.error(f"Error in find_one: {e}")
+            logger.error(f"Error in find_one: {e}", exc_info=True)
             return None
     
     async def find(self, query: Dict[str, Any] = None, projection: Optional[Dict] = None, limit: int = 1000) -> List[Dict]:
