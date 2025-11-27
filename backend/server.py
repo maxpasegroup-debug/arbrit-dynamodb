@@ -2165,6 +2165,68 @@ async def get_all_leads(current_user: dict = Depends(get_current_user)):
                 lead['updated_at'] = datetime.fromisoformat(lead['updated_at'])
             except:
                 pass
+
+
+# Get My Leads (for individual employee)
+@api_router.get("/sales/my-leads")
+async def get_my_leads(current_user: dict = Depends(get_current_user)):
+    """Get leads created by the current user"""
+    try:
+        query_result = await db.leads.find({"created_by": current_user["id"]})
+        leads = await query_result.sort("created_at", -1).to_list(1000)
+        return leads
+    except Exception as e:
+        logger.error(f"Error fetching my leads: {e}")
+        return []
+
+
+# Sales Leaderboard (exclude management and sales head)
+@api_router.get("/sales/leaderboard")
+async def get_sales_leaderboard(current_user: dict = Depends(get_current_user)):
+    """Get leaderboard of sales team performance (Tele Sales and Field Sales only)"""
+    try:
+        # Get all employees who are Tele Sales or Field Sales
+        employees_result = await db.employees.find({})
+        all_employees = await employees_result.to_list(1000)
+        
+        sales_employees = [
+            e for e in all_employees 
+            if e.get('designation') in ['TELE_SALES', 'FIELD_SALES'] or 
+               (e.get('department') == 'Sales' and e.get('designation') not in ['SALES_HEAD'])
+        ]
+        
+        # Get all leads
+        leads_result = await db.leads.find({})
+        all_leads = await leads_result.to_list(10000)
+        
+        # Calculate stats for each sales employee
+        leaderboard = []
+        for emp in sales_employees:
+            emp_leads = [l for l in all_leads if l.get('created_by') == emp.get('id')]
+            total_leads = len(emp_leads)
+            
+            if total_leads > 0:
+                converted_leads = len([l for l in emp_leads if l.get('status') == 'Closed'])
+                conversion_rate = round((converted_leads / total_leads) * 100, 1) if total_leads > 0 else 0
+                
+                leaderboard.append({
+                    'employee_id': emp.get('id'),
+                    'name': emp.get('name'),
+                    'designation': emp.get('designation'),
+                    'department': emp.get('department'),
+                    'total_leads': total_leads,
+                    'converted_leads': converted_leads,
+                    'conversion_rate': conversion_rate
+                })
+        
+        # Sort by total leads (descending), then by conversion rate
+        leaderboard.sort(key=lambda x: (x['total_leads'], x['conversion_rate']), reverse=True)
+        
+        return leaderboard[:10]  # Top 10
+    except Exception as e:
+        logger.error(f"Error fetching leaderboard: {e}")
+        return []
+
     
     return leads
 
