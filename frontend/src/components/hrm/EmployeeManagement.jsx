@@ -336,50 +336,61 @@ const EmployeeManagement = () => {
                 </TableCell>
               </TableRow>
             ) : (
-              filteredEmployees.map((employee) => (
-                <TableRow key={employee.id} className="border-white/10 hover:bg-white/5" data-testid={`employee-row-${employee.id}`}>
-                  <TableCell className="text-white font-medium">{employee.name}</TableCell>
-                  <TableCell className="text-gray-300">{employee.mobile}</TableCell>
-                  <TableCell className="text-gray-300">{employee.designation || '-'}</TableCell>
-                  <TableCell className="text-gray-300">
-                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-purple-500/20 text-purple-300">
-                      {employee.branch}
-                    </span>
-                  </TableCell>
-                  <TableCell className="text-gray-300">{employee.department || '-'}</TableCell>
-                  <TableCell className="text-gray-300">
-                    {employee.sales_type ? (
-                      <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                        employee.sales_type === 'tele' ? 'bg-blue-500/20 text-blue-300' : 'bg-green-500/20 text-green-300'
-                      }`}>
-                        {employee.sales_type === 'tele' ? 'Tele Sales' : employee.sales_type === 'field' ? 'Field Sales' : '-'}
-                      </span>
-                    ) : '-'}
-                  </TableCell>
-                  <TableCell className="text-gray-300">{employee.badge_title || '-'}</TableCell>
-                  <TableCell className="text-right">
-                    <div className="flex justify-end gap-2">
-                      <Button
-                        data-testid={`edit-employee-${employee.id}`}
-                        onClick={() => handleOpenDialog(employee)}
-                        variant="ghost"
-                        size="sm"
-                        className="text-blue-400 hover:text-blue-300 hover:bg-blue-500/10"
-                      >
-                        <Pencil className="w-4 h-4" />
-                      </Button>
-                      <Button
-                        data-testid={`delete-employee-${employee.id}`}
-                        onClick={() => handleDelete(employee)}
-                        variant="ghost"
-                        size="sm"
-                        className="text-red-400 hover:text-red-300 hover:bg-red-500/10"
-                      >
-                        <Trash2 className="w-4 h-4" />
-                      </Button>
-                    </div>
-                  </TableCell>
-                </TableRow>
+              sortedDepartments.map(department => (
+                <>
+                  {/* Department Header Row */}
+                  <TableRow key={`dept-${department}`} className="bg-white/10 border-white/20">
+                    <TableCell colSpan={8} className="text-white font-bold py-3 text-sm uppercase tracking-wide">
+                      {department} ({groupedEmployees[department].length})
+                    </TableCell>
+                  </TableRow>
+                  {/* Employee Rows for this department */}
+                  {groupedEmployees[department].map((employee) => (
+                    <TableRow key={employee.id} className="border-white/10 hover:bg-white/5" data-testid={`employee-row-${employee.id}`}>
+                      <TableCell className="text-white font-medium">{employee.name}</TableCell>
+                      <TableCell className="text-gray-300">{employee.mobile}</TableCell>
+                      <TableCell className="text-gray-300">{employee.designation || '-'}</TableCell>
+                      <TableCell className="text-gray-300">
+                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-purple-500/20 text-purple-300">
+                          {employee.branch}
+                        </span>
+                      </TableCell>
+                      <TableCell className="text-gray-300">{employee.department || '-'}</TableCell>
+                      <TableCell className="text-gray-300">
+                        {employee.sales_type ? (
+                          <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                            employee.sales_type === 'tele' ? 'bg-blue-500/20 text-blue-300' : 'bg-green-500/20 text-green-300'
+                          }`}>
+                            {employee.sales_type === 'tele' ? 'Tele Sales' : employee.sales_type === 'field' ? 'Field Sales' : '-'}
+                          </span>
+                        ) : '-'}
+                      </TableCell>
+                      <TableCell className="text-gray-300">{employee.badge_title || '-'}</TableCell>
+                      <TableCell className="text-right">
+                        <div className="flex justify-end gap-2">
+                          <Button
+                            data-testid={`edit-employee-${employee.id}`}
+                            onClick={() => handleOpenDialog(employee)}
+                            variant="ghost"
+                            size="sm"
+                            className="text-blue-400 hover:text-blue-300 hover:bg-blue-500/10"
+                          >
+                            <Pencil className="w-4 h-4" />
+                          </Button>
+                          <Button
+                            data-testid={`delete-employee-${employee.id}`}
+                            onClick={() => handleDelete(employee)}
+                            variant="ghost"
+                            size="sm"
+                            className="text-red-400 hover:text-red-300 hover:bg-red-500/10"
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </Button>
+                        </div>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </>
               ))
             )}
           </TableBody>
