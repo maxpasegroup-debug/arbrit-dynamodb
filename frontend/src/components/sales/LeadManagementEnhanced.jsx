@@ -43,18 +43,29 @@ const LeadManagementEnhanced = () => {
   const fetchData = async () => {
     try {
       const token = localStorage.getItem('token');
+      
+      console.log('Fetching leads and employees...');
+      
       const [leadsRes, employeesRes] = await Promise.all([
-        axios.get(`${API}/sales/leads`, { headers: { Authorization: `Bearer ${token}` } }),
+        axios.get(`${API}/sales/leads`, { headers: { Authorization: `Bearer ${token}` } })
+          .catch(err => { console.error('Leads API error:', err); return { data: [] }; }),
         axios.get(`${API}/hrm/employees`, { headers: { Authorization: `Bearer ${token}` } })
+          .catch(err => { console.error('Employees API error:', err); return { data: [] }; })
       ]);
+      
+      console.log('Leads received:', leadsRes.data?.length || 0);
+      console.log('Employees received:', employeesRes.data?.length || 0);
       
       setLeads(leadsRes.data || []);
       const salesEmployees = (employeesRes.data || []).filter(e => 
         e.designation === 'TELE_SALES' || e.designation === 'FIELD_SALES' || e.department === 'Sales'
       );
+      console.log('Sales employees filtered:', salesEmployees.length);
       setEmployees(salesEmployees);
     } catch (error) {
       console.error('Error fetching data:', error);
+      setLeads([]);
+      setEmployees([]);
     }
   };
 
