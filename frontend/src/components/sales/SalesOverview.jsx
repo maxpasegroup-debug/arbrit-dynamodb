@@ -28,23 +28,38 @@ const SalesOverview = () => {
     try {
       const token = localStorage.getItem('token');
       
-      // Fetch all data in parallel
+      console.log('Fetching stats from APIs...');
+      
+      // Fetch all data in parallel with individual error handling
       const [leadsRes, quotationsRes, employeesRes, attendanceRes] = await Promise.all([
-        axios.get(`${API}/sales/leads`, { headers: { Authorization: `Bearer ${token}` } }),
-        axios.get(`${API}/sales/quotations/all`, { headers: { Authorization: `Bearer ${token}` } }),
-        axios.get(`${API}/hrm/employees`, { headers: { Authorization: `Bearer ${token}` } }),
+        axios.get(`${API}/sales/leads`, { headers: { Authorization: `Bearer ${token}` } })
+          .catch(err => { console.error('Leads error:', err); return { data: [] }; }),
+        axios.get(`${API}/sales/quotations/all`, { headers: { Authorization: `Bearer ${token}` } })
+          .catch(err => { console.error('Quotations error:', err); return { data: [] }; }),
+        axios.get(`${API}/hrm/employees`, { headers: { Authorization: `Bearer ${token}` } })
+          .catch(err => { console.error('Employees error:', err); return { data: [] }; }),
         axios.get(`${API}/hrm/attendance`, { headers: { Authorization: `Bearer ${token}` } })
-      ]).catch(() => [{ data: [] }, { data: [] }, { data: [] }, { data: [] }]);
+          .catch(err => { console.error('Attendance error:', err); return { data: [] }; })
+      ]);
 
       const leads = leadsRes.data || [];
       const quotations = quotationsRes.data || [];
       const employees = employeesRes.data || [];
       const attendance = attendanceRes.data || [];
+      
+      console.log('Stats fetched:', { 
+        leads: leads.length, 
+        quotations: quotations.length, 
+        employees: employees.length,
+        attendance: attendance.length 
+      });
 
-      // Calculate stats
+      // Calculate stats - Fixed employee filter
       const salesEmployees = employees.filter(e => 
-        e.department === 'Sales' || e.role === 'Tele Sales' || e.role === 'Field Sales'
+        e.department === 'Sales' || e.designation === 'TELE_SALES' || e.designation === 'FIELD_SALES'
       );
+      
+      console.log('Sales employees:', salesEmployees.length);
       
       const today = new Date().toISOString().split('T')[0];
       const activeToday = attendance.filter(a => 
