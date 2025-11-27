@@ -136,21 +136,32 @@ const MDDashboard = () => {
           </div>
         </div>
 
-        {/* Quick Actions */}
-        <div className="flex flex-wrap justify-center gap-4 mb-8">
-          <button
-            onClick={() => setLeadModalOpen(true)}
-            className="px-6 py-3 bg-gradient-to-r from-blue-500 to-cyan-600 hover:from-blue-600 hover:to-cyan-700 text-white rounded-lg font-semibold shadow-lg transition-all flex items-center gap-2"
-          >
-            <Plus className="w-5 h-5" /> Submit New Lead
-          </button>
-          <button
-            onClick={() => setExpenseModalOpen(true)}
-            className="px-6 py-3 bg-gradient-to-r from-purple-500 to-pink-600 hover:from-purple-600 hover:to-pink-700 text-white rounded-lg font-semibold shadow-lg transition-all flex items-center gap-2"
-          >
-            <DollarSign className="w-5 h-5" /> Submit Expense
-          </button>
-        </div>
+        {/* Tabs Navigation */}
+        <Tabs defaultValue="dashboard" className="mb-8">
+          <TabsList className="bg-white/10 border border-white/20">
+            <TabsTrigger value="dashboard">Dashboard</TabsTrigger>
+            <TabsTrigger value="deletions">
+              <Trash2 className="w-4 h-4 mr-2" />
+              Deletion Approvals
+            </TabsTrigger>
+          </TabsList>
+
+          <TabsContent value="dashboard">
+            {/* Quick Actions */}
+            <div className="flex flex-wrap justify-center gap-4 mb-8">
+              <button
+                onClick={() => setLeadModalOpen(true)}
+                className="px-6 py-3 bg-gradient-to-r from-blue-500 to-cyan-600 hover:from-blue-600 hover:to-cyan-700 text-white rounded-lg font-semibold shadow-lg transition-all flex items-center gap-2"
+              >
+                <Plus className="w-5 h-5" /> Submit New Lead
+              </button>
+              <button
+                onClick={() => setExpenseModalOpen(true)}
+                className="px-6 py-3 bg-gradient-to-r from-purple-500 to-pink-600 hover:from-purple-600 hover:to-pink-700 text-white rounded-lg font-semibold shadow-lg transition-all flex items-center gap-2"
+              >
+                <DollarSign className="w-5 h-5" /> Submit Expense
+              </button>
+            </div>
 
         {/* Top Row - Corporate Health */}
         <div className="mb-8">
