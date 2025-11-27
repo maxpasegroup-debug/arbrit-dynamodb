@@ -8,6 +8,7 @@ import ExpenseReadOnlyView from '@/components/expenses/ExpenseReadOnlyView';
 import LeadManagementEnhanced from '@/components/sales/LeadManagementEnhanced';
 import LeadSubmissionModal from '@/components/coo/LeadSubmissionModal';
 import ExpenseSubmissionModal from '@/components/coo/ExpenseSubmissionModal';
+import DeletionApprovals from '@/components/executive/DeletionApprovals';
 import { toast } from 'sonner';
 
 const COODashboard = () => {
