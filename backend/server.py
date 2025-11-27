@@ -1568,28 +1568,33 @@ async def update_quotation(quot_id: str, update_data: QuotationUpdate, current_u
     return updated
 
 
-# Sales Head - Request Quotation Deletion (Pending Approval)
+# Sales Head/COO/MD - Delete Quotation
 @api_router.delete("/sales-head/quotations/{quot_id}")
 async def delete_quotation_request(quot_id: str, current_user: dict = Depends(get_current_user)):
-    if current_user["role"] != "Sales Head":
-        raise HTTPException(status_code=403, detail="Access denied. Sales Head role required.")
+    if current_user["role"] not in ["Sales Head", "COO", "MD", "CEO"]:
+        raise HTTPException(status_code=403, detail="Access denied")
     
     existing = await db.quotations.find_one({"id": quot_id}, {"_id": 0})
     if not existing:
         raise HTTPException(status_code=404, detail="Quotation not found")
     
-    # Mark as pending deletion instead of immediate delete
-    await db.quotations.update_one(
-        {"id": quot_id},
-        {"$set": {
-            "status": "Pending Deletion",
-            "deletion_requested_by": current_user["id"],
-            "deletion_requested_by_name": current_user["name"],
-            "deletion_requested_at": datetime.now(timezone.utc).isoformat()
-        }}
-    )
-    
-    return {"message": "Deletion request submitted. Awaiting COO/MD approval."}
+    # COO/MD/CEO can delete immediately, Sales Head needs approval
+    if current_user["role"] in ["COO", "MD", "CEO"]:
+        # Direct deletion for senior management
+        await db.quotations.delete_one({"id": quot_id})
+        return {"message": "Quotation deleted successfully", "immediate": True}
+    else:
+        # Mark as pending deletion for Sales Head
+        await db.quotations.update_one(
+            {"id": quot_id},
+            {"$set": {
+                "status": "Pending Deletion",
+                "deletion_requested_by": current_user["id"],
+                "deletion_requested_by_name": current_user["name"],
+                "deletion_requested_at": datetime.now(timezone.utc).isoformat()
+            }}
+        )
+        return {"message": "Deletion request submitted. Awaiting COO/MD approval.", "immediate": False}
 
 
 # Sales Head - Leave Approvals
