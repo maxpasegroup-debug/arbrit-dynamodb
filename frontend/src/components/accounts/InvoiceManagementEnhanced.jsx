@@ -310,7 +310,7 @@ const InvoiceManagementEnhanced = () => {
 
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label htmlFor="amount">Amount (AED) *</Label>
+                <Label htmlFor="amount">Subtotal (Excl. VAT) *</Label>
                 <Input
                   id="amount"
                   type="number"
@@ -318,6 +318,37 @@ const InvoiceManagementEnhanced = () => {
                   value={formData.amount}
                   onChange={(e) => setFormData({...formData, amount: e.target.value})}
                   className="bg-slate-800 border-slate-600 text-white"
+                  placeholder="Amount before VAT"
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="currency">Currency</Label>
+                <Select value={formData.currency} onValueChange={(val) => setFormData({...formData, currency: val})}>
+                  <SelectTrigger className="bg-slate-800 border-slate-600 text-white">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent className="bg-slate-800 border-slate-600 text-white">
+                    <SelectItem value="AED">AED</SelectItem>
+                    <SelectItem value="USD">USD</SelectItem>
+                    <SelectItem value="SAR">SAR</SelectItem>
+                    <SelectItem value="EUR">EUR</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label htmlFor="vat_rate">VAT Rate (%)</Label>
+                <Input
+                  id="vat_rate"
+                  type="number"
+                  step="0.01"
+                  value={formData.vat_rate}
+                  onChange={(e) => setFormData({...formData, vat_rate: e.target.value})}
+                  className="bg-slate-800 border-slate-600 text-white"
+                  placeholder="5% UAE VAT"
                 />
               </div>
 
@@ -332,6 +363,25 @@ const InvoiceManagementEnhanced = () => {
                 />
               </div>
             </div>
+
+            {formData.amount && (
+              <div className="p-4 bg-blue-500/10 border border-blue-500/30 rounded-lg">
+                <div className="flex justify-between text-sm">
+                  <span className="text-gray-300">Subtotal:</span>
+                  <span className="text-white font-medium">{formData.currency} {parseFloat(formData.amount || 0).toLocaleString()}</span>
+                </div>
+                <div className="flex justify-between text-sm mt-1">
+                  <span className="text-gray-300">VAT ({formData.vat_rate}%):</span>
+                  <span className="text-white font-medium">{formData.currency} {(parseFloat(formData.amount || 0) * parseFloat(formData.vat_rate || 0) / 100).toLocaleString()}</span>
+                </div>
+                <div className="flex justify-between text-lg mt-2 pt-2 border-t border-blue-500/30">
+                  <span className="text-white font-semibold">Total:</span>
+                  <span className="text-blue-300 font-bold">
+                    {formData.currency} {(parseFloat(formData.amount || 0) * (1 + parseFloat(formData.vat_rate || 0) / 100)).toLocaleString()}
+                  </span>
+                </div>
+              </div>
+            )}
 
             <div className="space-y-2">
               <Label htmlFor="description">Description</Label>
