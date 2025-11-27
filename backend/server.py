@@ -19,14 +19,15 @@ load_dotenv(ROOT_DIR / '.env')
 
 # DynamoDB initialization
 # Uses boto3/aioboto3 for AWS DynamoDB access
-db = DynamoDBDatabase()
-    print(f"✅ MongoDB client initialized successfully for database: {DB_NAME}")
+try:
+    db = DynamoDBDatabase()
+    print(f"✅ DynamoDB client initialized successfully")
 except KeyError as e:
     print(f"❌ CRITICAL: Missing environment variable: {e}")
     print(f"   Available env vars: {', '.join([k for k in os.environ.keys() if not k.startswith('_')])}")
     raise
 except Exception as e:
-    print(f"❌ CRITICAL: Failed to initialize MongoDB client: {e}")
+    print(f"❌ CRITICAL: Failed to initialize DynamoDB client: {e}")
     raise
 
 # Security
