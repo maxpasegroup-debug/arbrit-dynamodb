@@ -2151,12 +2151,20 @@ async def get_all_leads(current_user: dict = Depends(get_current_user)):
     if current_user["role"] not in ["COO", "Sales Head"]:
         raise HTTPException(status_code=403, detail="Access denied. Sales Head or COO role required.")
     
-    leads = await db.leads.find({}, {"_id": 0}).sort("created_at", -1).to_list(1000)
+    query_result = await db.leads.find({})
+    leads = await query_result.sort("created_at", -1).to_list(1000)
+    
     for lead in leads:
         if isinstance(lead.get('created_at'), str):
-            lead['created_at'] = datetime.fromisoformat(lead['created_at'])
+            try:
+                lead['created_at'] = datetime.fromisoformat(lead['created_at'])
+            except:
+                pass
         if isinstance(lead.get('updated_at'), str):
-            lead['updated_at'] = datetime.fromisoformat(lead['updated_at'])
+            try:
+                lead['updated_at'] = datetime.fromisoformat(lead['updated_at'])
+            except:
+                pass
     
     return leads
 
