@@ -63,7 +63,7 @@ logs/
 htmlcov/
 
 # Build outputs
-frontend/build/
+#frontend/build/
 dist/
 
 # OS
