@@ -80,20 +80,23 @@ class DynamoDBClient:
         try:
             # Determine primary key from query
             if 'mobile' in query and self.table_name == 'users':
+                # Use mobile as primary key for users table
                 response = self.table.get_item(Key={'mobile': query['mobile']})
-            elif 'id' in query:
+                item = response.get('Item')
+            elif 'id' in query and self.table_name != 'users':
+                # For non-users tables, id is the primary key
                 response = self.table.get_item(Key={'id': query['id']})
+                item = response.get('Item')
             else:
-                # Fallback to scan with filter
+                # Fallback to scan with filter (for users queried by id field)
                 response = self.table.scan(
                     FilterExpression=self._build_filter_expression(query),
                     Limit=1
                 )
                 if response.get('Items'):
-                    return response['Items'][0]
-                return None
-            
-            item = response.get('Item')
+                    item = response['Items'][0]
+                else:
+                    return None
             
             # Remove sensitive fields based on projection
             if item and projection:
