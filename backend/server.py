@@ -375,6 +375,225 @@ class InvoiceRequest(BaseModel):
     created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 
 
+# Payment Model
+class Payment(BaseModel):
+    model_config = ConfigDict(extra="ignore")
+    
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    invoice_id: str
+    invoice_number: str
+    client_name: str
+    amount: float
+    payment_method: str  # Bank Transfer, Cash, Cheque, Card
+    payment_date: str  # YYYY-MM-DD
+    reference_number: Optional[str] = None
+    notes: Optional[str] = None
+    recorded_by: str
+    recorded_by_name: str
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+
+
+class PaymentCreate(BaseModel):
+    invoice_id: str
+    amount: float
+    payment_method: str
+    payment_date: str
+    reference_number: Optional[str] = None
+    notes: Optional[str] = None
+
+
+# Client Account Model
+class ClientAccount(BaseModel):
+    model_config = ConfigDict(extra="ignore")
+    
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    client_name: str
+    email: Optional[str] = None
+    phone: Optional[str] = None
+    company: Optional[str] = None
+    credit_limit: float = 0.0
+    payment_terms: int = 30  # Days
+    outstanding_balance: float = 0.0
+    total_revenue: float = 0.0
+    currency: str = "AED"
+    status: str = "Active"  # Active, Suspended, Closed
+    notes: Optional[str] = None
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+    updated_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+
+
+class ClientAccountCreate(BaseModel):
+    client_name: str
+    email: Optional[str] = None
+    phone: Optional[str] = None
+    company: Optional[str] = None
+    credit_limit: float = 0.0
+    payment_terms: int = 30
+    currency: str = "AED"
+    notes: Optional[str] = None
+
+
+class ClientAccountUpdate(BaseModel):
+    client_name: Optional[str] = None
+    email: Optional[str] = None
+    phone: Optional[str] = None
+    credit_limit: Optional[float] = None
+    payment_terms: Optional[int] = None
+    status: Optional[str] = None
+    notes: Optional[str] = None
+
+
+# Vendor Model
+class Vendor(BaseModel):
+    model_config = ConfigDict(extra="ignore")
+    
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    vendor_name: str
+    vendor_type: str  # Trainer, Supplier, Service Provider
+    email: Optional[str] = None
+    phone: Optional[str] = None
+    bank_details: Optional[str] = None
+    payment_terms: int = 30
+    total_paid: float = 0.0
+    currency: str = "AED"
+    status: str = "Active"
+    notes: Optional[str] = None
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+
+
+class VendorCreate(BaseModel):
+    vendor_name: str
+    vendor_type: str
+    email: Optional[str] = None
+    phone: Optional[str] = None
+    bank_details: Optional[str] = None
+    payment_terms: int = 30
+    currency: str = "AED"
+    notes: Optional[str] = None
+
+
+class VendorPayment(BaseModel):
+    model_config = ConfigDict(extra="ignore")
+    
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    vendor_id: str
+    vendor_name: str
+    amount: float
+    payment_method: str
+    payment_date: str
+    reference_number: Optional[str] = None
+    purpose: str  # Training Fee, Supplies, Services
+    notes: Optional[str] = None
+    paid_by: str
+    paid_by_name: str
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+
+
+class VendorPaymentCreate(BaseModel):
+    vendor_id: str
+    amount: float
+    payment_method: str
+    payment_date: str
+    reference_number: Optional[str] = None
+    purpose: str
+    notes: Optional[str] = None
+
+
+# Petty Cash Model
+class PettyCash(BaseModel):
+    model_config = ConfigDict(extra="ignore")
+    
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    amount: float
+    category: str  # Office Supplies, Travel, Meals, Misc
+    description: str
+    expense_date: str
+    receipt_number: Optional[str] = None
+    recorded_by: str
+    recorded_by_name: str
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+
+
+class PettyCashCreate(BaseModel):
+    amount: float
+    category: str
+    description: str
+    expense_date: str
+    receipt_number: Optional[str] = None
+
+
+# Credit Note Model
+class CreditNote(BaseModel):
+    model_config = ConfigDict(extra="ignore")
+    
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    credit_note_number: str
+    invoice_id: Optional[str] = None
+    invoice_number: Optional[str] = None
+    client_name: str
+    amount: float
+    reason: str  # Refund, Cancellation, Discount, Error Correction
+    description: str
+    issued_date: str
+    status: str = "Issued"  # Issued, Applied, Void
+    issued_by: str
+    issued_by_name: str
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+
+
+class CreditNoteCreate(BaseModel):
+    credit_note_number: str
+    invoice_id: Optional[str] = None
+    client_name: str
+    amount: float
+    reason: str
+    description: str
+    issued_date: str
+
+
+# Recurring Invoice Model
+class RecurringInvoice(BaseModel):
+    model_config = ConfigDict(extra="ignore")
+    
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    client_name: str
+    client_id: Optional[str] = None
+    amount: float
+    description: str
+    frequency: str  # Monthly, Quarterly, Yearly
+    start_date: str
+    next_invoice_date: str
+    end_date: Optional[str] = None
+    status: str = "Active"  # Active, Paused, Completed
+    created_by: str
+    created_by_name: str
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+
+
+class RecurringInvoiceCreate(BaseModel):
+    client_name: str
+    client_id: Optional[str] = None
+    amount: float
+    description: str
+    frequency: str
+    start_date: str
+    end_date: Optional[str] = None
+
+
+# Audit Log Model
+class AuditLog(BaseModel):
+    model_config = ConfigDict(extra="ignore")
+    
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    entity_type: str  # Invoice, Payment, Client, Vendor, etc.
+    entity_id: str
+    action: str  # Created, Updated, Deleted, Approved
+    changes: Optional[str] = None  # JSON string of what changed
+    performed_by: str
+    performed_by_name: str
+    timestamp: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+
+
 class VisitLog(BaseModel):
     model_config = ConfigDict(extra="ignore")
     
