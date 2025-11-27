@@ -29,7 +29,7 @@ const ExpenseSubmissionModal = ({ open, onOpenChange }) => {
     try {
       const token = localStorage.getItem('token');
       await axios.post(
-        `${API}/expenses/claims`,
+        `${API}/expenses/my-claims`,
         {
           ...formData,
           amount: parseFloat(formData.amount)
