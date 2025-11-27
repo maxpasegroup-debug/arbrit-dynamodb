@@ -46,11 +46,11 @@ const ExpenseReadOnlyView = () => {
 
   const getStatusBadge = (status) => {
     const statusConfig = {
-      'PENDING_DEPT_HEAD': { color: 'bg-yellow-500/20 text-yellow-600 border-yellow-400/50', label: 'Pending Dept Head' },
-      'PENDING_HR': { color: 'bg-blue-500/20 text-blue-600 border-blue-400/50', label: 'Pending HR' },
-      'PENDING_ACCOUNTS': { color: 'bg-purple-500/20 text-purple-600 border-purple-400/50', label: 'Pending Accounts' },
-      'PAID': { color: 'bg-green-500/20 text-green-600 border-green-400/50', label: 'Paid' },
-      'REJECTED': { color: 'bg-red-500/20 text-red-600 border-red-400/50', label: 'Rejected' }
+      'PENDING_DEPT_HEAD': { color: 'bg-yellow-500/20 text-yellow-300 border-yellow-500/30', label: 'Pending Dept Head' },
+      'PENDING_HR': { color: 'bg-blue-500/20 text-blue-300 border-blue-500/30', label: 'Pending HR' },
+      'PENDING_ACCOUNTS': { color: 'bg-purple-500/20 text-purple-300 border-purple-500/30', label: 'Pending Accounts' },
+      'PAID': { color: 'bg-green-500/20 text-green-300 border-green-500/30', label: 'Paid' },
+      'REJECTED': { color: 'bg-red-500/20 text-red-300 border-red-500/30', label: 'Rejected' }
     };
     return <Badge className={statusConfig[status]?.color || ''}>{statusConfig[status]?.label || status}</Badge>;
   };
