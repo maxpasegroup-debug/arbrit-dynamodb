@@ -3953,20 +3953,49 @@ async def create_invoice(invoice_data: dict, current_user: dict = Depends(get_cu
         raise HTTPException(status_code=403, detail="Access denied. Accounts team access only.")
     
     try:
+        # Calculate VAT if enabled
+        subtotal = float(invoice_data["amount"])
+        vat_enabled = invoice_data.get("vat_enabled", True)
+        vat_rate = float(invoice_data.get("vat_rate", 5.0))  # Default 5% UAE VAT
+        vat_amount = (subtotal * vat_rate / 100) if vat_enabled else 0.0
+        total_amount = subtotal + vat_amount
+        
         invoice = {
             "id": str(uuid.uuid4()),
             "client_name": invoice_data["client_name"],
+            "client_id": invoice_data.get("client_id"),
             "invoice_number": invoice_data["invoice_number"],
-            "amount": float(invoice_data["amount"]),
+            "subtotal": subtotal,
+            "vat_enabled": vat_enabled,
+            "vat_rate": vat_rate,
+            "vat_amount": vat_amount,
+            "total_amount": total_amount,
+            "amount": total_amount,  # Keep for backward compatibility
+            "currency": invoice_data.get("currency", "AED"),
             "description": invoice_data.get("description", ""),
             "due_date": invoice_data.get("due_date"),
             "status": "Pending",
+            "payment_status": "Unpaid",
+            "paid_amount": 0.0,
             "created_by": current_user["id"],
             "created_by_name": current_user["name"],
             "created_at": datetime.now(timezone.utc).isoformat()
         }
         
         await db.invoices.insert_one(invoice)
+        
+        # Log audit trail
+        await db.audit_logs.insert_one({
+            "id": str(uuid.uuid4()),
+            "entity_type": "Invoice",
+            "entity_id": invoice["id"],
+            "action": "Created",
+            "changes": f"Invoice {invoice['invoice_number']} created for {invoice['client_name']}",
+            "performed_by": current_user["id"],
+            "performed_by_name": current_user["name"],
+            "timestamp": datetime.now(timezone.utc).isoformat()
+        })
+        
         return {"message": "Invoice created successfully", "invoice_id": invoice["id"]}
     except Exception as e:
         logger.error(f"Error creating invoice: {e}")
