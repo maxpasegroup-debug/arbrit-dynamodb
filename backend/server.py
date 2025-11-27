@@ -3287,6 +3287,87 @@ async def get_md_dashboard_data(current_user: dict = Depends(get_current_user)):
         raise HTTPException(status_code=500, detail="Failed to fetch dashboard data")
 
 
+# COO/MD - Get Pending Deletions
+@api_router.get("/executive/pending-deletions")
+async def get_pending_deletions(current_user: dict = Depends(get_current_user)):
+    """Get all items pending deletion approval (quotations and invoices)"""
+    if current_user.get("role") not in ["COO", "MD", "CEO"]:
+        raise HTTPException(status_code=403, detail="Access denied. COO/MD role required.")
+    
+    try:
+        # Get quotations pending deletion
+        quotations = await db.quotations.find(
+            {"status": "Pending Deletion"},
+            {"_id": 0}
+        ).to_list(1000)
+        
+        # Get invoices pending deletion
+        invoices = await db.invoices.find(
+            {"status": "Pending Deletion"},
+            {"_id": 0}
+        ).to_list(1000)
+        
+        return {
+            "quotations": quotations,
+            "invoices": invoices,
+            "total_pending": len(quotations) + len(invoices)
+        }
+    except Exception as e:
+        logger.error(f"Error fetching pending deletions: {e}")
+        raise HTTPException(status_code=500, detail="Failed to fetch pending deletions")
+
+
+# COO/MD - Approve/Reject Deletion
+@api_router.post("/executive/approve-deletion")
+async def approve_deletion(
+    item_type: str,  # "quotation" or "invoice"
+    item_id: str,
+    approval: DeletionApproval,
+    current_user: dict = Depends(get_current_user)
+):
+    """Approve or reject deletion request for quotation or invoice"""
+    if current_user.get("role") not in ["COO", "MD", "CEO"]:
+        raise HTTPException(status_code=403, detail="Access denied. COO/MD role required.")
+    
+    try:
+        collection = db.quotations if item_type == "quotation" else db.invoices
+        
+        existing = await collection.find_one({"id": item_id}, {"_id": 0})
+        if not existing:
+            raise HTTPException(status_code=404, detail=f"{item_type.capitalize()} not found")
+        
+        if existing.get("status") != "Pending Deletion":
+            raise HTTPException(status_code=400, detail="Item is not pending deletion")
+        
+        if approval.approved:
+            # Permanently delete the item
+            await collection.delete_one({"id": item_id})
+            message = f"{item_type.capitalize()} deleted successfully"
+        else:
+            # Restore to previous status (assuming it was "Pending" or "Draft")
+            await collection.update_one(
+                {"id": item_id},
+                {"$set": {
+                    "status": "Draft",  # Restore to Draft
+                    "deletion_rejected_by": current_user["id"],
+                    "deletion_rejected_by_name": current_user["name"],
+                    "deletion_rejected_at": datetime.now(timezone.utc).isoformat(),
+                    "deletion_remarks": approval.remarks
+                },
+                "$unset": {
+                    "deletion_requested_by": "",
+                    "deletion_requested_by_name": "",
+                    "deletion_requested_at": ""
+                }}
+            )
+            message = f"{item_type.capitalize()} deletion rejected, restored to Draft status"
+        
+        return {"message": message}
+    except Exception as e:
+        logger.error(f"Error processing deletion approval: {e}")
+        raise HTTPException(status_code=500, detail="Failed to process deletion approval")
+
+
 # ==================== DISPATCH & DELIVERY MODULE ====================
 
 # Pydantic Models for Dispatch
