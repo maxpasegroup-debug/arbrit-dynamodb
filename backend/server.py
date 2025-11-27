@@ -662,22 +662,88 @@ def create_access_token(data: dict, expires_delta: Optional[timedelta] = None):
 
 
 async def get_current_user(credentials: HTTPAuthorizationCredentials = Depends(security)):
+    """
+    Get current authenticated user from JWT token.
+    Enhanced with comprehensive error handling to protect user authentication.
+    """
     token = credentials.credentials
+    
+    # Validate token format
+    if not token or len(token) < 10:
+        logger.error("Invalid token format received")
+        raise HTTPException(
+            status_code=401, 
+            detail="Invalid authentication token format"
+        )
+    
     try:
+        # Decode JWT token
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
         user_id: str = payload.get("sub")
+        
         if user_id is None:
-            raise HTTPException(status_code=401, detail="Invalid authentication credentials")
+            logger.error("Token payload missing 'sub' field")
+            raise HTTPException(
+                status_code=401, 
+                detail="Invalid authentication credentials"
+            )
+            
     except jwt.ExpiredSignatureError:
-        raise HTTPException(status_code=401, detail="Token has expired")
-    except jwt.JWTError:
-        raise HTTPException(status_code=401, detail="Could not validate credentials")
+        logger.warning("Token expired")
+        raise HTTPException(
+            status_code=401, 
+            detail="Token has expired. Please login again"
+        )
+    except jwt.InvalidTokenError as e:
+        logger.error(f"Invalid JWT token: {str(e)}")
+        raise HTTPException(
+            status_code=401, 
+            detail="Could not validate credentials"
+        )
+    except jwt.JWTError as e:
+        logger.error(f"JWT error: {str(e)}")
+        raise HTTPException(
+            status_code=401, 
+            detail="Could not validate credentials"
+        )
+    except Exception as e:
+        logger.error(f"Unexpected error decoding token: {str(e)}")
+        raise HTTPException(
+            status_code=500, 
+            detail="Authentication service error"
+        )
     
-    # DynamoDB: Since 'mobile' is the primary key, we need to scan by 'id' field
-    user = await db.users.find_one({"id": user_id})
-    if user is None:
-        raise HTTPException(status_code=401, detail="User not found")
-    return user
+    # Fetch user from database with error handling
+    try:
+        # DynamoDB: Since 'mobile' is the primary key, we need to scan by 'id' field
+        user = await db.users.find_one({"id": user_id})
+        
+        if user is None:
+            logger.error(f"User not found for ID: {user_id}")
+            raise HTTPException(
+                status_code=401, 
+                detail="User account not found. Please contact administrator"
+            )
+        
+        # Validate user data integrity
+        if not user.get('id') or not user.get('mobile') or not user.get('role'):
+            logger.error(f"User data corrupted for ID: {user_id}")
+            raise HTTPException(
+                status_code=500, 
+                detail="User data integrity error. Please contact administrator"
+            )
+        
+        logger.debug(f"Authenticated user: {user.get('name')} ({user.get('role')})")
+        return user
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Database error fetching user {user_id}: {str(e)}")
+        raise HTTPException(
+            status_code=500, 
+            detail="Database service error. Please try again"
+        )
 
 
 def calculate_days_until_expiry(expiry_date_str: str) -> int:
