@@ -81,7 +81,7 @@ const AssessmentFormBuilder = ({ onBack, onFormCreated }) => {
 
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.post(`${API}/academic/assessment-forms`, formData, {
+      const response = await axios.post(`${API}/assessment/forms`, formData, {
         headers: { Authorization: `Bearer ${token}` }
       });
       
