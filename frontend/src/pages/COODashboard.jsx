@@ -213,6 +213,10 @@ const COODashboard = () => {
         </div>
       </TabsContent>
 
+      <TabsContent value="deletions">
+        <DeletionApprovals />
+      </TabsContent>
+
       <TabsContent value="expenses">
         <ExpenseReadOnlyView />
       </TabsContent>
