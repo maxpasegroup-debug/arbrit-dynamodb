@@ -161,6 +161,57 @@ const LeadManagementEnhanced = () => {
     }
   };
 
+  const handleAddSelfLead = () => {
+    setFormData({
+      client_name: '',
+      requirement: '',
+      industry: '',
+      status: 'New',
+      remarks: '',
+      assigned_to: '',
+      source: 'Self'
+    });
+    setShowAddSelfDialog(true);
+  };
+
+  const submitSelfLead = async () => {
+    if (!formData.client_name || !formData.requirement) {
+      toast.error('Please fill required fields');
+      return;
+    }
+
+    try {
+      const token = localStorage.getItem('token');
+      const user = JSON.parse(localStorage.getItem('user'));
+      
+      const leadData = {
+        ...formData,
+        assigned_by: user.id,
+        assigned_by_name: user.name,
+        created_by: user.id,
+        created_by_name: user.name
+      };
+
+      if (formData.assigned_to) {
+        const emp = employees.find(e => e.id === formData.assigned_to);
+        leadData.assigned_to_name = emp?.name || '';
+      }
+
+      await axios.post(
+        `${API}/sales-head/leads`,
+        leadData,
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      
+      toast.success('Self lead added successfully');
+      setShowAddSelfDialog(false);
+      fetchData();
+    } catch (error) {
+      console.error('Error adding lead:', error);
+      toast.error('Failed to add lead');
+    }
+  };
+
   const filteredLeads = leads.filter(lead => {
     // Status filter
     if (filter === 'unassigned' && lead.assigned_to) return false;
