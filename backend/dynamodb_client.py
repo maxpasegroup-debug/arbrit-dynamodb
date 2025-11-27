@@ -267,6 +267,26 @@ class DynamoDBClient:
         logger.info(f"Index creation for {keys} is managed at table level in DynamoDB")
         pass
     
+    async def distinct(self, field: str) -> List:
+        """
+        Get distinct values for a field
+        MongoDB: db.collection.distinct("field")
+        DynamoDB: Scan and collect unique values
+        """
+        try:
+            response = self.table.scan()
+            items = response.get('Items', [])
+            
+            distinct_values = set()
+            for item in items:
+                if field in item:
+                    distinct_values.add(item[field])
+            
+            return list(distinct_values)
+        except Exception as e:
+            logger.error(f"Error in distinct: {e}")
+            return []
+    
     def _build_filter_expression(self, query: Dict[str, Any]):
         """
         Build DynamoDB FilterExpression from MongoDB-style query
