@@ -396,10 +396,10 @@ Designation: "Sales Head"
 
 ## 📍 URLs
 
-- **Login**: https://safety-system-2.preview.emergentagent.com/login
-- **COO Dashboard**: https://safety-system-2.preview.emergentagent.com/dashboard/coo
-- **HR Dashboard**: https://safety-system-2.preview.emergentagent.com/dashboard/hr
-- **Sales Head Dashboard**: https://safety-system-2.preview.emergentagent.com/dashboard/sales-head
+- **Login**: https://finops-portal.preview.emergentagent.com/login
+- **COO Dashboard**: https://finops-portal.preview.emergentagent.com/dashboard/coo
+- **HR Dashboard**: https://finops-portal.preview.emergentagent.com/dashboard/hr
+- **Sales Head Dashboard**: https://finops-portal.preview.emergentagent.com/dashboard/sales-head
 
 ## ⚠️ Important Notes
 

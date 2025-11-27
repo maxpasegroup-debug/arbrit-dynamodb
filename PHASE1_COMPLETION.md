@@ -94,8 +94,8 @@
 
 ## URLs
 
-- **Login Page**: https://safety-system-2.preview.emergentagent.com/login
-- **COO Dashboard**: https://safety-system-2.preview.emergentagent.com/dashboard/coo
+- **Login Page**: https://finops-portal.preview.emergentagent.com/login
+- **COO Dashboard**: https://finops-portal.preview.emergentagent.com/dashboard/coo
 
 ## API Endpoints
 

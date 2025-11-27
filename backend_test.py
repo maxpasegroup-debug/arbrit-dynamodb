@@ -3,7 +3,7 @@ import sys
 from datetime import datetime
 
 class ArbritAPITester:
-    def __init__(self, base_url="https://safety-system-2.preview.emergentagent.com"):
+    def __init__(self, base_url="https://finops-portal.preview.emergentagent.com"):
         self.base_url = base_url
         self.api_url = f"{base_url}/api"
         self.token = None
