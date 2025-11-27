@@ -5240,6 +5240,11 @@ async def create_expense_claim(claim_data: ExpenseClaimCreate, current_user: dic
         claim_dict['created_at'] = claim_dict['created_at'].isoformat()
         claim_dict['updated_at'] = claim_dict['updated_at'].isoformat()
         
+        # Convert float to Decimal for DynamoDB compatibility
+        from decimal import Decimal
+        if isinstance(claim_dict.get('amount'), float):
+            claim_dict['amount'] = Decimal(str(claim_dict['amount']))
+        
         await db.expense_claims.insert_one(claim_dict)
         
         return {"message": "Expense claim submitted successfully", "claim_id": claim.id}
