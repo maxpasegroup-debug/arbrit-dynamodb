@@ -412,7 +412,9 @@ const LeadManagementEnhanced = () => {
                 </SelectTrigger>
                 <SelectContent className="bg-[#1a2f4d] border-white/20 text-white">
                   {employees.map(emp => (
-                    <SelectItem key={emp.id} value={emp.id}>{emp.name} ({emp.role})</SelectItem>
+                    <SelectItem key={emp.id} value={emp.id}>
+                      {emp.name} ({emp.designation || emp.department})
+                    </SelectItem>
                   ))}
                 </SelectContent>
               </Select>
