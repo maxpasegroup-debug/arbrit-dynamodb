@@ -13,6 +13,8 @@ import { toast } from 'sonner';
 const COODashboard = () => {
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
+  const [leadModalOpen, setLeadModalOpen] = useState(false);
+  const [expenseModalOpen, setExpenseModalOpen] = useState(false);
 
   useEffect(() => {
     const storedUser = localStorage.getItem('user');
