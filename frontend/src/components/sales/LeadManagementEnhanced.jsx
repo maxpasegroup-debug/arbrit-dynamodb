@@ -511,6 +511,72 @@ const LeadManagementEnhanced = () => {
           </DialogFooter>
         </DialogContent>
       </Dialog>
+
+      {/* Add Self Lead Dialog */}
+      <Dialog open={showAddSelfDialog} onOpenChange={setShowAddSelfDialog}>
+        <DialogContent className="bg-[#0f172a] border-white/20 text-white max-w-2xl">
+          <DialogHeader>
+            <DialogTitle className="text-xl font-bold">Add Self Lead</DialogTitle>
+          </DialogHeader>
+          <div className="grid gap-4 py-4">
+            <div className="grid gap-2">
+              <Label>Client Name *</Label>
+              <Input
+                value={formData.client_name}
+                onChange={(e) => setFormData({...formData, client_name: e.target.value})}
+                className="bg-white/5 border-white/20 text-white"
+                placeholder="Enter client name"
+              />
+            </div>
+            <div className="grid gap-2">
+              <Label>Requirement *</Label>
+              <Textarea
+                value={formData.requirement}
+                onChange={(e) => setFormData({...formData, requirement: e.target.value})}
+                className="bg-white/5 border-white/20 text-white"
+                placeholder="Describe the requirement"
+              />
+            </div>
+            <div className="grid gap-2">
+              <Label>Industry (Optional)</Label>
+              <Input
+                value={formData.industry}
+                onChange={(e) => setFormData({...formData, industry: e.target.value})}
+                placeholder="e.g., Construction, Healthcare"
+                className="bg-white/5 border-white/20 text-white"
+              />
+            </div>
+            <div className="grid gap-2">
+              <Label>Assign To (Optional)</Label>
+              <Select value={formData.assigned_to} onValueChange={(val) => setFormData({...formData, assigned_to: val})}>
+                <SelectTrigger className="bg-white/5 border-white/20 text-white">
+                  <SelectValue placeholder="Leave unassigned or select team member" />
+                </SelectTrigger>
+                <SelectContent className="bg-[#1a2f4d] border-white/20 text-white">
+                  {employees.map(emp => (
+                    <SelectItem key={emp.id} value={emp.id}>
+                      {emp.name} ({emp.designation || emp.department})
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="grid gap-2">
+              <Label>Remarks</Label>
+              <Textarea
+                value={formData.remarks}
+                onChange={(e) => setFormData({...formData, remarks: e.target.value})}
+                className="bg-white/5 border-white/20 text-white"
+                placeholder="Additional notes..."
+              />
+            </div>
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setShowAddSelfDialog(false)}>Cancel</Button>
+            <Button onClick={submitSelfLead} className="bg-blue-600 hover:bg-blue-700">Add Lead</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
