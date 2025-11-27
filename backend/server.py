@@ -1138,7 +1138,9 @@ async def create_employee(employee: EmployeeCreate, current_user: dict = Depends
 
 @api_router.get("/hrm/employees", response_model=List[Employee])
 async def get_employees(current_user: dict = Depends(get_current_user)):
-    employees = await db.employees.find({}, {"_id": 0}).to_list(1000)
+    query_result = await db.employees.find({}, {"_id": 0})
+
+    employees = await query_result.to_list(1000)
     for emp in employees:
         if isinstance(emp.get('created_at'), str):
             emp['created_at'] = datetime.fromisoformat(emp['created_at'])
@@ -1285,7 +1287,9 @@ async def record_attendance(attendance: AttendanceCreate, current_user: dict = D
 
 @api_router.get("/hrm/attendance", response_model=List[Attendance])
 async def get_attendance(current_user: dict = Depends(get_current_user)):
-    attendance_records = await db.attendance.find({}, {"_id": 0}).sort("timestamp", -1).to_list(1000)
+    query_result = await db.attendance.find({}, {"_id": 0})
+
+    attendance_records = await query_result.sort("timestamp", -1).to_list(1000)
     for record in attendance_records:
         if isinstance(record.get('timestamp'), str):
             record['timestamp'] = datetime.fromisoformat(record['timestamp'])
@@ -1317,7 +1321,9 @@ async def upload_employee_document(doc: EmployeeDocumentCreate, current_user: di
 
 @api_router.get("/hrm/employee-documents/{employee_id}", response_model=List[EmployeeDocument])
 async def get_employee_documents(employee_id: str, current_user: dict = Depends(get_current_user)):
-    docs = await db.employee_documents.find({"employee_id": employee_id}, {"_id": 0}).to_list(100)
+    query_result = await db.employee_documents.find({"employee_id": employee_id}, {"_id": 0})
+
+    docs = await query_result.to_list(100)
     for doc in docs:
         if isinstance(doc.get('uploaded_at'), str):
             doc['uploaded_at'] = datetime.fromisoformat(doc['uploaded_at'])
@@ -1326,7 +1332,9 @@ async def get_employee_documents(employee_id: str, current_user: dict = Depends(
 
 @api_router.get("/hrm/employee-documents/alerts/all")
 async def get_employee_document_alerts(current_user: dict = Depends(get_current_user)):
-    all_docs = await db.employee_documents.find({}, {"_id": 0}).to_list(1000)
+    query_result = await db.employee_documents.find({}, {"_id": 0})
+
+    all_docs = await query_result.to_list(1000)
     
     alerts = []
     for doc in all_docs:
@@ -1365,7 +1373,9 @@ async def upload_company_document(doc: CompanyDocumentCreate, current_user: dict
 
 @api_router.get("/hrm/company-documents", response_model=List[CompanyDocument])
 async def get_company_documents(current_user: dict = Depends(get_current_user)):
-    docs = await db.company_documents.find({}, {"_id": 0}).to_list(100)
+    query_result = await db.company_documents.find({}, {"_id": 0})
+
+    docs = await query_result.to_list(100)
     for doc in docs:
         if isinstance(doc.get('uploaded_at'), str):
             doc['uploaded_at'] = datetime.fromisoformat(doc['uploaded_at'])
@@ -1374,7 +1384,9 @@ async def get_company_documents(current_user: dict = Depends(get_current_user)):
 
 @api_router.get("/hrm/company-documents/alerts/all")
 async def get_company_document_alerts(current_user: dict = Depends(get_current_user)):
-    all_docs = await db.company_documents.find({}, {"_id": 0}).to_list(1000)
+    query_result = await db.company_documents.find({}, {"_id": 0})
+
+    all_docs = await query_result.to_list(1000)
     
     alerts = []
     for doc in all_docs:
@@ -1493,7 +1505,10 @@ async def get_sales_employees(
     if badge_title:
         query["badge_title"] = badge_title
     
-    employees = await db.employees.find(query, {"_id": 0}).to_list(1000)
+    query_result = await db.employees.find(query, {"_id": 0})
+
+    
+    employees = await query_result.to_list(1000)
     for emp in employees:
         if isinstance(emp.get('created_at'), str):
             emp['created_at'] = datetime.fromisoformat(emp['created_at'])
@@ -1507,11 +1522,15 @@ async def get_live_attendance(current_user: dict = Depends(get_current_user)):
         raise HTTPException(status_code=403, detail="Access denied")
     
     # Get all sales employees
-    employees = await db.employees.find({"department": "Sales"}, {"_id": 0}).to_list(1000)
+    query_result = await db.employees.find({"department": "Sales"}, {"_id": 0})
+
+    employees = await query_result.to_list(1000)
     
     # Get today's attendance
     today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
-    attendance_records = await db.attendance.find({"date": today}, {"_id": 0}).to_list(1000)
+    query_result = await db.attendance.find({"date": today}, {"_id": 0})
+
+    attendance_records = await query_result.to_list(1000)
     
     # Create attendance map
     attendance_map = {record["employee_id"]: record for record in attendance_records}
@@ -1597,7 +1616,10 @@ async def get_leads(
     if status:
         query["status"] = status
     
-    leads = await db.leads.find(query, {"_id": 0}).sort("created_at", -1).to_list(1000)
+    query_result = await db.leads.find(query, {"_id": 0})
+
+    
+    leads = await query_result.sort("created_at", -1).to_list(1000)
     for lead in leads:
         if isinstance(lead.get('created_at'), str):
             lead['created_at'] = datetime.fromisoformat(lead['created_at'])
@@ -1684,7 +1706,10 @@ async def get_quotations(
     if status:
         query["status"] = status
     
-    quotations = await db.quotations.find(query, {"_id": 0}).sort("created_at", -1).to_list(1000)
+    query_result = await db.quotations.find(query, {"_id": 0})
+
+    
+    quotations = await query_result.sort("created_at", -1).to_list(1000)
     for quot in quotations:
         if isinstance(quot.get('created_at'), str):
             quot['created_at'] = datetime.fromisoformat(quot['created_at'])
@@ -1780,7 +1805,10 @@ async def get_leave_requests(
     if status:
         query["status"] = status
     
-    leave_requests = await db.leave_requests.find(query, {"_id": 0}).sort("created_at", -1).to_list(1000)
+    query_result = await db.leave_requests.find(query, {"_id": 0})
+
+    
+    leave_requests = await query_result.sort("created_at", -1).to_list(1000)
     for req in leave_requests:
         if isinstance(req.get('created_at'), str):
             req['created_at'] = datetime.fromisoformat(req['created_at'])
@@ -1881,7 +1909,10 @@ async def get_my_leads(current_user: dict = Depends(get_current_user)):
     if not employee:
         raise HTTPException(status_code=404, detail="Employee record not found")
     
-    leads = await db.leads.find({"assigned_to": employee["id"]}, {"_id": 0}).sort("created_at", -1).to_list(1000)
+    query_result = await db.leads.find({"assigned_to": employee["id"]}, {"_id": 0})
+
+    
+    leads = await query_result.sort("created_at", -1).to_list(1000)
     for lead in leads:
         if isinstance(lead.get('created_at'), str):
             lead['created_at'] = datetime.fromisoformat(lead['created_at'])
@@ -1935,7 +1966,10 @@ async def get_my_quotations(current_user: dict = Depends(get_current_user)):
     if current_user["role"] not in ["Sales Head", "Tele Sales", "Field Sales"]:
         raise HTTPException(status_code=403, detail="Access denied")
     
-    quotations = await db.quotations.find({"created_by": current_user["id"]}, {"_id": 0}).sort("created_at", -1).to_list(1000)
+    query_result = await db.quotations.find({"created_by": current_user["id"]}, {"_id": 0})
+
+    
+    quotations = await query_result.sort("created_at", -1).to_list(1000)
     for quot in quotations:
         if isinstance(quot.get('created_at'), str):
             quot['created_at'] = datetime.fromisoformat(quot['created_at'])
@@ -1976,7 +2010,10 @@ async def get_my_trainer_requests(current_user: dict = Depends(get_current_user)
     if current_user["role"] not in ["Tele Sales", "Field Sales"]:
         raise HTTPException(status_code=403, detail="Access denied")
     
-    requests = await db.trainer_requests.find({"requested_by": current_user["id"]}, {"_id": 0}).sort("created_at", -1).to_list(1000)
+    query_result = await db.trainer_requests.find({"requested_by": current_user["id"]}, {"_id": 0})
+
+    
+    requests = await query_result.sort("created_at", -1).to_list(1000)
     for req in requests:
         if isinstance(req.get('created_at'), str):
             req['created_at'] = datetime.fromisoformat(req['created_at'])
@@ -2013,7 +2050,10 @@ async def get_my_invoice_requests(current_user: dict = Depends(get_current_user)
     if current_user["role"] not in ["Tele Sales", "Field Sales"]:
         raise HTTPException(status_code=403, detail="Access denied")
     
-    requests = await db.invoice_requests.find({"requested_by": current_user["id"]}, {"_id": 0}).sort("created_at", -1).to_list(1000)
+    query_result = await db.invoice_requests.find({"requested_by": current_user["id"]}, {"_id": 0})
+
+    
+    requests = await query_result.sort("created_at", -1).to_list(1000)
     for req in requests:
         if isinstance(req.get('created_at'), str):
             req['created_at'] = datetime.fromisoformat(req['created_at'])
@@ -2063,7 +2103,10 @@ async def get_my_visits(current_user: dict = Depends(get_current_user)):
     if current_user["role"] != "Field Sales":
         raise HTTPException(status_code=403, detail="Access denied")
     
-    visits = await db.visit_logs.find({"logged_by": current_user["id"]}, {"_id": 0}).sort("date", -1).to_list(1000)
+    query_result = await db.visit_logs.find({"logged_by": current_user["id"]}, {"_id": 0})
+
+    
+    visits = await query_result.sort("date", -1).to_list(1000)
     for visit in visits:
         if isinstance(visit.get('created_at'), str):
             visit['created_at'] = datetime.fromisoformat(visit['created_at'])
@@ -2267,7 +2310,10 @@ async def get_all_quotations(current_user: dict = Depends(get_current_user)):
     if current_user["role"] not in ["COO", "Sales Head"]:
         raise HTTPException(status_code=403, detail="Access denied. Sales Head or COO role required.")
     
-    quotations = await db.quotations.find({}, {"_id": 0}).sort("created_at", -1).to_list(1000)
+    query_result = await db.quotations.find({}, {"_id": 0})
+
+    
+    quotations = await query_result.sort("created_at", -1).to_list(1000)
     for quot in quotations:
         if isinstance(quot.get('created_at'), str):
             quot['created_at'] = datetime.fromisoformat(quot['created_at'])
@@ -2401,7 +2447,9 @@ async def create_missing_sales_user_accounts(current_user: dict = Depends(get_cu
         raise HTTPException(status_code=403, detail="Access denied. COO only.")
     
     # Get all sales employees without filtering by mobile
-    all_employees = await db.employees.find({"department": "Sales"}, {"_id": 0}).to_list(1000)
+    query_result = await db.employees.find({"department": "Sales"}, {"_id": 0})
+
+    all_employees = await query_result.to_list(1000)
     
     created_count = 0
     skipped_count = 0
@@ -2481,7 +2529,10 @@ async def get_all_trainer_requests(current_user: dict = Depends(get_current_user
     if current_user["role"] != "Academic Head":
         raise HTTPException(status_code=403, detail="Access denied. Academic Head only.")
     
-    requests = await db.trainer_requests.find({}, {"_id": 0}).sort("created_at", -1).to_list(1000)
+    query_result = await db.trainer_requests.find({}, {"_id": 0})
+
+    
+    requests = await query_result.sort("created_at", -1).to_list(1000)
     return requests
 
 
@@ -2580,14 +2631,16 @@ async def get_all_trainers(current_user: dict = Depends(get_current_user)):
         raise HTTPException(status_code=403, detail="Access denied. Academic Head only.")
     
     # Get employees with role/designation containing "Trainer"
-    trainers = await db.employees.find(
+    query_result = await db.employees.find(
         {"$or": [
             {"designation": {"$regex": "trainer", "$options": "i"}},
             {"role": {"$regex": "trainer", "$options": "i"}},
             {"department": "Academic"}
         ]},
         {"_id": 0}
-    ).to_list(1000)
+    )
+
+    trainers = await query_result.to_list(1000)
     
     return trainers
 
@@ -2598,7 +2651,10 @@ async def get_all_work_orders(current_user: dict = Depends(get_current_user)):
     if current_user["role"] != "Academic Head":
         raise HTTPException(status_code=403, detail="Access denied. Academic Head only.")
     
-    work_orders = await db.work_orders.find({}, {"_id": 0}).sort("created_at", -1).to_list(1000)
+    query_result = await db.work_orders.find({}, {"_id": 0})
+
+    
+    work_orders = await query_result.sort("created_at", -1).to_list(1000)
     return work_orders
 
 
@@ -2638,7 +2694,10 @@ async def get_all_training_sessions(current_user: dict = Depends(get_current_use
     if current_user["role"] != "Academic Head":
         raise HTTPException(status_code=403, detail="Access denied. Academic Head only.")
     
-    sessions = await db.training_sessions.find({}, {"_id": 0}).sort("training_date", -1).to_list(1000)
+    query_result = await db.training_sessions.find({}, {"_id": 0})
+
+    
+    sessions = await query_result.sort("training_date", -1).to_list(1000)
     return sessions
 
 
@@ -2669,7 +2728,10 @@ async def get_all_certificate_requests(current_user: dict = Depends(get_current_
     if current_user["role"] != "Academic Head":
         raise HTTPException(status_code=403, detail="Access denied. Academic Head only.")
     
-    requests = await db.certificate_requests.find({}, {"_id": 0}).sort("created_at", -1).to_list(1000)
+    query_result = await db.certificate_requests.find({}, {"_id": 0})
+
+    
+    requests = await query_result.sort("created_at", -1).to_list(1000)
     return requests
 
 
@@ -2703,17 +2765,22 @@ async def get_academic_team(current_user: dict = Depends(get_current_user)):
     if current_user["role"] != "Academic Head":
         raise HTTPException(status_code=403, detail="Access denied. Academic Head only.")
     
-    team_members = await db.employees.find(
+    query_result = await db.employees.find(
         {"department": "Academic"},
         {"_id": 0}
-    ).to_list(1000)
+    )
+
+    
+    team_members = await query_result.to_list(1000)
     
     # Get today's attendance for team
     today = datetime.now(timezone.utc).date().isoformat()
-    attendance_records = await db.attendance.find(
+    query_result = await db.attendance.find(
         {"date": today},
         {"_id": 0}
-    ).to_list(1000)
+    )
+
+    attendance_records = await query_result.to_list(1000)
     
     # Mark attendance status
     attendance_map = {rec["employee_id"]: rec for rec in attendance_records}
@@ -2974,10 +3041,13 @@ async def get_certificate_templates(current_user: dict = Depends(get_current_use
     if current_user.get("role") not in ["Academic Head", "COO"]:
         raise HTTPException(status_code=403, detail="Access denied. Academic Head or COO only.")
     
-    templates = await db.certificate_templates.find(
+    query_result = await db.certificate_templates.find(
         {"is_active": True},
         {"_id": 0}
-    ).to_list(1000)
+    )
+
+    
+    templates = await query_result.to_list(1000)
     
     return templates
 
@@ -3185,7 +3255,10 @@ async def get_generated_certificates(
     if work_order_id:
         query["work_order_id"] = work_order_id
     
-    certificates = await db.certificate_candidates.find(query, {"_id": 0}).to_list(1000)
+    query_result = await db.certificate_candidates.find(query, {"_id": 0})
+
+    
+    certificates = await query_result.to_list(1000)
     return certificates
 
 
@@ -3212,10 +3285,12 @@ async def get_work_orders_for_certificates(current_user: dict = Depends(get_curr
         raise HTTPException(status_code=403, detail="Access denied. Academic Head or COO only.")
     
     # Get work orders with status completed or approved
-    work_orders = await db.work_orders.find(
+    query_result = await db.work_orders.find(
         {"status": {"$in": ["completed", "approved"]}},
         {"_id": 0}
-    ).to_list(1000)
+    )
+
+    work_orders = await query_result.to_list(1000)
     
     return work_orders
 
@@ -3542,16 +3617,20 @@ async def get_pending_deletions(current_user: dict = Depends(get_current_user)):
     
     try:
         # Get quotations pending deletion
-        quotations = await db.quotations.find(
+        query_result = await db.quotations.find(
             {"status": "Pending Deletion"},
             {"_id": 0}
-        ).to_list(1000)
+        )
+
+        quotations = await query_result.to_list(1000)
         
         # Get invoices pending deletion
-        invoices = await db.invoices.find(
+        query_result = await db.invoices.find(
             {"status": "Pending Deletion"},
             {"_id": 0}
-        ).to_list(1000)
+        )
+
+        invoices = await query_result.to_list(1000)
         
         return {
             "quotations": quotations,
@@ -3671,7 +3750,10 @@ async def get_certificates_ready_for_dispatch(
     # Find certificates with status "approved" that haven't been assigned to delivery yet
     query = {"status": "approved"}
     
-    certificates = await db.certificates.find(query, {"_id": 0}).to_list(1000)
+    query_result = await db.certificates.find(query, {"_id": 0})
+
+    
+    certificates = await query_result.to_list(1000)
     
     # Filter out certificates that already have delivery tasks
     result = []
@@ -3782,7 +3864,10 @@ async def get_all_delivery_tasks(
     if branch and branch != "All":
         query["client_branch"] = branch
     
-    tasks = await db.delivery_tasks.find(query, {"_id": 0}).to_list(1000)
+    query_result = await db.delivery_tasks.find(query, {"_id": 0})
+
+    
+    tasks = await query_result.to_list(1000)
     
     # Convert datetime strings back for frontend
     for task in tasks:
@@ -3871,10 +3956,13 @@ async def get_my_delivery_tasks(current_user: dict = Depends(get_current_user)):
     
     employee_id = employee.get("id")
     
-    tasks = await db.delivery_tasks.find(
+    query_result = await db.delivery_tasks.find(
         {"assigned_to_employee_id": employee_id},
         {"_id": 0}
-    ).to_list(1000)
+    )
+
+    
+    tasks = await query_result.to_list(1000)
     
     return tasks
 
@@ -3947,7 +4035,9 @@ async def get_all_invoice_requests(current_user: dict = Depends(get_current_user
         raise HTTPException(status_code=403, detail="Access denied. Accounts team access only.")
     
     try:
-        requests = await db.invoice_requests.find({}, {"_id": 0}).sort("created_at", -1).to_list(1000)
+        query_result = await db.invoice_requests.find({}, {"_id": 0})
+
+        requests = await query_result.sort("created_at", -1).to_list(1000)
         return requests
     except Exception as e:
         logger.error(f"Error fetching invoice requests: {e}")
@@ -3961,7 +4051,9 @@ async def get_all_invoices(current_user: dict = Depends(get_current_user)):
         raise HTTPException(status_code=403, detail="Access denied. Accounts team access only.")
     
     try:
-        invoices = await db.invoices.find({}, {"_id": 0}).sort("created_at", -1).to_list(1000)
+        query_result = await db.invoices.find({}, {"_id": 0})
+
+        invoices = await query_result.sort("created_at", -1).to_list(1000)
         return invoices
     except Exception as e:
         logger.error(f"Error fetching invoices: {e}")
@@ -4104,7 +4196,9 @@ async def get_all_payments(current_user: dict = Depends(get_current_user)):
         raise HTTPException(status_code=403, detail="Access denied. Accounts team access only.")
     
     try:
-        payments = await db.payments.find({}, {"_id": 0}).sort("payment_date", -1).to_list(1000)
+        query_result = await db.payments.find({}, {"_id": 0})
+
+        payments = await query_result.sort("payment_date", -1).to_list(1000)
         return payments
     except Exception as e:
         logger.error(f"Error fetching payments: {e}")
@@ -4146,7 +4240,9 @@ async def record_payment(payment_data: dict, current_user: dict = Depends(get_cu
         total_paid = payment_amount
         
         # Calculate total payments for this invoice
-        existing_payments = await db.payments.find({"invoice_id": invoice_id}, {"_id": 0}).to_list(1000)
+        query_result = await db.payments.find({"invoice_id": invoice_id}, {"_id": 0})
+
+        existing_payments = await query_result.to_list(1000)
         total_paid = sum(float(p.get("amount", 0)) for p in existing_payments)
         
         if total_paid >= invoice_total:
@@ -4205,7 +4301,9 @@ async def record_payment_enhanced(payment_data: PaymentCreate, current_user: dic
         
         # Update invoice payment status
         total_paid = payment_data.amount
-        existing_payments = await db.payments.find({"invoice_id": payment_data.invoice_id}, {"_id": 0}).to_list(1000)
+        query_result = await db.payments.find({"invoice_id": payment_data.invoice_id}, {"_id": 0})
+
+        existing_payments = await query_result.to_list(1000)
         total_paid = sum(float(p.get("amount", 0)) for p in existing_payments)
         
         invoice_total = float(invoice.get("total_amount", invoice.get("amount", 0)))
@@ -4259,26 +4357,36 @@ async def get_financial_dashboard(
         # Calculate revenue
         total_invoices = await db.invoices.count_documents({})
         total_revenue = 0
-        paid_invoices = await db.invoices.find({"payment_status": "Paid"}, {"_id": 0}).to_list(10000)
+        query_result = await db.invoices.find({"payment_status": "Paid"}, {"_id": 0})
+
+        paid_invoices = await query_result.to_list(10000)
         total_revenue = sum(float(inv.get("total_amount", inv.get("amount", 0))) for inv in paid_invoices)
         
         # Calculate expenses
-        expense_claims = await db.expense_claims.find({"status": "Paid"}, {"_id": 0}).to_list(10000)
+        query_result = await db.expense_claims.find({"status": "Paid"}, {"_id": 0})
+
+        expense_claims = await query_result.to_list(10000)
         total_expenses = sum(float(exp.get("amount", 0)) for exp in expense_claims)
         
         # Add vendor payments to expenses
-        vendor_payments = await db.vendor_payments.find({}, {"_id": 0}).to_list(10000)
+        query_result = await db.vendor_payments.find({}, {"_id": 0})
+
+        vendor_payments = await query_result.to_list(10000)
         total_expenses += sum(float(vp.get("amount", 0)) for vp in vendor_payments)
         
         # Add petty cash to expenses
-        petty_cash = await db.petty_cash.find({}, {"_id": 0}).to_list(10000)
+        query_result = await db.petty_cash.find({}, {"_id": 0})
+
+        petty_cash = await query_result.to_list(10000)
         total_expenses += sum(float(pc.get("amount", 0)) for pc in petty_cash)
         
         # Outstanding receivables
-        pending_invoices = await db.invoices.find(
+        query_result = await db.invoices.find(
             {"payment_status": {"$in": ["Unpaid", "Partially Paid"]}},
             {"_id": 0}
-        ).to_list(10000)
+        )
+
+        pending_invoices = await query_result.to_list(10000)
         outstanding_amount = sum(
             float(inv.get("total_amount", inv.get("amount", 0))) - float(inv.get("paid_amount", 0))
             for inv in pending_invoices
@@ -4319,11 +4427,13 @@ async def get_vat_report(
     
     try:
         # Get all paid invoices in date range
-        invoices = await db.invoices.find({
+        query_result = await db.invoices.find({
             "payment_status": "Paid",
             "vat_enabled": True,
             "created_at": {"$gte": start_date, "$lte": end_date}
-        }, {"_id": 0}).to_list(10000)
+        }, {"_id": 0})
+
+        invoices = await query_result.to_list(10000)
         
         total_sales = sum(float(inv.get("subtotal", 0)) for inv in invoices)
         total_vat = sum(float(inv.get("vat_amount", 0)) for inv in invoices)
@@ -4389,7 +4499,9 @@ async def get_all_clients(current_user: dict = Depends(get_current_user)):
         raise HTTPException(status_code=403, detail="Access denied")
     
     try:
-        clients = await db.client_accounts.find({}, {"_id": 0}).sort("client_name", 1).to_list(10000)
+        query_result = await db.client_accounts.find({}, {"_id": 0})
+
+        clients = await query_result.sort("client_name", 1).to_list(10000)
         return clients
     except Exception as e:
         logger.error(f"Error fetching clients: {e}")
@@ -4459,7 +4571,9 @@ async def get_all_vendors(current_user: dict = Depends(get_current_user)):
         raise HTTPException(status_code=403, detail="Access denied")
     
     try:
-        vendors = await db.vendors.find({}, {"_id": 0}).sort("vendor_name", 1).to_list(10000)
+        query_result = await db.vendors.find({}, {"_id": 0})
+
+        vendors = await query_result.sort("vendor_name", 1).to_list(10000)
         return vendors
     except Exception as e:
         logger.error(f"Error fetching vendors: {e}")
@@ -4505,7 +4619,9 @@ async def get_vendor_payments(current_user: dict = Depends(get_current_user)):
         raise HTTPException(status_code=403, detail="Access denied")
     
     try:
-        payments = await db.vendor_payments.find({}, {"_id": 0}).sort("payment_date", -1).to_list(10000)
+        query_result = await db.vendor_payments.find({}, {"_id": 0})
+
+        payments = await query_result.sort("payment_date", -1).to_list(10000)
         return payments
     except Exception as e:
         logger.error(f"Error fetching vendor payments: {e}")
@@ -4542,7 +4658,9 @@ async def get_petty_cash(current_user: dict = Depends(get_current_user)):
         raise HTTPException(status_code=403, detail="Access denied")
     
     try:
-        records = await db.petty_cash.find({}, {"_id": 0}).sort("expense_date", -1).to_list(10000)
+        query_result = await db.petty_cash.find({}, {"_id": 0})
+
+        records = await query_result.sort("expense_date", -1).to_list(10000)
         return records
     except Exception as e:
         logger.error(f"Error fetching petty cash: {e}")
@@ -4580,7 +4698,9 @@ async def get_credit_notes(current_user: dict = Depends(get_current_user)):
         raise HTTPException(status_code=403, detail="Access denied")
     
     try:
-        notes = await db.credit_notes.find({}, {"_id": 0}).sort("issued_date", -1).to_list(10000)
+        query_result = await db.credit_notes.find({}, {"_id": 0})
+
+        notes = await query_result.sort("issued_date", -1).to_list(10000)
         return notes
     except Exception as e:
         logger.error(f"Error fetching credit notes: {e}")
@@ -4619,7 +4739,9 @@ async def get_recurring_invoices(current_user: dict = Depends(get_current_user))
         raise HTTPException(status_code=403, detail="Access denied")
     
     try:
-        invoices = await db.recurring_invoices.find({}, {"_id": 0}).sort("created_at", -1).to_list(10000)
+        query_result = await db.recurring_invoices.find({}, {"_id": 0})
+
+        invoices = await query_result.sort("created_at", -1).to_list(10000)
         return invoices
     except Exception as e:
         logger.error(f"Error fetching recurring invoices: {e}")
@@ -4694,16 +4816,20 @@ async def get_assessment_forms(current_user: dict = Depends(get_current_user)):
     try:
         # Academic Head and COO/MD see all forms
         if current_user.get("role") in ["Academic Head", "COO", "MD"]:
-            forms = await db.assessment_forms.find(
+            query_result = await db.assessment_forms.find(
                 {"status": "active"},
                 {"_id": 0}
-            ).sort("created_at", -1).to_list(1000)
+            )
+
+            forms = await query_result.sort("created_at", -1).to_list(1000)
         else:
             # Trainers see only their assigned forms
-            forms = await db.assessment_forms.find(
+            query_result = await db.assessment_forms.find(
                 {"trainer_id": current_user["employee_id"], "status": "active"},
                 {"_id": 0}
-            ).sort("created_at", -1).to_list(1000)
+            )
+
+            forms = await query_result.sort("created_at", -1).to_list(1000)
         
         return forms
     except Exception as e:
@@ -4801,7 +4927,9 @@ async def get_assessment_reports(
             }
         
         # Get submissions
-        submissions = await db.assessment_submissions.find(query, {"_id": 0}).sort("submitted_at", -1).to_list(10000)
+        query_result = await db.assessment_submissions.find(query, {"_id": 0})
+
+        submissions = await query_result.sort("submitted_at", -1).to_list(10000)
         
         # Calculate analytics
         total_responses = len(submissions)
@@ -4878,7 +5006,10 @@ async def export_assessment_reports(
         if trainer_id:
             query["trainer_id"] = trainer_id
         
-        submissions = await db.assessment_submissions.find(query, {"_id": 0}).sort("submitted_at", -1).to_list(10000)
+        query_result = await db.assessment_submissions.find(query, {"_id": 0})
+
+        
+        submissions = await query_result.sort("submitted_at", -1).to_list(10000)
         
         # Prepare CSV data
         csv_data = []
@@ -5057,10 +5188,12 @@ async def create_expense_claim(claim_data: ExpenseClaimCreate, current_user: dic
 async def get_my_expense_claims(current_user: dict = Depends(get_current_user)):
     """Get employee's own expense claims"""
     try:
-        claims = await db.expense_claims.find(
+        query_result = await db.expense_claims.find(
             {"employee_id": current_user["id"]},
             {"_id": 0}
-        ).sort("created_at", -1).to_list(1000)
+        )
+
+        claims = await query_result.sort("created_at", -1).to_list(1000)
         
         return claims
     except Exception as e:
@@ -5087,7 +5220,10 @@ async def get_expenses_for_approval(current_user: dict = Depends(get_current_use
                 "dept_head_id": current_user.get("employee_id")
             }
         
-        claims = await db.expense_claims.find(query, {"_id": 0}).sort("created_at", -1).to_list(1000)
+        query_result = await db.expense_claims.find(query, {"_id": 0})
+
+        
+        claims = await query_result.sort("created_at", -1).to_list(1000)
         
         return claims
     except Exception as e:
@@ -5147,10 +5283,12 @@ async def get_expenses_for_hr_review(current_user: dict = Depends(get_current_us
         raise HTTPException(status_code=403, detail="Access denied. HR access only.")
     
     try:
-        claims = await db.expense_claims.find(
+        query_result = await db.expense_claims.find(
             {"status": "PENDING_HR"},
             {"_id": 0}
-        ).sort("created_at", -1).to_list(1000)
+        )
+
+        claims = await query_result.sort("created_at", -1).to_list(1000)
         
         return claims
     except Exception as e:
@@ -5208,10 +5346,12 @@ async def get_expenses_for_accounts_review(current_user: dict = Depends(get_curr
         raise HTTPException(status_code=403, detail="Access denied. Accounts access only.")
     
     try:
-        claims = await db.expense_claims.find(
+        query_result = await db.expense_claims.find(
             {"status": {"$in": ["PENDING_ACCOUNTS", "PAID"]}},
             {"_id": 0}
-        ).sort("created_at", -1).to_list(1000)
+        )
+
+        claims = await query_result.sort("created_at", -1).to_list(1000)
         
         return claims
     except Exception as e:
