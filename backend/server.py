@@ -1732,7 +1732,7 @@ async def delete_lead(lead_id: str, current_user: dict = Depends(get_current_use
         raise HTTPException(status_code=403, detail="Access denied")
     
     result = await db.leads.delete_one({"id": lead_id})
-    if result.deleted_count == 0:
+    if result.get("deleted_count", 0) == 0:
         raise HTTPException(status_code=404, detail="Lead not found")
     
     return {"message": "Lead deleted successfully"}
