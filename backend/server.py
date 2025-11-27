@@ -469,7 +469,7 @@ async def health_check():
         await db.command('ping')
         
         # Count users to verify data access
-        user_count = len(await db.scan_items('users', {} if {} else {}))
+        user_count = len(await db.scan_items('users', {}))
         
         return {
             "status": "healthy",
@@ -705,14 +705,14 @@ async def diagnostics():
         
         # Get ALL user data (for production troubleshooting)
         if "users" in collections:
-            all_users = await db.scan_items('users', {}, {"_id": 0, "mobile": 1, "name": 1, "role": 1} if {}, {"_id": 0, "mobile": 1, "name": 1, "role": 1} else {})
+            all_users = await db.scan_items('users', {})
             diagnostics_data["all_users"] = all_users
             diagnostics_data["user_samples"] = all_users[:5]  # First 5 for quick view
             diagnostics_data["total_users"] = len(all_users)
         
         # Get employees count
         if "employees" in collections:
-            employees = await db.scan_items('employees', {}, {"_id": 0, "name": 1, "mobile": 1, "designation": 1, "department": 1} if {}, {"_id": 0, "name": 1, "mobile": 1, "designation": 1, "department": 1} else {})
+            employees = await db.scan_items('employees', {})
             diagnostics_data["employees_count"] = len(employees)
             diagnostics_data["all_employees"] = employees
             
@@ -915,7 +915,7 @@ async def create_employee(employee: EmployeeCreate, current_user: dict = Depends
 
 @api_router.get("/hrm/employees", response_model=List[Employee])
 async def get_employees(current_user: dict = Depends(get_current_user)):
-    employees = await db.scan_items('employees', {}, {"_id": 0} if {}, {"_id": 0} else {})
+    employees = await db.scan_items('employees', {})
     for emp in employees:
         if isinstance(emp.get('created_at'), str):
             emp['created_at'] = datetime.fromisoformat(emp['created_at'])
@@ -1094,7 +1094,7 @@ async def upload_employee_document(doc: EmployeeDocumentCreate, current_user: di
 
 @api_router.get("/hrm/employee-documents/{employee_id}", response_model=List[EmployeeDocument])
 async def get_employee_documents(employee_id: str, current_user: dict = Depends(get_current_user)):
-    docs = await db.scan_items('employee_documents', {"employee_id": employee_id}, {"_id": 0} if {"employee_id": employee_id}, {"_id": 0} else {})
+    docs = await db.scan_items('employee_documents', {"employee_id": employee_id})
     for doc in docs:
         if isinstance(doc.get('uploaded_at'), str):
             doc['uploaded_at'] = datetime.fromisoformat(doc['uploaded_at'])
@@ -1103,7 +1103,7 @@ async def get_employee_documents(employee_id: str, current_user: dict = Depends(
 
 @api_router.get("/hrm/employee-documents/alerts/all")
 async def get_employee_document_alerts(current_user: dict = Depends(get_current_user)):
-    all_docs = await db.scan_items('employee_documents', {}, {"_id": 0} if {}, {"_id": 0} else {})
+    all_docs = await db.scan_items('employee_documents', {})
     
     alerts = []
     for doc in all_docs:
@@ -1142,7 +1142,7 @@ async def upload_company_document(doc: CompanyDocumentCreate, current_user: dict
 
 @api_router.get("/hrm/company-documents", response_model=List[CompanyDocument])
 async def get_company_documents(current_user: dict = Depends(get_current_user)):
-    docs = await db.scan_items('company_documents', {}, {"_id": 0} if {}, {"_id": 0} else {})
+    docs = await db.scan_items('company_documents', {})
     for doc in docs:
         if isinstance(doc.get('uploaded_at'), str):
             doc['uploaded_at'] = datetime.fromisoformat(doc['uploaded_at'])
@@ -1151,7 +1151,7 @@ async def get_company_documents(current_user: dict = Depends(get_current_user)):
 
 @api_router.get("/hrm/company-documents/alerts/all")
 async def get_company_document_alerts(current_user: dict = Depends(get_current_user)):
-    all_docs = await db.scan_items('company_documents', {}, {"_id": 0} if {}, {"_id": 0} else {})
+    all_docs = await db.scan_items('company_documents', {})
     
     alerts = []
     for doc in all_docs:
@@ -1270,7 +1270,7 @@ async def get_sales_employees(
     if badge_title:
         query["badge_title"] = badge_title
     
-    employees = await db.scan_items('employees', query, {"_id": 0} if query, {"_id": 0} else {})
+    employees = await db.scan_items('employees', query)
     for emp in employees:
         if isinstance(emp.get('created_at'), str):
             emp['created_at'] = datetime.fromisoformat(emp['created_at'])
@@ -1284,11 +1284,11 @@ async def get_live_attendance(current_user: dict = Depends(get_current_user)):
         raise HTTPException(status_code=403, detail="Access denied")
     
     # Get all sales employees
-    employees = await db.scan_items('employees', {"department": "Sales"}, {"_id": 0} if {"department": "Sales"}, {"_id": 0} else {})
+    employees = await db.scan_items('employees', {"department": "Sales"})
     
     # Get today's attendance
     today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
-    attendance_records = await db.scan_items('attendance', {"date": today}, {"_id": 0} if {"date": today}, {"_id": 0} else {})
+    attendance_records = await db.scan_items('attendance', {"date": today})
     
     # Create attendance map
     attendance_map = {record["employee_id"]: record for record in attendance_records}
@@ -2058,7 +2058,7 @@ async def create_missing_sales_user_accounts(current_user: dict = Depends(get_cu
         raise HTTPException(status_code=403, detail="Access denied. COO only.")
     
     # Get all sales employees without filtering by mobile
-    all_employees = await db.scan_items('employees', {"department": "Sales"}, {"_id": 0} if {"department": "Sales"}, {"_id": 0} else {})
+    all_employees = await db.scan_items('employees', {"department": "Sales"})
     
     created_count = 0
     skipped_count = 0
@@ -2242,16 +2242,7 @@ async def get_all_trainers(current_user: dict = Depends(get_current_user)):
             {"designation": {"$regex": "trainer", "$options": "i"}},
             {"role": {"$regex": "trainer", "$options": "i"}},
             {"department": "Academic"}
-        ]},
-        {"_id": 0}
-     if 
-        {"$or": [
-            {"designation": {"$regex": "trainer", "$options": "i"}},
-            {"role": {"$regex": "trainer", "$options": "i"}},
-            {"department": "Academic"}
-        ]},
-        {"_id": 0}
-     else {})
+        ]})
     
     return trainers
 
@@ -2367,23 +2358,11 @@ async def get_academic_team(current_user: dict = Depends(get_current_user)):
     if current_user["role"] != "Academic Head":
         raise HTTPException(status_code=403, detail="Access denied. Academic Head only.")
     
-    team_members = await db.scan_items('employees', 
-        {"department": "Academic"},
-        {"_id": 0}
-     if 
-        {"department": "Academic"},
-        {"_id": 0}
-     else {})
+    team_members = await db.scan_items('employees', {"department": "Academic"})
     
     # Get today's attendance for team
     today = datetime.now(timezone.utc).date().isoformat()
-    attendance_records = await db.scan_items('attendance', 
-        {"date": today},
-        {"_id": 0}
-     if 
-        {"date": today},
-        {"_id": 0}
-     else {})
+    attendance_records = await db.scan_items('attendance', {"date": today})
     
     # Mark attendance status
     attendance_map = {rec["employee_id"]: rec for rec in attendance_records}
@@ -2644,13 +2623,7 @@ async def get_certificate_templates(current_user: dict = Depends(get_current_use
     if current_user.get("role") not in ["Academic Head", "COO"]:
         raise HTTPException(status_code=403, detail="Access denied. Academic Head or COO only.")
     
-    templates = await db.scan_items('certificate_templates', 
-        {"is_active": True},
-        {"_id": 0}
-     if 
-        {"is_active": True},
-        {"_id": 0}
-     else {})
+    templates = await db.scan_items('certificate_templates', {"is_active": True})
     
     return templates
 
@@ -2858,7 +2831,7 @@ async def get_generated_certificates(
     if work_order_id:
         query["work_order_id"] = work_order_id
     
-    certificates = await db.scan_items('certificate_candidates', query, {"_id": 0} if query, {"_id": 0} else {})
+    certificates = await db.scan_items('certificate_candidates', query)
     return certificates
 
 
@@ -2886,12 +2859,7 @@ async def get_work_orders_for_certificates(current_user: dict = Depends(get_curr
     
     # Get work orders with status completed or approved
     work_orders = await db.scan_items('work_orders', 
-        {"status": {"$in": ["completed", "approved"]}},
-        {"_id": 0}
-     if 
-        {"status": {"$in": ["completed", "approved"]}},
-        {"_id": 0}
-     else {})
+        {"status": {"$in": ["completed", "approved"]}})
     
     return work_orders
 
@@ -3031,9 +2999,9 @@ async def get_coo_dashboard_data(current_user: dict = Depends(get_current_user))
     
     try:
         # HRM Overview
-        total_employees = len(await db.scan_items('employees', {} if {} else {}))
+        total_employees = len(await db.scan_items('employees', {}))
         today = datetime.now(timezone.utc).date().isoformat()
-        present_today = len(await db.scan_items('attendance', {"date": today, "status": "present"} if {"date": today, "status": "present"} else {}))
+        present_today = len(await db.scan_items('attendance', {}))
         
         # Document expiry alerts (within 30 days)
         thirty_days_ahead = (datetime.now(timezone.utc) + timedelta(days=30)).isoformat()
@@ -3042,8 +3010,8 @@ async def get_coo_dashboard_data(current_user: dict = Depends(get_current_user))
         }))
         
         # Sales Performance
-        total_leads = len(await db.scan_items('leads', {} if {} else {}))
-        converted_leads = len(await db.scan_items('leads', {"status": "converted"} if {"status": "converted"} else {}))
+        total_leads = len(await db.scan_items('leads', {}))
+        converted_leads = len(await db.scan_items('leads', {}))
         active_quotations = len(await db.scan_items('quotations', {"status": {"$in": ["pending", "sent"]}} if {"status": {"$in": ["pending", "sent"]}} else {}))
         
         # Academic Operations
@@ -3054,13 +3022,13 @@ async def get_coo_dashboard_data(current_user: dict = Depends(get_current_user))
             "department": "Academic",
             "designation": {"$in": ["TRAINER_FULLTIME", "TRAINER_PARTTIME"]}
         } else {}))
-        total_work_orders = len(await db.scan_items('work_orders', {} if {} else {}))
-        completed_sessions = len(await db.scan_items('work_orders', {"status": "completed"} if {"status": "completed"} else {}))
-        certificates_generated = len(await db.scan_items('certificate_candidates', {} if {} else {}))
+        total_work_orders = len(await db.scan_items('work_orders', {}))
+        completed_sessions = len(await db.scan_items('work_orders', {}))
+        certificates_generated = len(await db.scan_items('certificate_candidates', {}))
         
         # Dispatch Status
-        pending_dispatch = len(await db.scan_items('delivery_tasks', {"status": "PENDING"} if {"status": "PENDING"} else {}))
-        out_for_delivery = len(await db.scan_items('delivery_tasks', {"status": "OUT_FOR_DELIVERY"} if {"status": "OUT_FOR_DELIVERY"} else {}))
+        pending_dispatch = len(await db.scan_items('delivery_tasks', {}))
+        out_for_delivery = len(await db.scan_items('delivery_tasks', {}))
         delivered_today_start = datetime.now(timezone.utc).replace(hour=0, minute=0, second=0, microsecond=0)
         delivered_today = len(await db.scan_items('delivery_tasks', {
             "status": "DELIVERED",
@@ -3113,38 +3081,38 @@ async def get_md_dashboard_data(current_user: dict = Depends(get_current_user)):
     
     try:
         # Corporate Health Score (calculated based on multiple factors)
-        total_employees = len(await db.scan_items('employees', {} if {} else {}))
+        total_employees = len(await db.scan_items('employees', {}))
         today = datetime.now(timezone.utc).date().isoformat()
-        present_today = len(await db.scan_items('attendance', {"date": today, "status": "present"} if {"date": today, "status": "present"} else {}))
+        present_today = len(await db.scan_items('attendance', {}))
         attendance_score = (present_today / total_employees * 100) if total_employees > 0 else 0
         
-        total_leads = len(await db.scan_items('leads', {} if {} else {}))
-        converted_leads = len(await db.scan_items('leads', {"status": "converted"} if {"status": "converted"} else {}))
+        total_leads = len(await db.scan_items('leads', {}))
+        converted_leads = len(await db.scan_items('leads', {}))
         sales_score = (converted_leads / total_leads * 100) if total_leads > 0 else 0
         
-        delivered = len(await db.scan_items('delivery_tasks', {"status": "DELIVERED"} if {"status": "DELIVERED"} else {}))
-        total_tasks = len(await db.scan_items('delivery_tasks', {} if {} else {}))
+        delivered = len(await db.scan_items('delivery_tasks', {}))
+        total_tasks = len(await db.scan_items('delivery_tasks', {}))
         dispatch_score = (delivered / total_tasks * 100) if total_tasks > 0 else 0
         
         corporate_health = round((attendance_score + sales_score + dispatch_score) / 3, 1)
         
         # Executive Analytics
-        total_work_orders = len(await db.scan_items('work_orders', {} if {} else {}))
-        completed_work_orders = len(await db.scan_items('work_orders', {"status": "completed"} if {"status": "completed"} else {}))
+        total_work_orders = len(await db.scan_items('work_orders', {}))
+        completed_work_orders = len(await db.scan_items('work_orders', {}))
         
         # Workforce Intelligence
         departments = await db.employees.distinct("department")
         dept_counts = {}
         for dept in departments:
-            count = len(await db.scan_items('employees', {"department": dept} if {"department": dept} else {}))
+            count = len(await db.scan_items('employees', {}))
             dept_counts[dept] = count
         
         # Sales Intelligence
-        high_value_leads = len(await db.scan_items('leads', {} if {} else {}))  # Can filter by value threshold
-        lost_deals = len(await db.scan_items('leads', {"status": "lost"} if {"status": "lost"} else {}))
+        high_value_leads = len(await db.scan_items('leads', {}))  # Can filter by value threshold
+        lost_deals = len(await db.scan_items('leads', {}))
         
         # Academic Excellence
-        certificates_generated = len(await db.scan_items('certificate_candidates', {} if {} else {}))
+        certificates_generated = len(await db.scan_items('certificate_candidates', {}))
         active_trainers = len(await db.scan_items('employees', {
             "department": "Academic",
             "designation": {"$in": ["TRAINER_FULLTIME", "TRAINER_PARTTIME"]}
@@ -3272,7 +3240,7 @@ async def get_certificates_ready_for_dispatch(
     # Find certificates with status "approved" that haven't been assigned to delivery yet
     query = {"status": "approved"}
     
-    certificates = await db.scan_items('certificates', query, {"_id": 0} if query, {"_id": 0} else {})
+    certificates = await db.scan_items('certificates', query)
     
     # Filter out certificates that already have delivery tasks
     result = []
@@ -3383,7 +3351,7 @@ async def get_all_delivery_tasks(
     if branch and branch != "All":
         query["client_branch"] = branch
     
-    tasks = await db.scan_items('delivery_tasks', query, {"_id": 0} if query, {"_id": 0} else {})
+    tasks = await db.scan_items('delivery_tasks', query)
     
     # Convert datetime strings back for frontend
     for task in tasks:
@@ -3426,8 +3394,8 @@ async def get_dispatch_summary(current_user: dict = Depends(get_current_user)):
         raise HTTPException(status_code=403, detail="Access denied. Dispatch Head only.")
     
     # Count by status
-    pending = len(await db.scan_items('delivery_tasks', {"status": "PENDING"} if {"status": "PENDING"} else {}))
-    out_for_delivery = len(await db.scan_items('delivery_tasks', {"status": "OUT_FOR_DELIVERY"} if {"status": "OUT_FOR_DELIVERY"} else {}))
+    pending = len(await db.scan_items('delivery_tasks', {}))
+    out_for_delivery = len(await db.scan_items('delivery_tasks', {}))
     
     # Delivered today
     today_start = datetime.now(timezone.utc).replace(hour=0, minute=0, second=0, microsecond=0)
@@ -3447,8 +3415,8 @@ async def get_dispatch_summary(current_user: dict = Depends(get_current_user)):
     } else {}))
     
     # Certificates ready for dispatch
-    certificates_ready = len(await db.scan_items('certificates', {"status": "approved"} if {"status": "approved"} else {}))
-    existing_tasks_count = len(await db.scan_items('delivery_tasks', {} if {} else {}))
+    certificates_ready = len(await db.scan_items('certificates', {}))
+    existing_tasks_count = len(await db.scan_items('delivery_tasks', {}))
     ready_for_assignment = max(0, certificates_ready - existing_tasks_count)
     
     return {
@@ -3475,13 +3443,7 @@ async def get_my_delivery_tasks(current_user: dict = Depends(get_current_user)):
     
     employee_id = employee.get("id")
     
-    tasks = await db.scan_items('delivery_tasks', 
-        {"assigned_to_employee_id": employee_id},
-        {"_id": 0}
-     if 
-        {"assigned_to_employee_id": employee_id},
-        {"_id": 0}
-     else {})
+    tasks = await db.scan_items('delivery_tasks', {"assigned_to_employee_id": employee_id})
     
     return tasks
 
@@ -3651,7 +3613,7 @@ async def record_payment(payment_data: dict, current_user: dict = Depends(get_cu
         total_paid = payment_amount
         
         # Calculate total payments for this invoice
-        existing_payments = await db.scan_items('payments', {"invoice_id": invoice_id}, {"_id": 0} if {"invoice_id": invoice_id}, {"_id": 0} else {})
+        existing_payments = await db.scan_items('payments', {"invoice_id": invoice_id})
         total_paid = sum(float(p.get("amount", 0)) for p in existing_payments)
         
         if total_paid >= invoice_total:
@@ -4358,7 +4320,7 @@ async def startup_db():
                 print("✅ MD user exists")
             
             # Count total users
-            user_count = len(await db.scan_items('users', {} if {} else {}))
+            user_count = len(await db.scan_items('users', {}))
             logger.info(f"Database initialized. Total users: {user_count}")
             print(f"✅ Database ready. Total users: {user_count}")
             
