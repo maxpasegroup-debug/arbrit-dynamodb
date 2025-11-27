@@ -90,45 +90,69 @@ class DynamoDBClient:
     
     async def find_one(self, query: Dict[str, Any], projection: Optional[Dict] = None) -> Optional[Dict]:
         """
-        Find a single document matching the query
+        Find a single document matching the query with enhanced error handling
         MongoDB: db.collection.find_one({"key": "value"}, {"_id": 0})
         DynamoDB: table.get_item(Key={'key': 'value'}) or table.scan()
         Note: projection with {"_id": 0} is ignored as DynamoDB doesn't have _id
         """
         try:
+            if not query:
+                logger.error("find_one called with empty query")
+                return None
+                
             item = None
             logger.debug(f"find_one called on table '{self.table_name}' with query: {query}")
             
             # Check if we can use get_item (primary key query)
             if self.table_name == 'users' and 'mobile' in query and len(query) == 1:
-                # Primary key query for users table
+                # Primary key query for users table (efficient)
                 logger.debug(f"Using get_item with mobile key")
-                response = self.table.get_item(Key={'mobile': query['mobile']})
-                item = response.get('Item')
+                try:
+                    response = self.table.get_item(Key={'mobile': query['mobile']})
+                    item = response.get('Item')
+                except self.table.meta.client.exceptions.ResourceNotFoundException:
+                    logger.error(f"Table {self.table_name} not found")
+                    return None
+                except Exception as e:
+                    logger.error(f"DynamoDB get_item error: {str(e)}")
+                    raise
+                    
             elif self.table_name != 'users' and 'id' in query and len(query) == 1:
-                # Primary key query for other tables
+                # Primary key query for other tables (efficient)
                 logger.debug(f"Using get_item with id key")
-                response = self.table.get_item(Key={'id': query['id']})
-                item = response.get('Item')
+                try:
+                    response = self.table.get_item(Key={'id': query['id']})
+                    item = response.get('Item')
+                except self.table.meta.client.exceptions.ResourceNotFoundException:
+                    logger.error(f"Table {self.table_name} not found")
+                    return None
+                except Exception as e:
+                    logger.error(f"DynamoDB get_item error: {str(e)}")
+                    raise
+                    
             else:
                 # Need to scan - querying by non-primary-key field
-                # For better reliability, scan all items and filter in Python
-                logger.debug(f"Using full scan and filtering in Python")
-                response = self.table.scan()
-                all_items = response.get('Items', [])
-                logger.debug(f"Scanned {len(all_items)} total items")
-                
-                # Filter in Python
-                for potential_item in all_items:
-                    match = True
-                    for key, value in query.items():
-                        if potential_item.get(key) != value:
-                            match = False
+                # WARNING: This is inefficient for large tables
+                logger.debug(f"Using full scan and filtering in Python (INEFFICIENT)")
+                try:
+                    response = self.table.scan()
+                    all_items = response.get('Items', [])
+                    logger.debug(f"Scanned {len(all_items)} total items")
+                    
+                    # Filter in Python
+                    for potential_item in all_items:
+                        match = True
+                        for key, value in query.items():
+                            if potential_item.get(key) != value:
+                                match = False
+                                break
+                        if match:
+                            item = potential_item
+                            logger.debug(f"Found matching item: {item.get('name', 'N/A')}")
                             break
-                    if match:
-                        item = potential_item
-                        logger.debug(f"Found matching item: {item.get('name', 'N/A')}")
-                        break
+                except Exception as e:
+                    logger.error(f"DynamoDB scan error: {str(e)}")
+                    raise
             
             # Remove sensitive fields based on projection
             if item and projection:
@@ -139,9 +163,11 @@ class DynamoDBClient:
             
             logger.debug(f"Returning item: {'Found' if item else 'Not found'}")
             return item
+            
         except Exception as e:
-            logger.error(f"Error in find_one: {e}", exc_info=True)
-            return None
+            logger.error(f"Critical error in find_one for table '{self.table_name}': {e}", exc_info=True)
+            # Re-raise to let caller handle
+            raise
     
     async def find(self, query: Dict[str, Any] = None, projection: Optional[Dict] = None, limit: int = 1000) -> List[Dict]:
         """
