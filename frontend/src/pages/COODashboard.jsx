@@ -202,11 +202,21 @@ const COODashboard = () => {
         </div>
       </TabsContent>
 
+      <TabsContent value="leads">
+        <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-lg p-6">
+          <LeadManagementEnhanced />
+        </div>
+      </TabsContent>
+
       <TabsContent value="expenses">
         <ExpenseReadOnlyView />
       </TabsContent>
     </Tabs>
       </main>
+
+      {/* Modals */}
+      <LeadSubmissionModal open={leadModalOpen} onOpenChange={setLeadModalOpen} />
+      <ExpenseSubmissionModal open={expenseModalOpen} onOpenChange={setExpenseModalOpen} />
     </div>
   );
 };
