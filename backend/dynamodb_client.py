@@ -288,6 +288,30 @@ class DynamoDBClient:
         return filter_expr
 
 
+# Stub client for non-existent tables (returns empty results)
+class StubDynamoDBClient(DynamoDBClient):
+    """Stub client for tables that don't exist yet"""
+    def __init__(self, table_name: str):
+        self.table_name = table_name
+        logger.info(f"⚠️  Using stub client for non-existent table: {table_name}")
+    
+    async def find(self, query: Dict[str, Any] = None, projection: Optional[Dict] = None, limit: int = 1000) -> List[Dict]:
+        return QueryResult([], limit)
+    
+    async def find_one(self, query: Dict[str, Any], projection: Optional[Dict] = None) -> Optional[Dict]:
+        return None
+    
+    async def count_documents(self, query: Dict[str, Any] = None) -> int:
+        return 0
+    
+    async def insert_one(self, document: Dict[str, Any]) -> Dict:
+        logger.warning(f"Attempt to insert into stub table: {self.table_name}")
+        return {"inserted_id": "stub"}
+    
+    async def distinct(self, field: str) -> List:
+        return []
+
+
 # Database wrapper to mimic MongoDB db object
 class DB:
     """
@@ -307,6 +331,10 @@ class DB:
         self.trainer_requests = DynamoDBClient('trainer_requests')
         self.visit_logs = DynamoDBClient('visit_logs')
         self.leave_requests = DynamoDBClient('leave_requests')
+        
+        # Stub clients for tables that don't exist yet
+        self.delivery_tasks = StubDynamoDBClient('delivery_tasks')
+        self.work_orders = StubDynamoDBClient('work_orders')
 
 
 # Create global db instance
