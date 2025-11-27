@@ -94,8 +94,8 @@
 
 ## URLs
 
-- **Login Page**: https://finops-portal.preview.emergentagent.com/login
-- **COO Dashboard**: https://finops-portal.preview.emergentagent.com/dashboard/coo
+- **Login Page**: https://saas-crm-update.preview.emergentagent.com/login
+- **COO Dashboard**: https://saas-crm-update.preview.emergentagent.com/dashboard/coo
 
 ## API Endpoints
 

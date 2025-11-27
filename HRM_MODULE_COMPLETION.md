@@ -148,8 +148,8 @@
 
 ## URLs
 
-- **HRM Dashboard**: https://finops-portal.preview.emergentagent.com/hrm
-- **COO Dashboard**: https://finops-portal.preview.emergentagent.com/dashboard/coo
+- **HRM Dashboard**: https://saas-crm-update.preview.emergentagent.com/hrm
+- **COO Dashboard**: https://saas-crm-update.preview.emergentagent.com/dashboard/coo
 
 ## Key Features
 

@@ -293,10 +293,10 @@ Delete Employee
 
 ## 📍 URLs
 
-- **Login**: https://finops-portal.preview.emergentagent.com/login
-- **COO Dashboard**: https://finops-portal.preview.emergentagent.com/dashboard/coo
-- **HR Dashboard**: https://finops-portal.preview.emergentagent.com/dashboard/hr
-- **HRM Modules** (COO access): https://finops-portal.preview.emergentagent.com/hrm
+- **Login**: https://saas-crm-update.preview.emergentagent.com/login
+- **COO Dashboard**: https://saas-crm-update.preview.emergentagent.com/dashboard/coo
+- **HR Dashboard**: https://saas-crm-update.preview.emergentagent.com/dashboard/hr
+- **HRM Modules** (COO access): https://saas-crm-update.preview.emergentagent.com/hrm
 
 ---
 
