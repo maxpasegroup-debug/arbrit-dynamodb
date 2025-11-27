@@ -76,12 +76,12 @@ const AuditLogViewer = () => {
           <Filter className="w-5 h-5 text-gray-400" />
           <div className="space-y-2 flex-1">
             <Label className="text-white">Filter by Entity Type</Label>
-            <Select value={filter} onValueChange={setFilter}>
+            <Select value={filter || 'all'} onValueChange={(val) => setFilter(val === 'all' ? '' : val)}>
               <SelectTrigger className="bg-slate-800 border-slate-600 text-white max-w-xs">
                 <SelectValue placeholder="All Activities" />
               </SelectTrigger>
               <SelectContent className="bg-slate-800 border-slate-600 text-white">
-                <SelectItem value="">All Activities</SelectItem>
+                <SelectItem value="all">All Activities</SelectItem>
                 <SelectItem value="Invoice">Invoices</SelectItem>
                 <SelectItem value="Payment">Payments</SelectItem>
                 <SelectItem value="ClientAccount">Client Accounts</SelectItem>
