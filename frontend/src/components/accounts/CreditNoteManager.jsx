@@ -207,12 +207,12 @@ const CreditNoteManager = () => {
 
             <div className="space-y-2">
               <Label>Link to Invoice (Optional)</Label>
-              <Select value={formData.invoice_id} onValueChange={handleInvoiceSelect}>
+              <Select value={formData.invoice_id || 'none'} onValueChange={handleInvoiceSelect}>
                 <SelectTrigger className="bg-slate-800 border-slate-600 text-white">
                   <SelectValue placeholder="Select invoice (optional)" />
                 </SelectTrigger>
                 <SelectContent className="bg-slate-800 border-slate-600 text-white">
-                  <SelectItem value="">None</SelectItem>
+                  <SelectItem value="none">None</SelectItem>
                   {invoices.map((inv) => (
                     <SelectItem key={inv.id} value={inv.id}>
                       {inv.invoice_number} - {inv.client_name}
