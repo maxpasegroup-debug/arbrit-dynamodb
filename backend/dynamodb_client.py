@@ -37,6 +37,25 @@ tables = {
     'trainer_requests': dynamodb.Table(f'{TABLE_PREFIX}_trainer_requests'),
     'visit_logs': dynamodb.Table(f'{TABLE_PREFIX}_visit_logs'),
     'leave_requests': dynamodb.Table(f'{TABLE_PREFIX}_leave_requests'),
+    # Accounting and additional module tables
+    'delivery_tasks': dynamodb.Table(f'{TABLE_PREFIX}_delivery_tasks'),
+    'work_orders': dynamodb.Table(f'{TABLE_PREFIX}_work_orders'),
+    'employee_documents': dynamodb.Table(f'{TABLE_PREFIX}_employee_documents'),
+    'company_documents': dynamodb.Table(f'{TABLE_PREFIX}_company_documents'),
+    'assessment_forms': dynamodb.Table(f'{TABLE_PREFIX}_assessment_forms'),
+    'assessment_submissions': dynamodb.Table(f'{TABLE_PREFIX}_assessment_submissions'),
+    'audit_logs': dynamodb.Table(f'{TABLE_PREFIX}_audit_logs'),
+    'certificate_requests': dynamodb.Table(f'{TABLE_PREFIX}_certificate_requests'),
+    'certificate_templates': dynamodb.Table(f'{TABLE_PREFIX}_certificate_templates'),
+    'client_accounts': dynamodb.Table(f'{TABLE_PREFIX}_client_accounts'),
+    'credit_notes': dynamodb.Table(f'{TABLE_PREFIX}_credit_notes'),
+    'invoice_requests': dynamodb.Table(f'{TABLE_PREFIX}_invoice_requests'),
+    'payments': dynamodb.Table(f'{TABLE_PREFIX}_payments'),
+    'petty_cash': dynamodb.Table(f'{TABLE_PREFIX}_petty_cash'),
+    'recurring_invoices': dynamodb.Table(f'{TABLE_PREFIX}_recurring_invoices'),
+    'training_sessions': dynamodb.Table(f'{TABLE_PREFIX}_training_sessions'),
+    'vendor_payments': dynamodb.Table(f'{TABLE_PREFIX}_vendor_payments'),
+    'vendors': dynamodb.Table(f'{TABLE_PREFIX}_vendors'),
 }
 
 logger.info(f"✅ DynamoDB client initialized with table prefix: {TABLE_PREFIX}")
