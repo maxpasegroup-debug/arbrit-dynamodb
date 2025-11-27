@@ -124,6 +124,10 @@ const COODashboard = () => {
         <Tabs defaultValue="modules" className="space-y-6">
           <TabsList className="bg-white/10 border border-white/20">
             <TabsTrigger value="modules">Modules</TabsTrigger>
+            <TabsTrigger value="leads">
+              <FileText className="w-4 h-4 mr-2" />
+              Lead Management
+            </TabsTrigger>
             <TabsTrigger value="expenses">
               <Receipt className="w-4 h-4 mr-2" />
               Expense Overview
