@@ -673,7 +673,8 @@ async def get_current_user(credentials: HTTPAuthorizationCredentials = Depends(s
     except jwt.JWTError:
         raise HTTPException(status_code=401, detail="Could not validate credentials")
     
-    user = await db.users.find_one({"id": user_id}, {"_id": 0})
+    # DynamoDB: Since 'mobile' is the primary key, we need to scan by 'id' field
+    user = await db.users.find_one({"id": user_id})
     if user is None:
         raise HTTPException(status_code=401, detail="User not found")
     return user
