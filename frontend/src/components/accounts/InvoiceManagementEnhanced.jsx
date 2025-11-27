@@ -441,7 +441,7 @@ const InvoiceManagementEnhanced = () => {
               Client: <span className="text-white font-medium">{selectedInvoice?.client_name}</span>
             </p>
             <p className="text-sm text-gray-400 mt-2">
-              Amount: <span className="text-white font-medium">AED {parseFloat(selectedInvoice?.amount || 0).toLocaleString()}</span>
+              Amount: <span className="text-white font-medium">{selectedInvoice?.currency || 'AED'} {parseFloat(selectedInvoice?.amount || 0).toLocaleString()}</span>
             </p>
           </div>
 
