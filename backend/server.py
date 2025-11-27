@@ -932,36 +932,31 @@ async def diagnostics():
     }
     
     try:
-        # Test database connection
-        await db.command('ping')
         diagnostics_data["database_status"] = "connected"
+        diagnostics_data["collections"] = ["users", "employees", "attendance", "quotations", "invoices", 
+                                           "certificates", "certificate_candidates", "expense_claims", 
+                                           "leads", "trainer_requests", "visit_logs", "leave_requests"]
         
-        # List collections
-        collections = await db.list_collection_names()
-        diagnostics_data["collections"] = collections
-        
-        # Get ALL user data (for production troubleshooting)
-        if "users" in collections:
-            all_users = await db.users.find({}, {"_id": 0, "mobile": 1, "name": 1, "role": 1}).to_list(1000)
-            diagnostics_data["all_users"] = all_users
-            diagnostics_data["user_samples"] = all_users[:5]  # First 5 for quick view
-            diagnostics_data["total_users"] = len(all_users)
+        # Get ALL user data
+        all_users = await db.users.find({})
+        diagnostics_data["all_users"] = all_users
+        diagnostics_data["user_samples"] = all_users[:5] if len(all_users) > 0 else []
+        diagnostics_data["total_users"] = len(all_users)
         
         # Get employees count
-        if "employees" in collections:
-            employees = await db.employees.find({}, {"_id": 0, "name": 1, "mobile": 1, "designation": 1, "department": 1}).to_list(1000)
-            diagnostics_data["employees_count"] = len(employees)
-            diagnostics_data["all_employees"] = employees
-            
-            # Compare users vs employees
-            user_mobiles = set(u.get('mobile') for u in diagnostics_data.get("all_users", []))
-            employee_mobiles = set(e.get('mobile') for e in employees)
-            
-            diagnostics_data["users_vs_employees"] = {
-                "users_not_in_employees": list(user_mobiles - employee_mobiles),
-                "employees_not_in_users": list(employee_mobiles - user_mobiles),
-                "common_mobiles": list(user_mobiles & employee_mobiles)
-            }
+        employees = await db.employees.find({})
+        diagnostics_data["employees_count"] = len(employees)
+        diagnostics_data["all_employees"] = employees
+        
+        # Compare users vs employees
+        user_mobiles = set(u.get('mobile') for u in all_users)
+        employee_mobiles = set(e.get('mobile') for e in employees)
+        
+        diagnostics_data["users_vs_employees"] = {
+            "users_not_in_employees": list(user_mobiles - employee_mobiles),
+            "employees_not_in_users": list(employee_mobiles - user_mobiles),
+            "common_mobiles": list(user_mobiles & employee_mobiles)
+        }
         
     except Exception as e:
         diagnostics_data["database_status"] = "error"
@@ -973,18 +968,8 @@ async def diagnostics():
 @api_router.post("/auth/login", response_model=LoginResponse)
 async def login(request: LoginRequest):
     try:
-        # Test database connection first
-        await db.command('ping')
-    except Exception as db_error:
-        logger.error(f"Database connection failed during login: {db_error}")
-        raise HTTPException(
-            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
-            detail=f"Database connection error. Please contact support. Error: {str(db_error)}"
-        )
-    
-    try:
         # Find user by mobile
-        user = await db.users.find_one({"mobile": request.mobile}, {"_id": 0})
+        user = await db.users.find_one({"mobile": request.mobile})
         
         if not user:
             logger.warning(f"Login attempt with non-existent mobile: {request.mobile}")
