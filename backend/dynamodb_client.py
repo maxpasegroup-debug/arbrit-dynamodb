@@ -10,6 +10,7 @@ from datetime import datetime, timezone
 import logging
 
 logger = logging.getLogger(__name__)
+logger.setLevel(logging.DEBUG)
 
 # Initialize DynamoDB resource
 dynamodb = boto3.resource(
@@ -258,10 +259,9 @@ class DynamoDBClient:
         if not query:
             return None
         
-        from boto3.dynamodb.conditions import Attr
-        
         conditions = []
         for key, value in query.items():
+            logger.debug(f"Building filter condition: {key} = {value} (type: {type(value)})")
             conditions.append(Attr(key).eq(value))
         
         # Combine with AND
@@ -269,6 +269,7 @@ class DynamoDBClient:
         for condition in conditions[1:]:
             filter_expr = filter_expr & condition
         
+        logger.debug(f"Final filter expression: {filter_expr}")
         return filter_expr
 
 
