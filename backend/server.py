@@ -5149,13 +5149,19 @@ async def archive_assessment_form(form_id: str, current_user: dict = Depends(get
         raise HTTPException(status_code=403, detail="Access denied. Academic Head access only.")
     
     try:
-        result = await db.assessment_forms.update_one(
-            {"id": form_id},
-            {"$set": {"status": "archived", "updated_at": datetime.now(timezone.utc).isoformat()}}
-        )
-        
-        if result.matched_count == 0:
+        # Get existing form
+        existing_form = await db.assessment_forms.find_one({"id": form_id})
+        if not existing_form:
             raise HTTPException(status_code=404, detail="Assessment form not found")
+        
+        # Update status to archived
+        existing_form["status"] = "archived"
+        existing_form["updated_at"] = datetime.now(timezone.utc).isoformat()
+        
+        await db.assessment_forms.update_one(
+            {"id": form_id},
+            existing_form
+        )
         
         return {"message": "Assessment form archived successfully"}
     except HTTPException:
