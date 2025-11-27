@@ -296,6 +296,32 @@ class DynamoDBDatabase:
             )
         return self._collections[collection_name]
     
+    async def get_item(self, collection_name: str, filter_dict: Dict, projection: Optional[Dict] = None):
+        """Get a single item from collection"""
+        collection = getattr(self, collection_name)
+        return await collection.find_one(filter_dict, projection)
+    
+    async def scan_items(self, collection_name: str, filter_dict: Dict = None, projection: Optional[Dict] = None):
+        """Scan items from collection"""
+        collection = getattr(self, collection_name)
+        cursor = collection.find(filter_dict or {}, projection)
+        return await cursor.to_list(10000)
+    
+    async def insert_item(self, collection_name: str, item: Dict):
+        """Insert item into collection"""
+        collection = getattr(self, collection_name)
+        return await collection.insert_one(item)
+    
+    async def update_item(self, collection_name: str, filter_dict: Dict, update_dict: Dict):
+        """Update item in collection"""
+        collection = getattr(self, collection_name)
+        return await collection.update_one(filter_dict, update_dict)
+    
+    async def delete_item(self, collection_name: str, filter_dict: Dict):
+        """Delete item from collection"""
+        collection = getattr(self, collection_name)
+        return await collection.delete_one(filter_dict)
+    
     async def command(self, command: str):
         """Execute database command (e.g., 'ping')"""
         if command == 'ping':
