@@ -8,7 +8,7 @@ __pycache__/
 *$py.class
 *.so
 .Python
-build/
+#build/
 develop-eggs/
 dist/
 downloads/
@@ -63,7 +63,7 @@ logs/
 htmlcov/
 
 # Build outputs
-frontend/build/
+#frontend/build/
 dist/
 
 # OS
