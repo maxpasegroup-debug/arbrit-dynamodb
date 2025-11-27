@@ -2693,22 +2693,27 @@ async def assign_trainer_to_request(request_id: str, assignment_data: dict, curr
 # Academic - Get All Trainers
 @api_router.get("/academic/trainers")
 async def get_all_trainers(current_user: dict = Depends(get_current_user)):
-    if current_user["role"] != "Academic Head":
+    if current_user["role"] not in ["Academic Head", "MD", "COO", "CEO"]:
         raise HTTPException(status_code=403, detail="Access denied. Academic Head only.")
     
-    # Get employees with role/designation containing "Trainer"
-    query_result = await db.employees.find(
-        {"$or": [
-            {"designation": {"$regex": "trainer", "$options": "i"}},
-            {"role": {"$regex": "trainer", "$options": "i"}},
-            {"department": "Academic"}
-        ]},
-        {"_id": 0}
-    )
-
-    trainers = await query_result.to_list(1000)
-    
-    return trainers
+    try:
+        # Get all employees and filter for trainers
+        all_employees = await db.employees.find({}, {"_id": 0})
+        
+        # Filter for trainers - check designation, role, or department
+        trainers = []
+        for emp in all_employees:
+            designation = (emp.get('designation') or '').lower()
+            role = (emp.get('role') or '').lower()
+            department = (emp.get('department') or '').lower()
+            
+            if 'trainer' in designation or 'trainer' in role or department == 'academic':
+                trainers.append(emp)
+        
+        return trainers
+    except Exception as e:
+        logger.error(f"Error fetching trainers: {e}")
+        raise HTTPException(status_code=500, detail="Failed to fetch trainers")
 
 
 # Academic - Get All Work Orders
