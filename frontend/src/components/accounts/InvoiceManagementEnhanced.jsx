@@ -58,6 +58,9 @@ const InvoiceManagementEnhanced = () => {
       client_name: '',
       invoice_number: '',
       amount: '',
+      vat_enabled: true,
+      vat_rate: '5.0',
+      currency: 'AED',
       description: '',
       due_date: ''
     });
