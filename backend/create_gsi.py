@@ -62,10 +62,6 @@ def create_user_id_gsi():
                         ],
                         'Projection': {
                             'ProjectionType': 'ALL'
-                        },
-                        'ProvisionedThroughput': {
-                            'ReadCapacityUnits': 5,
-                            'WriteCapacityUnits': 5
                         }
                     }
                 }
