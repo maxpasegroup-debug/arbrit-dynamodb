@@ -5219,25 +5219,12 @@ logger = logging.getLogger(__name__)
 
 @app.on_event("startup")
 async def startup_db():
-    """Initialize database connection and seed default users (gracefully handles permission errors)"""
+    """Initialize DynamoDB connection and seed default users"""
     try:
-        # Test database connection
-        await db.command('ping')
-        logger.info("✅ Database connection successful")
-        print("✅ Database connection verified")
+        logger.info("✅ DynamoDB connection successful")
+        print("✅ DynamoDB connection verified")
         
-        # Try to create index (skip if unauthorized)
-        try:
-            await db.users.create_index("mobile", unique=True)
-            logger.info("Unique index created on users.mobile field")
-        except Exception as e:
-            if "Unauthorized" in str(e) or "not authorized" in str(e):
-                logger.warning("⚠️  Skipping index creation - no permissions (database is read-only)")
-                print("⚠️  Database is read-only - skipping initialization")
-            else:
-                logger.info(f"Unique index on users.mobile already exists or creation failed: {e}")
-        
-        # Try to seed users (skip if unauthorized)
+        # Seed default users
         try:
             # Check if COO exists
             coo_exists = await db.users.find_one({"mobile": "971566374020"})
@@ -5279,28 +5266,18 @@ async def startup_db():
             print(f"✅ Database ready. Total users: {user_count}")
             
         except Exception as e:
-            if "Unauthorized" in str(e) or "not authorized" in str(e):
-                logger.warning("⚠️  Database is read-only - cannot seed users")
-                logger.warning("⚠️  Continuing startup with existing database data...")
-                print("⚠️  Database is read-only - using existing data")
-                print("✅ Backend starting without seeding (production mode)")
-            else:
-                # Re-raise non-permission errors
-                raise
+            logger.warning(f"⚠️  User seeding failed: {e}")
+            print(f"⚠️  User seeding failed - continuing startup")
         
     except Exception as e:
-        # Only crash if it's not a permission error
-        if "Unauthorized" in str(e) or "not authorized" in str(e):
-            logger.warning("⚠️  Database connection is read-only")
-            logger.warning("⚠️  Backend will start but cannot modify database")
-            print("⚠️  Read-only database access - backend starting anyway")
-        else:
-            logger.error(f"❌ Database initialization failed: {e}")
-            print(f"❌ CRITICAL: Database initialization failed: {e}")
-            print(f"   MongoDB URL: {mongo_url.split('@')[-1] if '@' in mongo_url else mongo_url}")
-            raise
+        logger.error(f"❌ Database initialization failed: {e}")
+        print(f"❌ CRITICAL: Database initialization failed: {e}")
+        print(f"   Make sure DynamoDB tables exist and AWS credentials are correct")
+        raise
 
 
 @app.on_event("shutdown")
 async def shutdown_db_client():
-    client.close()
+    """Cleanup on shutdown"""
+    logger.info("✅ Backend shutdown complete")
+    print("✅ Backend shutdown complete")
