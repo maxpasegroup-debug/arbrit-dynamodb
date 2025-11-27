@@ -217,6 +217,19 @@ const EmployeeManagement = () => {
     return matchesSearch && matchesBranch && matchesDepartment;
   });
 
+  // Group employees by department
+  const groupedEmployees = filteredEmployees.reduce((acc, emp) => {
+    const dept = emp.department || 'Other';
+    if (!acc[dept]) {
+      acc[dept] = [];
+    }
+    acc[dept].push(emp);
+    return acc;
+  }, {});
+
+  const departmentOrder = ['Management', 'Sales', 'Academic', 'HR', 'Accounts', 'Marketing', 'Dispatch', 'Other'];
+  const sortedDepartments = departmentOrder.filter(dept => groupedEmployees[dept]);
+
   return (
     <div className="space-y-6">
       {/* Filters */}
