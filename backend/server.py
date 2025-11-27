@@ -2165,6 +2165,8 @@ async def get_all_leads(current_user: dict = Depends(get_current_user)):
                 lead['updated_at'] = datetime.fromisoformat(lead['updated_at'])
             except:
                 pass
+    
+    return leads
 
 
 # Get My Leads (for individual employee)
