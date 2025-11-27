@@ -6,6 +6,9 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import LeadSubmissionModal from '@/components/coo/LeadSubmissionModal';
 import ExpenseSubmissionModal from '@/components/coo/ExpenseSubmissionModal';
+import DeletionApprovals from '@/components/executive/DeletionApprovals';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { FileText, Trash2 } from 'lucide-react';
 import { toast } from 'sonner';
 import axios from 'axios';
 
