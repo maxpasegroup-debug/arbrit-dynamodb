@@ -2917,9 +2917,8 @@ async def bulk_generate_certificates(
     
     month_start = now.replace(day=1, hour=0, minute=0, second=0, microsecond=0)
     month_count = len(await db.scan_items('certificate_candidates', {
-        "generated_at": {"$gte": month_start.isoformat( if {
-        "generated_at": {"$gte": month_start.isoformat( else {}))}
-    })
+        "generated_at": {"$gte": month_start.isoformat()}
+    }))
     
     generated_certificates = []
     errors = []
@@ -3039,9 +3038,8 @@ async def get_coo_dashboard_data(current_user: dict = Depends(get_current_user))
         # Document expiry alerts (within 30 days)
         thirty_days_ahead = (datetime.now(timezone.utc) + timedelta(days=30)).isoformat()
         expiring_docs = len(await db.scan_items('employee_documents', {
-            "expiry_date": {"$lte": thirty_days_ahead, "$gte": datetime.now(timezone.utc if {
-            "expiry_date": {"$lte": thirty_days_ahead, "$gte": datetime.now(timezone.utc else {})).isoformat()}
-        })
+            "expiry_date": {"$lte": thirty_days_ahead, "$gte": datetime.now(timezone.utc).isoformat()}
+        }))
         
         # Sales Performance
         total_leads = len(await db.scan_items('leads', {} if {} else {}))
@@ -3066,10 +3064,8 @@ async def get_coo_dashboard_data(current_user: dict = Depends(get_current_user))
         delivered_today_start = datetime.now(timezone.utc).replace(hour=0, minute=0, second=0, microsecond=0)
         delivered_today = len(await db.scan_items('delivery_tasks', {
             "status": "DELIVERED",
-            "delivered_at": {"$gte": delivered_today_start.isoformat( if {
-            "status": "DELIVERED",
-            "delivered_at": {"$gte": delivered_today_start.isoformat( else {}))}
-        })
+            "delivered_at": {"$gte": delivered_today_start.isoformat()}
+        }))
         
         # Accounts snapshot (mock data - extend based on actual schema)
         # This can be extended when invoice/payment modules are built
@@ -3158,12 +3154,11 @@ async def get_md_dashboard_data(current_user: dict = Depends(get_current_user)):
         } else {}))
         
         # Executive Alerts (critical items)
-        pending_dispatch = len(await db.scan_items('delivery_tasks', {"status": "PENDING"} if {"status": "PENDING"} else {}))
+        pending_dispatch = len(await db.scan_items('delivery_tasks', {"status": "PENDING"}))
         thirty_days_ahead = (datetime.now(timezone.utc) + timedelta(days=30)).isoformat()
         expiring_docs = len(await db.scan_items('employee_documents', {
-            "expiry_date": {"$lte": thirty_days_ahead, "$gte": datetime.now(timezone.utc if {
-            "expiry_date": {"$lte": thirty_days_ahead, "$gte": datetime.now(timezone.utc else {})).isoformat()}
-        })
+            "expiry_date": {"$lte": thirty_days_ahead, "$gte": datetime.now(timezone.utc).isoformat()}
+        }))
         
         # AI-powered insights (rule-based for now, can be enhanced with ML)
         insights = []
@@ -3438,10 +3433,8 @@ async def get_dispatch_summary(current_user: dict = Depends(get_current_user)):
     today_start = datetime.now(timezone.utc).replace(hour=0, minute=0, second=0, microsecond=0)
     delivered_today = len(await db.scan_items('delivery_tasks', {
         "status": "DELIVERED",
-        "delivered_at": {"$gte": today_start.isoformat( if {
-        "status": "DELIVERED",
-        "delivered_at": {"$gte": today_start.isoformat( else {}))}
-    })
+        "delivered_at": {"$gte": today_start.isoformat()}
+    }))
     
     # Overdue (tasks with due_date in the past and not delivered)
     now = datetime.now(timezone.utc).isoformat()
