@@ -15,14 +15,13 @@ const API = `${BACKEND_URL}/api`;
 const LeadSubmissionModal = ({ open, onOpenChange }) => {
   const [formData, setFormData] = useState({
     client_name: '',
-    company_name: '',
-    contact_number: '',
-    email: '',
-    location: '',
+    requirement: '',
+    industry: '',
     source: 'Online',
     status: 'New',
-    notes: '',
-    assigned_to: ''
+    remarks: '',
+    assigned_to: '',
+    next_followup_date: ''
   });
   const [employees, setEmployees] = useState([]);
   const [loading, setLoading] = useState(false);
