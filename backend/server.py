@@ -5171,6 +5171,94 @@ async def archive_assessment_form(form_id: str, current_user: dict = Depends(get
         raise HTTPException(status_code=500, detail="Failed to archive assessment form")
 
 
+# Assessment - Duplicate Form (Template)
+@api_router.post("/assessment/forms/{form_id}/duplicate")
+async def duplicate_assessment_form(form_id: str, current_user: dict = Depends(get_current_user)):
+    """Duplicate an existing form as a template"""
+    if current_user.get("role") not in ["Academic Head", "COO", "MD"]:
+        raise HTTPException(status_code=403, detail="Access denied")
+    
+    try:
+        # Get existing form
+        existing_form = await db.assessment_forms.find_one({"id": form_id})
+        if not existing_form:
+            raise HTTPException(status_code=404, detail="Form not found")
+        
+        # Create new form with same structure
+        new_form = {
+            "id": str(uuid4()),
+            "title": f"{existing_form.get('title', 'Untitled')} (Copy)",
+            "description": existing_form.get('description', ''),
+            "course_name": existing_form.get('course_name', ''),
+            "batch_name": '',
+            "trainer_id": '',
+            "trainer_name": '',
+            "session_date": '',
+            "branch": existing_form.get('branch', 'Dubai'),
+            "questions": existing_form.get('questions', []),
+            "status": "draft",
+            "created_by": current_user.get("id"),
+            "created_by_name": current_user.get("name"),
+            "created_at": datetime.now(timezone.utc).isoformat(),
+            "updated_at": datetime.now(timezone.utc).isoformat(),
+            "qr_code_url": f"/public/assessment/{str(uuid4())}"
+        }
+        
+        await db.assessment_forms.insert_one(new_form)
+        
+        return {"message": "Form duplicated successfully", "form": new_form}
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error duplicating form: {e}")
+        raise HTTPException(status_code=500, detail="Failed to duplicate form")
+
+
+# Assessment - Get Question Bank
+@api_router.get("/assessment/question-bank")
+async def get_question_bank(current_user: dict = Depends(get_current_user)):
+    """Get commonly used questions for quick form building"""
+    if current_user.get("role") not in ["Academic Head", "Trainer", "COO", "MD"]:
+        raise HTTPException(status_code=403, detail="Access denied")
+    
+    # Return predefined question templates
+    question_bank = [
+        {
+            "category": "Training Quality",
+            "questions": [
+                {"question_text": "How would you rate the overall quality of the training?", "question_type": "rating", "required": True},
+                {"question_text": "The training content was relevant to my job role", "question_type": "rating", "required": True},
+                {"question_text": "The training materials were well-organized and easy to follow", "question_type": "rating", "required": True}
+            ]
+        },
+        {
+            "category": "Trainer Performance",
+            "questions": [
+                {"question_text": "The trainer was knowledgeable about the subject", "question_type": "rating", "required": True},
+                {"question_text": "The trainer communicated clearly and effectively", "question_type": "rating", "required": True},
+                {"question_text": "The trainer encouraged participation and questions", "question_type": "rating", "required": True}
+            ]
+        },
+        {
+            "category": "Facilities & Logistics",
+            "questions": [
+                {"question_text": "The training venue was comfortable and conducive to learning", "question_type": "rating", "required": True},
+                {"question_text": "The audio/visual equipment worked properly", "question_type": "yes_no", "required": True}
+            ]
+        },
+        {
+            "category": "Open Feedback",
+            "questions": [
+                {"question_text": "What did you like most about the training?", "question_type": "text", "required": False},
+                {"question_text": "What areas could be improved?", "question_type": "text", "required": False},
+                {"question_text": "Would you recommend this training to others?", "question_type": "yes_no", "required": True}
+            ]
+        }
+    ]
+    
+    return question_bank
+
+
 
 
 # ==================== EXPENSE REIMBURSEMENT ENDPOINTS ====================
