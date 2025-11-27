@@ -700,26 +700,25 @@ async def root():
 async def health_check():
     """Health check endpoint to verify backend and database connectivity"""
     try:
-        # Test database connection
-        await db.command('ping')
-        
         # Count users to verify data access
         user_count = await db.users.count_documents({})
         
         return {
             "status": "healthy",
             "database": "connected",
-            "mongo_url": mongo_url.split("@")[-1] if "@" in mongo_url else "localhost",  # Hide credentials
+            "database_type": "DynamoDB",
+            "region": os.environ.get('AWS_REGION', 'us-east-1'),
+            "table_prefix": os.environ.get('DYNAMODB_TABLE_PREFIX', 'arbrit_workdesk'),
             "user_count": user_count,
-            "message": "Backend and database are operational"
+            "message": "Backend and DynamoDB are operational"
         }
     except Exception as e:
         return {
             "status": "unhealthy",
             "database": "disconnected",
             "error": str(e),
-            "mongo_url": mongo_url.split("@")[-1] if "@" in mongo_url else "localhost",
-            "message": "Database connection failed"
+            "database_type": "DynamoDB",
+            "message": "DynamoDB connection failed"
         }
 
 
