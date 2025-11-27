@@ -355,6 +355,8 @@ class DB:
         # Stub clients for tables that don't exist yet
         self.delivery_tasks = StubDynamoDBClient('delivery_tasks')
         self.work_orders = StubDynamoDBClient('work_orders')
+        self.employee_documents = StubDynamoDBClient('employee_documents')
+        self.company_documents = StubDynamoDBClient('company_documents')
 
 
 # Create global db instance
