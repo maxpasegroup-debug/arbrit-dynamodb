@@ -102,6 +102,9 @@ const InvoiceManagementEnhanced = () => {
       client_name: invoice.client_name || '',
       invoice_number: invoice.invoice_number || '',
       amount: invoice.amount || '',
+      vat_enabled: invoice.vat_enabled !== undefined ? invoice.vat_enabled : true,
+      vat_rate: invoice.vat_rate || '5.0',
+      currency: invoice.currency || 'AED',
       description: invoice.description || '',
       due_date: invoice.due_date || ''
     });
