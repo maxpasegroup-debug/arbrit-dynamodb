@@ -1,9 +1,11 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { LogOut, TrendingUp, Users, GraduationCap, AlertTriangle, Lightbulb, Building2, BarChart4, Shield } from 'lucide-react';
+import { LogOut, TrendingUp, Users, GraduationCap, AlertTriangle, Lightbulb, Building2, BarChart4, Shield, Plus, DollarSign } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import LeadSubmissionModal from '@/components/coo/LeadSubmissionModal';
+import ExpenseSubmissionModal from '@/components/coo/ExpenseSubmissionModal';
 import { toast } from 'sonner';
 import axios from 'axios';
 
