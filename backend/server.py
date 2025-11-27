@@ -5114,22 +5114,27 @@ async def export_assessment_reports(
 
 @api_router.put("/assessment/forms/{form_id}")
 async def update_assessment_form(form_id: str, update_data: dict, current_user: dict = Depends(get_current_user)):
-    """Update assessment form (Academic Head only)"""
+    """Update assessment form (Academic Head only) - allows adding/removing questions"""
     if current_user.get("role") not in ["Academic Head", "COO", "MD"]:
         raise HTTPException(status_code=403, detail="Access denied. Academic Head access only.")
     
     try:
-        update_data["updated_at"] = datetime.now(timezone.utc).isoformat()
-        
-        result = await db.assessment_forms.update_one(
-            {"id": form_id},
-            {"$set": update_data}
-        )
-        
-        if result.matched_count == 0:
+        # Get existing form
+        existing_form = await db.assessment_forms.find_one({"id": form_id})
+        if not existing_form:
             raise HTTPException(status_code=404, detail="Assessment form not found")
         
-        return {"message": "Assessment form updated successfully"}
+        # Merge update data
+        updated_form = {**existing_form, **update_data}
+        updated_form["updated_at"] = datetime.now(timezone.utc).isoformat()
+        
+        # Update in DynamoDB
+        await db.assessment_forms.update_one(
+            {"id": form_id},
+            updated_form
+        )
+        
+        return {"message": "Assessment form updated successfully", "form": updated_form}
     except HTTPException:
         raise
     except Exception as e:
