@@ -3793,33 +3793,38 @@ async def update_invoice(invoice_id: str, invoice_data: dict, current_user: dict
         raise HTTPException(status_code=500, detail="Failed to update invoice")
 
 
-# Accounts - Request Invoice Deletion (Pending Approval)
+# Accounts/COO/MD - Delete Invoice
 @api_router.delete("/accounts/invoices/{invoice_id}")
 async def delete_invoice_request(invoice_id: str, current_user: dict = Depends(get_current_user)):
-    """Request invoice deletion - requires COO/MD approval"""
-    if current_user.get("role") not in ["Accounts Head", "Accountant"]:
-        raise HTTPException(status_code=403, detail="Access denied. Accounts team access only.")
+    """Delete invoice - COO/MD delete immediately, Accounts needs approval"""
+    if current_user.get("role") not in ["Accounts Head", "Accountant", "COO", "MD", "CEO"]:
+        raise HTTPException(status_code=403, detail="Access denied")
     
     try:
         existing = await db.invoices.find_one({"id": invoice_id}, {"_id": 0})
         if not existing:
             raise HTTPException(status_code=404, detail="Invoice not found")
         
-        # Mark as pending deletion
-        await db.invoices.update_one(
-            {"id": invoice_id},
-            {"$set": {
-                "status": "Pending Deletion",
-                "deletion_requested_by": current_user["id"],
-                "deletion_requested_by_name": current_user["name"],
-                "deletion_requested_at": datetime.now(timezone.utc).isoformat()
-            }}
-        )
-        
-        return {"message": "Deletion request submitted. Awaiting COO/MD approval."}
+        # COO/MD/CEO can delete immediately, Accounts needs approval
+        if current_user.get("role") in ["COO", "MD", "CEO"]:
+            # Direct deletion for senior management
+            await db.invoices.delete_one({"id": invoice_id})
+            return {"message": "Invoice deleted successfully", "immediate": True}
+        else:
+            # Mark as pending deletion for Accounts team
+            await db.invoices.update_one(
+                {"id": invoice_id},
+                {"$set": {
+                    "status": "Pending Deletion",
+                    "deletion_requested_by": current_user["id"],
+                    "deletion_requested_by_name": current_user["name"],
+                    "deletion_requested_at": datetime.now(timezone.utc).isoformat()
+                }}
+            )
+            return {"message": "Deletion request submitted. Awaiting COO/MD approval.", "immediate": False}
     except Exception as e:
         logger.error(f"Error requesting invoice deletion: {e}")
-        raise HTTPException(status_code=500, detail="Failed to request deletion")
+        raise HTTPException(status_code=500, detail="Failed to process deletion")
 
 
 @api_router.get("/accounts/payments")
