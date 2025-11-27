@@ -293,10 +293,10 @@ Delete Employee
 
 ## 📍 URLs
 
-- **Login**: https://arbrit-dockerized.preview.emergentagent.com/login
-- **COO Dashboard**: https://arbrit-dockerized.preview.emergentagent.com/dashboard/coo
-- **HR Dashboard**: https://arbrit-dockerized.preview.emergentagent.com/dashboard/hr
-- **HRM Modules** (COO access): https://arbrit-dockerized.preview.emergentagent.com/hrm
+- **Login**: https://safety-system-2.preview.emergentagent.com/login
+- **COO Dashboard**: https://safety-system-2.preview.emergentagent.com/dashboard/coo
+- **HR Dashboard**: https://safety-system-2.preview.emergentagent.com/dashboard/hr
+- **HRM Modules** (COO access): https://safety-system-2.preview.emergentagent.com/hrm
 
 ---
 

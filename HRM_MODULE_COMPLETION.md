@@ -148,8 +148,8 @@
 
 ## URLs
 
-- **HRM Dashboard**: https://arbrit-dockerized.preview.emergentagent.com/hrm
-- **COO Dashboard**: https://arbrit-dockerized.preview.emergentagent.com/dashboard/coo
+- **HRM Dashboard**: https://safety-system-2.preview.emergentagent.com/hrm
+- **COO Dashboard**: https://safety-system-2.preview.emergentagent.com/dashboard/coo
 
 ## Key Features
 
