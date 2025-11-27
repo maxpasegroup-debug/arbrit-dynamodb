@@ -6,6 +6,7 @@ import { Card } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import ExpenseReadOnlyView from '@/components/expenses/ExpenseReadOnlyView';
 import LeadManagementEnhanced from '@/components/sales/LeadManagementEnhanced';
+import QuotationManagementEnhanced from '@/components/sales/QuotationManagementEnhanced';
 import LeadSubmissionModal from '@/components/coo/LeadSubmissionModal';
 import ExpenseSubmissionModal from '@/components/coo/ExpenseSubmissionModal';
 import DeletionApprovals from '@/components/executive/DeletionApprovals';
