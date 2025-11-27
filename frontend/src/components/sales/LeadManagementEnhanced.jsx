@@ -20,6 +20,7 @@ const LeadManagementEnhanced = () => {
   const [showEditDialog, setShowEditDialog] = useState(false);
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   const [showAddOnlineDialog, setShowAddOnlineDialog] = useState(false);
+  const [showAddSelfDialog, setShowAddSelfDialog] = useState(false);
   const [selectedLead, setSelectedLead] = useState(null);
   const [filter, setFilter] = useState('all');
   const [sourceFilter, setSourceFilter] = useState('all');
@@ -49,7 +50,7 @@ const LeadManagementEnhanced = () => {
       
       setLeads(leadsRes.data || []);
       const salesEmployees = (employeesRes.data || []).filter(e => 
-        e.role === 'Tele Sales' || e.role === 'Field Sales' || e.role === 'Sales Head'
+        e.designation === 'TELE_SALES' || e.designation === 'FIELD_SALES' || e.department === 'Sales'
       );
       setEmployees(salesEmployees);
     } catch (error) {
