@@ -179,13 +179,24 @@ const LeadSubmissionModal = ({ open, onOpenChange }) => {
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="notes">Notes</Label>
+            <Label htmlFor="next_followup_date">Next Follow-up Date</Label>
+            <Input
+              id="next_followup_date"
+              type="date"
+              value={formData.next_followup_date}
+              onChange={(e) => handleChange('next_followup_date', e.target.value)}
+              className="bg-slate-800 border-slate-600 text-white"
+            />
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="remarks">Remarks</Label>
             <Textarea
-              id="notes"
-              value={formData.notes}
-              onChange={(e) => handleChange('notes', e.target.value)}
-              className="bg-slate-800 border-slate-600 text-white min-h-[100px]"
-              placeholder="Add any additional notes..."
+              id="remarks"
+              value={formData.remarks}
+              onChange={(e) => handleChange('remarks', e.target.value)}
+              className="bg-slate-800 border-slate-600 text-white min-h-[80px]"
+              placeholder="Add any additional remarks..."
             />
           </div>
 
