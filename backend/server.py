@@ -2782,9 +2782,8 @@ async def generate_certificates(
     # Get the count of certificates issued this month
     month_start = now.replace(day=1, hour=0, minute=0, second=0, microsecond=0)
     month_count = len(await db.scan_items('certificate_candidates', {
-        "generated_at": {"$gte": month_start.isoformat( if {
-        "generated_at": {"$gte": month_start.isoformat( else {}))}
-    })
+        "generated_at": {"$gte": month_start.isoformat()}
+    }))
     
     generated_certificates = []
     
