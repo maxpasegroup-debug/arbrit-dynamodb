@@ -41,6 +41,26 @@ tables = {
 logger.info(f"✅ DynamoDB client initialized with table prefix: {TABLE_PREFIX}")
 
 
+class QueryResult:
+    """
+    Wrapper to provide MongoDB-like .to_list() method
+    """
+    def __init__(self, items: List[Dict], limit: int = 1000):
+        self.items = items[:limit]  # Apply limit
+    
+    async def to_list(self, length: int = None) -> List[Dict]:
+        """MongoDB compatibility: cursor.to_list(1000)"""
+        if length:
+            return self.items[:length]
+        return self.items
+    
+    def __iter__(self):
+        return iter(self.items)
+    
+    def __len__(self):
+        return len(self.items)
+
+
 class DynamoDBClient:
     """
     Wrapper class to provide MongoDB-like interface for DynamoDB operations
@@ -53,8 +73,9 @@ class DynamoDBClient:
     async def find_one(self, query: Dict[str, Any], projection: Optional[Dict] = None) -> Optional[Dict]:
         """
         Find a single document matching the query
-        MongoDB: db.collection.find_one({"key": "value"})
+        MongoDB: db.collection.find_one({"key": "value"}, {"_id": 0})
         DynamoDB: table.get_item(Key={'key': 'value'})
+        Note: projection with {"_id": 0} is ignored as DynamoDB doesn't have _id
         """
         try:
             # Determine primary key from query
@@ -72,7 +93,16 @@ class DynamoDBClient:
                     return response['Items'][0]
                 return None
             
-            return response.get('Item')
+            item = response.get('Item')
+            
+            # Remove sensitive fields based on projection
+            if item and projection:
+                # If projection excludes fields (value = 0), remove them
+                for key, value in projection.items():
+                    if value == 0 and key in item and key != '_id':  # _id doesn't exist in DynamoDB
+                        del item[key]
+            
+            return item
         except Exception as e:
             logger.error(f"Error in find_one: {e}")
             return None
@@ -80,8 +110,9 @@ class DynamoDBClient:
     async def find(self, query: Dict[str, Any] = None, projection: Optional[Dict] = None, limit: int = 1000) -> List[Dict]:
         """
         Find multiple documents matching the query
-        MongoDB: db.collection.find({"key": "value"}).to_list(1000)
+        MongoDB: db.collection.find({"key": "value"}, {"_id": 0}).to_list(1000)
         DynamoDB: table.scan(FilterExpression=...)
+        Note: This returns a list-like object with to_list() method for compatibility
         """
         try:
             if not query or query == {}:
@@ -93,10 +124,24 @@ class DynamoDBClient:
                     FilterExpression=self._build_filter_expression(query)
                 )
             
-            return response.get('Items', [])
+            items = response.get('Items', [])
+            
+            # Remove sensitive fields based on projection
+            if projection:
+                filtered_items = []
+                for item in items:
+                    item_copy = item.copy()
+                    for key, value in projection.items():
+                        if value == 0 and key in item_copy and key != '_id':
+                            del item_copy[key]
+                    filtered_items.append(item_copy)
+                items = filtered_items
+            
+            # Return a QueryResult object that has to_list() method
+            return QueryResult(items, limit)
         except Exception as e:
             logger.error(f"Error in find: {e}")
-            return []
+            return QueryResult([], limit)
     
     async def insert_one(self, document: Dict[str, Any]) -> Dict:
         """
