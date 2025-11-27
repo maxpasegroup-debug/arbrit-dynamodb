@@ -94,60 +94,38 @@ const LeadSubmissionModal = ({ open, onOpenChange }) => {
         </DialogHeader>
         
         <form onSubmit={handleSubmit} className="space-y-4 mt-4">
-          <div className="grid grid-cols-2 gap-4">
-            <div className="space-y-2">
-              <Label htmlFor="client_name">Client Name *</Label>
-              <Input
-                id="client_name"
-                value={formData.client_name}
-                onChange={(e) => handleChange('client_name', e.target.value)}
-                className="bg-slate-800 border-slate-600 text-white"
-                required
-              />
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="company_name">Company Name</Label>
-              <Input
-                id="company_name"
-                value={formData.company_name}
-                onChange={(e) => handleChange('company_name', e.target.value)}
-                className="bg-slate-800 border-slate-600 text-white"
-              />
-            </div>
-          </div>
-
-          <div className="grid grid-cols-2 gap-4">
-            <div className="space-y-2">
-              <Label htmlFor="contact_number">Contact Number *</Label>
-              <Input
-                id="contact_number"
-                value={formData.contact_number}
-                onChange={(e) => handleChange('contact_number', e.target.value)}
-                className="bg-slate-800 border-slate-600 text-white"
-                required
-              />
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
-              <Input
-                id="email"
-                type="email"
-                value={formData.email}
-                onChange={(e) => handleChange('email', e.target.value)}
-                className="bg-slate-800 border-slate-600 text-white"
-              />
-            </div>
+          <div className="space-y-2">
+            <Label htmlFor="client_name">Client Name *</Label>
+            <Input
+              id="client_name"
+              value={formData.client_name}
+              onChange={(e) => handleChange('client_name', e.target.value)}
+              className="bg-slate-800 border-slate-600 text-white"
+              required
+              placeholder="Enter client name"
+            />
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="location">Location</Label>
+            <Label htmlFor="requirement">Requirement *</Label>
+            <Textarea
+              id="requirement"
+              value={formData.requirement}
+              onChange={(e) => handleChange('requirement', e.target.value)}
+              className="bg-slate-800 border-slate-600 text-white min-h-[80px]"
+              required
+              placeholder="Describe the client's requirements..."
+            />
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="industry">Industry</Label>
             <Input
-              id="location"
-              value={formData.location}
-              onChange={(e) => handleChange('location', e.target.value)}
+              id="industry"
+              value={formData.industry}
+              onChange={(e) => handleChange('industry', e.target.value)}
               className="bg-slate-800 border-slate-600 text-white"
+              placeholder="e.g., Construction, Oil & Gas, Manufacturing"
             />
           </div>
 
