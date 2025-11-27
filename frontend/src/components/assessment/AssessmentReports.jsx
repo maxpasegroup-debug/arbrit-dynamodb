@@ -113,7 +113,7 @@ const AssessmentReports = () => {
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <h2 className="text-2xl font-bold text-slate-900">Assessment Reports & Analytics</h2>
+        <h2 className="text-2xl font-bold text-slate-100">Assessment Reports & Analytics</h2>
         <Button onClick={exportToCSV}>
           <FileDown className="w-4 h-4 mr-2" />
           Export to CSV
@@ -190,25 +190,25 @@ const AssessmentReports = () => {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <Card>
               <CardHeader className="pb-3">
-                <CardTitle className="text-sm font-medium text-slate-600">Total Responses</CardTitle>
+                <CardTitle className="text-sm font-medium text-slate-300">Total Responses</CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-3xl font-bold text-slate-900">{reports.total_responses}</p>
+                <p className="text-3xl font-bold text-slate-100">{reports.total_responses}</p>
               </CardContent>
             </Card>
 
             <Card>
               <CardHeader className="pb-3">
-                <CardTitle className="text-sm font-medium text-slate-600">Forms with Responses</CardTitle>
+                <CardTitle className="text-sm font-medium text-slate-300">Forms with Responses</CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-3xl font-bold text-slate-900">{reports.forms_summary?.length || 0}</p>
+                <p className="text-3xl font-bold text-slate-100">{reports.forms_summary?.length || 0}</p>
               </CardContent>
             </Card>
 
             <Card>
               <CardHeader className="pb-3">
-                <CardTitle className="text-sm font-medium text-slate-600">Average Response Rate</CardTitle>
+                <CardTitle className="text-sm font-medium text-slate-300">Average Response Rate</CardTitle>
               </CardHeader>
               <CardContent>
                 <p className="text-3xl font-bold text-green-600">
@@ -236,8 +236,8 @@ const AssessmentReports = () => {
                     <div key={form.form_id} className="border border-slate-200 rounded-lg p-4">
                       <div className="flex justify-between items-start mb-3">
                         <div>
-                          <h3 className="font-semibold text-slate-900">{form.form_title}</h3>
-                          <div className="text-sm text-slate-600 mt-1 space-y-1">
+                          <h3 className="font-semibold text-slate-100">{form.form_title}</h3>
+                          <div className="text-sm text-slate-300 mt-1 space-y-1">
                             {form.course_name && <p>Course: {form.course_name}</p>}
                             {form.batch_name && <p>Batch: {form.batch_name}</p>}
                             {form.trainer_name && <p>Trainer: {form.trainer_name}</p>}
@@ -255,14 +255,14 @@ const AssessmentReports = () => {
                               const question = form.responses[0]?.responses?.find(r => r.question_id === qId);
                               return (
                                 <div key={qId} className="flex justify-between items-center text-sm">
-                                  <span className="text-slate-600">{question?.question_text || 'Question'}</span>
+                                  <span className="text-slate-300">{question?.question_text || 'Question'}</span>
                                   <div className="flex items-center gap-2">
                                     <div className="flex gap-1">
                                       {[1, 2, 3, 4, 5].map(star => (
                                         <span key={star} className={star <= avg ? 'text-yellow-500' : 'text-slate-300'}>★</span>
                                       ))}
                                     </div>
-                                    <span className="font-semibold text-slate-900">{avg}</span>
+                                    <span className="font-semibold text-slate-100">{avg}</span>
                                   </div>
                                 </div>
                               );
@@ -274,7 +274,7 @@ const AssessmentReports = () => {
                   ))}
                 </div>
               ) : (
-                <p className="text-center py-8 text-slate-500">No data available for the selected filters</p>
+                <p className="text-center py-8 text-slate-400">No data available for the selected filters</p>
               )}
             </CardContent>
           </Card>
@@ -285,7 +285,7 @@ const AssessmentReports = () => {
         <Card>
           <CardContent className="py-12 text-center">
             <TrendingUp className="w-16 h-16 text-slate-300 mx-auto mb-4" />
-            <p className="text-slate-500">Apply filters to view reports</p>
+            <p className="text-slate-400">Apply filters to view reports</p>
           </CardContent>
         </Card>
       )}
