@@ -258,6 +258,8 @@ class DynamoDBClient:
         if not query:
             return None
         
+        from boto3.dynamodb.conditions import Attr
+        
         conditions = []
         for key, value in query.items():
             conditions.append(Attr(key).eq(value))
