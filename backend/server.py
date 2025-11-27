@@ -290,6 +290,24 @@ class QuotationApprove(BaseModel):
     remarks: Optional[str] = None
 
 
+class QuotationUpdate(BaseModel):
+    client_name: Optional[str] = None
+    items: Optional[str] = None
+    total_amount: Optional[float] = None
+    remarks: Optional[str] = None
+
+
+class InvoiceRequestUpdate(BaseModel):
+    payment_terms: Optional[str] = None
+    initial_amount: Optional[float] = None
+    notes: Optional[str] = None
+
+
+class DeletionApproval(BaseModel):
+    approved: bool
+    remarks: Optional[str] = None
+
+
 class LeaveRequest(BaseModel):
     model_config = ConfigDict(extra="ignore")
     
