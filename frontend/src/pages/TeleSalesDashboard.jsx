@@ -11,6 +11,8 @@ import TrainerRequest from '@/components/sales/TrainerRequest';
 import InvoiceRequest from '@/components/sales/InvoiceRequest';
 import FollowUps from '@/components/sales/FollowUps';
 import ExpenseSubmission from '@/components/expenses/ExpenseSubmission';
+import MyLeadsTracker from '@/components/sales/MyLeadsTracker';
+import SalesLeaderboard from '@/components/sales/SalesLeaderboard';
 import { toast } from 'sonner';
 import axios from 'axios';
 
@@ -137,6 +139,12 @@ const TeleSalesDashboard = () => {
           <p className="text-gray-300">
             Manage your leads, create quotations, and request services from your dashboard.
           </p>
+        </div>
+
+        {/* Performance Widgets */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+          <MyLeadsTracker />
+          <SalesLeaderboard />
         </div>
 
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
