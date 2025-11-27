@@ -1484,7 +1484,7 @@ async def delete_lead(lead_id: str, current_user: dict = Depends(get_current_use
 # Sales Head - Quotation Management
 @api_router.post("/sales-head/quotations", response_model=Quotation)
 async def create_quotation(quotation: QuotationCreate, current_user: dict = Depends(get_current_user)):
-    if current_user["role"] != "Sales Head":
+    if current_user["role"] not in ["Sales Head", "COO", "MD", "CEO"]:
         raise HTTPException(status_code=403, detail="Access denied")
     
     quot_obj = Quotation(
