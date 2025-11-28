@@ -293,10 +293,10 @@ Delete Employee
 
 ## 📍 URLs
 
-- **Login**: https://saas-crm-update.preview.emergentagent.com/login
-- **COO Dashboard**: https://saas-crm-update.preview.emergentagent.com/dashboard/coo
-- **HR Dashboard**: https://saas-crm-update.preview.emergentagent.com/dashboard/hr
-- **HRM Modules** (COO access): https://saas-crm-update.preview.emergentagent.com/hrm
+- **Login**: https://bugfix-crm.preview.emergentagent.com/login
+- **COO Dashboard**: https://bugfix-crm.preview.emergentagent.com/dashboard/coo
+- **HR Dashboard**: https://bugfix-crm.preview.emergentagent.com/dashboard/hr
+- **HRM Modules** (COO access): https://bugfix-crm.preview.emergentagent.com/hrm
 
 ---
 

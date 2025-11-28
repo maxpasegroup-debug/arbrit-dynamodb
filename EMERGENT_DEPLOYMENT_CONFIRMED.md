@@ -23,7 +23,7 @@ JWT_SECRET_KEY="arbrit-jwt-secret-key-change-in-production-2025"
 
 ### Current Preview:
 ```bash
-REACT_APP_BACKEND_URL=https://saas-crm-update.preview.emergentagent.com
+REACT_APP_BACKEND_URL=https://bugfix-crm.preview.emergentagent.com
 WDS_SOCKET_PORT=443
 REACT_APP_ENABLE_VISUAL_EDITS=false
 ENABLE_HEALTH_CHECK=false

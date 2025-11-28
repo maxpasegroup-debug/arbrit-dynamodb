@@ -94,8 +94,8 @@
 
 ## URLs
 
-- **Login Page**: https://saas-crm-update.preview.emergentagent.com/login
-- **COO Dashboard**: https://saas-crm-update.preview.emergentagent.com/dashboard/coo
+- **Login Page**: https://bugfix-crm.preview.emergentagent.com/login
+- **COO Dashboard**: https://bugfix-crm.preview.emergentagent.com/dashboard/coo
 
 ## API Endpoints
 
