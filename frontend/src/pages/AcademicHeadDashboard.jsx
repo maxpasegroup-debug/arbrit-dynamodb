@@ -291,6 +291,10 @@ const AcademicHeadDashboard = () => {
               </div>
             </TabsContent>
 
+            <TabsContent value="courses" className="mt-0">
+              <CourseManagement />
+            </TabsContent>
+
             <TabsContent value="requests" className="mt-0">
               <TrainingRequests />
             </TabsContent>
