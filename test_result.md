@@ -290,9 +290,9 @@ frontend:
     implemented: true
     working: false
     file: "/app/frontend/src/components/sales/LeadTracker.jsx"
-    stuck_count: 1
+    stuck_count: 2
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: "NA"
         agent: "main"
@@ -300,14 +300,17 @@ frontend:
       - working: false
         agent: "testing"
         comment: "❌ CRITICAL FAILURE - Lead Tracker completely broken due to JavaScript error 'courses.map is not a function' in EnhancedLeadForm component. Red error screen prevents entire interface from loading. Pipeline bar, New Lead button, search, filters, and export functionality all inaccessible. Backend APIs working correctly (200 OK responses), issue is frontend data structure mismatch where courses API response format doesn't match expected array structure in EnhancedLeadForm.jsx line 78."
+      - working: false
+        agent: "testing"
+        comment: "❌ CONFIRMED CRITICAL ISSUE - Sales CRM Calendar Testing FAILED. Successfully logged in as Sales Head (971545844387/4387) and navigated to Leads tab, but Lead Tracker component does not render properly. No Calendar buttons found because the Enhanced Lead Form component prevents the entire Lead Tracker from loading. The JavaScript error 'courses.map is not a function' in EnhancedLeadForm.jsx blocks all lead management functionality including the Calendar feature. Calendar functionality is completely inaccessible due to this blocking error."
 
   - task: "Enhanced Lead Form"
     implemented: true
     working: false
     file: "/app/frontend/src/components/sales/EnhancedLeadForm.jsx"
-    stuck_count: 1
+    stuck_count: 2
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: "NA"
         agent: "main"
@@ -315,6 +318,33 @@ frontend:
       - working: false
         agent: "testing"
         comment: "❌ CRITICAL FAILURE - EnhancedLeadForm crashes with 'courses.map is not a function' error. The fetchCourses() function receives data that is not an array, causing .map() to fail. This prevents the entire Lead Tracker from rendering. Need to fix API response handling in setCourses(response.data || []) to match actual backend response structure."
+      - working: false
+        agent: "testing"
+        comment: "❌ PERSISTENT CRITICAL ERROR - EnhancedLeadForm component still has the 'courses.map is not a function' JavaScript error that prevents Lead Tracker from rendering. This blocks access to all lead management features including the Calendar functionality. The API response format mismatch between backend courses endpoint and frontend expectations remains unresolved."
+
+  - task: "Sales CRM Calendar Feature"
+    implemented: true
+    working: false
+    file: "/app/frontend/src/components/sales/TrainerCalendar.jsx"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: false
+        agent: "testing"
+        comment: "❌ CALENDAR FEATURE TESTING FAILED - Cannot test Sales CRM Calendar functionality because the Enhanced Lead Tracker System is completely broken. Successfully logged in as Sales Head (971545844387/4387) and accessed dashboard, but clicking on Leads tab shows no Calendar buttons. The JavaScript error 'courses.map is not a function' in EnhancedLeadForm component prevents the Lead Tracker from rendering, making Calendar buttons inaccessible. TrainerCalendar component exists and appears properly implemented, but cannot be reached due to blocking Lead Tracker error."
+
+  - task: "Academic Head Dashboard Expense Tab Verification"
+    implemented: true
+    working: true
+    file: "/app/frontend/src/pages/AcademicHeadDashboard.jsx"
+    stuck_count: 0
+    priority: "medium"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "✅ VERIFIED CORRECT - Academic Head dashboard does NOT have 'Approve Expenses' tab as required. Successfully logged in as Academic Head (971557213537/3537) and confirmed available tabs are: Overview, Courses, Training Requests, Trainers, Work Orders, Schedule, Certificates, Generate, Team, Assessments, My Expenses. Only 'My Expenses' tab is present for personal expense submission, not expense approval functionality. This correctly restricts expense approval to Accounts dashboard only."
 
 metadata:
   created_by: "main_agent"
