@@ -420,3 +420,5 @@ agent_communication:
     7. Public assessment links are accessible ✅
 
     All assessment and QR generation features are production-ready and meet the specified requirements."
+  - agent: "testing"
+    message: "🔍 STARTING COURSE MANAGEMENT TESTING - Testing Academic Head Course Management functionality as requested. Will verify: 1) Login as Academic Head (971557213537/3537), 2) Navigate to Courses tab, 3) Verify sample courses display, 4) Test Add Course functionality, 5) Verify pricing tier auto-calculation, 6) Take required screenshots. Testing begins now."
