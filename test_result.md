@@ -363,12 +363,8 @@ metadata:
 
 test_plan:
   current_focus:
-    - "Enhanced Lead Tracker System"
-    - "Enhanced Lead Form"
     - "Sales CRM Calendar Feature"
   stuck_tasks:
-    - "Enhanced Lead Tracker System"
-    - "Enhanced Lead Form"
     - "Sales CRM Calendar Feature"
   test_all: false
   test_priority: "stuck_first"
