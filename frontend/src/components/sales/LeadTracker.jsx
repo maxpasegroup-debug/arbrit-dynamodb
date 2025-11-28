@@ -312,20 +312,12 @@ const LeadTracker = () => {
                       <Button
                         size="sm"
                         variant="outline"
-                        onClick={() => toast.info('Calendar feature coming soon!')}
+                        onClick={() => handleOpenCalendar(lead)}
                         className="border-white/20 hover:bg-purple-500/20"
-                        title="Check Calendar"
+                        title="Check Calendar & Request Booking"
                       >
-                        <Calendar className="w-3 h-3" />
-                      </Button>
-                      <Button
-                        size="sm"
-                        variant="outline"
-                        onClick={() => toast.info('Booking request feature coming soon!')}
-                        className="border-white/20 hover:bg-yellow-500/20"
-                        title="Request Booking"
-                      >
-                        <CheckCircle className="w-3 h-3" />
+                        <Calendar className="w-3 h-3 mr-1" />
+                        Calendar
                       </Button>
 
                       <select
