@@ -366,12 +366,32 @@ const EnhancedLeadForm = ({ open, onOpenChange, onSuccess, existingLead = null }
                   />
                 </div>
                 <div>
+                  <Label className="text-slate-300">Phone *</Label>
+                  <Input
+                    value={formData.phone}
+                    onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                    placeholder="971xxxxxxxxx"
+                    className="bg-slate-800 border-white/10 text-slate-100"
+                    required
+                  />
+                </div>
+                <div>
                   <Label className="text-slate-300">Contact Email</Label>
                   <Input
                     type="email"
                     value={formData.contact_email}
                     onChange={(e) => setFormData({ ...formData, contact_email: e.target.value })}
                     placeholder="john@company.com"
+                    className="bg-slate-800 border-white/10 text-slate-100"
+                  />
+                </div>
+                <div className="col-span-2">
+                  <Label className="text-slate-300">Website</Label>
+                  <Input
+                    type="url"
+                    value={formData.website}
+                    onChange={(e) => setFormData({ ...formData, website: e.target.value })}
+                    placeholder="https://www.company.com"
                     className="bg-slate-800 border-white/10 text-slate-100"
                   />
                 </div>
