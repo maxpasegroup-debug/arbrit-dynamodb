@@ -1,0 +1,294 @@
+import { useState, useEffect } from 'react';
+import { Calendar, ChevronLeft, ChevronRight, User, Clock } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { toast } from 'sonner';
+import axios from 'axios';
+
+const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
+const API = `${BACKEND_URL}/api`;
+
+const TrainerCalendar = ({ onBookingRequest, selectedCourse, leadData }) => {
+  const [trainers, setTrainers] = useState([]);
+  const [currentMonth, setCurrentMonth] = useState(new Date());
+  const [selectedDate, setSelectedDate] = useState(null);
+  const [bookingDialogOpen, setBookingDialogOpen] = useState(false);
+  const [bookingData, setBookingData] = useState({
+    requested_date: '',
+    num_trainees: leadData?.num_trainees || 1,
+    company_name: leadData?.company_name || leadData?.client_name || '',
+    contact_person: leadData?.contact_person || leadData?.client_name || '',
+    contact_mobile: leadData?.contact_mobile || '',
+    course_id: selectedCourse?.id || '',
+    course_name: selectedCourse?.name || '',
+    lead_id: leadData?.id || ''
+  });
+
+  useEffect(() => {
+    fetchTrainers();
+  }, []);
+
+  const fetchTrainers = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      const response = await axios.get(`${API}/academic/trainers`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      setTrainers(response.data || []);
+    } catch (error) {
+      console.error('Error fetching trainers:', error);
+    }
+  };
+
+  const getDaysInMonth = (date) => {
+    const year = date.getFullYear();
+    const month = date.getMonth();
+    const firstDay = new Date(year, month, 1);
+    const lastDay = new Date(year, month + 1, 0);
+    const daysInMonth = lastDay.getDate();
+    const startingDayOfWeek = firstDay.getDay();
+    
+    return { daysInMonth, startingDayOfWeek, year, month };
+  };
+
+  const isDateAvailable = (date) => {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    return date >= today;
+  };
+
+  const handleDateClick = (day) => {
+    const date = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), day);
+    if (isDateAvailable(date)) {
+      setSelectedDate(date);
+      setBookingData({
+        ...bookingData,
+        requested_date: date.toISOString().split('T')[0]
+      });
+      setBookingDialogOpen(true);
+    }
+  };
+
+  const handleBookingRequest = async () => {
+    if (!bookingData.requested_date || !bookingData.company_name) {
+      toast.error('Please fill in all required fields');
+      return;
+    }
+
+    try {
+      const token = localStorage.getItem('token');
+      await axios.post(`${API}/booking-requests`, bookingData, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      
+      toast.success('Booking request sent to Academic Head!');
+      setBookingDialogOpen(false);
+      if (onBookingRequest) onBookingRequest();
+    } catch (error) {
+      console.error('Error creating booking request:', error);
+      toast.error(error.response?.data?.detail || 'Failed to create booking request');
+    }
+  };
+
+  const { daysInMonth, startingDayOfWeek, year, month } = getDaysInMonth(currentMonth);
+  const monthName = currentMonth.toLocaleString('default', { month: 'long', year: 'numeric' });
+
+  const days = [];
+  for (let i = 0; i < startingDayOfWeek; i++) {
+    days.push(<div key={`empty-${i}`} className="h-20" />);
+  }
+  
+  for (let day = 1; day <= daysInMonth; day++) {
+    const date = new Date(year, month, day);
+    const isAvailable = isDateAvailable(date);
+    const isToday = new Date().toDateString() === date.toDateString();
+    
+    days.push(
+      <button
+        key={day}
+        onClick={() => handleDateClick(day)}
+        disabled={!isAvailable}
+        className={`h-20 p-2 rounded-lg border transition-all ${
+          isToday ? 'border-blue-400 bg-blue-500/20' :
+          isAvailable ? 'border-white/10 bg-white/5 hover:bg-white/10 hover:border-white/20' :
+          'border-white/5 bg-slate-800/30 opacity-50 cursor-not-allowed'
+        }`}
+      >
+        <div className="text-left">
+          <div className={`text-sm font-semibold ${isAvailable ? 'text-slate-100' : 'text-slate-600'}`}>
+            {day}
+          </div>
+          {isAvailable && (
+            <Badge className="text-xs mt-1 bg-green-500/20 text-green-300 border-green-400/50">
+              Available
+            </Badge>
+          )}
+        </div>
+      </button>
+    );
+  }
+
+  return (
+    <div className="space-y-6">
+      <div className="bg-slate-900/50 backdrop-blur-sm rounded-xl border border-white/10 p-6">
+        <div className="flex justify-between items-center mb-6">
+          <h3 className="text-xl font-semibold text-slate-100 flex items-center gap-2">
+            <Calendar className="w-5 h-5" />
+            Trainer Availability Calendar
+          </h3>
+          <div className="flex gap-2">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setCurrentMonth(new Date(currentMonth.setMonth(currentMonth.getMonth() - 1)))}
+              className="border-white/20 hover:bg-white/10"
+            >
+              <ChevronLeft className="w-4 h-4" />
+            </Button>
+            <span className="px-4 py-2 text-slate-100 font-medium">{monthName}</span>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setCurrentMonth(new Date(currentMonth.setMonth(currentMonth.getMonth() + 1)))}
+              className="border-white/20 hover:bg-white/10"
+            >
+              <ChevronRight className="w-4 h-4" />
+            </Button>
+          </div>
+        </div>
+
+        {/* Trainers Info */}
+        <div className="mb-4 p-3 bg-blue-500/10 border border-blue-400/30 rounded-lg">
+          <div className="flex items-center gap-2 mb-2">
+            <User className="w-4 h-4 text-blue-400" />
+            <span className="text-sm font-semibold text-slate-200">Available Trainers: {trainers.length}</span>
+          </div>
+          <div className="flex gap-2 flex-wrap">
+            {trainers.slice(0, 5).map((trainer, idx) => (
+              <Badge key={idx} className="bg-blue-500/20 text-blue-300 border-blue-400/50 text-xs">
+                {trainer.name}
+              </Badge>
+            ))}
+            {trainers.length > 5 && (
+              <Badge className="bg-slate-700 text-slate-300 text-xs">
+                +{trainers.length - 5} more
+              </Badge>
+            )}
+          </div>
+        </div>
+
+        {/* Calendar Grid */}
+        <div className="grid grid-cols-7 gap-2">
+          {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map(day => (
+            <div key={day} className="text-center text-sm font-semibold text-slate-400 py-2">
+              {day}
+            </div>
+          ))}
+          {days}
+        </div>
+
+        <div className="mt-4 text-xs text-slate-400">
+          <p>Click on an available date to request a booking. The Academic Head will review and confirm.</p>
+        </div>
+      </div>
+
+      {/* Booking Request Dialog */}
+      <Dialog open={bookingDialogOpen} onOpenChange={setBookingDialogOpen}>
+        <DialogContent className="max-w-md bg-slate-900 border-white/10">
+          <DialogHeader>
+            <DialogTitle className="text-slate-100">Request Training Booking</DialogTitle>
+            <DialogDescription className="text-slate-400">
+              Submit booking request for Academic Head approval
+            </DialogDescription>
+          </DialogHeader>
+
+          <div className="space-y-4">
+            <div className="p-3 bg-blue-500/10 border border-blue-400/30 rounded-lg">
+              <p className="text-sm text-slate-300">
+                <strong>Selected Date:</strong> {selectedDate?.toLocaleDateString('en-US', { 
+                  weekday: 'long', 
+                  year: 'numeric', 
+                  month: 'long', 
+                  day: 'numeric' 
+                })}
+              </p>
+              {selectedCourse && (
+                <p className="text-sm text-slate-300 mt-1">
+                  <strong>Course:</strong> {selectedCourse.name}
+                </p>
+              )}
+            </div>
+
+            <div>
+              <Label className="text-slate-300">Company/Client Name *</Label>
+              <Input
+                value={bookingData.company_name}
+                onChange={(e) => setBookingData({ ...bookingData, company_name: e.target.value })}
+                className="bg-slate-800 border-white/10 text-slate-100"
+                placeholder="Enter company name"
+              />
+            </div>
+
+            <div>
+              <Label className="text-slate-300">Contact Person *</Label>
+              <Input
+                value={bookingData.contact_person}
+                onChange={(e) => setBookingData({ ...bookingData, contact_person: e.target.value })}
+                className="bg-slate-800 border-white/10 text-slate-100"
+                placeholder="Enter contact name"
+              />
+            </div>
+
+            <div>
+              <Label className="text-slate-300">Contact Mobile *</Label>
+              <Input
+                value={bookingData.contact_mobile}
+                onChange={(e) => setBookingData({ ...bookingData, contact_mobile: e.target.value })}
+                className="bg-slate-800 border-white/10 text-slate-100"
+                placeholder="971xxxxxxxxx"
+              />
+            </div>
+
+            <div>
+              <Label className="text-slate-300">Number of Trainees</Label>
+              <Input
+                type="number"
+                min="1"
+                value={bookingData.num_trainees}
+                onChange={(e) => setBookingData({ ...bookingData, num_trainees: parseInt(e.target.value) || 1 })}
+                className="bg-slate-800 border-white/10 text-slate-100"
+              />
+            </div>
+
+            <div className="flex gap-2 pt-4">
+              <Button
+                variant="outline"
+                onClick={() => setBookingDialogOpen(false)}
+                className="flex-1 border-white/20 hover:bg-white/10"
+              >
+                Cancel
+              </Button>
+              <Button
+                onClick={handleBookingRequest}
+                className="flex-1 bg-green-600 hover:bg-green-700"
+              >
+                Send Request
+              </Button>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
+    </div>
+  );
+};
+
+export default TrainerCalendar;
