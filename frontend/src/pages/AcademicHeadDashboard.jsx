@@ -174,13 +174,20 @@ const AcademicHeadDashboard = () => {
         </div>
 
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-10 bg-white/5 border border-white/10">
+          <TabsList className="grid w-full grid-cols-11 bg-white/5 border border-white/10">
             <TabsTrigger 
               value="overview"
               className="data-[state=active]:bg-yellow-500/20 data-[state=active]:text-white text-gray-300"
             >
               <LayoutDashboard className="w-4 h-4 mr-2" />
               Overview
+            </TabsTrigger>
+            <TabsTrigger 
+              value="courses"
+              className="data-[state=active]:bg-yellow-500/20 data-[state=active]:text-white text-gray-300"
+            >
+              <GraduationCap className="w-4 h-4 mr-2" />
+              Courses
             </TabsTrigger>
             <TabsTrigger 
               value="requests"
