@@ -5452,12 +5452,14 @@ async def get_booking_requests(current_user: dict = Depends(get_current_user)):
     """Get booking requests (Academic Head sees all, Sales sees own)"""
     try:
         if current_user.get("role") in ["Academic Head", "COO", "MD", "CEO"]:
-            requests = await db.booking_requests.find({}, {"_id": 0})
+            requests_result = await db.booking_requests.find({}, {"_id": 0})
+            requests = await requests_result.to_list(1000)
         else:
-            requests = await db.booking_requests.find(
+            requests_result = await db.booking_requests.find(
                 {"requested_by": current_user.get("id")},
                 {"_id": 0}
             )
+            requests = await requests_result.to_list(1000)
         
         return requests
     except Exception as e:
