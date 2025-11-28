@@ -330,7 +330,7 @@ frontend:
 
   - task: "Sales CRM Calendar Feature"
     implemented: true
-    working: false
+    working: true
     file: "/app/frontend/src/components/sales/TrainerCalendar.jsx"
     stuck_count: 1
     priority: "high"
@@ -342,6 +342,9 @@ frontend:
       - working: false
         agent: "testing"
         comment: "❌ PARTIAL SUCCESS - MAJOR PROGRESS MADE: The main backend API bug has been fixed! Lead Tracker now loads successfully with 7 Calendar buttons accessible. However, TrainerCalendar component has new issues: 1) 403 error fetching trainers from /api/academic/trainers (permissions), 2) JavaScript error 'bookings.filter is not a function' causing component crash. Calendar buttons are clickable but modal fails to open due to these errors. Core calendar functionality is blocked by data structure issues in TrainerCalendar component."
+      - working: true
+        agent: "testing"
+        comment: "✅ COMPREHENSIVE CALENDAR TESTING COMPLETED SUCCESSFULLY - All backend API bugs have been resolved and Sales CRM Calendar feature is fully functional! TESTING RESULTS: ✅ Phase 1 (Authentication & Navigation): Sales Head login successful (971545844387/4387), Leads tab accessible, 7 Calendar buttons found. ✅ Phase 2 (Calendar Modal): Trainer Calendar modal opens successfully with proper dialog structure. ✅ Phase 3 (Calendar Components): All components verified - monthly calendar header (November 2025), navigation arrows, day labels (Sun-Sat), calendar grid (7 columns), trainer info section (12 available trainers), calendar legend with color codes. ✅ Phase 4 (Calendar Interaction): Future dates show 'Available' badges in green, today (28th) highlighted in blue, past dates disabled/grayed out, date clicks open booking dialog. ✅ Phase 5 (Booking Form): All form fields present and functional - selected date display, course dropdown populated with 6 courses, company/client name field, contact person field, contact mobile field, number of trainees field. ✅ Phase 6 (Form Submission): Successfully filled form with test data (Test Company XYZ, Jane Smith, 971507654321, 20 trainees), Send Request button functional, booking dialog closes, calendar modal closes, returns to Lead Tracker. BACKEND VERIFICATION: All critical APIs working correctly - /api/courses returns array ✅, /api/booking-requests returns array ✅, /api/academic/trainers allows Sales Head access and returns array ✅. Complete end-to-end workflow verified and functional."
 
   - task: "Academic Head Dashboard Expense Tab Verification"
     implemented: true
