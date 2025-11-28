@@ -350,6 +350,31 @@ const LeadTracker = () => {
         existingLead={selectedLead}
         onSuccess={fetchLeads}
       />
+
+      {/* Trainer Calendar Modal */}
+      <Dialog open={calendarOpen} onOpenChange={setCalendarOpen}>
+        <DialogContent className="max-w-5xl bg-slate-900 border-white/10 max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle className="text-slate-100">
+              Trainer Calendar - Check Availability & Request Booking
+            </DialogTitle>
+            <DialogDescription className="text-slate-400">
+              {calendarLead && (
+                <span>
+                  Lead: {calendarLead.company_name || calendarLead.client_name} - {calendarLead.course_name}
+                </span>
+              )}
+            </DialogDescription>
+          </DialogHeader>
+          {calendarLead && (
+            <TrainerCalendar
+              leadData={calendarLead}
+              selectedCourse={{ id: calendarLead.course_id, name: calendarLead.course_name }}
+              onBookingRequest={handleBookingSuccess}
+            />
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
