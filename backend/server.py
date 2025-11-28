@@ -2311,7 +2311,12 @@ async def get_all_leads(current_user: dict = Depends(get_current_user)):
     if current_user["role"] not in ["COO", "Sales Head", "Field Sales", "Field Sales Executive", "MD", "CEO"]:
         raise HTTPException(status_code=403, detail="Access denied.")
     
-    query_result = await db.leads.find({})
+    # Field Sales users see only their own leads, others see all
+    if current_user["role"] in ["Field Sales", "Field Sales Executive"]:
+        query_result = await db.leads.find({"created_by": current_user.get("id")})
+    else:
+        query_result = await db.leads.find({})
+    
     leads = await query_result.sort("created_at", -1).to_list(1000)
     
     for lead in leads:
