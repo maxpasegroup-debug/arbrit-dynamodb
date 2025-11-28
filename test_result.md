@@ -323,10 +323,14 @@ metadata:
   run_ui: false
 
 test_plan:
-  current_focus: []
-  stuck_tasks: []
+  current_focus:
+    - "Enhanced Lead Tracker System"
+    - "Enhanced Lead Form"
+  stuck_tasks:
+    - "Enhanced Lead Tracker System"
+    - "Enhanced Lead Form"
   test_all: false
-  test_priority: "high_first"
+  test_priority: "stuck_first"
 
 agent_communication:
   - agent: "main"
