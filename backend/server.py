@@ -1524,7 +1524,7 @@ async def get_company_document_alerts(current_user: dict = Depends(get_current_u
 @api_router.delete("/hrm/company-documents/{doc_id}")
 async def delete_company_document(doc_id: str, current_user: dict = Depends(get_current_user)):
     result = await db.company_documents.delete_one({"id": doc_id})
-    if result.deleted_count == 0:
+    if result.get("deleted_count", 0) == 0:
         raise HTTPException(status_code=404, detail="Document not found")
     return {"message": "Document deleted successfully"}
 
