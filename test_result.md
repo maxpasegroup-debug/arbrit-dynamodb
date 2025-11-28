@@ -210,6 +210,30 @@ backend:
         agent: "testing"
         comment: "✅ PASSED - All 8 Sales Head endpoints working perfectly with COO credentials (mobile: 971566374020, PIN: 4020). Fixed role-based access control to allow COO access. Successfully tested: lead retrieval (5 leads), lead assignment, quotation retrieval (5 quotations), quotation approval/rejection, leave request approval/rejection. All endpoints return proper JSON responses with correct status codes (200). COO user has full Sales Head functionality as required."
 
+  - task: "Employee Document Management API Endpoints"
+    implemented: true
+    working: true
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "✅ COMPREHENSIVE DOCUMENT MANAGEMENT TESTING COMPLETED - Successfully tested all Employee Document Management endpoints with MD/HR Manager credentials (971564022503/2503). SCENARIO 1 (Employee Document Upload): Successfully uploaded passport copy for Afshan Firdose (971545844386), document saved with ID and verified in employee document list. SCENARIO 2 (Company Document Upload): Successfully uploaded Trade License, document saved and verified in company document list. SCENARIO 3 (Expiry Alerts): Created documents with near expiry dates (15 and 20 days), alerts generated correctly with proper severity levels (WARNING for 14 days, INFO for 19 days). SCENARIO 4 (Document Deletion): Successfully deleted both employee and company documents, verified removal from lists. FIXED CRITICAL BUG: Updated delete endpoints to use dictionary access (result.get('deleted_count')) instead of attribute access (result.deleted_count) for DynamoDB compatibility. ALL 8 ENDPOINTS WORKING: POST /api/hrm/employee-documents ✅, GET /api/hrm/employee-documents/{employee_id} ✅, GET /api/hrm/employee-documents/alerts/all ✅, DELETE /api/hrm/employee-documents/{doc_id} ✅, POST /api/hrm/company-documents ✅, GET /api/hrm/company-documents ✅, GET /api/hrm/company-documents/alerts/all ✅, DELETE /api/hrm/company-documents/{doc_id} ✅. File upload/storage mechanism functional with base64 encoding. Document expiry alert system working correctly (30-day threshold). All CRUD operations working perfectly. Success Rate: 100% (14/14 tests passed)."
+
+  - task: "Company Document Management API Endpoints"
+    implemented: true
+    working: true
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "✅ COMPANY DOCUMENT MANAGEMENT FULLY FUNCTIONAL - Tested as part of comprehensive document management testing. Successfully uploaded Trade License and ISO 45001 Certificate documents with realistic content. Document storage working with base64 encoding. Expiry alert system functional (documents expiring within 30 days trigger alerts with proper severity classification). Document retrieval returns complete document list with metadata. Document deletion working correctly after fixing DynamoDB compatibility issue. All company document endpoints integrated and working with employee document system."
+
 frontend:
   - task: "Academic Head Course Management"
     implemented: true
