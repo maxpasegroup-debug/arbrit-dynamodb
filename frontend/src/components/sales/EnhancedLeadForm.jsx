@@ -109,6 +109,14 @@ const EnhancedLeadForm = ({ open, onOpenChange, onSuccess, existingLead = null }
     }
   };
 
+  useEffect(() => {
+    // Set lead owner to current user by default
+    const user = JSON.parse(localStorage.getItem('user') || '{}');
+    if (user.name && !formData.lead_owner) {
+      setFormData(prev => ({ ...prev, lead_owner: user.name }));
+    }
+  }, []);
+
   const handleCourseChange = (courseId) => {
     const course = courses.find(c => c.id === courseId);
     if (course) {
