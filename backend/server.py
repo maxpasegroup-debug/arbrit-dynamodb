@@ -2749,7 +2749,8 @@ async def get_all_trainers(current_user: dict = Depends(get_current_user)):
     
     try:
         # Get all employees and filter for trainers
-        all_employees = await db.employees.find({}, {"_id": 0})
+        all_employees_result = await db.employees.find({}, {"_id": 0})
+        all_employees = await all_employees_result.to_list(1000)
         
         # Filter for trainers - check designation, role, or department
         trainers = []
