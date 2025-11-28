@@ -98,6 +98,14 @@ const TrainerCalendar = ({ onBookingRequest, selectedCourse, leadData }) => {
     return date >= today;
   };
 
+  const getBookingsForDate = (date) => {
+    const dateStr = date.toISOString().split('T')[0];
+    return bookings.filter(booking => {
+      const bookingDate = booking.requested_date?.split('T')[0];
+      return bookingDate === dateStr && booking.status !== 'rejected';
+    });
+  };
+
   const handleDateClick = (day) => {
     const date = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), day);
     if (isDateAvailable(date)) {
