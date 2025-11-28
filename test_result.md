@@ -396,7 +396,7 @@ metadata:
 
 test_plan:
   current_focus:
-    - "ARBRIT Lead Submission Form Update for Field Sales"
+    - "Field Sales Dashboard Modern Lead Tracker Verification"
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
