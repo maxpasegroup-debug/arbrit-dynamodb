@@ -5284,7 +5284,7 @@ async def create_course(course_data: dict, current_user: dict = Depends(get_curr
         from decimal import Decimal
         
         course = {
-            "id": str(uuid4()),
+            "id": str(uuid.uuid4()),
             "name": course_data.get("name"),
             "description": course_data.get("description", ""),
             "category": course_data.get("category", "Safety Training"),
