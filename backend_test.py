@@ -1,8 +1,9 @@
 import requests
 import sys
-from datetime import datetime
+import base64
+from datetime import datetime, timedelta
 
-class ArbritAPITester:
+class ArbritDocumentManagementTester:
     def __init__(self, base_url="https://bugfix-crm.preview.emergentagent.com"):
         self.base_url = base_url
         self.api_url = f"{base_url}/api"
@@ -10,6 +11,9 @@ class ArbritAPITester:
         self.tests_run = 0
         self.tests_passed = 0
         self.failed_tests = []
+        self.employee_id = None
+        self.employee_doc_id = None
+        self.company_doc_id = None
 
     def run_test(self, name, method, endpoint, expected_status, data=None, headers=None):
         """Run a single API test"""
