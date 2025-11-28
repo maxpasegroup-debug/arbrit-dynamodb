@@ -266,8 +266,25 @@ const TrainerCalendar = ({ onBookingRequest, selectedCourse, leadData }) => {
           {days}
         </div>
 
-        <div className="mt-4 text-xs text-slate-400">
-          <p>Click on an available date to request a booking. The Academic Head will review and confirm.</p>
+        <div className="mt-4 p-3 bg-slate-800/50 rounded-lg border border-white/10">
+          <p className="text-xs text-slate-300 font-semibold mb-2">Calendar Legend:</p>
+          <div className="grid grid-cols-3 gap-2 text-xs">
+            <div className="flex items-center gap-2">
+              <div className="w-3 h-3 rounded bg-green-500/20 border border-green-400/50"></div>
+              <span className="text-slate-400">Available dates</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <div className="w-3 h-3 rounded bg-orange-500/20 border border-orange-400/50"></div>
+              <span className="text-slate-400">Scheduled trainings</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <div className="w-3 h-3 rounded bg-blue-500/20 border border-blue-400"></div>
+              <span className="text-slate-400">Today</span>
+            </div>
+          </div>
+          <p className="text-xs text-slate-400 mt-2">
+            Click on an available date to request a booking. The Academic Head will review and confirm trainer assignment.
+          </p>
         </div>
       </div>
 
