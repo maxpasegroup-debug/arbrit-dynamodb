@@ -5318,7 +5318,8 @@ async def get_question_bank(current_user: dict = Depends(get_current_user)):
 async def get_courses(current_user: dict = Depends(get_current_user)):
     """Get all active courses"""
     try:
-        courses = await db.courses.find({"status": "active"}, {"_id": 0}).to_list(1000)
+        courses_result = await db.courses.find({"status": "active"}, {"_id": 0})
+        courses = await courses_result.to_list(1000)
         return courses
     except Exception as e:
         logger.error(f"Error fetching courses: {e}")
