@@ -211,6 +211,18 @@ backend:
         comment: "✅ PASSED - All 8 Sales Head endpoints working perfectly with COO credentials (mobile: 971566374020, PIN: 4020). Fixed role-based access control to allow COO access. Successfully tested: lead retrieval (5 leads), lead assignment, quotation retrieval (5 quotations), quotation approval/rejection, leave request approval/rejection. All endpoints return proper JSON responses with correct status codes (200). COO user has full Sales Head functionality as required."
 
 frontend:
+  - task: "Academic Head Course Management"
+    implemented: true
+    working: "NA"
+    file: "/app/frontend/src/components/academic/CourseManagement.jsx"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Academic Head Dashboard includes Courses tab with CourseManagement component. Allows creating, editing, and managing training courses with pricing tiers. Requires Academic Head/COO/MD/CEO role authentication."
+
   - task: "Academic Head Assessment Management"
     implemented: true
     working: true
