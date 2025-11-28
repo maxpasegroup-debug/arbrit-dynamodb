@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { Plus } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { Plus, Building2, User } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -15,16 +15,79 @@ const API = `${BACKEND_URL}/api`;
 const SelfLeadForm = ({ showFieldType = false, onSuccess }) => {
   const [showDialog, setShowDialog] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [courses, setCourses] = useState([]);
+  const [leadType, setLeadType] = useState('company');
   const [formData, setFormData] = useState({
+    lead_type: 'company',
+    source: 'Self',
+    first_name: '',
+    last_name: '',
+    lead_owner: '',
+    lead_category: '',
+    company_name: '',
+    phone: '',
+    contact_person: '',
+    contact_designation: '',
+    contact_mobile: '',
+    contact_email: '',
+    website: '',
     client_name: '',
+    employee_count: '',
+    training_service_details: '',
+    product_services_required: '',
+    course_id: '',
+    course_name: '',
+    num_trainees: 1,
+    training_site: '',
+    training_location: '',
+    training_date: '',
+    requirement: '',
+    industry: '',
+    urgency: 'medium',
+    payment_mode: '',
+    payment_terms: '',
+    remarks: '',
+    description: '',
+    next_followup_date: '',
+    branch: '',
     mobile: '',
     email: '',
-    company_name: '',
-    branch: '',
-    requirement: '',
-    lead_type: 'Individual',
     notes: ''
   });
+
+  useEffect(() => {
+    if (showDialog) {
+      fetchCourses();
+      // Set lead owner to current user by default
+      const user = JSON.parse(localStorage.getItem('user') || '{}');
+      if (user.name && !formData.lead_owner) {
+        setFormData(prev => ({ ...prev, lead_owner: user.name }));
+      }
+    }
+  }, [showDialog]);
+
+  const fetchCourses = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      const response = await axios.get(`${API}/courses`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      setCourses(response.data || []);
+    } catch (error) {
+      console.error('Error fetching courses:', error);
+    }
+  };
+
+  const handleCourseChange = (courseId) => {
+    const course = courses.find(c => c.id === courseId);
+    if (course) {
+      setFormData({
+        ...formData,
+        course_id: courseId,
+        course_name: course.name
+      });
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
