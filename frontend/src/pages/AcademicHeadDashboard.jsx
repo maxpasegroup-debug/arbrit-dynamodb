@@ -16,6 +16,7 @@ import AssessmentQRGenerator from '@/components/assessment/AssessmentQRGenerator
 import AssessmentReports from '@/components/assessment/AssessmentReports';
 import ExpenseSubmission from '@/components/expenses/ExpenseSubmission';
 import ExpenseApprovals from '@/components/expenses/ExpenseApprovals';
+import CourseManagement from '@/components/academic/CourseManagement';
 import { toast } from 'sonner';
 import axios from 'axios';
 
