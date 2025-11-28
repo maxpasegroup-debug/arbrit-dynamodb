@@ -288,7 +288,7 @@ frontend:
 
   - task: "Enhanced Lead Tracker System"
     implemented: true
-    working: false
+    working: true
     file: "/app/frontend/src/components/sales/LeadTracker.jsx"
     stuck_count: 2
     priority: "high"
@@ -303,6 +303,9 @@ frontend:
       - working: false
         agent: "testing"
         comment: "❌ CONFIRMED CRITICAL ISSUE - Sales CRM Calendar Testing FAILED. Successfully logged in as Sales Head (971545844387/4387) and navigated to Leads tab, but Lead Tracker component does not render properly. No Calendar buttons found because the Enhanced Lead Form component prevents the entire Lead Tracker from loading. The JavaScript error 'courses.map is not a function' in EnhancedLeadForm.jsx blocks all lead management functionality including the Calendar feature. Calendar functionality is completely inaccessible due to this blocking error."
+      - working: true
+        agent: "testing"
+        comment: "✅ FIXED - Lead Tracker now working correctly! Backend API bug has been resolved - /api/courses endpoint now returns proper array format. Successfully tested: Sales Head login (971545844387/4387), navigation to Leads tab, Lead Tracker loads with pipeline bar (6 status columns), New Lead button, search functionality, leads list with 7 leads displayed, and 7 Calendar buttons accessible. All core Lead Tracker functionality is working. The 'courses.map is not a function' error has been resolved."
 
   - task: "Enhanced Lead Form"
     implemented: true
