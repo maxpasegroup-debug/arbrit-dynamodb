@@ -559,3 +559,33 @@ agent_communication:
     - Enhanced Lead Creation: ❌ NOT ACCESSIBLE
     - Pipeline Bar: ❌ NOT VISIBLE
     - Search & Filters: ❌ NOT FUNCTIONAL"
+  - agent: "testing"
+    message: "❌ SALES CRM CALENDAR TESTING RESULTS - Comprehensive testing of Sales CRM Calendar feature with critical findings:
+
+    **✅ AUTHENTICATION & NAVIGATION TESTS PASSED:**
+    - ✅ Sales Head login successful with credentials (971545844387/4387)
+    - ✅ Dashboard accessible and properly rendered
+    - ✅ Leads tab navigation working
+    - ✅ Academic Head login successful with credentials (971557213537/3537)
+    - ✅ Academic Head dashboard confirmed does NOT have 'Approve Expenses' tab (only 'My Expenses' for personal submissions)
+
+    **❌ CALENDAR FUNCTIONALITY COMPLETELY BLOCKED:**
+    - ❌ Lead Tracker component fails to render due to JavaScript error 'courses.map is not a function' in EnhancedLeadForm
+    - ❌ No Calendar buttons found on Leads page because Lead Tracker doesn't load
+    - ❌ Cannot access TrainerCalendar modal due to blocking error
+    - ❌ Booking request functionality inaccessible
+    - ❌ Calendar feature testing impossible due to prerequisite component failure
+
+    **ROOT CAUSE:**
+    The EnhancedLeadForm component (imported by LeadTracker) has a critical JavaScript error where the courses API response format doesn't match the expected array structure, causing .map() to fail and preventing the entire Lead Tracker from rendering.
+
+    **IMPACT ON CALENDAR TESTING:**
+    - TrainerCalendar component exists and appears properly implemented
+    - Calendar modal, booking form, and trainer availability features cannot be tested
+    - All calendar-related functionality is blocked by the Lead Tracker rendering issue
+    - Sales CRM Calendar feature is effectively non-functional due to this blocking error
+
+    **SCREENSHOTS CAPTURED:**
+    - 01_academic_head_dashboard.png (showing correct absence of Approve Expenses tab)
+    - 02_sales_head_dashboard.png (showing successful Sales Head login)
+    - 03_leads_page_error.png (showing Leads tab with no Calendar buttons due to error)"
