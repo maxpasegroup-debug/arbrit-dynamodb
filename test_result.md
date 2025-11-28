@@ -291,10 +291,7 @@ metadata:
 
 test_plan:
   current_focus:
-    - "Academic Head Assessment Management"
-    - "Trainer QR Code Generation"
-    - "Assessment Form Builder"
-    - "Assessment QR Generator"
+    - "Academic Head Course Management"
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
