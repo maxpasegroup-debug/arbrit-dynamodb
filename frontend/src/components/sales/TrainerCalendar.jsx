@@ -19,6 +19,8 @@ const API = `${BACKEND_URL}/api`;
 
 const TrainerCalendar = ({ onBookingRequest, selectedCourse, leadData }) => {
   const [trainers, setTrainers] = useState([]);
+  const [courses, setCourses] = useState([]);
+  const [bookings, setBookings] = useState([]);
   const [currentMonth, setCurrentMonth] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState(null);
   const [bookingDialogOpen, setBookingDialogOpen] = useState(false);
@@ -35,7 +37,13 @@ const TrainerCalendar = ({ onBookingRequest, selectedCourse, leadData }) => {
 
   useEffect(() => {
     fetchTrainers();
+    fetchCourses();
+    fetchBookings();
   }, []);
+
+  useEffect(() => {
+    fetchBookings();
+  }, [currentMonth]);
 
   const fetchTrainers = async () => {
     try {
