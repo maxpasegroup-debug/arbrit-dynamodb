@@ -223,6 +223,75 @@ const EnhancedLeadForm = ({ open, onOpenChange, onSuccess, existingLead = null }
         </DialogHeader>
 
         <form onSubmit={handleSubmit} className="space-y-6">
+          {/* Lead Basic Information */}
+          <div className="space-y-4 p-4 bg-purple-500/10 border border-purple-400/30 rounded-lg">
+            <h4 className="text-sm font-semibold text-slate-200">Lead Information</h4>
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <Label className="text-slate-300">First Name *</Label>
+                <Input
+                  value={formData.first_name}
+                  onChange={(e) => setFormData({ ...formData, first_name: e.target.value })}
+                  placeholder="John"
+                  className="bg-slate-800 border-white/10 text-slate-100"
+                  required
+                />
+              </div>
+              <div>
+                <Label className="text-slate-300">Last Name</Label>
+                <Input
+                  value={formData.last_name}
+                  onChange={(e) => setFormData({ ...formData, last_name: e.target.value })}
+                  placeholder="Doe"
+                  className="bg-slate-800 border-white/10 text-slate-100"
+                />
+              </div>
+              <div>
+                <Label className="text-slate-300">Lead Owner *</Label>
+                <Input
+                  value={formData.lead_owner}
+                  onChange={(e) => setFormData({ ...formData, lead_owner: e.target.value })}
+                  placeholder="Sales Representative"
+                  className="bg-slate-800 border-white/10 text-slate-100"
+                  required
+                />
+              </div>
+              <div>
+                <Label className="text-slate-300">Lead Source</Label>
+                <select
+                  value={formData.source}
+                  onChange={(e) => setFormData({ ...formData, source: e.target.value })}
+                  className="w-full bg-slate-800 border border-white/10 text-slate-100 rounded-md p-2"
+                >
+                  <option value="Self">Self</option>
+                  <option value="Website">Website</option>
+                  <option value="Referral">Referral</option>
+                  <option value="Social Media">Social Media</option>
+                  <option value="Walk-in">Walk-in</option>
+                  <option value="Cold Call">Cold Call</option>
+                  <option value="Email Campaign">Email Campaign</option>
+                  <option value="Trade Show">Trade Show</option>
+                  <option value="Other">Other</option>
+                </select>
+              </div>
+              <div className="col-span-2">
+                <Label className="text-slate-300">Lead Category</Label>
+                <select
+                  value={formData.lead_category}
+                  onChange={(e) => setFormData({ ...formData, lead_category: e.target.value })}
+                  className="w-full bg-slate-800 border border-white/10 text-slate-100 rounded-md p-2"
+                >
+                  <option value="">Select Category</option>
+                  <option value="Hot">Hot Lead</option>
+                  <option value="Warm">Warm Lead</option>
+                  <option value="Cold">Cold Lead</option>
+                  <option value="Qualified">Qualified</option>
+                  <option value="Unqualified">Unqualified</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
           {/* Lead Type Toggle */}
           <div className="flex gap-2 p-1 bg-slate-800 rounded-lg">
             <button
