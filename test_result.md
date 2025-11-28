@@ -396,7 +396,7 @@ metadata:
 
 test_plan:
   current_focus:
-    - "Field Sales Dashboard Verification for Afshan Firdose"
+    - "ARBRIT Lead Submission Form Update for Field Sales"
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
