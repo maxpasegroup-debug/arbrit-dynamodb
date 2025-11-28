@@ -453,7 +453,8 @@ metadata:
 
 test_plan:
   current_focus:
-    - "Field Sales Dashboard Modern Lead Tracker Verification"
+    - "Employee Document Management API Endpoints"
+    - "Company Document Management API Endpoints"
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
