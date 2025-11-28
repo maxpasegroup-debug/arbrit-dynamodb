@@ -130,7 +130,7 @@ const TrainerCalendar = ({ onBookingRequest, selectedCourse, leadData }) => {
   };
 
   const handleBookingRequest = async () => {
-    if (!bookingData.requested_date || !bookingData.company_name) {
+    if (!bookingData.requested_date || !bookingData.company_name || !bookingData.course_id) {
       toast.error('Please fill in all required fields');
       return;
     }
