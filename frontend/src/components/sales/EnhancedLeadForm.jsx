@@ -471,11 +471,29 @@ const EnhancedLeadForm = ({ open, onOpenChange, onSuccess, existingLead = null }
           )}
 
           {/* Course & Training Details */}
-          <div className="space-y-4">
+          <div className="space-y-4 p-4 bg-green-500/10 border border-green-400/30 rounded-lg">
             <h4 className="text-sm font-semibold text-slate-200">Training Requirements</h4>
             <div className="grid grid-cols-2 gap-4">
               <div className="col-span-2">
-                <Label className="text-slate-300">Course *</Label>
+                <Label className="text-slate-300">Training/Service Details</Label>
+                <Input
+                  value={formData.training_service_details}
+                  onChange={(e) => setFormData({ ...formData, training_service_details: e.target.value })}
+                  placeholder="Brief description of training needs"
+                  className="bg-slate-800 border-white/10 text-slate-100"
+                />
+              </div>
+              <div className="col-span-2">
+                <Label className="text-slate-300">Product/Services Required</Label>
+                <Input
+                  value={formData.product_services_required}
+                  onChange={(e) => setFormData({ ...formData, product_services_required: e.target.value })}
+                  placeholder="Specific products or services needed"
+                  className="bg-slate-800 border-white/10 text-slate-100"
+                />
+              </div>
+              <div className="col-span-2">
+                <Label className="text-slate-300">Select Training Course *</Label>
                 <select
                   value={formData.course_id}
                   onChange={(e) => handleCourseChange(e.target.value)}
@@ -491,7 +509,7 @@ const EnhancedLeadForm = ({ open, onOpenChange, onSuccess, existingLead = null }
                 </select>
               </div>
               <div>
-                <Label className="text-slate-300">Number of Trainees</Label>
+                <Label className="text-slate-300">Number of Participants</Label>
                 <Input
                   type="number"
                   min="1"
@@ -505,24 +523,92 @@ const EnhancedLeadForm = ({ open, onOpenChange, onSuccess, existingLead = null }
                 />
               </div>
               <div>
-                <Label className="text-slate-300">Urgency</Label>
+                <Label className="text-slate-300">Training Date</Label>
+                <Input
+                  type="date"
+                  value={formData.training_date}
+                  onChange={(e) => setFormData({ ...formData, training_date: e.target.value })}
+                  className="bg-slate-800 border-white/10 text-slate-100"
+                />
+              </div>
+              <div>
+                <Label className="text-slate-300">Training Site</Label>
+                <Input
+                  value={formData.training_site}
+                  onChange={(e) => setFormData({ ...formData, training_site: e.target.value })}
+                  placeholder="On-site / Off-site"
+                  className="bg-slate-800 border-white/10 text-slate-100"
+                />
+              </div>
+              <div>
+                <Label className="text-slate-300">Training Location</Label>
+                <Input
+                  value={formData.training_location}
+                  onChange={(e) => setFormData({ ...formData, training_location: e.target.value })}
+                  placeholder="City, Country"
+                  className="bg-slate-800 border-white/10 text-slate-100"
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* Payment Information */}
+          <div className="space-y-4 p-4 bg-yellow-500/10 border border-yellow-400/30 rounded-lg">
+            <h4 className="text-sm font-semibold text-slate-200">Payment Information</h4>
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <Label className="text-slate-300">Payment Mode</Label>
                 <select
-                  value={formData.urgency}
-                  onChange={(e) => setFormData({ ...formData, urgency: e.target.value })}
+                  value={formData.payment_mode}
+                  onChange={(e) => setFormData({ ...formData, payment_mode: e.target.value })}
                   className="w-full bg-slate-800 border border-white/10 text-slate-100 rounded-md p-2"
                 >
-                  <option value="low">Low</option>
-                  <option value="medium">Medium</option>
-                  <option value="high">High</option>
+                  <option value="">Select Payment Mode</option>
+                  <option value="Cash">Cash</option>
+                  <option value="Bank Transfer">Bank Transfer</option>
+                  <option value="Credit Card">Credit Card</option>
+                  <option value="Cheque">Cheque</option>
+                  <option value="Online Payment">Online Payment</option>
                 </select>
               </div>
-              <div className="col-span-2">
-                <Label className="text-slate-300">Requirements</Label>
+              <div>
+                <Label className="text-slate-300">Payment Terms</Label>
+                <select
+                  value={formData.payment_terms}
+                  onChange={(e) => setFormData({ ...formData, payment_terms: e.target.value })}
+                  className="w-full bg-slate-800 border border-white/10 text-slate-100 rounded-md p-2"
+                >
+                  <option value="">Select Payment Terms</option>
+                  <option value="Advance">100% Advance</option>
+                  <option value="50-50">50% Advance, 50% Post-Training</option>
+                  <option value="Net 30">Net 30 Days</option>
+                  <option value="Net 60">Net 60 Days</option>
+                  <option value="Custom">Custom Terms</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          {/* Additional Notes */}
+          <div className="space-y-4 p-4 bg-slate-800/50 border border-white/10 rounded-lg">
+            <h4 className="text-sm font-semibold text-slate-200">Additional Information</h4>
+            <div className="grid grid-cols-1 gap-4">
+              <div>
+                <Label className="text-slate-300">Remarks & Description</Label>
                 <textarea
-                  value={formData.requirement}
-                  onChange={(e) => setFormData({ ...formData, requirement: e.target.value })}
+                  value={formData.remarks}
+                  onChange={(e) => setFormData({ ...formData, remarks: e.target.value })}
                   className="w-full bg-slate-800 border border-white/10 text-slate-100 rounded-md p-2 min-h-[80px]"
-                  placeholder="Additional requirements or notes..."
+                  placeholder="Any remarks or special notes..."
+                />
+              </div>
+              <div>
+                <Label className="text-slate-300">Description</Label>
+                <textarea
+                  value={formData.description}
+                  onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                  className="w-full bg-slate-800 border border-white/10 text-slate-100 rounded-md p-2 min-h-[80px]"
+                  placeholder="Detailed description of requirements..."
                 />
               </div>
             </div>
