@@ -151,24 +151,43 @@ const TrainerCalendar = ({ onBookingRequest, selectedCourse, leadData }) => {
     const date = new Date(year, month, day);
     const isAvailable = isDateAvailable(date);
     const isToday = new Date().toDateString() === date.toDateString();
+    const dayBookings = getBookingsForDate(date);
+    const hasBookings = dayBookings.length > 0;
     
     days.push(
       <button
         key={day}
         onClick={() => handleDateClick(day)}
         disabled={!isAvailable}
-        className={`h-20 p-2 rounded-lg border transition-all ${
+        className={`h-24 p-2 rounded-lg border transition-all ${
           isToday ? 'border-blue-400 bg-blue-500/20' :
+          hasBookings ? 'border-orange-400/50 bg-orange-500/10 hover:bg-orange-500/20' :
           isAvailable ? 'border-white/10 bg-white/5 hover:bg-white/10 hover:border-white/20' :
           'border-white/5 bg-slate-800/30 opacity-50 cursor-not-allowed'
         }`}
       >
-        <div className="text-left">
+        <div className="text-left h-full flex flex-col">
           <div className={`text-sm font-semibold ${isAvailable ? 'text-slate-100' : 'text-slate-600'}`}>
             {day}
           </div>
-          {isAvailable && (
-            <Badge className="text-xs mt-1 bg-green-500/20 text-green-300 border-green-400/50">
+          {hasBookings && (
+            <div className="mt-1 space-y-1">
+              {dayBookings.slice(0, 2).map((booking, idx) => (
+                <div key={idx} className="text-xs truncate">
+                  <Badge className="text-xs bg-orange-500/20 text-orange-300 border-orange-400/50 w-full justify-start">
+                    {booking.course_name || 'Training'}
+                  </Badge>
+                </div>
+              ))}
+              {dayBookings.length > 2 && (
+                <Badge className="text-xs bg-slate-700 text-slate-300 w-full">
+                  +{dayBookings.length - 2} more
+                </Badge>
+              )}
+            </div>
+          )}
+          {!hasBookings && isAvailable && (
+            <Badge className="text-xs mt-auto bg-green-500/20 text-green-300 border-green-400/50">
               Available
             </Badge>
           )}
