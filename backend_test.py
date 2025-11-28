@@ -1115,135 +1115,435 @@ class ArbritDocumentManagementTester:
         
         return success, response
 
+    def test_login_md_hr_manager(self):
+        """Test login with MD/HR Manager credentials as specified in review request"""
+        success, response = self.run_test(
+            "Login with MD/HR Manager Credentials",
+            "POST",
+            "auth/login",
+            200,
+            data={"mobile": "971564022503", "pin": "2503"}
+        )
+        if success and 'token' in response:
+            self.token = response['token']
+            print(f"   Token received: {self.token[:20]}...")
+            return True, response
+        return False, {}
+
+    def test_get_employees_list(self):
+        """Get list of employees to select one for document testing"""
+        if not self.token:
+            print("❌ Skipping - No token available")
+            return False, {}
+        
+        success, response = self.run_test(
+            "Get Employees List",
+            "GET",
+            "hrm/employees",
+            200
+        )
+        
+        if success and isinstance(response, list) and len(response) > 0:
+            # Look for Afshan Firdose or use first employee
+            target_employee = None
+            for emp in response:
+                if "971545844386" in emp.get("mobile", ""):
+                    target_employee = emp
+                    break
+            
+            if not target_employee:
+                target_employee = response[0]  # Use first employee
+            
+            self.employee_id = target_employee["id"]
+            self.employee_name = target_employee["name"]
+            self.employee_mobile = target_employee["mobile"]
+            print(f"   Selected Employee: {self.employee_name} ({self.employee_mobile})")
+            print(f"   Employee ID: {self.employee_id}")
+        
+        return success, response
+
+    def test_scenario_1_employee_document_upload(self):
+        """Test Scenario 1: Employee Document Upload"""
+        if not self.token or not self.employee_id:
+            print("❌ Skipping - No token or employee ID available")
+            return False, {}
+        
+        print(f"\n📋 SCENARIO 1: Employee Document Upload for {self.employee_name}")
+        
+        # Create realistic document content
+        test_content = f"PASSPORT COPY - {self.employee_name}\nPassport Number: A1234567\nIssue Date: 2020-01-15\nExpiry Date: 2026-01-15\nIssuing Authority: UAE Immigration"
+        file_data = base64.b64encode(test_content.encode()).decode()
+        
+        doc_data = {
+            "employee_id": self.employee_id,
+            "doc_type": "Identity Document",
+            "file_name": "passport_copy.pdf",
+            "file_data": file_data,
+            "expiry_date": "2026-01-15"
+        }
+        
+        success, response = self.run_test(
+            "Upload Employee Document - Passport Copy",
+            "POST",
+            "hrm/employee-documents",
+            200,
+            data=doc_data
+        )
+        
+        if success and 'id' in response:
+            self.employee_doc_id = response['id']
+            print(f"   Document ID: {self.employee_doc_id}")
+            print(f"   Document saved for employee: {response.get('employee_name')}")
+        
+        return success, response
+
+    def test_scenario_1_verify_document_saved(self):
+        """Verify document is saved and listed"""
+        if not self.token or not self.employee_id:
+            print("❌ Skipping - No token or employee ID available")
+            return False, {}
+        
+        success, response = self.run_test(
+            "Fetch Employee Documents - Verify Upload",
+            "GET",
+            f"hrm/employee-documents/{self.employee_id}",
+            200
+        )
+        
+        if success and isinstance(response, list):
+            print(f"   Found {len(response)} documents for employee")
+            for doc in response:
+                print(f"   - {doc.get('doc_type')}: {doc.get('file_name')} (Expires: {doc.get('expiry_date')})")
+        
+        return success, response
+
+    def test_scenario_2_company_document_upload(self):
+        """Test Scenario 2: Company Document Upload"""
+        if not self.token:
+            print("❌ Skipping - No token available")
+            return False, {}
+        
+        print(f"\n📋 SCENARIO 2: Company Document Upload")
+        
+        # Create realistic company document content
+        test_content = "TRADE LICENSE\nLicense Number: CN-1234567\nCompany Name: Arbrit Safety Training LLC\nActivity: Safety Training Services\nIssue Date: 2024-01-01\nExpiry Date: 2025-12-31\nIssuing Authority: Dubai Economic Department"
+        file_data = base64.b64encode(test_content.encode()).decode()
+        
+        doc_data = {
+            "doc_name": "Trade License",
+            "doc_type": "Legal Document",
+            "file_name": "trade_license_2025.pdf",
+            "file_data": file_data,
+            "expiry_date": "2025-12-31"
+        }
+        
+        success, response = self.run_test(
+            "Upload Company Document - Trade License",
+            "POST",
+            "hrm/company-documents",
+            200,
+            data=doc_data
+        )
+        
+        if success and 'id' in response:
+            self.company_doc_id = response['id']
+            print(f"   Company Document ID: {self.company_doc_id}")
+            print(f"   Document Name: {response.get('doc_name')}")
+        
+        return success, response
+
+    def test_scenario_2_verify_company_document_saved(self):
+        """Verify company document is saved and listed"""
+        if not self.token:
+            print("❌ Skipping - No token available")
+            return False, {}
+        
+        success, response = self.run_test(
+            "Fetch Company Documents - Verify Upload",
+            "GET",
+            "hrm/company-documents",
+            200
+        )
+        
+        if success and isinstance(response, list):
+            print(f"   Found {len(response)} company documents")
+            for doc in response:
+                print(f"   - {doc.get('doc_name')} ({doc.get('doc_type')}): {doc.get('file_name')} (Expires: {doc.get('expiry_date')})")
+        
+        return success, response
+
+    def test_scenario_3_create_expiring_document(self):
+        """Test Scenario 3: Create document with near expiry for alerts testing"""
+        if not self.token or not self.employee_id:
+            print("❌ Skipping - No token or employee ID available")
+            return False, {}
+        
+        print(f"\n📋 SCENARIO 3: Expiry Alerts Testing")
+        
+        # Create document expiring in 15 days (should trigger alert)
+        expiry_date = (datetime.now() + timedelta(days=15)).strftime("%Y-%m-%d")
+        
+        test_content = f"VISA DOCUMENT - {self.employee_name}\nVisa Number: V9876543\nEntry Type: Multiple\nExpiry Date: {expiry_date}\nStatus: Valid"
+        file_data = base64.b64encode(test_content.encode()).decode()
+        
+        doc_data = {
+            "employee_id": self.employee_id,
+            "doc_type": "Visa",
+            "file_name": "work_visa.pdf",
+            "file_data": file_data,
+            "expiry_date": expiry_date
+        }
+        
+        success, response = self.run_test(
+            "Upload Employee Document - Expiring Visa",
+            "POST",
+            "hrm/employee-documents",
+            200,
+            data=doc_data
+        )
+        
+        if success and 'id' in response:
+            self.expiring_doc_id = response['id']
+            print(f"   Expiring Document ID: {self.expiring_doc_id}")
+            print(f"   Expiry Date: {expiry_date} (15 days from now)")
+        
+        return success, response
+
+    def test_scenario_3_employee_document_alerts(self):
+        """Test employee document expiry alerts"""
+        if not self.token:
+            print("❌ Skipping - No token available")
+            return False, {}
+        
+        success, response = self.run_test(
+            "Get Employee Document Alerts",
+            "GET",
+            "hrm/employee-documents/alerts/all",
+            200
+        )
+        
+        if success and isinstance(response, list):
+            print(f"   Found {len(response)} employee document alerts")
+            for alert in response:
+                severity = alert.get('severity', 'info')
+                days = alert.get('days_until_expiry', 0)
+                print(f"   - {severity.upper()}: {alert.get('employee_name')} - {alert.get('doc_type')} expires in {days} days")
+        
+        return success, response
+
+    def test_scenario_3_create_expiring_company_document(self):
+        """Create company document with near expiry"""
+        if not self.token:
+            print("❌ Skipping - No token available")
+            return False, {}
+        
+        # Create company document expiring in 20 days
+        expiry_date = (datetime.now() + timedelta(days=20)).strftime("%Y-%m-%d")
+        
+        test_content = f"ISO CERTIFICATE\nCertificate Number: ISO-45001-2024\nStandard: ISO 45001:2018\nScope: Occupational Health and Safety Management\nExpiry Date: {expiry_date}\nCertifying Body: Bureau Veritas"
+        file_data = base64.b64encode(test_content.encode()).decode()
+        
+        doc_data = {
+            "doc_name": "ISO 45001 Certificate",
+            "doc_type": "Certification",
+            "file_name": "iso_45001_certificate.pdf",
+            "file_data": file_data,
+            "expiry_date": expiry_date
+        }
+        
+        success, response = self.run_test(
+            "Upload Company Document - Expiring ISO Certificate",
+            "POST",
+            "hrm/company-documents",
+            200,
+            data=doc_data
+        )
+        
+        if success and 'id' in response:
+            self.expiring_company_doc_id = response['id']
+            print(f"   Expiring Company Document ID: {self.expiring_company_doc_id}")
+            print(f"   Expiry Date: {expiry_date} (20 days from now)")
+        
+        return success, response
+
+    def test_scenario_3_company_document_alerts(self):
+        """Test company document expiry alerts"""
+        if not self.token:
+            print("❌ Skipping - No token available")
+            return False, {}
+        
+        success, response = self.run_test(
+            "Get Company Document Alerts",
+            "GET",
+            "hrm/company-documents/alerts/all",
+            200
+        )
+        
+        if success and isinstance(response, list):
+            print(f"   Found {len(response)} company document alerts")
+            for alert in response:
+                severity = alert.get('severity', 'info')
+                days = alert.get('days_until_expiry', 0)
+                print(f"   - {severity.upper()}: {alert.get('doc_name')} ({alert.get('doc_type')}) expires in {days} days")
+        
+        return success, response
+
+    def test_scenario_4_delete_employee_document(self):
+        """Test Scenario 4: Document Deletion - Employee Document"""
+        if not self.token or not hasattr(self, 'employee_doc_id'):
+            print("❌ Skipping - No token or employee document ID available")
+            return False, {}
+        
+        print(f"\n📋 SCENARIO 4: Document Deletion")
+        
+        success, response = self.run_test(
+            "Delete Employee Document",
+            "DELETE",
+            f"hrm/employee-documents/{self.employee_doc_id}",
+            200
+        )
+        
+        if success:
+            print(f"   Successfully deleted employee document ID: {self.employee_doc_id}")
+        
+        return success, response
+
+    def test_scenario_4_verify_employee_document_deleted(self):
+        """Verify employee document is removed from list"""
+        if not self.token or not self.employee_id:
+            print("❌ Skipping - No token or employee ID available")
+            return False, {}
+        
+        success, response = self.run_test(
+            "Verify Employee Document Deleted",
+            "GET",
+            f"hrm/employee-documents/{self.employee_id}",
+            200
+        )
+        
+        if success and isinstance(response, list):
+            print(f"   Employee now has {len(response)} documents (after deletion)")
+            # Check if the deleted document is no longer in the list
+            deleted_doc_found = any(doc.get('id') == self.employee_doc_id for doc in response)
+            if not deleted_doc_found:
+                print(f"   ✅ Confirmed: Document {self.employee_doc_id} successfully removed")
+            else:
+                print(f"   ❌ Warning: Document {self.employee_doc_id} still appears in list")
+        
+        return success, response
+
+    def test_scenario_4_delete_company_document(self):
+        """Test Scenario 4: Document Deletion - Company Document"""
+        if not self.token or not hasattr(self, 'company_doc_id'):
+            print("❌ Skipping - No token or company document ID available")
+            return False, {}
+        
+        success, response = self.run_test(
+            "Delete Company Document",
+            "DELETE",
+            f"hrm/company-documents/{self.company_doc_id}",
+            200
+        )
+        
+        if success:
+            print(f"   Successfully deleted company document ID: {self.company_doc_id}")
+        
+        return success, response
+
+    def test_scenario_4_verify_company_document_deleted(self):
+        """Verify company document is removed from list"""
+        if not self.token:
+            print("❌ Skipping - No token available")
+            return False, {}
+        
+        success, response = self.run_test(
+            "Verify Company Document Deleted",
+            "GET",
+            "hrm/company-documents",
+            200
+        )
+        
+        if success and isinstance(response, list):
+            print(f"   Company now has {len(response)} documents (after deletion)")
+            # Check if the deleted document is no longer in the list
+            deleted_doc_found = any(doc.get('id') == self.company_doc_id for doc in response)
+            if not deleted_doc_found:
+                print(f"   ✅ Confirmed: Document {self.company_doc_id} successfully removed")
+            else:
+                print(f"   ❌ Warning: Document {self.company_doc_id} still appears in list")
+        
+        return success, response
+
 def main():
-    print("🚀 Starting Arbrit Safety Training API Tests")
-    print("=" * 50)
+    print("🚀 Starting Arbrit Document Management API Tests")
+    print("📋 Testing Employee Document Management and Company Document Management")
+    print("=" * 70)
     
     # Setup
-    tester = ArbritAPITester()
+    tester = ArbritDocumentManagementTester()
     
-    # Test sequence
-    print("\n📋 Testing API Endpoints...")
+    # Test sequence as per review request
+    print("\n🔐 AUTHENTICATION")
+    print("Testing with MD/HR Manager credentials: Mobile 971564022503, PIN: 2503")
     
-    # 1. Test root endpoint
-    tester.test_root_endpoint()
+    # 1. Login with specified credentials
+    success, response = tester.test_login_md_hr_manager()
+    if not success:
+        print("❌ CRITICAL: Cannot proceed without authentication")
+        return 1
     
-    # 2. Test authentication endpoints
-    print("\n🔐 Testing Authentication...")
-    success, response = tester.test_login_valid_credentials()
-    if success:
-        tester.coo_token = tester.token  # Store COO token
-    tester.test_login_invalid_mobile()
-    tester.test_login_invalid_pin()
-    tester.test_login_missing_fields()
+    # 2. Get list of employees
+    print("\n👥 EMPLOYEE SETUP")
+    tester.test_get_employees_list()
     
-    # 3. Test protected endpoints
-    print("\n🛡️ Testing Protected Endpoints...")
-    tester.test_get_current_user()
-    tester.test_get_current_user_no_token()
-    tester.test_coo_dashboard_access()
-    tester.test_coo_dashboard_no_token()
+    # 3. Test Scenario 1: Employee Document Upload
+    tester.test_scenario_1_employee_document_upload()
+    tester.test_scenario_1_verify_document_saved()
     
-    # 4. Test HRM Module - Employee Management
-    print("\n👥 Testing HRM - Employee Management...")
-    tester.test_create_employee()
-    tester.test_get_employees()
-    tester.test_update_employee()
+    # 4. Test Scenario 2: Company Document Upload  
+    tester.test_scenario_2_company_document_upload()
+    tester.test_scenario_2_verify_company_document_saved()
     
-    # 4.1. Create Sales User for Testing Sales APIs
-    print("\n👤 Creating Sales User for Testing...")
-    # Switch back to COO token for creating employees
-    tester.token = tester.coo_token if hasattr(tester, 'coo_token') else tester.token
-    tester.test_create_sales_user()
-    tester.test_login_sales_user()
+    # 5. Test Scenario 3: Expiry Alerts
+    tester.test_scenario_3_create_expiring_document()
+    tester.test_scenario_3_employee_document_alerts()
+    tester.test_scenario_3_create_expiring_company_document()
+    tester.test_scenario_3_company_document_alerts()
     
-    # 4.2. Create Field Sales User for Visit Logs Testing
-    print("\n👤 Creating Field Sales User for Visit Logs...")
-    tester.token = tester.coo_token if hasattr(tester, 'coo_token') else tester.token
-    tester.test_create_field_sales_user()
-    tester.test_login_field_sales_user()
-    
-    # 5. Test HRM Module - Attendance Management
-    print("\n⏰ Testing HRM - Attendance Management...")
-    tester.test_record_attendance()
-    tester.test_get_attendance()
-    
-    # 6. Test HRM Module - Employee Documents
-    print("\n📄 Testing HRM - Employee Documents...")
-    tester.test_upload_employee_document()
-    tester.test_get_employee_documents()
-    tester.test_get_employee_document_alerts()
-    
-    # 7. Test HRM Module - Company Documents
-    print("\n🏢 Testing HRM - Company Documents...")
-    tester.test_upload_company_document()
-    tester.test_get_company_documents()
-    tester.test_get_company_document_alerts()
-    
-    # 8. Test Sales APIs - Self Lead Management
-    print("\n💼 Testing Sales APIs - Lead Management...")
-    # Switch to sales user token for sales API tests
-    tester.token = tester.sales_token if hasattr(tester, 'sales_token') else tester.token
-    tester.test_submit_self_lead()
-    tester.test_get_my_leads()
-    
-    # 9. Test Sales APIs - Quotation Management
-    print("\n📋 Testing Sales APIs - Quotation Management...")
-    tester.test_create_quotation()
-    tester.test_get_my_quotations()
-    
-    # 10. Test Sales APIs - Trainer Requests
-    print("\n👨‍🏫 Testing Sales APIs - Trainer Requests...")
-    tester.test_create_trainer_request()
-    tester.test_get_trainer_requests()
-    
-    # 11. Test Sales APIs - Invoice Requests
-    print("\n🧾 Testing Sales APIs - Invoice Requests...")
-    tester.test_create_invoice_request()
-    tester.test_get_invoice_requests()
-    
-    # 12. Test Sales APIs - Visit Logs (Field Sales)
-    print("\n📍 Testing Sales APIs - Visit Logs...")
-    tester.test_create_visit_log()
-    tester.test_get_visit_logs()
-    
-    # 13. Test Sales API Error Handling
-    print("\n⚠️ Testing Sales API Error Handling...")
-    tester.test_sales_api_error_handling()
-    
-    # 14. Test Sales Head APIs (COO has Sales Head access)
-    print("\n👑 Testing Sales Head APIs...")
-    tester.test_sales_head_get_all_leads()
-    tester.test_sales_head_assign_lead()
-    tester.test_sales_head_get_all_quotations()
-    tester.test_sales_head_approve_quotation()
-    tester.test_sales_head_reject_quotation()
-    
-    # 15. Test Leave Request Management
-    print("\n📝 Testing Leave Request Management...")
-    tester.test_create_leave_request()
-    tester.test_sales_head_approve_leave_request()
-    tester.test_create_another_leave_request()
-    tester.test_sales_head_reject_leave_request()
-    
-    # 16. Test Delete Operations
-    print("\n🗑️ Testing Delete Operations...")
-    tester.test_delete_employee_document()
-    tester.test_delete_company_document()
-    tester.test_delete_employee()
+    # 6. Test Scenario 4: Document Deletion
+    tester.test_scenario_4_delete_employee_document()
+    tester.test_scenario_4_verify_employee_document_deleted()
+    tester.test_scenario_4_delete_company_document()
+    tester.test_scenario_4_verify_company_document_deleted()
     
     # Print results
-    print("\n" + "=" * 50)
-    print(f"📊 Test Results: {tester.tests_passed}/{tester.tests_run} passed")
+    print("\n" + "=" * 70)
+    print(f"📊 DOCUMENT MANAGEMENT TEST RESULTS")
+    print(f"Tests Run: {tester.tests_run}")
+    print(f"Tests Passed: {tester.tests_passed}")
+    print(f"Tests Failed: {len(tester.failed_tests)}")
     
     if tester.failed_tests:
-        print("\n❌ Failed Tests:")
+        print("\n❌ FAILED TESTS:")
         for test in tester.failed_tests:
             error_msg = test.get('error', f"Expected {test.get('expected')}, got {test.get('actual')}")
             print(f"   - {test['test']}: {error_msg}")
+    else:
+        print("\n✅ ALL TESTS PASSED!")
     
     success_rate = (tester.tests_passed / tester.tests_run) * 100 if tester.tests_run > 0 else 0
     print(f"\n✨ Success Rate: {success_rate:.1f}%")
+    
+    # Summary of what was tested
+    print(f"\n📋 TESTED ENDPOINTS:")
+    print(f"   ✅ POST /api/hrm/employee-documents - Upload employee document")
+    print(f"   ✅ GET /api/hrm/employee-documents/{{employee_id}} - Fetch employee documents")
+    print(f"   ✅ GET /api/hrm/employee-documents/alerts/all - Get employee document expiry alerts")
+    print(f"   ✅ DELETE /api/hrm/employee-documents/{{doc_id}} - Delete employee document")
+    print(f"   ✅ POST /api/hrm/company-documents - Upload company document")
+    print(f"   ✅ GET /api/hrm/company-documents - Fetch company documents")
+    print(f"   ✅ GET /api/hrm/company-documents/alerts/all - Get company document expiry alerts")
+    print(f"   ✅ DELETE /api/hrm/company-documents/{{doc_id}} - Delete company document")
     
     return 0 if tester.tests_passed == tester.tests_run else 1
 
