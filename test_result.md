@@ -477,8 +477,8 @@ metadata:
 
 test_plan:
   current_focus:
-    - "Employee Document Management API Endpoints"
-    - "Company Document Management API Endpoints"
+    - "Employee Document Management Frontend"
+    - "Company Document Management Frontend"
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
