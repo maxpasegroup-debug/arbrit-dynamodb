@@ -151,6 +151,17 @@ const LeadTracker = () => {
     toast.success('Exported to CSV!');
   };
 
+  const handleOpenCalendar = (lead) => {
+    setCalendarLead(lead);
+    setCalendarOpen(true);
+  };
+
+  const handleBookingSuccess = () => {
+    setCalendarOpen(false);
+    toast.success('Booking request sent successfully!');
+    fetchLeads();
+  };
+
   return (
     <div className="space-y-6">
       {/* Pipeline Bar */}
