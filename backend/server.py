@@ -5259,6 +5259,186 @@ async def get_question_bank(current_user: dict = Depends(get_current_user)):
     return question_bank
 
 
+# =============================
+# COURSES MANAGEMENT (CRM Enhancement)
+# =============================
+
+@api_router.get("/courses")
+async def get_courses(current_user: dict = Depends(get_current_user)):
+    """Get all active courses"""
+    try:
+        courses = await db.courses.find({"status": "active"}, {"_id": 0})
+        return courses
+    except Exception as e:
+        logger.error(f"Error fetching courses: {e}")
+        raise HTTPException(status_code=500, detail="Failed to fetch courses")
+
+
+@api_router.post("/courses")
+async def create_course(course_data: dict, current_user: dict = Depends(get_current_user)):
+    """Create new course (Academic Head, COO, MD only)"""
+    if current_user.get("role") not in ["Academic Head", "COO", "MD", "CEO"]:
+        raise HTTPException(status_code=403, detail="Access denied")
+    
+    try:
+        from decimal import Decimal
+        
+        course = {
+            "id": str(uuid4()),
+            "name": course_data.get("name"),
+            "description": course_data.get("description", ""),
+            "category": course_data.get("category", "Safety Training"),
+            "duration": course_data.get("duration", "1 Day"),
+            "base_fee": str(course_data.get("base_fee", "0")),
+            "pricing_tiers": course_data.get("pricing_tiers", {
+                "individual": str(course_data.get("base_fee", "0")),
+                "group_5_10": str(int(float(course_data.get("base_fee", 0)) * 0.9)),
+                "group_10_plus": str(int(float(course_data.get("base_fee", 0)) * 0.8)),
+                "corporate": "negotiable"
+            }),
+            "prerequisites": course_data.get("prerequisites", ""),
+            "status": "active",
+            "created_by": current_user.get("id"),
+            "created_by_name": current_user.get("name"),
+            "created_at": datetime.now(timezone.utc).isoformat(),
+            "updated_at": datetime.now(timezone.utc).isoformat()
+        }
+        
+        await db.courses.insert_one(course)
+        
+        return {"message": "Course created successfully", "course": course}
+    except Exception as e:
+        logger.error(f"Error creating course: {e}")
+        raise HTTPException(status_code=500, detail="Failed to create course")
+
+
+@api_router.put("/courses/{course_id}")
+async def update_course(course_id: str, update_data: dict, current_user: dict = Depends(get_current_user)):
+    """Update course (Academic Head, COO, MD only)"""
+    if current_user.get("role") not in ["Academic Head", "COO", "MD", "CEO"]:
+        raise HTTPException(status_code=403, detail="Access denied")
+    
+    try:
+        existing_course = await db.courses.find_one({"id": course_id})
+        if not existing_course:
+            raise HTTPException(status_code=404, detail="Course not found")
+        
+        updated_course = {**existing_course, **update_data}
+        updated_course["updated_at"] = datetime.now(timezone.utc).isoformat()
+        
+        await db.courses.update_one({"id": course_id}, updated_course)
+        
+        return {"message": "Course updated successfully", "course": updated_course}
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error updating course: {e}")
+        raise HTTPException(status_code=500, detail="Failed to update course")
+
+
+@api_router.delete("/courses/{course_id}")
+async def delete_course(course_id: str, current_user: dict = Depends(get_current_user)):
+    """Delete/archive course (Academic Head, COO, MD only)"""
+    if current_user.get("role") not in ["Academic Head", "COO", "MD", "CEO"]:
+        raise HTTPException(status_code=403, detail="Access denied")
+    
+    try:
+        existing_course = await db.courses.find_one({"id": course_id})
+        if not existing_course:
+            raise HTTPException(status_code=404, detail="Course not found")
+        
+        existing_course["status"] = "archived"
+        existing_course["updated_at"] = datetime.now(timezone.utc).isoformat()
+        
+        await db.courses.update_one({"id": course_id}, existing_course)
+        
+        return {"message": "Course archived successfully"}
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error archiving course: {e}")
+        raise HTTPException(status_code=500, detail="Failed to archive course")
+
+
+# =============================
+# BOOKING REQUESTS (CRM Enhancement)
+# =============================
+
+@api_router.post("/booking-requests")
+async def create_booking_request(request_data: dict, current_user: dict = Depends(get_current_user)):
+    """Create booking request (Sales team to Academic Head)"""
+    try:
+        from decimal import Decimal
+        
+        booking_request = {
+            "id": str(uuid4()),
+            "lead_id": request_data.get("lead_id"),
+            "course_id": request_data.get("course_id"),
+            "course_name": request_data.get("course_name"),
+            "requested_date": request_data.get("requested_date"),
+            "num_trainees": request_data.get("num_trainees", 1),
+            "company_name": request_data.get("company_name"),
+            "contact_person": request_data.get("contact_person"),
+            "contact_mobile": request_data.get("contact_mobile"),
+            "status": "pending",
+            "requested_by": current_user.get("id"),
+            "requested_by_name": current_user.get("name"),
+            "created_at": datetime.now(timezone.utc).isoformat(),
+            "updated_at": datetime.now(timezone.utc).isoformat()
+        }
+        
+        await db.booking_requests.insert_one(booking_request)
+        
+        return {"message": "Booking request sent to Academic Head", "request": booking_request}
+    except Exception as e:
+        logger.error(f"Error creating booking request: {e}")
+        raise HTTPException(status_code=500, detail="Failed to create booking request")
+
+
+@api_router.get("/booking-requests")
+async def get_booking_requests(current_user: dict = Depends(get_current_user)):
+    """Get booking requests (Academic Head sees all, Sales sees own)"""
+    try:
+        if current_user.get("role") in ["Academic Head", "COO", "MD", "CEO"]:
+            requests = await db.booking_requests.find({}, {"_id": 0})
+        else:
+            requests = await db.booking_requests.find(
+                {"requested_by": current_user.get("id")},
+                {"_id": 0}
+            )
+        
+        return requests
+    except Exception as e:
+        logger.error(f"Error fetching booking requests: {e}")
+        raise HTTPException(status_code=500, detail="Failed to fetch requests")
+
+
+@api_router.put("/booking-requests/{request_id}")
+async def update_booking_request(request_id: str, update_data: dict, current_user: dict = Depends(get_current_user)):
+    """Update booking request status (Academic Head only)"""
+    if current_user.get("role") not in ["Academic Head", "COO", "MD", "CEO"]:
+        raise HTTPException(status_code=403, detail="Access denied")
+    
+    try:
+        existing_request = await db.booking_requests.find_one({"id": request_id})
+        if not existing_request:
+            raise HTTPException(status_code=404, detail="Request not found")
+        
+        updated_request = {**existing_request, **update_data}
+        updated_request["updated_at"] = datetime.now(timezone.utc).isoformat()
+        updated_request["reviewed_by"] = current_user.get("id")
+        updated_request["reviewed_by_name"] = current_user.get("name")
+        
+        await db.booking_requests.update_one({"id": request_id}, updated_request)
+        
+        return {"message": "Booking request updated", "request": updated_request}
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error updating booking request: {e}")
+        raise HTTPException(status_code=500, detail="Failed to update request")
+
+
 
 
 # ==================== EXPENSE REIMBURSEMENT ENDPOINTS ====================
