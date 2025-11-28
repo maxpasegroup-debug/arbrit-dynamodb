@@ -27,6 +27,8 @@ const LeadTracker = () => {
   const [scoreFilter, setScoreFilter] = useState('all');
   const [formOpen, setFormOpen] = useState(false);
   const [selectedLead, setSelectedLead] = useState(null);
+  const [calendarOpen, setCalendarOpen] = useState(false);
+  const [calendarLead, setCalendarLead] = useState(null);
 
   const statuses = ['New', 'Contacted', 'Quoted', 'Negotiation', 'Won', 'Lost'];
 
