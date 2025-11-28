@@ -57,6 +57,30 @@ const TrainerCalendar = ({ onBookingRequest, selectedCourse, leadData }) => {
     }
   };
 
+  const fetchCourses = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      const response = await axios.get(`${API}/courses`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      setCourses(response.data || []);
+    } catch (error) {
+      console.error('Error fetching courses:', error);
+    }
+  };
+
+  const fetchBookings = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      const response = await axios.get(`${API}/booking-requests`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      setBookings(response.data || []);
+    } catch (error) {
+      console.error('Error fetching bookings:', error);
+    }
+  };
+
   const getDaysInMonth = (date) => {
     const year = date.getFullYear();
     const month = date.getMonth();
