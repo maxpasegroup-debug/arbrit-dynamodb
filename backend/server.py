@@ -2744,8 +2744,8 @@ async def assign_trainer_to_request(request_id: str, assignment_data: dict, curr
 # Academic - Get All Trainers
 @api_router.get("/academic/trainers")
 async def get_all_trainers(current_user: dict = Depends(get_current_user)):
-    if current_user["role"] not in ["Academic Head", "MD", "COO", "CEO"]:
-        raise HTTPException(status_code=403, detail="Access denied. Academic Head only.")
+    if current_user["role"] not in ["Academic Head", "Sales Head", "Field Sales Executive", "MD", "COO", "CEO"]:
+        raise HTTPException(status_code=403, detail="Access denied.")
     
     try:
         # Get all employees and filter for trainers
