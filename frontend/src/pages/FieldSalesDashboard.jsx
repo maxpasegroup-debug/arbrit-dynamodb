@@ -209,10 +209,7 @@ const FieldSalesDashboard = () => {
 
           <div className="mt-6">
             <TabsContent value="leads" className="mt-0 space-y-6">
-              <div className="flex justify-end">
-                <SelfLeadForm />
-              </div>
-              <LeadManagement />
+              <LeadTracker />
             </TabsContent>
 
             <TabsContent value="followups" className="mt-0">
