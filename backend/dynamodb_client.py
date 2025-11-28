@@ -56,6 +56,9 @@ tables = {
     'training_sessions': dynamodb.Table(f'{TABLE_PREFIX}_training_sessions'),
     'vendor_payments': dynamodb.Table(f'{TABLE_PREFIX}_vendor_payments'),
     'vendors': dynamodb.Table(f'{TABLE_PREFIX}_vendors'),
+    # CRM Enhancement tables
+    'courses': dynamodb.Table(f'{TABLE_PREFIX}_courses'),
+    'booking_requests': dynamodb.Table(f'{TABLE_PREFIX}_booking_requests'),
 }
 
 logger.info(f"✅ DynamoDB client initialized with table prefix: {TABLE_PREFIX}")
