@@ -174,7 +174,7 @@ const AcademicHeadDashboard = () => {
         </div>
 
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-11 bg-white/5 border border-white/10">
+          <TabsList className="grid w-full grid-cols-10 bg-white/5 border border-white/10">
             <TabsTrigger 
               value="overview"
               className="data-[state=active]:bg-yellow-500/20 data-[state=active]:text-white text-gray-300"
@@ -251,13 +251,6 @@ const AcademicHeadDashboard = () => {
             >
               <Receipt className="w-4 h-4 mr-2" />
               My Expenses
-            </TabsTrigger>
-            <TabsTrigger 
-              value="expense-approvals"
-              className="data-[state=active]:bg-yellow-500/20 data-[state=active]:text-white text-gray-300"
-            >
-              <CheckSquare className="w-4 h-4 mr-2" />
-              Approve Expenses
             </TabsTrigger>
           </TabsList>
 
