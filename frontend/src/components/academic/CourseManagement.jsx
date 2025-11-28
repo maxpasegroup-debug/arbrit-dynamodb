@@ -49,7 +49,8 @@ const CourseManagement = () => {
       const response = await axios.get(`${API}/courses`, {
         headers: { Authorization: `Bearer ${token}` }
       });
-      setCourses(response.data);
+      // Handle the response format - courses are in response.data.items
+      setCourses(response.data.items || response.data || []);
     } catch (error) {
       console.error('Error fetching courses:', error);
       toast.error('Failed to load courses');
