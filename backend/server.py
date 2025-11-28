@@ -184,11 +184,29 @@ class Lead(BaseModel):
     assigned_to_name: Optional[str] = None
     assigned_by: str  # User ID who assigned
     assigned_by_name: str
-    status: str = "New"  # New, In Progress, Proposal Sent, Closed, Dropped
+    status: str = "New"  # New, Contacted, Quoted, Negotiation, Won, Lost
     remarks: Optional[str] = None
     next_followup_date: Optional[str] = None
     created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
     updated_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+    
+    # CRM Enhancement fields (all optional for backward compatibility)
+    lead_type: Optional[str] = "company"  # company or individual
+    company_name: Optional[str] = None
+    contact_person: Optional[str] = None  # POC for companies
+    contact_designation: Optional[str] = None  # POC designation
+    contact_email: Optional[str] = None
+    contact_mobile: Optional[str] = None
+    employee_count: Optional[str] = None
+    course_id: Optional[str] = None
+    course_name: Optional[str] = None
+    num_trainees: Optional[int] = 1
+    urgency: Optional[str] = "medium"  # low, medium, high
+    lead_value: Optional[str] = "0"  # Estimated revenue
+    lead_score: Optional[str] = "warm"  # cold, warm, hot
+    last_contact_date: Optional[str] = None
+    quotation_sent: Optional[bool] = False
+    quotation_id: Optional[str] = None
 
 
 class LeadCreate(BaseModel):
@@ -200,6 +218,21 @@ class LeadCreate(BaseModel):
     status: str = "New"
     remarks: Optional[str] = None
     next_followup_date: Optional[str] = None
+    
+    # CRM Enhancement fields
+    lead_type: Optional[str] = "company"
+    company_name: Optional[str] = None
+    contact_person: Optional[str] = None
+    contact_designation: Optional[str] = None
+    contact_email: Optional[str] = None
+    contact_mobile: Optional[str] = None
+    employee_count: Optional[str] = None
+    course_id: Optional[str] = None
+    course_name: Optional[str] = None
+    num_trainees: Optional[int] = 1
+    urgency: Optional[str] = "medium"
+    lead_value: Optional[str] = "0"
+    lead_score: Optional[str] = "warm"
 
 
 class LeadUpdate(BaseModel):
@@ -210,6 +243,24 @@ class LeadUpdate(BaseModel):
     status: Optional[str] = None
     remarks: Optional[str] = None
     next_followup_date: Optional[str] = None
+    
+    # CRM Enhancement fields
+    lead_type: Optional[str] = None
+    company_name: Optional[str] = None
+    contact_person: Optional[str] = None
+    contact_designation: Optional[str] = None
+    contact_email: Optional[str] = None
+    contact_mobile: Optional[str] = None
+    employee_count: Optional[str] = None
+    course_id: Optional[str] = None
+    course_name: Optional[str] = None
+    num_trainees: Optional[int] = None
+    urgency: Optional[str] = None
+    lead_value: Optional[str] = None
+    lead_score: Optional[str] = None
+    last_contact_date: Optional[str] = None
+    quotation_sent: Optional[bool] = None
+    quotation_id: Optional[str] = None
 
 
 class SelfLeadCreate(BaseModel):
