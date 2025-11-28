@@ -291,11 +291,23 @@ const TrainerCalendar = ({ onBookingRequest, selectedCourse, leadData }) => {
                   day: 'numeric' 
                 })}
               </p>
-              {selectedCourse && (
-                <p className="text-sm text-slate-300 mt-1">
-                  <strong>Course:</strong> {selectedCourse.name}
-                </p>
-              )}
+            </div>
+
+            <div>
+              <Label className="text-slate-300">Select Course *</Label>
+              <select
+                value={bookingData.course_id}
+                onChange={(e) => handleCourseChange(e.target.value)}
+                className="w-full bg-slate-800 border border-white/10 text-slate-100 rounded-md p-2"
+                required
+              >
+                <option value="">Choose a course</option>
+                {courses.map(course => (
+                  <option key={course.id} value={course.id}>
+                    {course.name} - {course.duration} ({course.base_fee} AED)
+                  </option>
+                ))}
+              </select>
             </div>
 
             <div>
