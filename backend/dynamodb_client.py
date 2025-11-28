@@ -482,6 +482,10 @@ class DB:
         self.training_sessions = DynamoDBClient('training_sessions')
         self.vendor_payments = DynamoDBClient('vendor_payments')
         self.vendors = DynamoDBClient('vendors')
+        
+        # CRM Enhancement clients
+        self.courses = DynamoDBClient('courses')
+        self.booking_requests = DynamoDBClient('booking_requests')
 
 
 # Create global db instance
