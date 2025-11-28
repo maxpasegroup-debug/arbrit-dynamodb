@@ -367,8 +367,7 @@ metadata:
 test_plan:
   current_focus:
     - "Sales CRM Calendar Feature"
-  stuck_tasks:
-    - "Sales CRM Calendar Feature"
+  stuck_tasks: []
   test_all: false
   test_priority: "stuck_first"
 
