@@ -213,15 +213,18 @@ backend:
 frontend:
   - task: "Academic Head Course Management"
     implemented: true
-    working: "NA"
+    working: true
     file: "/app/frontend/src/components/academic/CourseManagement.jsx"
     stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: "NA"
         agent: "main"
         comment: "Academic Head Dashboard includes Courses tab with CourseManagement component. Allows creating, editing, and managing training courses with pricing tiers. Requires Academic Head/COO/MD/CEO role authentication."
+      - working: true
+        agent: "testing"
+        comment: "✅ PASSED - Course Management fully functional after fixing critical issues. FIXES APPLIED: 1) Fixed frontend API response handling (courses.items vs direct array), 2) Fixed backend uuid import (uuid4() → uuid.uuid4()). TESTING RESULTS: Successfully logged in as Academic Head (971557213537/3537), navigated to Courses tab, verified all 5 sample courses displayed correctly (Fire Safety Training-500 AED, First Aid Training-800 AED, HSE Training-1200 AED, Scaffolding Safety-600 AED, Defensive Driving-700 AED). Add Course form opens properly, all fields functional, pricing tiers auto-calculate correctly (900→810→720 AED), course creation backend API working. Screenshots captured: courses grid, add form, after submission. Minor: Course list refresh timing could be improved but core functionality works perfectly."
 
   - task: "Academic Head Assessment Management"
     implemented: true
