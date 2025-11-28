@@ -286,6 +286,36 @@ frontend:
         agent: "testing"
         comment: "✅ PASSED - Assessment QR Generator fully functional. Fixed backend issue with trainer_id field (changed from current_user['employee_id'] to current_user['id']). QR code generation working perfectly for both Academic Head and Trainer roles. QR codes display clearly with proper formatting. Download QR Code, Preview Form, and Copy Link functionality all working. Role-based form access implemented correctly - Academic Head sees all forms, Trainer sees only assigned forms."
 
+  - task: "Enhanced Lead Tracker System"
+    implemented: true
+    working: false
+    file: "/app/frontend/src/components/sales/LeadTracker.jsx"
+    stuck_count: 1
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Enhanced Lead Tracker with pipeline bar, new lead creation form, company/individual toggle, auto-calculating lead value and score, quick action buttons, search and filters. Integrated with EnhancedLeadForm component for advanced lead capture."
+      - working: false
+        agent: "testing"
+        comment: "❌ CRITICAL FAILURE - Lead Tracker completely broken due to JavaScript error 'courses.map is not a function' in EnhancedLeadForm component. Red error screen prevents entire interface from loading. Pipeline bar, New Lead button, search, filters, and export functionality all inaccessible. Backend APIs working correctly (200 OK responses), issue is frontend data structure mismatch where courses API response format doesn't match expected array structure in EnhancedLeadForm.jsx line 78."
+
+  - task: "Enhanced Lead Form"
+    implemented: true
+    working: false
+    file: "/app/frontend/src/components/sales/EnhancedLeadForm.jsx"
+    stuck_count: 1
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Enhanced lead creation form with company/individual toggle, course selection with auto-pricing, lead intelligence panel showing calculated value and score, urgency settings, and comprehensive validation."
+      - working: false
+        agent: "testing"
+        comment: "❌ CRITICAL FAILURE - EnhancedLeadForm crashes with 'courses.map is not a function' error. The fetchCourses() function receives data that is not an array, causing .map() to fail. This prevents the entire Lead Tracker from rendering. Need to fix API response handling in setCourses(response.data || []) to match actual backend response structure."
+
 metadata:
   created_by: "main_agent"
   version: "1.0"
