@@ -103,36 +103,63 @@
 #====================================================================================================
 
 user_problem_statement: |
-  Test the Assessment & Feedback QR Generation workflow for the Arbrit Safety Training application:
+  Test the Employee Document Management and Company Document Management features for the Arbrit Safety Training application:
   
-  **Test Scenario 1: Academic Head - View & Manage Forms**
-  1. Login as Academic Head (Mobile: 971557213537, PIN: 3537)
-  2. Navigate to "Assessments" tab
-  3. Verify 3 forms are visible: Training Feedback Form, Course Assessment Form, Quick Trainer Evaluation
-  4. Take screenshot showing the form list
-  5. Click on one form to see details
-  6. Take screenshot of form details/edit interface
+  **Test Credentials:**
+  - MD/HR Manager: Mobile 971564022503, PIN: 2503
 
-  **Test Scenario 2: Trainer - Generate QR Code**
-  1. Logout and login as Trainer (Mobile: 971523834896, PIN: 4896)
-  2. Navigate to "QR Codes" tab
-  3. Verify forms are now available (should see 3 forms)
-  4. Select "Training Feedback Form"
-  5. Generate QR code
-  6. Take screenshot showing the generated QR code
-  7. Verify QR code image is visible
+  **Backend API Endpoints to Test:**
 
-  **Test Scenario 3: Question Bank Access**
-  1. Login as Academic Head
-  2. Go to Assessments → Create Form
-  3. Check if question bank/templates are accessible
-  4. Take screenshot
+  1. **Employee Documents:**
+     - GET `/api/hrm/employee-documents/{employee_id}` - Fetch employee documents
+     - POST `/api/hrm/employee-documents` - Upload employee document
+     - GET `/api/hrm/employee-documents/alerts/all` - Get expiry alerts
+     - DELETE `/api/hrm/employee-documents/{doc_id}` - Delete document
+
+  2. **Company Documents:**
+     - GET `/api/hrm/company-documents` - Fetch all company documents
+     - POST `/api/hrm/company-documents` - Upload company document
+     - GET `/api/hrm/company-documents/alerts/all` - Get expiry alerts
+     - DELETE `/api/hrm/company-documents/{doc_id}` - Delete document
+
+  **Test Scenarios:**
+
+  **Scenario 1: Employee Document Upload**
+  1. Login and get token
+  2. Get list of employees
+  3. Select an employee (e.g., Afshan Firdose - 971545844386)
+  4. Upload a test document with:
+     - doc_name: "Passport Copy"
+     - doc_type: "Identity Document"
+     - expiry_date: "2026-01-15"
+     - file: (simulate file upload)
+  5. Verify document is saved
+  6. Fetch employee documents and confirm it's listed
+
+  **Scenario 2: Company Document Upload**
+  1. Upload a company document with:
+     - doc_name: "Trade License"
+     - doc_type: "Legal Document"
+     - expiry_date: "2025-12-31"
+     - file: (simulate file upload)
+  2. Verify document is saved
+  3. Fetch company documents and confirm it's listed
+
+  **Scenario 3: Expiry Alerts**
+  1. Create a document with expiry_date in the past or near future
+  2. Fetch alerts using `/api/hrm/employee-documents/alerts/all`
+  3. Verify alert is generated for documents expiring within 30 days
+  4. Test company document alerts similarly
+
+  **Scenario 4: Document Deletion**
+  1. Delete an uploaded document
+  2. Verify it's removed from the list
 
   **Expected Results:**
-  - Academic Head can see all 3 forms
-  - Trainer can generate QR codes for forms
-  - QR code displays correctly with download option
-  - Forms can be edited (if edit button exists)
+  - All CRUD operations working
+  - Expiry alerts generated correctly
+  - Documents properly associated with employees
+  - File upload/storage mechanism functional
 
 backend:
   - task: "Trainer Request API Endpoints"
