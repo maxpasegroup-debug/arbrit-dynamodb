@@ -210,7 +210,7 @@ const SalesHeadDashboard = () => {
             </TabsContent>
 
             <TabsContent value="leads" className="mt-0">
-              <LeadManagementEnhanced />
+              <LeadTracker />
             </TabsContent>
 
             <TabsContent value="quotations" className="mt-0">
