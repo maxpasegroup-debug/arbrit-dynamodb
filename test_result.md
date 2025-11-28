@@ -326,13 +326,16 @@ frontend:
     implemented: true
     working: false
     file: "/app/frontend/src/components/sales/TrainerCalendar.jsx"
-    stuck_count: 0
+    stuck_count: 1
     priority: "high"
     needs_retesting: false
     status_history:
       - working: false
         agent: "testing"
         comment: "❌ CALENDAR FEATURE TESTING FAILED - Cannot test Sales CRM Calendar functionality because the Enhanced Lead Tracker System is completely broken. Successfully logged in as Sales Head (971545844387/4387) and accessed dashboard, but clicking on Leads tab shows no Calendar buttons. The JavaScript error 'courses.map is not a function' in EnhancedLeadForm component prevents the Lead Tracker from rendering, making Calendar buttons inaccessible. TrainerCalendar component exists and appears properly implemented, but cannot be reached due to blocking Lead Tracker error."
+      - working: false
+        agent: "testing"
+        comment: "❌ PARTIAL SUCCESS - MAJOR PROGRESS MADE: The main backend API bug has been fixed! Lead Tracker now loads successfully with 7 Calendar buttons accessible. However, TrainerCalendar component has new issues: 1) 403 error fetching trainers from /api/academic/trainers (permissions), 2) JavaScript error 'bookings.filter is not a function' causing component crash. Calendar buttons are clickable but modal fails to open due to these errors. Core calendar functionality is blocked by data structure issues in TrainerCalendar component."
 
   - task: "Academic Head Dashboard Expense Tab Verification"
     implemented: true
