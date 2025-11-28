@@ -3,9 +3,17 @@ import { Phone, MessageCircle, FileText, Calendar, CheckCircle, Filter, Search, 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog';
 import { toast } from 'sonner';
 import axios from 'axios';
 import EnhancedLeadForm from './EnhancedLeadForm';
+import TrainerCalendar from './TrainerCalendar';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
