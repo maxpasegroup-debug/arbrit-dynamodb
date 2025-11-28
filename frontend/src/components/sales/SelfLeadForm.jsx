@@ -92,30 +92,81 @@ const SelfLeadForm = ({ showFieldType = false, onSuccess }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     
-    if (!formData.client_name || !formData.mobile || !formData.branch || !formData.requirement) {
-      toast.error('Please fill in all required fields');
+    // Validate required fields based on lead type
+    if (!formData.first_name || !formData.lead_owner) {
+      toast.error('Please fill in First Name and Lead Owner');
+      return;
+    }
+
+    if (leadType === 'company' && (!formData.company_name || !formData.phone)) {
+      toast.error('Please fill in Company Name and Phone for company leads');
+      return;
+    }
+
+    if (leadType === 'individual' && !formData.client_name) {
+      toast.error('Please fill in Client Name for individual leads');
       return;
     }
 
     setLoading(true);
     try {
       const token = localStorage.getItem('token');
-      await axios.post(`${API}/sales/self-lead`, formData, {
+      
+      // Prepare data for submission
+      const submitData = {
+        ...formData,
+        lead_type: leadType,
+        status: 'new',
+        lead_score: 'warm'
+      };
+
+      await axios.post(`${API}/sales/self-lead`, submitData, {
         headers: { Authorization: `Bearer ${token}` }
       });
       
-      toast.success('Self lead submitted successfully');
+      toast.success('Lead submitted successfully!');
       setShowDialog(false);
+      
+      // Reset form
       setFormData({
+        lead_type: 'company',
+        source: 'Self',
+        first_name: '',
+        last_name: '',
+        lead_owner: '',
+        lead_category: '',
+        company_name: '',
+        phone: '',
+        contact_person: '',
+        contact_designation: '',
+        contact_mobile: '',
+        contact_email: '',
+        website: '',
         client_name: '',
+        employee_count: '',
+        training_service_details: '',
+        product_services_required: '',
+        course_id: '',
+        course_name: '',
+        num_trainees: 1,
+        training_site: '',
+        training_location: '',
+        training_date: '',
+        requirement: '',
+        industry: '',
+        urgency: 'medium',
+        payment_mode: '',
+        payment_terms: '',
+        remarks: '',
+        description: '',
+        next_followup_date: '',
+        branch: '',
         mobile: '',
         email: '',
-        company_name: '',
-        branch: '',
-        requirement: '',
-        lead_type: 'Individual',
         notes: ''
       });
+      setLeadType('company');
+      
       if (onSuccess) onSuccess();
     } catch (error) {
       console.error('Error submitting lead:', error);
