@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Phone, MessageCircle, FileText, Calendar, CheckCircle, Filter, Search, Download } from 'lucide-react';
+import { Phone, MessageCircle, FileText, Calendar, CheckCircle, Filter, Search, Download, Eye } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
@@ -14,6 +14,7 @@ import { toast } from 'sonner';
 import axios from 'axios';
 import EnhancedLeadForm from './EnhancedLeadForm';
 import TrainerCalendar from './TrainerCalendar';
+import LeadDetailsModal from './LeadDetailsModal';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
