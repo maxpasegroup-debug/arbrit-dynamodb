@@ -420,10 +420,10 @@ const EnhancedLeadForm = ({ open, onOpenChange, onSuccess, existingLead = null }
           {/* Individual Fields */}
           {leadType === 'individual' && (
             <div className="space-y-4 p-4 bg-green-500/10 border border-green-400/30 rounded-lg">
-              <h4 className="text-sm font-semibold text-slate-200">Individual Information</h4>
+              <h4 className="text-sm font-semibold text-slate-200">Client Contact Information</h4>
               <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <Label className="text-slate-300">Full Name *</Label>
+                <div className="col-span-2">
+                  <Label className="text-slate-300">Client Full Name *</Label>
                   <Input
                     value={formData.client_name}
                     onChange={(e) => setFormData({ ...formData, client_name: e.target.value })}
@@ -433,21 +433,21 @@ const EnhancedLeadForm = ({ open, onOpenChange, onSuccess, existingLead = null }
                   />
                 </div>
                 <div>
-                  <Label className="text-slate-300">Mobile *</Label>
+                  <Label className="text-slate-300">Mobile Number *</Label>
                   <Input
-                    value={formData.contact_mobile}
-                    onChange={(e) => setFormData({ ...formData, contact_mobile: e.target.value })}
+                    value={formData.client_mobile}
+                    onChange={(e) => setFormData({ ...formData, client_mobile: e.target.value })}
                     placeholder="971xxxxxxxxx"
                     className="bg-slate-800 border-white/10 text-slate-100"
                     required
                   />
                 </div>
-                <div className="col-span-2">
-                  <Label className="text-slate-300">Email</Label>
+                <div>
+                  <Label className="text-slate-300">Email Address</Label>
                   <Input
                     type="email"
-                    value={formData.contact_email}
-                    onChange={(e) => setFormData({ ...formData, contact_email: e.target.value })}
+                    value={formData.client_email}
+                    onChange={(e) => setFormData({ ...formData, client_email: e.target.value })}
                     placeholder="john@email.com"
                     className="bg-slate-800 border-white/10 text-slate-100"
                   />
