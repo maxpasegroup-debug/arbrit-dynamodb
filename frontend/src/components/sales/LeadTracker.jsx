@@ -293,7 +293,17 @@ const LeadTracker = () => {
                       )}
                     </div>
 
-                    <div className="flex gap-2">
+                    <div className="flex gap-2 flex-wrap">
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        onClick={() => handleOpenDetails(lead)}
+                        className="border-blue-400/50 hover:bg-blue-500/20 text-blue-300"
+                        title="View Full Details"
+                      >
+                        <Eye className="w-3 h-3 mr-1" />
+                        Details
+                      </Button>
                       <Button
                         size="sm"
                         variant="outline"
