@@ -23,19 +23,22 @@ const EnhancedLeadForm = ({ open, onOpenChange, onSuccess, existingLead = null }
   const [formData, setFormData] = useState({
     lead_type: 'company',
     source: 'Self',
-    first_name: '',
-    last_name: '',
     lead_owner: '',
     lead_category: '',
+    // Company fields
     company_name: '',
-    phone: '',
     contact_person: '',
     contact_designation: '',
-    contact_mobile: '',
+    phone: '',
     contact_email: '',
     website: '',
-    client_name: '',
+    industry: '',
     employee_count: '',
+    // Individual fields
+    client_name: '',
+    client_mobile: '',
+    client_email: '',
+    // Training details
     training_service_details: '',
     product_services_required: '',
     course_id: '',
@@ -45,10 +48,11 @@ const EnhancedLeadForm = ({ open, onOpenChange, onSuccess, existingLead = null }
     training_location: '',
     training_date: '',
     requirement: '',
-    industry: '',
     urgency: 'medium',
+    // Payment
     payment_mode: '',
     payment_terms: '',
+    // Additional
     remarks: '',
     description: '',
     next_followup_date: ''
