@@ -30,6 +30,8 @@ const LeadTracker = () => {
   const [selectedLead, setSelectedLead] = useState(null);
   const [calendarOpen, setCalendarOpen] = useState(false);
   const [calendarLead, setCalendarLead] = useState(null);
+  const [detailsOpen, setDetailsOpen] = useState(false);
+  const [detailsLead, setDetailsLead] = useState(null);
 
   const statuses = ['New', 'Contacted', 'Quoted', 'Negotiation', 'Won', 'Lost'];
 
