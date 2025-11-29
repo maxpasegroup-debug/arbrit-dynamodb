@@ -209,12 +209,23 @@ const SalesEmployeeDashboard = () => {
           </div>
         </div>
 
-        {/* Coming Soon Section */}
-        <div className="mt-8 bg-white/5 backdrop-blur-sm rounded-xl border border-white/10 p-6">
-          <div className="text-center">
-            <h3 className="text-xl font-semibold text-white mb-2">More Features Coming Soon</h3>
-            <p className="text-gray-400">Lead management, task tracking, and performance analytics will be available in the next update.</p>
-          </div>
+        {/* Lead Management Section */}
+        <div className="mt-8">
+          <Tabs defaultValue="leads" className="w-full">
+            <TabsList className="bg-white/5 border border-white/10">
+              <TabsTrigger 
+                value="leads"
+                className="data-[state=active]:bg-cyan-500/20 data-[state=active]:text-white text-gray-300"
+              >
+                <Briefcase className="w-4 h-4 mr-2" />
+                My Leads
+              </TabsTrigger>
+            </TabsList>
+
+            <TabsContent value="leads" className="mt-6">
+              <LeadTracker />
+            </TabsContent>
+          </Tabs>
         </div>
       </main>
     </div>
