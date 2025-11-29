@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import SelfLeadForm from '@/components/sales/SelfLeadForm';
-import LeadManagement from '@/components/sales/LeadManagement';
+import LeadTracker from '@/components/sales/LeadTracker';
 import QuotationManager from '@/components/sales/QuotationManager';
 import TrainerRequest from '@/components/sales/TrainerRequest';
 import InvoiceRequest from '@/components/sales/InvoiceRequest';
