@@ -2308,11 +2308,11 @@ async def create_visit_log_simple(visit_data: dict, current_user: dict = Depends
 # Sales Head - Get All Leads
 @api_router.get("/sales/leads")
 async def get_all_leads(current_user: dict = Depends(get_current_user)):
-    if current_user["role"] not in ["COO", "Sales Head", "Field Sales", "Field Sales Executive", "MD", "CEO"]:
+    if current_user["role"] not in ["COO", "Sales Head", "Field Sales", "Field Sales Executive", "Tele Sales", "Tele Sales Executive", "Sales Employee", "MD", "CEO"]:
         raise HTTPException(status_code=403, detail="Access denied.")
     
-    # Field Sales users see only their own leads, others see all
-    if current_user["role"] in ["Field Sales", "Field Sales Executive"]:
+    # Individual sales users see only their own leads, managers see all
+    if current_user["role"] in ["Field Sales", "Field Sales Executive", "Tele Sales", "Tele Sales Executive", "Sales Employee"]:
         query_result = await db.leads.find({"created_by": current_user.get("id")})
     else:
         query_result = await db.leads.find({})
