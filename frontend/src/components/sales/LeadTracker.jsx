@@ -387,6 +387,14 @@ const LeadTracker = () => {
           )}
         </DialogContent>
       </Dialog>
+
+      {/* Lead Details Modal */}
+      <LeadDetailsModal
+        open={detailsOpen}
+        onOpenChange={setDetailsOpen}
+        lead={detailsLead}
+        onSuccess={handleDetailsSuccess}
+      />
     </div>
   );
 };
