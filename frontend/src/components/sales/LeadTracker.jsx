@@ -165,6 +165,15 @@ const LeadTracker = () => {
     fetchLeads();
   };
 
+  const handleOpenDetails = (lead) => {
+    setDetailsLead(lead);
+    setDetailsOpen(true);
+  };
+
+  const handleDetailsSuccess = () => {
+    fetchLeads();
+  };
+
   return (
     <div className="space-y-6">
       {/* Pipeline Bar */}
