@@ -227,37 +227,19 @@ const EnhancedLeadForm = ({ open, onOpenChange, onSuccess, existingLead = null }
         </DialogHeader>
 
         <form onSubmit={handleSubmit} className="space-y-6">
-          {/* Lead Basic Information */}
+          {/* Lead Metadata */}
           <div className="space-y-4 p-4 bg-purple-500/10 border border-purple-400/30 rounded-lg">
-            <h4 className="text-sm font-semibold text-slate-200">Lead Information</h4>
+            <h4 className="text-sm font-semibold text-slate-200">Lead Details</h4>
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <Label className="text-slate-300">First Name *</Label>
-                <Input
-                  value={formData.first_name}
-                  onChange={(e) => setFormData({ ...formData, first_name: e.target.value })}
-                  placeholder="John"
-                  className="bg-slate-800 border-white/10 text-slate-100"
-                  required
-                />
-              </div>
-              <div>
-                <Label className="text-slate-300">Last Name</Label>
-                <Input
-                  value={formData.last_name}
-                  onChange={(e) => setFormData({ ...formData, last_name: e.target.value })}
-                  placeholder="Doe"
-                  className="bg-slate-800 border-white/10 text-slate-100"
-                />
-              </div>
-              <div>
-                <Label className="text-slate-300">Lead Owner *</Label>
+                <Label className="text-slate-300">Lead Owner (Sales Rep) *</Label>
                 <Input
                   value={formData.lead_owner}
                   onChange={(e) => setFormData({ ...formData, lead_owner: e.target.value })}
-                  placeholder="Sales Representative"
+                  placeholder="Auto-filled with your name"
                   className="bg-slate-800 border-white/10 text-slate-100"
                   required
+                  readOnly
                 />
               </div>
               <div>
