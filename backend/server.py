@@ -810,6 +810,62 @@ def calculate_days_until_expiry(expiry_date_str: str) -> int:
         return 999  # Return high number if date parsing fails
 
 
+# Duplicate Detection Helper Functions
+def normalize_company_name(name: str) -> str:
+    """Normalize company name for comparison"""
+    if not name:
+        return ""
+    name = name.lower()
+    suffixes = ['llc', 'ltd', 'limited', 'inc', 'corp', 'corporation', 'co', 'company', 'l.l.c', 'pvt']
+    for suffix in suffixes:
+        name = re.sub(rf'\b{suffix}\.?\b', '', name)
+    name = re.sub(r'[^a-z0-9\s]', '', name)
+    name = ' '.join(name.split())
+    return name.strip()
+
+def calculate_similarity(str1: str, str2: str) -> float:
+    """Calculate similarity between two strings (0-1)"""
+    return SequenceMatcher(None, str1, str2).ratio()
+
+async def check_duplicate_company(company_name: str, db, exclude_lead_id: str = None):
+    """Check if a company name is a potential duplicate"""
+    normalized_new = normalize_company_name(company_name)
+    
+    query = {}
+    if exclude_lead_id:
+        query = {"id": {"$ne": exclude_lead_id}}
+    
+    existing_leads_result = await db.leads.find(query, {"_id": 0})
+    existing_leads = await existing_leads_result.to_list(1000)
+    
+    duplicates = []
+    
+    for lead in existing_leads:
+        existing_name = lead.get('company_name') or lead.get('client_name', '')
+        if not existing_name:
+            continue
+            
+        normalized_existing = normalize_company_name(existing_name)
+        similarity = calculate_similarity(normalized_new, normalized_existing)
+        
+        if similarity >= 0.85:
+            confidence = 'high' if similarity >= 0.95 else 'medium'
+            duplicates.append({
+                'lead_id': lead.get('id'),
+                'company_name': existing_name,
+                'contact_person': lead.get('contact_person'),
+                'submitted_by': lead.get('created_by_name') or lead.get('assigned_to_name'),
+                'submission_date': lead.get('created_at'),
+                'similarity_score': round(similarity * 100, 2),
+                'confidence': confidence,
+                'status': lead.get('status'),
+                'phone': lead.get('phone') or lead.get('contact_mobile'),
+                'email': lead.get('contact_email')
+            })
+    
+    return duplicates
+
+
 # Routes
 @api_router.get("/")
 async def root():
