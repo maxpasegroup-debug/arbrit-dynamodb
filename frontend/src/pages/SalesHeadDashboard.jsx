@@ -106,6 +106,7 @@ const SalesHeadDashboard = () => {
             </div>
 
             <div className="flex items-center gap-4">
+              <DuplicateAlertsNotification onViewAll={() => setActiveTab('duplicates')} />
               <div className="text-right">
                 <p className="text-sm font-semibold text-white">{user?.name}</p>
                 <p className="text-xs text-blue-400">Sales Head</p>
