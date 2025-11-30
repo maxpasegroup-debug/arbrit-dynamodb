@@ -59,6 +59,9 @@ tables = {
     # CRM Enhancement tables
     'courses': dynamodb.Table(f'{TABLE_PREFIX}_courses'),
     'booking_requests': dynamodb.Table(f'{TABLE_PREFIX}_booking_requests'),
+    # Duplicate detection and lead management
+    'duplicate_alerts': dynamodb.Table(f'{TABLE_PREFIX}_duplicate_alerts'),
+    'lead_history': dynamodb.Table(f'{TABLE_PREFIX}_lead_history'),
 }
 
 logger.info(f"✅ DynamoDB client initialized with table prefix: {TABLE_PREFIX}")
