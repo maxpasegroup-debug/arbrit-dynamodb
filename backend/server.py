@@ -2067,8 +2067,33 @@ async def submit_self_lead(lead_data: SelfLeadCreate, current_user: dict = Depen
     doc['email'] = lead_data.email or ""
     doc['branch'] = lead_data.branch
     doc['lead_type'] = lead_data.lead_type or "Individual"
+    doc['company_name'] = lead_data.company_name
+    doc['created_by'] = employee["id"]
+    doc['created_by_name'] = employee["name"]
     doc['created_at'] = doc['created_at'].isoformat()
     doc['updated_at'] = doc['updated_at'].isoformat()
+    
+    # Check for duplicates
+    company_name = lead_data.company_name or lead_data.client_name
+    if company_name:
+        duplicates = await check_duplicate_company(company_name, db)
+        if duplicates:
+            # Create duplicate alert for Sales Head
+            alert = {
+                "id": str(uuid.uuid4()),
+                "lead_a_id": duplicates[0]['lead_id'],
+                "lead_b_id": lead_obj.id,
+                "company_name_a": duplicates[0]['company_name'],
+                "company_name_b": company_name,
+                "submitted_by_a": duplicates[0]['submitted_by'],
+                "submitted_by_b": employee["name"],
+                "similarity_score": duplicates[0]['similarity_score'],
+                "confidence": duplicates[0]['confidence'],
+                "status": "pending",
+                "created_at": datetime.now(timezone.utc).isoformat()
+            }
+            await db.duplicate_alerts.insert_one(alert)
+    
     await db.leads.insert_one(doc)
     
     return {"message": "Self lead submitted successfully", "lead_id": lead_obj.id}
