@@ -2405,6 +2405,165 @@ async def get_my_leads(current_user: dict = Depends(get_current_user)):
         return []
 
 
+# Check for duplicate company (real-time check)
+@api_router.post("/sales/check-duplicate")
+async def check_lead_duplicate(data: dict, current_user: dict = Depends(get_current_user)):
+    """Check if a company name might be a duplicate"""
+    company_name = data.get('company_name')
+    if not company_name:
+        return {"duplicates": []}
+    
+    duplicates = await check_duplicate_company(company_name, db)
+    return {"duplicates": duplicates, "count": len(duplicates)}
+
+
+# Get duplicate alerts for Sales Head
+@api_router.get("/sales/duplicate-alerts")
+async def get_duplicate_alerts(current_user: dict = Depends(get_current_user)):
+    """Get all duplicate alerts for Sales Head to review"""
+    if current_user["role"] not in ["Sales Head", "COO", "MD", "CEO"]:
+        raise HTTPException(status_code=403, detail="Access denied")
+    
+    try:
+        query_result = await db.duplicate_alerts.find({"status": "pending"}, {"_id": 0})
+        alerts = await query_result.sort("created_at", -1).to_list(100)
+        return alerts
+    except Exception as e:
+        logger.error(f"Error fetching duplicate alerts: {e}")
+        return []
+
+
+# Resolve duplicate alert
+@api_router.post("/sales/resolve-duplicate/{alert_id}")
+async def resolve_duplicate(alert_id: str, resolution: dict, current_user: dict = Depends(get_current_user)):
+    """Resolve a duplicate alert with Sales Head decision"""
+    if current_user["role"] not in ["Sales Head", "COO", "MD", "CEO"]:
+        raise HTTPException(status_code=403, detail="Access denied")
+    
+    action = resolution.get('action')  # 'merge', 'different', 'duplicate', 'reassign'
+    
+    try:
+        # Update alert status
+        await db.duplicate_alerts.update_one(
+            {"id": alert_id},
+            {"$set": {
+                "status": "resolved",
+                "resolution": action,
+                "resolved_by": current_user["id"],
+                "resolved_by_name": current_user["name"],
+                "resolved_at": datetime.now(timezone.utc).isoformat(),
+                "resolution_notes": resolution.get('notes', '')
+            }}
+        )
+        
+        # Take action based on resolution
+        if action == 'merge':
+            # Merge logic: keep first lead, archive second
+            lead_a_id = resolution.get('keep_lead_id')
+            lead_b_id = resolution.get('archive_lead_id')
+            await db.leads.update_one(
+                {"id": lead_b_id},
+                {"$set": {"status": "merged", "merged_into": lead_a_id}}
+            )
+        elif action == 'duplicate':
+            # Mark second submission as duplicate
+            duplicate_lead_id = resolution.get('duplicate_lead_id')
+            await db.leads.update_one(
+                {"id": duplicate_lead_id},
+                {"$set": {"status": "duplicate"}}
+            )
+        
+        return {"message": "Duplicate resolved successfully"}
+    except Exception as e:
+        logger.error(f"Error resolving duplicate: {e}")
+        raise HTTPException(status_code=500, detail="Failed to resolve duplicate")
+
+
+# Get lead details with history
+@api_router.get("/sales/leads/{lead_id}")
+async def get_lead_details(lead_id: str, current_user: dict = Depends(get_current_user)):
+    """Get detailed information about a specific lead"""
+    try:
+        lead = await db.leads.find_one({"id": lead_id}, {"_id": 0})
+        if not lead:
+            raise HTTPException(status_code=404, detail="Lead not found")
+        return lead
+    except Exception as e:
+        logger.error(f"Error fetching lead details: {e}")
+        raise HTTPException(status_code=500, detail="Failed to fetch lead")
+
+
+# Get lead history
+@api_router.get("/sales/leads/{lead_id}/history")
+async def get_lead_history(lead_id: str, current_user: dict = Depends(get_current_user)):
+    """Get modification history for a lead"""
+    try:
+        history_result = await db.lead_history.find({"lead_id": lead_id}, {"_id": 0})
+        history = await history_result.sort("timestamp", -1).to_list(100)
+        return history
+    except Exception as e:
+        logger.error(f"Error fetching lead history: {e}")
+        return []
+
+
+# Get purchase history for a lead/company
+@api_router.get("/sales/leads/{lead_id}/purchases")
+async def get_purchase_history(lead_id: str, current_user: dict = Depends(get_current_user)):
+    """Get purchase history for a lead"""
+    try:
+        # Get the lead to find company name
+        lead = await db.leads.find_one({"id": lead_id}, {"_id": 0})
+        if not lead:
+            return []
+        
+        company_name = lead.get('company_name') or lead.get('client_name')
+        
+        # Find all bookings/invoices for this company
+        bookings_result = await db.booking_requests.find({
+            "company_name": company_name,
+            "status": {"$in": ["approved", "completed"]}
+        }, {"_id": 0})
+        purchases = await bookings_result.to_list(50)
+        return purchases
+    except Exception as e:
+        logger.error(f"Error fetching purchase history: {e}")
+        return []
+
+
+# Update lead details
+@api_router.put("/sales/leads/{lead_id}")
+async def update_lead(lead_id: str, lead_data: dict, current_user: dict = Depends(get_current_user)):
+    """Update lead details and log changes"""
+    try:
+        # Get existing lead
+        existing_lead = await db.leads.find_one({"id": lead_id}, {"_id": 0})
+        if not existing_lead:
+            raise HTTPException(status_code=404, detail="Lead not found")
+        
+        # Update lead
+        lead_data['updated_at'] = datetime.now(timezone.utc).isoformat()
+        await db.leads.update_one(
+            {"id": lead_id},
+            {"$set": lead_data}
+        )
+        
+        # Log history
+        history_entry = {
+            "id": str(uuid.uuid4()),
+            "lead_id": lead_id,
+            "action": "Lead updated",
+            "changed_by": current_user["name"],
+            "change_type": "modification",
+            "timestamp": datetime.now(timezone.utc).isoformat()
+        }
+        await db.lead_history.insert_one(history_entry)
+        
+        return {"message": "Lead updated successfully"}
+    except Exception as e:
+        logger.error(f"Error updating lead: {e}")
+        raise HTTPException(status_code=500, detail="Failed to update lead")
+
+
 # Sales Leaderboard (exclude management and sales head)
 @api_router.get("/sales/leaderboard")
 async def get_sales_leaderboard(current_user: dict = Depends(get_current_user)):
