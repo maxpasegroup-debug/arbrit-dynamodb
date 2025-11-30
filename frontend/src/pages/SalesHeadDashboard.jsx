@@ -138,7 +138,7 @@ const SalesHeadDashboard = () => {
         </div>
 
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-8 bg-white/5 border border-white/10">
+          <TabsList className="grid w-full grid-cols-9 bg-white/5 border border-white/10">
             <TabsTrigger 
               value="overview" 
               data-testid="tab-overview"
@@ -162,6 +162,14 @@ const SalesHeadDashboard = () => {
             >
               <TrendingUp className="w-4 h-4 mr-2" />
               Leads
+            </TabsTrigger>
+            <TabsTrigger 
+              value="duplicates"
+              data-testid="tab-duplicates"
+              className="data-[state=active]:bg-orange-500/20 data-[state=active]:text-white text-gray-300"
+            >
+              <AlertTriangle className="w-4 h-4 mr-2" />
+              Duplicates
             </TabsTrigger>
             <TabsTrigger 
               value="quotations"
