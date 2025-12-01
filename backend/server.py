@@ -2565,6 +2565,22 @@ async def update_lead(lead_id: str, lead_data: dict, current_user: dict = Depend
         if not existing_lead:
             raise HTTPException(status_code=404, detail="Lead not found")
         
+        # Status-Based Auto-Score Update (Hybrid Approach)
+        new_status = lead_data.get('status', existing_lead.get('status'))
+        old_status = existing_lead.get('status')
+        old_score = existing_lead.get('lead_score', 'warm')
+        
+        # Auto-adjust lead score based on status change
+        if new_status != old_status:
+            if new_status == 'contacted' and old_score == 'cold':
+                lead_data['lead_score'] = 'warm'  # Upgrade cold to warm when contacted
+            elif new_status == 'quoted':
+                lead_data['lead_score'] = 'hot'  # Quote sent = hot lead
+            elif new_status == 'negotiation':
+                lead_data['lead_score'] = 'hot'  # In negotiation = hot lead
+            elif new_status in ['won', 'lost']:
+                lead_data['lead_score'] = None  # Won/Lost leads exit the scoring system
+        
         # Update lead
         lead_data['updated_at'] = datetime.now(timezone.utc).isoformat()
         await db.leads.update_one(
@@ -2572,18 +2588,30 @@ async def update_lead(lead_id: str, lead_data: dict, current_user: dict = Depend
             {"$set": lead_data}
         )
         
-        # Log history
+        # Log history with detailed changes
+        changes = []
+        if old_status != new_status:
+            changes.append(f"Status: {old_status} → {new_status}")
+        if old_score != lead_data.get('lead_score') and lead_data.get('lead_score'):
+            changes.append(f"Score: {old_score} → {lead_data.get('lead_score')}")
+        
         history_entry = {
             "id": str(uuid.uuid4()),
             "lead_id": lead_id,
-            "action": "Lead updated",
+            "action": f"Lead updated: {', '.join(changes)}" if changes else "Lead updated",
             "changed_by": current_user["name"],
-            "change_type": "modification",
-            "timestamp": datetime.now(timezone.utc).isoformat()
+            "change_type": "status_change" if old_status != new_status else "modification",
+            "timestamp": datetime.now(timezone.utc).isoformat(),
+            "details": {
+                "old_status": old_status,
+                "new_status": new_status,
+                "old_score": old_score,
+                "new_score": lead_data.get('lead_score')
+            }
         }
         await db.lead_history.insert_one(history_entry)
         
-        return {"message": "Lead updated successfully"}
+        return {"message": "Lead updated successfully", "score_updated": old_score != lead_data.get('lead_score')}
     except Exception as e:
         logger.error(f"Error updating lead: {e}")
         raise HTTPException(status_code=500, detail="Failed to update lead")
