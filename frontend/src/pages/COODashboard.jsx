@@ -10,6 +10,8 @@ import QuotationManagementEnhanced from '@/components/sales/QuotationManagementE
 import EnhancedLeadForm from '@/components/sales/EnhancedLeadForm';
 import ExpenseSubmissionModal from '@/components/coo/ExpenseSubmissionModal';
 import DeletionApprovals from '@/components/executive/DeletionApprovals';
+import TrainingLibrary from '@/components/library/TrainingLibrary';
+import AddPastTraining from '@/components/library/AddPastTraining';
 import { toast } from 'sonner';
 
 const COODashboard = () => {
