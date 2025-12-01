@@ -2543,6 +2543,27 @@ async def resolve_duplicate(alert_id: str, resolution: dict, current_user: dict 
         raise HTTPException(status_code=500, detail=f"Failed to resolve duplicate: {str(e)}")
 
 
+# TEST ENDPOINT: Clear all test data
+@api_router.post("/sales/clear-test-data")
+async def clear_test_data(current_user: dict = Depends(get_current_user)):
+    """Clear all test duplicate alerts and test leads"""
+    if current_user["role"] not in ["Sales Head", "COO", "MD", "CEO"]:
+        raise HTTPException(status_code=403, detail="Access denied")
+    
+    try:
+        # Delete all pending duplicate alerts
+        await db.duplicate_alerts.delete_many({"status": "pending"})
+        
+        # Delete Al Futtaim test leads
+        await db.leads.delete_many({"company_name": {"$regex": "Futtaim", "$options": "i"}})
+        await db.leads.delete_many({"company_name": {"$regex": "TEST COMPANY", "$options": "i"}})
+        
+        return {"message": "✅ All test data cleared successfully"}
+    except Exception as e:
+        logger.error(f"Error clearing test data: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
 # TEST ENDPOINT: Create realistic duplicate scenario with actual leads
 @api_router.post("/sales/test-duplicate-scenario")
 async def create_test_duplicate_scenario(current_user: dict = Depends(get_current_user)):
