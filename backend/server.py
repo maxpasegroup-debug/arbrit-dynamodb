@@ -2543,44 +2543,108 @@ async def resolve_duplicate(alert_id: str, resolution: dict, current_user: dict 
         raise HTTPException(status_code=500, detail=f"Failed to resolve duplicate: {str(e)}")
 
 
-# TEST ENDPOINT: Create sample duplicate alert
-@api_router.post("/sales/test-duplicate-alert")
-async def create_test_duplicate_alert(current_user: dict = Depends(get_current_user)):
-    """Create a sample duplicate alert for testing the RED ALERT feature"""
+# TEST ENDPOINT: Create realistic duplicate scenario with actual leads
+@api_router.post("/sales/test-duplicate-scenario")
+async def create_test_duplicate_scenario(current_user: dict = Depends(get_current_user)):
+    """Create a realistic duplicate scenario with two actual leads for testing"""
     if current_user["role"] not in ["Sales Head", "COO", "MD", "CEO"]:
         raise HTTPException(status_code=403, detail="Access denied")
     
     try:
-        from decimal import Decimal
+        # Create first lead (submitted by Field Sales)
+        lead_a_id = str(uuid.uuid4())
+        lead_a = {
+            "id": lead_a_id,
+            "company_name": "Al Futtaim Group",
+            "client_name": "Al Futtaim Group",
+            "contact_person": "Ahmed Hassan",
+            "contact_designation": "Safety Manager",
+            "contact_mobile": "971501234567",
+            "contact_email": "ahmed.hassan@alfuttaim.ae",
+            "course_name": "Fire Safety Training",
+            "lead_value": "35000",
+            "urgency": "high",
+            "requirement": "Fire safety training for 50 employees, needs certification",
+            "status": "pending_duplicate_review",  # RED status for sales rep
+            "lead_score": "hot",
+            "created_by": "field-sales-rep-1",
+            "submitted_by": "Afshan Firdose",
+            "submitted_by_role": "Field Sales",
+            "created_at": datetime.now(timezone.utc).isoformat(),
+            "updated_at": datetime.now(timezone.utc).isoformat()
+        }
         
-        test_alert = {
-            "id": str(uuid.uuid4()),
-            "lead_ids": [str(uuid.uuid4()), str(uuid.uuid4())],
-            "new_lead_data": {
-                "company_name": "TEST COMPANY - DUPLICATE ALERT",
-                "contact_person": "John Doe",
-                "contact_mobile": "971501234567",
-                "course_name": "Safety Training",
-                "lead_value": "25000",
-                "urgency": "high"
-            },
-            "similarity_score": "92",  # Store as string to avoid Decimal conversion issues
+        # Create second lead (submitted by Tele Sales - 2 hours later)
+        lead_b_id = str(uuid.uuid4())
+        lead_b = {
+            "id": lead_b_id,
+            "company_name": "Al Futtaim Group LLC",
+            "client_name": "Al Futtaim Group LLC",
+            "contact_person": "Ahmed H.",
+            "contact_designation": "HSE Manager",
+            "contact_mobile": "971501234567",  # Same mobile!
+            "contact_email": "a.hassan@alfuttaim.com",  # Similar email
+            "course_name": "Fire Safety & Emergency Response",
+            "lead_value": "40000",
+            "urgency": "medium",
+            "requirement": "Comprehensive fire safety program for warehouse staff",
+            "status": "pending_duplicate_review",  # RED status for sales rep
+            "lead_score": "warm",
+            "created_by": "tele-sales-rep-1",
+            "submitted_by": "Mohammad Akbar",
+            "submitted_by_role": "Tele Sales",
+            "created_at": (datetime.now(timezone.utc) + timedelta(hours=2)).isoformat(),
+            "updated_at": (datetime.now(timezone.utc) + timedelta(hours=2)).isoformat()
+        }
+        
+        # Insert both leads
+        await db.leads.insert_one(lead_a)
+        await db.leads.insert_one(lead_b)
+        
+        # Create duplicate alert
+        alert_id = str(uuid.uuid4())
+        duplicate_alert = {
+            "id": alert_id,
+            "lead_ids": [lead_a_id, lead_b_id],
+            "lead_a_data": lead_a,
+            "lead_b_data": lead_b,
+            "similarity_score": "95",
+            "similarity_factors": [
+                "Same mobile number: 971501234567",
+                "Company name 94% match: 'Al Futtaim Group' vs 'Al Futtaim Group LLC'",
+                "Similar contact person: 'Ahmed Hassan' vs 'Ahmed H.'",
+                "Same course type: Fire Safety"
+            ],
             "status": "pending",
             "created_at": datetime.now(timezone.utc).isoformat(),
-            "detection_reason": "Company name match: 92% similar to existing lead (TEST DATA)"
+            "detection_reason": "High similarity detected: Same mobile, similar company name, same contact"
         }
         
-        await db.duplicate_alerts.insert_one(test_alert)
+        await db.duplicate_alerts.insert_one(duplicate_alert)
         
         return {
-            "message": "Test duplicate alert created successfully!",
-            "alert_id": test_alert["id"],
-            "status": "pending",
-            "note": "🔴 The 'Leads' tab should now show a RED PULSING BADGE!"
+            "message": "✅ Realistic duplicate scenario created!",
+            "alert_id": alert_id,
+            "lead_a": {
+                "id": lead_a_id,
+                "company": lead_a["company_name"],
+                "submitted_by": lead_a["submitted_by"],
+                "role": lead_a["submitted_by_role"],
+                "value": lead_a["lead_value"]
+            },
+            "lead_b": {
+                "id": lead_b_id,
+                "company": lead_b["company_name"],
+                "submitted_by": lead_b["submitted_by"],
+                "role": lead_b["submitted_by_role"],
+                "value": lead_b["lead_value"]
+            },
+            "similarity": "95%",
+            "note": "🔴 Both sales reps will see their leads in RED (pending review). Sales Head can now compare and assign credit!"
         }
     except Exception as e:
-        logger.error(f"Error creating test duplicate alert: {e}")
-        raise HTTPException(status_code=500, detail=f"Failed to create test alert: {str(e)}")
+        logger.error(f"Error creating test scenario: {e}")
+        raise HTTPException(status_code=500, detail=f"Failed to create test scenario: {str(e)}")
 
 
 # Get lead details with history
