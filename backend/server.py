@@ -6573,6 +6573,7 @@ async def create_certificate_tracking(record: dict, current_user: dict = Depends
             "training_date": record.get("training_date", ""),
             "certificate_numbers": record.get("certificate_numbers", []),
             "participants_count": record.get("participants_count", 0),
+            "certificate_type": record.get("certificate_type", "In-House"),  # In-House or International
             "status": "initiated",  # Initial status
             "status_history": [{
                 "status": "initiated",
