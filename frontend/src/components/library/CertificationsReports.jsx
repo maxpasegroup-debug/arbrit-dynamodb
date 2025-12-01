@@ -28,15 +28,66 @@ const CertificationsReports = () => {
     try {
       const token = localStorage.getItem('token');
       
-      // Fetch training records
-      const response = await axios.get(`${API}/training-library`, {
-        headers: { Authorization: `Bearer ${token}` }
+      // Fetch BOTH training library AND certificate tracking data
+      const [libraryResponse, trackingResponse] = await Promise.all([
+        axios.get(`${API}/training-library`, {
+          headers: { Authorization: `Bearer ${token}` }
+        }),
+        axios.get(`${API}/certificate-tracking`, {
+          headers: { Authorization: `Bearer ${token}` }
+        })
+      ]);
+      
+      const libraryRecords = libraryResponse.data || [];
+      const trackingRecords = trackingResponse.data || [];
+      
+      // Filter library records with certificates
+      const certificateRecords = libraryRecords.filter(r => r.certificate_issued);
+      
+      // Combine with tracking records (for dispatch status)
+      const combinedRecords = certificateRecords.map(cert => {
+        // Find matching dispatch record
+        const dispatchRecord = trackingRecords.find(
+          track => track.company_name === cert.company_name && 
+                   track.course_name === cert.course_name &&
+                   track.training_date === cert.training_date
+        );
+        
+        return {
+          ...cert,
+          dispatch_status: dispatchRecord?.status || 'not_dispatched',
+          dispatch_id: dispatchRecord?.id || null,
+          courier_service: dispatchRecord?.courier_service || null,
+          tracking_number: dispatchRecord?.tracking_number || null
+        };
       });
       
-      const allRecords = response.data || [];
-      
-      // Filter records with certificates
-      const certificateRecords = allRecords.filter(r => r.certificate_issued);
+      // Also add tracking records that don't have library entries yet
+      trackingRecords.forEach(track => {
+        const exists = combinedRecords.some(
+          cert => cert.company_name === track.company_name && 
+                  cert.course_name === track.course_name &&
+                  cert.training_date === track.training_date
+        );
+        
+        if (!exists) {
+          combinedRecords.push({
+            id: track.id,
+            company_name: track.company_name,
+            contact_person: track.contact_person,
+            contact_mobile: track.contact_mobile,
+            course_name: track.course_name,
+            training_date: track.training_date,
+            participants_count: track.participants_count,
+            certificate_issued: true,
+            certificate_numbers: track.certificate_numbers || [],
+            dispatch_status: track.status,
+            dispatch_id: track.id,
+            courier_service: track.courier_service,
+            tracking_number: track.tracking_number
+          });
+        }
+      });
       
       // Calculate statistics
       const today = new Date();
@@ -47,7 +98,7 @@ const CertificationsReports = () => {
       let expired = 0;
       let active = 0;
       
-      certificateRecords.forEach(record => {
+      combinedRecords.forEach(record => {
         const trainingDate = new Date(record.training_date);
         const expiryDate = new Date(trainingDate);
         expiryDate.setFullYear(expiryDate.getFullYear() + 3); // Assume 3-year validity
@@ -62,13 +113,13 @@ const CertificationsReports = () => {
       });
       
       setStats({
-        total_certificates: certificateRecords.length,
+        total_certificates: combinedRecords.length,
         expiring_soon: expiringSoon,
         expired: expired,
         active: active
       });
       
-      setRecords(certificateRecords);
+      setRecords(combinedRecords);
     } catch (error) {
       console.error('Error fetching certification data:', error);
       toast.error('Failed to load certification data');
