@@ -165,17 +165,36 @@ const AcademicLibrary = () => {
 
   const handleCreateDocument = async (e) => {
     e.preventDefault();
+    
+    if (!selectedFile) {
+      toast.error('Please select a file to upload');
+      return;
+    }
+    
+    setUploading(true);
+    
     try {
       const token = localStorage.getItem('token');
-      const docData = {
-        ...newDocument,
-        tags: newDocument.tags.split(',').map(t => t.trim()).filter(t => t)
-      };
-      await axios.post(`${API}/academic-library/documents`, docData, {
-        headers: { Authorization: `Bearer ${token}` }
+      
+      // Create FormData for file upload
+      const formData = new FormData();
+      formData.append('file', selectedFile);
+      formData.append('folder_id', newDocument.folder_id);
+      formData.append('document_name', newDocument.document_name);
+      formData.append('description', newDocument.description);
+      formData.append('tags', newDocument.tags);
+      formData.append('access_level', newDocument.access_level);
+      
+      await axios.post(`${API}/academic-library/upload`, formData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'multipart/form-data'
+        }
       });
-      toast.success('Document added successfully!');
+      
+      toast.success('Document uploaded successfully!');
       setDocumentModalOpen(false);
+      setSelectedFile(null);
       setNewDocument({
         folder_id: '',
         document_name: '',
@@ -190,8 +209,10 @@ const AcademicLibrary = () => {
       fetchFolders();
       fetchStats();
     } catch (error) {
-      console.error('Error creating document:', error);
-      toast.error('Failed to add document');
+      console.error('Error uploading document:', error);
+      toast.error(error.response?.data?.detail || 'Failed to upload document');
+    } finally {
+      setUploading(false);
     }
   };
 
