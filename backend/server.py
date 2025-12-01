@@ -7333,6 +7333,114 @@ async def get_library_stats(current_user: dict = Depends(get_current_user)):
         raise HTTPException(status_code=500, detail="Failed to fetch statistics")
 
 
+# Upload file to academic library
+@api_router.post("/academic-library/upload")
+async def upload_academic_file(
+    file: UploadFile = File(...),
+    folder_id: str = Form(...),
+    document_name: str = Form(...),
+    description: str = Form(""),
+    tags: str = Form(""),
+    access_level: str = Form("All Trainers"),
+    current_user: dict = Depends(get_current_user)
+):
+    """Upload a file to academic library"""
+    if current_user["role"] not in ["Academic Head", "COO", "MD", "CEO"]:
+        raise HTTPException(status_code=403, detail="Only Academic Head can upload files")
+    
+    try:
+        # Validate file
+        if not file.filename:
+            raise HTTPException(status_code=400, detail="No file provided")
+        
+        # Check file size (max 50MB)
+        max_size = 50 * 1024 * 1024  # 50MB
+        contents = await file.read()
+        file_size = len(contents)
+        
+        if file_size > max_size:
+            raise HTTPException(status_code=400, detail="File too large. Maximum size is 50MB")
+        
+        # Determine document type based on file extension
+        file_ext = file.filename.lower().split('.')[-1]
+        doc_type_mapping = {
+            'pdf': 'PDF',
+            'doc': 'Document',
+            'docx': 'Document',
+            'ppt': 'Presentation',
+            'pptx': 'Presentation',
+            'xls': 'Spreadsheet',
+            'xlsx': 'Spreadsheet',
+            'csv': 'Spreadsheet',
+            'mp4': 'Video',
+            'avi': 'Video',
+            'mov': 'Video',
+            'wmv': 'Video',
+            'mp3': 'Audio',
+            'wav': 'Audio',
+            'jpg': 'Image',
+            'jpeg': 'Image',
+            'png': 'Image',
+            'gif': 'Image'
+        }
+        document_type = doc_type_mapping.get(file_ext, 'Other')
+        
+        # Generate unique filename
+        file_id = str(uuid.uuid4())
+        safe_filename = f"{file_id}_{file.filename}"
+        file_path = f"/app/backend/uploads/academic_library/{safe_filename}"
+        
+        # Save file
+        with open(file_path, "wb") as f:
+            f.write(contents)
+        
+        # Create document metadata
+        file_url = f"/uploads/academic_library/{safe_filename}"
+        
+        new_document = {
+            "id": file_id,
+            "folder_id": folder_id,
+            "document_name": document_name,
+            "document_type": document_type,
+            "file_url": file_url,
+            "file_size": file_size,
+            "description": description,
+            "tags": [t.strip() for t in tags.split(',') if t.strip()],
+            "access_level": access_level,
+            "uploaded_by": current_user["id"],
+            "uploaded_by_name": current_user["name"],
+            "uploaded_at": datetime.now(timezone.utc).isoformat(),
+            "updated_at": datetime.now(timezone.utc).isoformat(),
+            "download_count": 0,
+            "last_accessed": None,
+            "original_filename": file.filename
+        }
+        
+        await db.academic_library_documents.insert_one(new_document)
+        
+        # Update folder document count
+        folder = await db.academic_library_folders.find_one({"id": folder_id}, {"_id": 0})
+        if folder:
+            folder["document_count"] = folder.get("document_count", 0) + 1
+            await db.academic_library_folders.update_one(
+                {"id": folder_id},
+                {"$set": {"document_count": folder["document_count"]}}
+            )
+        
+        return {
+            "success": True,
+            "document_id": file_id,
+            "document": new_document,
+            "message": "File uploaded successfully"
+        }
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error uploading file: {e}")
+        raise HTTPException(status_code=500, detail=f"Failed to upload file: {str(e)}")
+
+
 # Include the router in the main app
 app.include_router(api_router)
 
