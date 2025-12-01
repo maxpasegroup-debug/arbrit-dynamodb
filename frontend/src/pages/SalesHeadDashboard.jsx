@@ -260,7 +260,7 @@ const SalesHeadDashboard = () => {
             </TabsContent>
 
             <TabsContent value="duplicates" className="mt-0">
-              <DuplicateManagement />
+              <EnhancedDuplicateManagement />
             </TabsContent>
 
             <TabsContent value="quotations" className="mt-0">
