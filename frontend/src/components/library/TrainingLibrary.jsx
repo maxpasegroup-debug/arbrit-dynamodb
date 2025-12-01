@@ -390,6 +390,18 @@ const TrainingLibrary = () => {
         )}
       </div>
 
+      {/* Add Training Modal */}
+      <Dialog open={addTrainingOpen} onOpenChange={setAddTrainingOpen}>
+        <DialogContent className="max-w-6xl max-h-[95vh] overflow-y-auto bg-slate-900 border-white/10">
+          <AddPastTraining onSuccess={() => {
+            toast.success('Training record added successfully!');
+            setAddTrainingOpen(false);
+            fetchRecords();
+            fetchStats();
+          }} />
+        </DialogContent>
+      </Dialog>
+
       {/* Details Modal */}
       <Dialog open={detailsOpen} onOpenChange={setDetailsOpen}>
         <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto bg-slate-900 border-white/10">
