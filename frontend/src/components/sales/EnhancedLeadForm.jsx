@@ -121,6 +121,16 @@ const EnhancedLeadForm = ({ open, onOpenChange, onSuccess, existingLead = null }
     }
   }, []);
 
+  // Recalculate lead score when relevant factors change
+  useEffect(() => {
+    if (formData.course_id) {
+      const newScore = calculateLeadScore(formData);
+      if (newScore !== formData.lead_score) {
+        setFormData(prev => ({ ...prev, lead_score: newScore }));
+      }
+    }
+  }, [formData.urgency, formData.num_trainees, formData.lead_category, formData.source, formData.employee_count]);
+
   // Intelligent Lead Scoring Algorithm (Hybrid Approach)
   const calculateLeadScore = (data) => {
     let points = 50; // Start at 50 (Warm baseline)
