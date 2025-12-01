@@ -201,8 +201,7 @@ const DuplicateManagement = () => {
                   <div className="ml-4 flex flex-col gap-2">
                     <Button
                       onClick={() => {
-                        // For now, just resolve it as different
-                        resolveAlert('different');
+                        resolveAlert('different', {}, alert.id);
                       }}
                       className="bg-green-600 hover:bg-green-700"
                       size="sm"
@@ -212,7 +211,10 @@ const DuplicateManagement = () => {
                     </Button>
                     <Button
                       onClick={() => {
-                        resolveAlert('duplicate', { duplicate_lead_id: alert.lead_ids?.[1] || alert.id });
+                        const leadIds = typeof alert.lead_ids === 'string' 
+                          ? JSON.parse(alert.lead_ids) 
+                          : alert.lead_ids;
+                        resolveAlert('duplicate', { duplicate_lead_id: leadIds?.[1] || alert.id }, alert.id);
                       }}
                       variant="outline"
                       className="border-red-400/50 hover:bg-red-500/20 text-red-300"
