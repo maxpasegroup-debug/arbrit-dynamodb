@@ -171,14 +171,28 @@ const LeadDetailsModal = ({ open, onOpenChange, lead, onSuccess }) => {
                   </Badge>
                 </div>
                 <div>
-                  <Label className="text-slate-400 text-xs">Lead Score</Label>
-                  <Badge className={`text-lg px-4 py-1 mt-1 ${
-                    leadData.lead_score === 'hot' ? 'bg-red-500/20 text-red-300' :
-                    leadData.lead_score === 'warm' ? 'bg-orange-500/20 text-orange-300' :
-                    'bg-blue-500/20 text-blue-300'
-                  }`}>
-                    {leadData.lead_score?.toUpperCase() || 'WARM'}
-                  </Badge>
+                  <Label className="text-slate-400 text-xs">Lead Score (Manual Override)</Label>
+                  {isEditing ? (
+                    <select
+                      value={leadData.lead_score || 'warm'}
+                      onChange={(e) => setLeadData({ ...leadData, lead_score: e.target.value })}
+                      className="w-full bg-slate-800 border border-white/10 text-slate-100 rounded-md p-2 mt-1"
+                    >
+                      <option value="hot">🔥 HOT</option>
+                      <option value="warm">🟡 WARM</option>
+                      <option value="cold">🔵 COLD</option>
+                    </select>
+                  ) : (
+                    <Badge className={`text-lg px-4 py-1 mt-1 ${
+                      leadData.lead_score === 'hot' ? 'bg-red-500/20 text-red-300 border-red-400/50' :
+                      leadData.lead_score === 'warm' ? 'bg-orange-500/20 text-orange-300 border-orange-400/50' :
+                      'bg-blue-500/20 text-blue-300 border-blue-400/50'
+                    }`}>
+                      {leadData.lead_score === 'hot' ? '🔥 HOT' :
+                       leadData.lead_score === 'warm' ? '🟡 WARM' :
+                       '🔵 COLD'}
+                    </Badge>
+                  )}
                 </div>
                 <div>
                   <Label className="text-slate-400 text-xs">Estimated Value</Label>
