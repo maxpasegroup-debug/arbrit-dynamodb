@@ -6835,6 +6835,7 @@ async def create_certificate_demo_data(current_user: dict = Depends(get_current_
                 "training_date": (datetime.now(timezone.utc) - timedelta(days=730)).strftime("%Y-%m-%d"),
                 "participants_count": 15,
                 "certificate_numbers": [f"FSM-2023-{str(i).zfill(3)}" for i in range(1, 16)],
+                "certificate_type": "In-House",
                 "dispatch_status": "delivered",
                 "courier_service": "Aramex",
                 "tracking_number": "ARM-AE-2023-12345",
