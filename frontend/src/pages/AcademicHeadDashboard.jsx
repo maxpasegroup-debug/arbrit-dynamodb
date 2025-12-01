@@ -253,6 +253,20 @@ const AcademicHeadDashboard = () => {
               <Receipt className="w-4 h-4 mr-2" />
               My Expenses
             </TabsTrigger>
+            <TabsTrigger 
+              value="dispatch"
+              className="data-[state=active]:bg-yellow-500/20 data-[state=active]:text-white text-gray-300"
+            >
+              <Package className="w-4 h-4 mr-2" />
+              Dispatch
+            </TabsTrigger>
+            <TabsTrigger 
+              value="cert-reports"
+              className="data-[state=active]:bg-yellow-500/20 data-[state=active]:text-white text-gray-300"
+            >
+              <FileBarChart className="w-4 h-4 mr-2" />
+              Reports
+            </TabsTrigger>
           </TabsList>
 
           <div className="mt-6">
