@@ -144,13 +144,15 @@ const TrainingLibrary = () => {
             </h2>
             <p className="text-blue-100 mt-1">Complete archive of all trainings conducted by Arbrit</p>
           </div>
-          <Button
-            onClick={() => window.location.href = '#add-training'}
-            className="bg-white text-blue-600 hover:bg-blue-50"
-          >
-            <Plus className="w-4 h-4 mr-2" />
-            Add Past Training
-          </Button>
+          <div className="flex gap-3">
+            <Button
+              onClick={() => setAddTrainingOpen(true)}
+              className="bg-white text-blue-600 hover:bg-blue-50"
+            >
+              <Plus className="w-4 h-4 mr-2" />
+              Add Past Training
+            </Button>
+          </div>
         </div>
 
         {stats && (
