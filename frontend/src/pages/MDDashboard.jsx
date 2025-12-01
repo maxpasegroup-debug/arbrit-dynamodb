@@ -20,6 +20,9 @@ import QuotationManagementEnhanced from '@/components/sales/QuotationManagementE
 import CourseManagement from '@/components/academic/CourseManagement';
 import TrainingRequests from '@/components/academic/TrainingRequests';
 import AssessmentFormBuilder from '@/components/assessment/AssessmentFormBuilder';
+// Import Training Library Components
+import TrainingLibrary from '@/components/library/TrainingLibrary';
+import AddPastTraining from '@/components/library/AddPastTraining';
 import { toast } from 'sonner';
 import axios from 'axios';
 
