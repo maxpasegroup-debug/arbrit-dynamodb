@@ -307,6 +307,90 @@ const LeadTracker = () => {
 
   return (
     <div className="space-y-6">
+      {/* Duplicate Alerts Section - Priority 1 */}
+      {duplicateAlerts.length > 0 && (
+        <div className="bg-red-500/10 backdrop-blur-sm rounded-xl border-2 border-red-400/50 p-5 animate-pulse">
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center gap-3">
+              <AlertTriangle className="w-6 h-6 text-red-400" />
+              <div>
+                <h3 className="text-xl font-bold text-red-300">🔴 Duplicate Lead Alerts</h3>
+                <p className="text-sm text-slate-400">Review and resolve potential duplicate submissions</p>
+              </div>
+            </div>
+            <Badge className="bg-red-500/30 text-red-200 text-lg px-4 py-2 border-red-400/50">
+              {duplicateAlerts.length} Pending
+            </Badge>
+          </div>
+
+          <div className="space-y-3">
+            {duplicateAlerts.map((alert) => {
+              const leadA = alert.lead_a_data || {};
+              const leadB = alert.lead_b_data || {};
+              const similarityScore = typeof alert.similarity_score === 'string'
+                ? parseInt(alert.similarity_score)
+                : Math.round(alert.similarity_score * 100);
+              
+              return (
+                <div
+                  key={alert.id}
+                  className="bg-white/5 rounded-lg p-4 border border-red-400/30 hover:border-red-400/60 transition-all"
+                >
+                  <div className="flex items-start justify-between">
+                    <div className="flex-1">
+                      <div className="flex items-center gap-3 mb-3">
+                        <Badge className="bg-red-500/20 text-red-300 border-red-400/50">
+                          {similarityScore}% Match
+                        </Badge>
+                        <Badge className="bg-orange-500/20 text-orange-300">
+                          HIGH PRIORITY
+                        </Badge>
+                      </div>
+
+                      <div className="grid grid-cols-2 gap-3 mb-3">
+                        <div className="bg-blue-500/10 rounded p-3 border border-blue-400/30">
+                          <p className="text-xs text-blue-300 mb-1">LEAD A (First)</p>
+                          <p className="text-white font-semibold">{leadA.company_name || 'N/A'}</p>
+                          <p className="text-sm text-slate-300">By: {leadA.submitted_by || 'Unknown'}</p>
+                          <p className="text-xs text-slate-400">Value: {leadA.lead_value} AED</p>
+                        </div>
+                        <div className="bg-orange-500/10 rounded p-3 border border-orange-400/30">
+                          <p className="text-xs text-orange-300 mb-1">LEAD B (Second)</p>
+                          <p className="text-white font-semibold">{leadB.company_name || 'N/A'}</p>
+                          <p className="text-sm text-slate-300">By: {leadB.submitted_by || 'Unknown'}</p>
+                          <p className="text-xs text-slate-400">Value: {leadB.lead_value} AED</p>
+                        </div>
+                      </div>
+
+                      {alert.similarity_factors && (
+                        <div className="bg-red-500/10 rounded p-2 border border-red-400/30 mb-2">
+                          <p className="text-xs text-red-300 font-semibold mb-1">Why Flagged:</p>
+                          <ul className="text-xs text-slate-300 space-y-1">
+                            {alert.similarity_factors.slice(0, 2).map((factor, idx) => (
+                              <li key={idx}>• {factor}</li>
+                            ))}
+                          </ul>
+                        </div>
+                      )}
+                    </div>
+
+                    <div className="ml-4">
+                      <Button
+                        onClick={() => openComparison(alert)}
+                        className="bg-red-600 hover:bg-red-700"
+                      >
+                        <AlertTriangle className="w-4 h-4 mr-2" />
+                        Review & Decide
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      )}
+
       {/* Pipeline Bar */}
       <div className="bg-slate-900/50 backdrop-blur-sm rounded-xl border border-white/10 p-4">
         <div className="grid grid-cols-6 gap-2">
