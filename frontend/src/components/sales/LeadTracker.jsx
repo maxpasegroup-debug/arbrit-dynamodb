@@ -16,6 +16,10 @@ import EnhancedLeadForm from './EnhancedLeadForm';
 import TrainerCalendar from './TrainerCalendar';
 import LeadDetailsModal from './LeadDetailsModal';
 import LeadProgressTracker from './LeadProgressTracker';
+import { AlertTriangle, Award, Split, XCircle } from 'lucide-react';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+import { Label } from '@/components/ui/label';
+import { Textarea } from '@/components/ui/textarea';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
@@ -33,6 +37,13 @@ const LeadTracker = () => {
   const [calendarLead, setCalendarLead] = useState(null);
   const [detailsOpen, setDetailsOpen] = useState(false);
   const [detailsLead, setDetailsLead] = useState(null);
+  
+  // Duplicate management states
+  const [duplicateAlerts, setDuplicateAlerts] = useState([]);
+  const [selectedAlert, setSelectedAlert] = useState(null);
+  const [comparisonOpen, setComparisonOpen] = useState(false);
+  const [selectedAction, setSelectedAction] = useState('different');
+  const [resolutionNotes, setResolutionNotes] = useState('');
 
   const statuses = ['New', 'Contacted', 'Quoted', 'Negotiation', 'Won', 'Lost'];
 
