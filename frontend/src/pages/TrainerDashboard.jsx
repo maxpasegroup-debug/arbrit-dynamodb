@@ -187,6 +187,13 @@ const TrainerDashboard = () => {
               <Receipt className="w-4 h-4 mr-2" />
               Expenses
             </TabsTrigger>
+            <TabsTrigger 
+              value="materials"
+              className="data-[state=active]:bg-yellow-500/20 data-[state=active]:text-white text-gray-300"
+            >
+              <BookOpen className="w-4 h-4 mr-2" />
+              Materials
+            </TabsTrigger>
           </TabsList>
 
           <div className="mt-6">
