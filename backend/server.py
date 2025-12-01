@@ -7441,6 +7441,132 @@ async def upload_academic_file(
         raise HTTPException(status_code=500, detail=f"Failed to upload file: {str(e)}")
 
 
+# Get materials for trainer (Phase 3)
+@api_router.get("/academic-library/trainer-materials")
+async def get_trainer_materials(current_user: dict = Depends(get_current_user)):
+    """Get all materials accessible to the current trainer"""
+    if current_user["role"] not in ["Trainer", "Academic Head", "COO", "MD", "CEO"]:
+        raise HTTPException(status_code=403, detail="Access denied")
+    
+    try:
+        # Get all folders
+        all_folders = await db.academic_library_folders.find({})
+        folders = await all_folders.to_list(10000)
+        
+        # Get all documents
+        all_docs = await db.academic_library_documents.find({})
+        documents = await all_docs.to_list(10000)
+        
+        # Filter documents based on access level
+        accessible_docs = []
+        for doc in documents:
+            access_level = doc.get("access_level", "All Trainers")
+            
+            # If user is not a trainer (admin roles), show all
+            if current_user["role"] != "Trainer":
+                accessible_docs.append(doc)
+            # If access is for all trainers, include it
+            elif access_level == "All Trainers":
+                accessible_docs.append(doc)
+            # TODO: Implement Selected Trainers and Course Specific logic in future
+            # For now, Course Specific also shows to all trainers
+            elif access_level in ["Course Specific", "Selected Trainers"]:
+                accessible_docs.append(doc)
+        
+        # Organize by folder
+        folders_with_docs = []
+        for folder in folders:
+            folder_docs = [doc for doc in accessible_docs if doc.get("folder_id") == folder["id"]]
+            if len(folder_docs) > 0:  # Only include folders with accessible documents
+                folders_with_docs.append({
+                    **folder,
+                    "documents": folder_docs
+                })
+        
+        return {
+            "folders": folders_with_docs,
+            "total_documents": len(accessible_docs),
+            "total_folders": len(folders_with_docs)
+        }
+    except Exception as e:
+        logger.error(f"Error fetching trainer materials: {e}")
+        raise HTTPException(status_code=500, detail="Failed to fetch materials")
+
+
+# Track document download
+@api_router.post("/academic-library/documents/{document_id}/track-download")
+async def track_document_download(document_id: str, current_user: dict = Depends(get_current_user)):
+    """Track when a document is downloaded/accessed"""
+    try:
+        document = await db.academic_library_documents.find_one({"id": document_id}, {"_id": 0})
+        if not document:
+            raise HTTPException(status_code=404, detail="Document not found")
+        
+        # Update download count and last accessed
+        document["download_count"] = document.get("download_count", 0) + 1
+        document["last_accessed"] = datetime.now(timezone.utc).isoformat()
+        document["last_accessed_by"] = current_user["name"]
+        
+        await db.academic_library_documents.update_one(
+            {"id": document_id},
+            {"$set": {
+                "download_count": document["download_count"],
+                "last_accessed": document["last_accessed"],
+                "last_accessed_by": document["last_accessed_by"]
+            }}
+        )
+        
+        return {
+            "success": True,
+            "download_count": document["download_count"],
+            "message": "Download tracked successfully"
+        }
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error tracking download: {e}")
+        raise HTTPException(status_code=500, detail="Failed to track download")
+
+
+# Get document download analytics (for Academic Head)
+@api_router.get("/academic-library/analytics")
+async def get_library_analytics(current_user: dict = Depends(get_current_user)):
+    """Get analytics on document usage"""
+    if current_user["role"] not in ["Academic Head", "COO", "MD", "CEO"]:
+        raise HTTPException(status_code=403, detail="Access denied")
+    
+    try:
+        all_docs = await db.academic_library_documents.find({})
+        documents = await all_docs.to_list(10000)
+        
+        # Calculate analytics
+        total_downloads = sum(doc.get("download_count", 0) for doc in documents)
+        most_downloaded = sorted(documents, key=lambda x: x.get("download_count", 0), reverse=True)[:5]
+        recent_accessed = sorted(
+            [doc for doc in documents if doc.get("last_accessed")],
+            key=lambda x: x.get("last_accessed", ""),
+            reverse=True
+        )[:5]
+        
+        # Documents by type
+        by_type = {}
+        for doc in documents:
+            doc_type = doc.get("document_type", "Other")
+            by_type[doc_type] = by_type.get(doc_type, 0) + 1
+        
+        return {
+            "total_documents": len(documents),
+            "total_downloads": total_downloads,
+            "average_downloads": round(total_downloads / len(documents), 2) if documents else 0,
+            "most_downloaded": most_downloaded,
+            "recently_accessed": recent_accessed,
+            "documents_by_type": by_type
+        }
+    except Exception as e:
+        logger.error(f"Error fetching analytics: {e}")
+        raise HTTPException(status_code=500, detail="Failed to fetch analytics")
+
+
 # Include the router in the main app
 app.include_router(api_router)
 
