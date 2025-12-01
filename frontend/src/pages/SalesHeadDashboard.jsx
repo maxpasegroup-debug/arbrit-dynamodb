@@ -182,10 +182,18 @@ const SalesHeadDashboard = () => {
             <TabsTrigger 
               value="leads"
               data-testid="tab-leads"
-              className="data-[state=active]:bg-blue-500/20 data-[state=active]:text-white text-gray-300"
+              className="data-[state=active]:bg-blue-500/20 data-[state=active]:text-white text-gray-300 relative"
             >
               <TrendingUp className="w-4 h-4 mr-2" />
               Leads
+              {duplicateCount > 0 && (
+                <span className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-5 w-5 bg-red-500 text-white text-xs font-bold items-center justify-center shadow-lg shadow-red-500/50">
+                    {duplicateCount}
+                  </span>
+                </span>
+              )}
             </TabsTrigger>
             <TabsTrigger 
               value="duplicates"
