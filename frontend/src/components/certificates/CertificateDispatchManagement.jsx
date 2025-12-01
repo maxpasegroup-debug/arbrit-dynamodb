@@ -447,7 +447,314 @@ const CertificateDispatchManagement = () => {
         </DialogContent>
       </Dialog>
 
-      {/* Details Modal - Will continue in next part */}
+      {/* Status Update Dialog */}
+      <Dialog open={statusUpdateOpen} onOpenChange={setStatusUpdateOpen}>
+        <DialogContent className="max-w-2xl bg-slate-900 border-white/10">
+          <DialogHeader>
+            <DialogTitle className="text-white">Update Certificate Status</DialogTitle>
+          </DialogHeader>
+
+          <form onSubmit={handleStatusUpdate} className="space-y-4">
+            <div>
+              <Label className="text-white">New Status</Label>
+              <Select value={statusUpdate.status} onValueChange={(val) => setStatusUpdate({...statusUpdate, status: val})}>
+                <SelectTrigger className="bg-slate-800 border-white/10 text-white">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent className="bg-slate-800 border-white/10">
+                  <SelectItem value="prepared">Prepared</SelectItem>
+                  <SelectItem value="dispatched">Dispatched</SelectItem>
+                  <SelectItem value="in_transit">In Transit</SelectItem>
+                  <SelectItem value="delivered">Delivered</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
+            {statusUpdate.status === 'dispatched' && (
+              <>
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <Label className="text-white">Dispatch Date</Label>
+                    <Input
+                      type="date"
+                      value={statusUpdate.dispatch_date}
+                      onChange={(e) => setStatusUpdate({...statusUpdate, dispatch_date: e.target.value})}
+                      className="bg-slate-800 border-white/10 text-white"
+                    />
+                  </div>
+                  <div>
+                    <Label className="text-white">Expected Delivery</Label>
+                    <Input
+                      type="date"
+                      value={statusUpdate.expected_delivery_date}
+                      onChange={(e) => setStatusUpdate({...statusUpdate, expected_delivery_date: e.target.value})}
+                      className="bg-slate-800 border-white/10 text-white"
+                    />
+                  </div>
+                </div>
+                <div>
+                  <Label className="text-white">Courier Service</Label>
+                  <Input
+                    value={statusUpdate.courier_service}
+                    onChange={(e) => setStatusUpdate({...statusUpdate, courier_service: e.target.value})}
+                    placeholder="e.g., Aramex, DHL, FedEx"
+                    className="bg-slate-800 border-white/10 text-white"
+                  />
+                </div>
+                <div>
+                  <Label className="text-white">Tracking Number</Label>
+                  <Input
+                    value={statusUpdate.tracking_number}
+                    onChange={(e) => setStatusUpdate({...statusUpdate, tracking_number: e.target.value})}
+                    className="bg-slate-800 border-white/10 text-white"
+                  />
+                </div>
+              </>
+            )}
+
+            {statusUpdate.status === 'delivered' && (
+              <>
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <Label className="text-white">Delivery Date</Label>
+                    <Input
+                      type="date"
+                      value={statusUpdate.delivery_date}
+                      onChange={(e) => setStatusUpdate({...statusUpdate, delivery_date: e.target.value})}
+                      className="bg-slate-800 border-white/10 text-white"
+                    />
+                  </div>
+                  <div>
+                    <Label className="text-white">Recipient Name</Label>
+                    <Input
+                      value={statusUpdate.recipient_name}
+                      onChange={(e) => setStatusUpdate({...statusUpdate, recipient_name: e.target.value})}
+                      className="bg-slate-800 border-white/10 text-white"
+                    />
+                  </div>
+                </div>
+              </>
+            )}
+
+            <div>
+              <Label className="text-white">Notes (Optional)</Label>
+              <Textarea
+                value={statusUpdate.notes}
+                onChange={(e) => setStatusUpdate({...statusUpdate, notes: e.target.value})}
+                className="bg-slate-800 border-white/10 text-white"
+                placeholder="Add any notes about this status update..."
+              />
+            </div>
+
+            <div className="flex gap-3 pt-4">
+              <Button type="submit" className="flex-1 bg-green-600 hover:bg-green-700">
+                <CheckCircle className="w-4 h-4 mr-2" />
+                Update Status
+              </Button>
+              <Button type="button" variant="outline" onClick={() => setStatusUpdateOpen(false)}>
+                Cancel
+              </Button>
+            </div>
+          </form>
+        </DialogContent>
+      </Dialog>
+
+      {/* Photo Upload Dialog */}
+      <Dialog open={photoUploadOpen} onOpenChange={setPhotoUploadOpen}>
+        <DialogContent className="max-w-lg bg-slate-900 border-white/10">
+          <DialogHeader>
+            <DialogTitle className="text-white flex items-center gap-2">
+              <Camera className="w-5 h-5" />
+              Upload Delivery Note Photo
+            </DialogTitle>
+            <DialogDescription className="text-slate-400">
+              Upload photo of signed delivery note as proof
+            </DialogDescription>
+          </DialogHeader>
+
+          <form onSubmit={handlePhotoUpload} className="space-y-4">
+            <div>
+              <Label className="text-white">Photo URL *</Label>
+              <Input
+                value={deliveryPhoto.photo_url}
+                onChange={(e) => setDeliveryPhoto({...deliveryPhoto, photo_url: e.target.value})}
+                placeholder="Paste image URL or upload link"
+                required
+                className="bg-slate-800 border-white/10 text-white"
+              />
+              <p className="text-xs text-slate-500 mt-1">Upload photo to cloud storage and paste URL here</p>
+            </div>
+            
+            <div>
+              <Label className="text-white">Recipient Name *</Label>
+              <Input
+                value={deliveryPhoto.recipient_name}
+                onChange={(e) => setDeliveryPhoto({...deliveryPhoto, recipient_name: e.target.value})}
+                required
+                className="bg-slate-800 border-white/10 text-white"
+              />
+            </div>
+
+            <div className="bg-blue-500/10 border border-blue-400/30 rounded p-3">
+              <p className="text-blue-300 text-sm">
+                📸 This photo serves as official proof of delivery. Ensure it shows:
+              </p>
+              <ul className="text-slate-300 text-xs mt-2 space-y-1">
+                <li>• Clear image of delivery note</li>
+                <li>• Recipient signature</li>
+                <li>• Date and time stamp</li>
+                <li>• Company stamp (if available)</li>
+              </ul>
+            </div>
+
+            <div className="flex gap-3 pt-4">
+              <Button type="submit" className="flex-1 bg-purple-600 hover:bg-purple-700">
+                <Upload className="w-4 h-4 mr-2" />
+                Upload Photo
+              </Button>
+              <Button type="button" variant="outline" onClick={() => setPhotoUploadOpen(false)}>
+                Cancel
+              </Button>
+            </div>
+          </form>
+        </DialogContent>
+      </Dialog>
+
+      {/* Details Modal */}
+      {selectedRecord && (
+        <Dialog open={detailsOpen} onOpenChange={setDetailsOpen}>
+          <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto bg-slate-900 border-white/10">
+            <DialogHeader>
+              <DialogTitle className="text-white text-2xl">Certificate Tracking Details</DialogTitle>
+            </DialogHeader>
+
+            <div className="space-y-6 mt-4">
+              {/* Progress Tracker */}
+              <div className="bg-white/5 rounded-lg p-6 border border-white/10">
+                <h3 className="text-lg font-semibold text-white mb-4">Delivery Progress</h3>
+                <CertificateProgressTracker currentStatus={selectedRecord.status} />
+              </div>
+
+              {/* Company Info */}
+              <div className="bg-white/5 rounded-lg p-4 border border-white/10">
+                <h3 className="text-lg font-semibold text-white mb-3">Company Information</h3>
+                <div className="grid grid-cols-2 gap-4 text-sm">
+                  <div>
+                    <p className="text-slate-400">Company</p>
+                    <p className="text-white font-medium">{selectedRecord.company_name}</p>
+                  </div>
+                  <div>
+                    <p className="text-slate-400">Contact Person</p>
+                    <p className="text-white">{selectedRecord.contact_person}</p>
+                  </div>
+                  <div>
+                    <p className="text-slate-400">Mobile</p>
+                    <p className="text-white">{selectedRecord.contact_mobile}</p>
+                  </div>
+                  <div>
+                    <p className="text-slate-400">Course</p>
+                    <p className="text-white">{selectedRecord.course_name}</p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Certificate Details */}
+              <div className="bg-white/5 rounded-lg p-4 border border-white/10">
+                <h3 className="text-lg font-semibold text-white mb-3">Certificate Details</h3>
+                <div className="grid grid-cols-2 gap-4 text-sm">
+                  <div>
+                    <p className="text-slate-400">Training Date</p>
+                    <p className="text-white">{new Date(selectedRecord.training_date).toLocaleDateString()}</p>
+                  </div>
+                  <div>
+                    <p className="text-slate-400">Participants</p>
+                    <p className="text-white">{selectedRecord.participants_count}</p>
+                  </div>
+                  <div className="col-span-2">
+                    <p className="text-slate-400">Certificate Numbers</p>
+                    <p className="text-white">{selectedRecord.certificate_numbers?.join(', ') || 'N/A'}</p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Delivery Info */}
+              {(selectedRecord.courier_service || selectedRecord.tracking_number) && (
+                <div className="bg-white/5 rounded-lg p-4 border border-white/10">
+                  <h3 className="text-lg font-semibold text-white mb-3">Delivery Information</h3>
+                  <div className="grid grid-cols-2 gap-4 text-sm">
+                    {selectedRecord.courier_service && (
+                      <div>
+                        <p className="text-slate-400">Courier Service</p>
+                        <p className="text-white">{selectedRecord.courier_service}</p>
+                      </div>
+                    )}
+                    {selectedRecord.tracking_number && (
+                      <div>
+                        <p className="text-slate-400">Tracking Number</p>
+                        <p className="text-white font-mono">{selectedRecord.tracking_number}</p>
+                      </div>
+                    )}
+                    {selectedRecord.dispatch_date && (
+                      <div>
+                        <p className="text-slate-400">Dispatch Date</p>
+                        <p className="text-white">{new Date(selectedRecord.dispatch_date).toLocaleDateString()}</p>
+                      </div>
+                    )}
+                    {selectedRecord.expected_delivery_date && (
+                      <div>
+                        <p className="text-slate-400">Expected Delivery</p>
+                        <p className="text-white">{new Date(selectedRecord.expected_delivery_date).toLocaleDateString()}</p>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
+
+              {/* Delivery Photo */}
+              {selectedRecord.delivery_note_photo && (
+                <div className="bg-white/5 rounded-lg p-4 border border-white/10">
+                  <h3 className="text-lg font-semibold text-white mb-3 flex items-center gap-2">
+                    <Camera className="w-5 h-5 text-green-400" />
+                    Delivery Proof
+                  </h3>
+                  <div className="mb-3">
+                    <p className="text-slate-400 text-sm">Received by: <span className="text-white font-medium">{selectedRecord.recipient_name}</span></p>
+                  </div>
+                  <img 
+                    src={selectedRecord.delivery_note_photo} 
+                    alt="Delivery Note" 
+                    className="w-full rounded-lg border border-white/10"
+                  />
+                </div>
+              )}
+
+              {/* Status History */}
+              {selectedRecord.status_history && (
+                <div className="bg-white/5 rounded-lg p-4 border border-white/10">
+                  <h3 className="text-lg font-semibold text-white mb-3">Status History</h3>
+                  <div className="space-y-3">
+                    {selectedRecord.status_history.map((history, idx) => (
+                      <div key={idx} className="flex items-start gap-3 pb-3 border-b border-white/5 last:border-0">
+                        <Clock className="w-4 h-4 text-blue-400 mt-1" />
+                        <div className="flex-1">
+                          <div className="flex items-center gap-2">
+                            <Badge className={getStatusBadge(history.status).color}>
+                              {getStatusBadge(history.status).label}
+                            </Badge>
+                            <p className="text-xs text-slate-500">{new Date(history.timestamp).toLocaleString()}</p>
+                          </div>
+                          <p className="text-sm text-slate-300 mt-1">By: {history.updated_by}</p>
+                          {history.notes && <p className="text-sm text-slate-400 mt-1">{history.notes}</p>}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+          </DialogContent>
+        </Dialog>
+      )}
     </div>
   );
 };
