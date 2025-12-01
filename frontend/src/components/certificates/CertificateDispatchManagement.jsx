@@ -410,6 +410,41 @@ const CertificateDispatchManagement = () => {
                   </div>
                 </div>
 
+                {/* Aging Alert (if applicable) */}
+                {aging && (
+                  <div className={`mb-4 rounded-lg p-3 flex items-center gap-3 ${
+                    aging.severity === 'critical' 
+                      ? 'bg-red-500/20 border border-red-400/50' 
+                      : aging.severity === 'urgent'
+                      ? 'bg-orange-500/20 border border-orange-400/50'
+                      : 'bg-yellow-500/20 border border-yellow-400/50'
+                  }`}>
+                    {AgingIcon && <AgingIcon className={`w-5 h-5 ${
+                      aging.severity === 'critical' 
+                        ? 'text-red-400 animate-pulse' 
+                        : aging.severity === 'urgent'
+                        ? 'text-orange-400'
+                        : 'text-yellow-400'
+                    }`} />}
+                    <div className="flex-1">
+                      <p className={`text-sm font-semibold ${
+                        aging.severity === 'critical' 
+                          ? 'text-red-300' 
+                          : aging.severity === 'urgent'
+                          ? 'text-orange-300'
+                          : 'text-yellow-300'
+                      }`}>
+                        {aging.message}
+                      </p>
+                      <p className="text-xs text-slate-400 mt-1">
+                        {record.certificate_type === 'In-House' 
+                          ? 'In-House certificates must be delivered within 48 hours' 
+                          : 'International certificates: 30/60/90 day milestones'}
+                      </p>
+                    </div>
+                  </div>
+                )}
+
                 {/* Metro Progress Tracker */}
                 <CertificateProgressTracker currentStatus={record.status} />
               </div>
