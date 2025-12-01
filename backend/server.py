@@ -6252,6 +6252,285 @@ async def mark_expense_paid(claim_id: str, payment_data: dict, current_user: dic
         logger.error(f"Error marking expense as paid: {e}")
         raise HTTPException(status_code=500, detail="Failed to mark expense as paid")
 
+# ==================== TRAINING LIBRARY ENDPOINTS ====================
+
+# Get all training library records with search and filters
+@api_router.get("/training-library")
+async def get_training_library(
+    search: str = None,
+    course: str = None,
+    trainer: str = None,
+    location: str = None,
+    status: str = None,
+    date_from: str = None,
+    date_to: str = None,
+    current_user: dict = Depends(get_current_user)
+):
+    """Get training library records with advanced search and filters"""
+    if current_user["role"] not in ["COO", "MD", "CEO", "Sales Head"]:
+        raise HTTPException(status_code=403, detail="Access denied")
+    
+    try:
+        # Build query
+        query = {}
+        
+        # Apply filters
+        if course:
+            query["course_name"] = {"$regex": course, "$options": "i"}
+        if trainer:
+            query["trainer_name"] = {"$regex": trainer, "$options": "i"}
+        if location:
+            query["training_location"] = {"$regex": location, "$options": "i"}
+        if status:
+            query["status"] = status
+        
+        # Date range filter
+        if date_from or date_to:
+            date_query = {}
+            if date_from:
+                date_query["$gte"] = date_from
+            if date_to:
+                date_query["$lte"] = date_to
+            if date_query:
+                query["training_date"] = date_query
+        
+        # Fetch all records
+        result = await db.training_library.find(query)
+        records = await result.sort("training_date", -1).to_list(1000)
+        
+        # Apply search filter if provided
+        if search:
+            search_lower = search.lower()
+            records = [r for r in records if (
+                search_lower in r.get("company_name", "").lower() or
+                search_lower in r.get("contact_person", "").lower() or
+                search_lower in r.get("contact_mobile", "").lower() or
+                search_lower in r.get("contact_email", "").lower() or
+                search_lower in r.get("course_name", "").lower() or
+                search_lower in r.get("trainer_name", "").lower()
+            )]
+        
+        return records
+    except Exception as e:
+        logger.error(f"Error fetching training library: {e}")
+        raise HTTPException(status_code=500, detail="Failed to fetch training library")
+
+
+# Get single training record details
+@api_router.get("/training-library/{record_id}")
+async def get_training_record(record_id: str, current_user: dict = Depends(get_current_user)):
+    """Get detailed information about a specific training record"""
+    if current_user["role"] not in ["COO", "MD", "CEO", "Sales Head", "Academic Head"]:
+        raise HTTPException(status_code=403, detail="Access denied")
+    
+    try:
+        record = await db.training_library.find_one({"id": record_id})
+        if not record:
+            raise HTTPException(status_code=404, detail="Training record not found")
+        return record
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error fetching training record: {e}")
+        raise HTTPException(status_code=500, detail="Failed to fetch training record")
+
+
+# Add new training record (manual entry)
+@api_router.post("/training-library")
+async def add_training_record(record: dict, current_user: dict = Depends(get_current_user)):
+    """Add a new training record to the library"""
+    if current_user["role"] not in ["COO", "MD", "CEO", "Sales Head", "Academic Head"]:
+        raise HTTPException(status_code=403, detail="Access denied")
+    
+    try:
+        new_record = {
+            "id": str(uuid.uuid4()),
+            "company_name": record.get("company_name", ""),
+            "contact_person": record.get("contact_person", ""),
+            "contact_mobile": record.get("contact_mobile", ""),
+            "contact_email": record.get("contact_email", ""),
+            "course_name": record.get("course_name", ""),
+            "training_date": record.get("training_date", ""),
+            "training_location": record.get("training_location", ""),
+            "trainer_name": record.get("trainer_name", ""),
+            "trainer_qualification": record.get("trainer_qualification", ""),
+            "participants_count": record.get("participants_count", 0),
+            "participants_list": record.get("participants_list", []),
+            "duration_days": record.get("duration_days", 1),
+            "certificate_issued": record.get("certificate_issued", False),
+            "certificate_numbers": record.get("certificate_numbers", []),
+            "invoice_number": record.get("invoice_number", ""),
+            "invoice_amount": record.get("invoice_amount", ""),
+            "payment_status": record.get("payment_status", "paid"),
+            "documents": record.get("documents", []),  # Photos, PDFs, etc.
+            "feedback_rating": record.get("feedback_rating", 0),
+            "notes": record.get("notes", ""),
+            "status": record.get("status", "completed"),
+            "created_by": current_user["id"],
+            "created_by_name": current_user["name"],
+            "created_at": datetime.now(timezone.utc).isoformat(),
+            "updated_at": datetime.now(timezone.utc).isoformat()
+        }
+        
+        await db.training_library.insert_one(new_record)
+        
+        return {
+            "message": "Training record added successfully",
+            "record_id": new_record["id"]
+        }
+    except Exception as e:
+        logger.error(f"Error adding training record: {e}")
+        raise HTTPException(status_code=500, detail="Failed to add training record")
+
+
+# Update training record
+@api_router.put("/training-library/{record_id}")
+async def update_training_record(record_id: str, updates: dict, current_user: dict = Depends(get_current_user)):
+    """Update an existing training record"""
+    if current_user["role"] not in ["COO", "MD", "CEO", "Sales Head", "Academic Head"]:
+        raise HTTPException(status_code=403, detail="Access denied")
+    
+    try:
+        updates["updated_at"] = datetime.now(timezone.utc).isoformat()
+        updates["updated_by"] = current_user["id"]
+        updates["updated_by_name"] = current_user["name"]
+        
+        await db.training_library.update_one(
+            {"id": record_id},
+            {"$set": updates}
+        )
+        
+        return {"message": "Training record updated successfully"}
+    except Exception as e:
+        logger.error(f"Error updating training record: {e}")
+        raise HTTPException(status_code=500, detail="Failed to update training record")
+
+
+# Delete training record
+@api_router.delete("/training-library/{record_id}")
+async def delete_training_record(record_id: str, current_user: dict = Depends(get_current_user)):
+    """Delete a training record"""
+    if current_user["role"] not in ["COO", "MD", "CEO"]:
+        raise HTTPException(status_code=403, detail="Access denied - COO/MD only")
+    
+    try:
+        result = await db.training_library.delete_one({"id": record_id})
+        if result.deleted_count == 0:
+            raise HTTPException(status_code=404, detail="Training record not found")
+        
+        return {"message": "Training record deleted successfully"}
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error deleting training record: {e}")
+        raise HTTPException(status_code=500, detail="Failed to delete training record")
+
+
+# Bulk upload training records (CSV)
+@api_router.post("/training-library/bulk-upload")
+async def bulk_upload_training_records(records: list, current_user: dict = Depends(get_current_user)):
+    """Bulk upload training records from CSV"""
+    if current_user["role"] not in ["COO", "MD", "CEO"]:
+        raise HTTPException(status_code=403, detail="Access denied - COO/MD only")
+    
+    try:
+        created_count = 0
+        errors = []
+        
+        for idx, record in enumerate(records):
+            try:
+                new_record = {
+                    "id": str(uuid.uuid4()),
+                    "company_name": record.get("company_name", ""),
+                    "contact_person": record.get("contact_person", ""),
+                    "contact_mobile": record.get("contact_mobile", ""),
+                    "contact_email": record.get("contact_email", ""),
+                    "course_name": record.get("course_name", ""),
+                    "training_date": record.get("training_date", ""),
+                    "training_location": record.get("training_location", ""),
+                    "trainer_name": record.get("trainer_name", ""),
+                    "trainer_qualification": record.get("trainer_qualification", ""),
+                    "participants_count": int(record.get("participants_count", 0)),
+                    "participants_list": record.get("participants_list", []),
+                    "duration_days": int(record.get("duration_days", 1)),
+                    "certificate_issued": record.get("certificate_issued", "").lower() in ['yes', 'true', '1'],
+                    "certificate_numbers": record.get("certificate_numbers", "").split(",") if record.get("certificate_numbers") else [],
+                    "invoice_number": record.get("invoice_number", ""),
+                    "invoice_amount": record.get("invoice_amount", ""),
+                    "payment_status": record.get("payment_status", "paid"),
+                    "documents": [],
+                    "feedback_rating": float(record.get("feedback_rating", 0)) if record.get("feedback_rating") else 0,
+                    "notes": record.get("notes", ""),
+                    "status": record.get("status", "completed"),
+                    "created_by": current_user["id"],
+                    "created_by_name": current_user["name"],
+                    "created_at": datetime.now(timezone.utc).isoformat(),
+                    "updated_at": datetime.now(timezone.utc).isoformat()
+                }
+                
+                await db.training_library.insert_one(new_record)
+                created_count += 1
+                
+            except Exception as row_error:
+                errors.append(f"Row {idx + 1}: {str(row_error)}")
+        
+        return {
+            "message": f"Bulk upload completed: {created_count} records created",
+            "created_count": created_count,
+            "total_count": len(records),
+            "errors": errors if errors else None
+        }
+    except Exception as e:
+        logger.error(f"Error in bulk upload: {e}")
+        raise HTTPException(status_code=500, detail="Failed to process bulk upload")
+
+
+# Get training library statistics
+@api_router.get("/training-library/stats/summary")
+async def get_training_library_stats(current_user: dict = Depends(get_current_user)):
+    """Get statistics and analytics for training library"""
+    if current_user["role"] not in ["COO", "MD", "CEO", "Sales Head"]:
+        raise HTTPException(status_code=403, detail="Access denied")
+    
+    try:
+        all_records = await db.training_library.find({})
+        records = await all_records.to_list(10000)
+        
+        # Calculate stats
+        total_trainings = len(records)
+        total_participants = sum(r.get("participants_count", 0) for r in records)
+        unique_companies = len(set(r.get("company_name", "") for r in records if r.get("company_name")))
+        unique_courses = len(set(r.get("course_name", "") for r in records if r.get("course_name")))
+        certificates_issued = sum(1 for r in records if r.get("certificate_issued"))
+        
+        # Course breakdown
+        course_counts = {}
+        for r in records:
+            course = r.get("course_name", "Unknown")
+            course_counts[course] = course_counts.get(course, 0) + 1
+        
+        # Top companies
+        company_counts = {}
+        for r in records:
+            company = r.get("company_name", "Unknown")
+            company_counts[company] = company_counts.get(company, 0) + 1
+        
+        top_companies = sorted(company_counts.items(), key=lambda x: x[1], reverse=True)[:10]
+        
+        return {
+            "total_trainings": total_trainings,
+            "total_participants": total_participants,
+            "unique_companies": unique_companies,
+            "unique_courses": unique_courses,
+            "certificates_issued": certificates_issued,
+            "course_breakdown": course_counts,
+            "top_companies": [{"company": c, "count": cnt} for c, cnt in top_companies]
+        }
+    except Exception as e:
+        logger.error(f"Error fetching training library stats: {e}")
+        raise HTTPException(status_code=500, detail="Failed to fetch statistics")
+
+
 # Include the router in the main app
 app.include_router(api_router)
 
