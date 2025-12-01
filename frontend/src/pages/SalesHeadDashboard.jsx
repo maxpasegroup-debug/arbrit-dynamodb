@@ -278,6 +278,10 @@ const SalesHeadDashboard = () => {
             <TabsContent value="expense-approvals" className="mt-0">
               <ExpenseApprovals userRole="Sales Head" />
             </TabsContent>
+
+            <TabsContent value="dispatch" className="mt-0">
+              <CertificateDispatchManagement />
+            </TabsContent>
           </div>
         </Tabs>
       </main>
