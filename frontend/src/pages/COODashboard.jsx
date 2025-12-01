@@ -232,6 +232,14 @@ const COODashboard = () => {
         <QuotationManagementEnhanced />
       </TabsContent>
 
+      <TabsContent value="library">
+        <TrainingLibrary />
+      </TabsContent>
+
+      <TabsContent value="add-training">
+        <AddPastTraining />
+      </TabsContent>
+
       <TabsContent value="deletions">
         <DeletionApprovals />
       </TabsContent>
