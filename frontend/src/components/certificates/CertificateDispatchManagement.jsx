@@ -207,6 +207,53 @@ const CertificateDispatchManagement = () => {
     return badges[status] || badges['initiated'];
   };
 
+  const calculateAging = (record) => {
+    if (record.status === 'delivered') return null;
+    
+    const created = new Date(record.created_at);
+    const now = new Date();
+    const ageHours = (now - created) / (1000 * 60 * 60);
+    const ageDays = ageHours / 24;
+    
+    const certificateType = record.certificate_type || 'In-House';
+    
+    let severity = null;
+    let message = '';
+    let icon = null;
+    
+    if (certificateType === 'In-House') {
+      if (ageHours > 72) {
+        severity = 'critical';
+        message = `CRITICAL: ${Math.floor(ageHours)}h - Severely overdue!`;
+        icon = AlertCircle;
+      } else if (ageHours > 48) {
+        severity = 'urgent';
+        message = `URGENT: ${Math.floor(ageHours)}h - Delivery overdue!`;
+        icon = AlertTriangle;
+      } else if (ageHours > 36) {
+        severity = 'warning';
+        message = `Warning: ${Math.floor(ageHours)}h - Approaching deadline`;
+        icon = Clock;
+      }
+    } else if (certificateType === 'International') {
+      if (ageDays > 90) {
+        severity = 'critical';
+        message = `CRITICAL: ${Math.floor(ageDays)} days - Action required!`;
+        icon = AlertCircle;
+      } else if (ageDays > 60) {
+        severity = 'urgent';
+        message = `URGENT: ${Math.floor(ageDays)} days - Significant delay`;
+        icon = AlertTriangle;
+      } else if (ageDays > 30) {
+        severity = 'warning';
+        message = `Warning: ${Math.floor(ageDays)} days - Follow-up needed`;
+        icon = Clock;
+      }
+    }
+    
+    return severity ? { severity, message, icon, ageHours: Math.floor(ageHours), ageDays: Math.floor(ageDays) } : null;
+  };
+
   const filteredRecords = filterStatus === 'all' 
     ? records 
     : records.filter(r => r.status === filterStatus);
