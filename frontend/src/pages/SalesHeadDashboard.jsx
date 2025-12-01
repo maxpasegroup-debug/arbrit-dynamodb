@@ -66,6 +66,29 @@ const SalesHeadDashboard = () => {
     checkAuth();
   }, [navigate]);
 
+  // Fetch duplicate alerts count
+  useEffect(() => {
+    const fetchDuplicateCount = async () => {
+      try {
+        const token = localStorage.getItem('token');
+        const response = await axios.get(`${API}/sales/duplicate-alerts`, {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+        const pendingAlerts = response.data.filter(alert => alert.status === 'pending');
+        setDuplicateCount(pendingAlerts.length);
+      } catch (error) {
+        console.error('Error fetching duplicate count:', error);
+      }
+    };
+
+    if (user) {
+      fetchDuplicateCount();
+      // Refresh count every 30 seconds
+      const interval = setInterval(fetchDuplicateCount, 30000);
+      return () => clearInterval(interval);
+    }
+  }, [user]);
+
   const handleLogout = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
