@@ -7013,6 +7013,7 @@ async def create_certificate_demo_data(current_user: dict = Depends(get_current_
                 "training_date": scenario["training_date"],
                 "certificate_numbers": scenario["certificate_numbers"],
                 "participants_count": scenario["participants_count"],
+                "certificate_type": scenario["certificate_type"],
                 "status": scenario["dispatch_status"],
                 "status_history": status_history,
                 "dispatch_date": scenario["dispatch_date"],
