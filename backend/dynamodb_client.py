@@ -66,6 +66,10 @@ tables = {
     'training_library': dynamodb.Table(f'{TABLE_PREFIX}_training_library'),
     # Certificate Dispatch & Tracking system
     'certificate_tracking': dynamodb.Table(f'{TABLE_PREFIX}_certificate_tracking'),
+    # Academic Library system
+    'academic_library_folders': dynamodb.Table(f'{TABLE_PREFIX}_academic_library_folders'),
+    'academic_library_documents': dynamodb.Table(f'{TABLE_PREFIX}_academic_library_documents'),
+    'academic_library_access': dynamodb.Table(f'{TABLE_PREFIX}_academic_library_access'),
 }
 
 logger.info(f"✅ DynamoDB client initialized with table prefix: {TABLE_PREFIX}")
