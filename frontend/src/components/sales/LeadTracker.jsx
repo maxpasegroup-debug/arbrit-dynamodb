@@ -625,6 +625,126 @@ const LeadTracker = () => {
         lead={detailsLead}
         onSuccess={handleDetailsSuccess}
       />
+
+      {/* Duplicate Comparison Modal */}
+      <Dialog open={comparisonOpen} onOpenChange={setComparisonOpen}>
+        <DialogContent className="max-w-7xl max-h-[95vh] overflow-y-auto bg-slate-900 border-white/10">
+          <DialogHeader>
+            <DialogTitle className="text-2xl text-white flex items-center gap-2">
+              <AlertTriangle className="w-6 h-6 text-orange-400" />
+              Duplicate Lead Resolution
+            </DialogTitle>
+            <DialogDescription className="text-slate-400">
+              Compare both leads side-by-side and decide who gets credit
+            </DialogDescription>
+          </DialogHeader>
+
+          {selectedAlert && (
+            <div className="space-y-6">
+              {/* Side by Side Comparison */}
+              <div className="flex gap-4">
+                <LeadComparisonCard 
+                  lead={selectedAlert.lead_a_data} 
+                  label="LEAD A (First Submission)" 
+                  color="blue"
+                />
+                <LeadComparisonCard 
+                  lead={selectedAlert.lead_b_data} 
+                  label="LEAD B (Second Submission)" 
+                  color="orange"
+                />
+              </div>
+
+              {/* Decision Options */}
+              <div className="bg-white/5 rounded-lg p-6 border border-white/10">
+                <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
+                  <Award className="w-5 h-5 text-yellow-400" />
+                  Sales Head Decision
+                </h3>
+
+                <RadioGroup value={selectedAction} onValueChange={setSelectedAction} className="space-y-3">
+                  <div className="flex items-center space-x-3 p-3 bg-blue-500/10 rounded border border-blue-400/30">
+                    <RadioGroupItem value="assign_to_a" id="assign_to_a" />
+                    <Label htmlFor="assign_to_a" className="flex-1 cursor-pointer text-white">
+                      <div className="font-semibold">Assign Credit to Lead A</div>
+                      <div className="text-xs text-slate-400">Give full credit to {selectedAlert.lead_a_data?.submitted_by || 'first submitter'}</div>
+                    </Label>
+                  </div>
+
+                  <div className="flex items-center space-x-3 p-3 bg-orange-500/10 rounded border border-orange-400/30">
+                    <RadioGroupItem value="assign_to_b" id="assign_to_b" />
+                    <Label htmlFor="assign_to_b" className="flex-1 cursor-pointer text-white">
+                      <div className="font-semibold">Assign Credit to Lead B</div>
+                      <div className="text-xs text-slate-400">Give full credit to {selectedAlert.lead_b_data?.submitted_by || 'second submitter'}</div>
+                    </Label>
+                  </div>
+
+                  <div className="flex items-center space-x-3 p-3 bg-purple-500/10 rounded border border-purple-400/30">
+                    <RadioGroupItem value="split_credit" id="split_credit" />
+                    <Label htmlFor="split_credit" className="flex-1 cursor-pointer text-white">
+                      <div className="font-semibold flex items-center gap-2">
+                        <Split className="w-4 h-4" />
+                        Split Credit (50/50)
+                      </div>
+                      <div className="text-xs text-slate-400">Both sales reps share the credit</div>
+                    </Label>
+                  </div>
+
+                  <div className="flex items-center space-x-3 p-3 bg-green-500/10 rounded border border-green-400/30">
+                    <RadioGroupItem value="different" id="different" />
+                    <Label htmlFor="different" className="flex-1 cursor-pointer text-white">
+                      <div className="font-semibold">They Are Different Leads</div>
+                      <div className="text-xs text-slate-400">Both leads are valid and independent</div>
+                    </Label>
+                  </div>
+
+                  <div className="flex items-center space-x-3 p-3 bg-red-500/10 rounded border border-red-400/30">
+                    <RadioGroupItem value="reject_both" id="reject_both" />
+                    <Label htmlFor="reject_both" className="flex-1 cursor-pointer text-white">
+                      <div className="font-semibold flex items-center gap-2">
+                        <XCircle className="w-4 h-4" />
+                        Reject Both Leads
+                      </div>
+                      <div className="text-xs text-slate-400">Invalid or poor quality submissions</div>
+                    </Label>
+                  </div>
+                </RadioGroup>
+
+                <div className="mt-4">
+                  <Label htmlFor="notes" className="text-white mb-2 block">Resolution Notes (Optional)</Label>
+                  <Textarea
+                    id="notes"
+                    value={resolutionNotes}
+                    onChange={(e) => setResolutionNotes(e.target.value)}
+                    placeholder="Add any notes about your decision..."
+                    className="bg-slate-800 border-white/10 text-white min-h-[80px]"
+                  />
+                </div>
+
+                <div className="flex gap-3 mt-6">
+                  <Button
+                    onClick={resolveAlert}
+                    className="flex-1 bg-green-600 hover:bg-green-700"
+                    size="lg"
+                  >
+                    <CheckCircle className="w-5 h-5 mr-2" />
+                    Confirm Decision
+                  </Button>
+                  <Button
+                    onClick={() => setComparisonOpen(false)}
+                    variant="outline"
+                    className="border-white/20 hover:bg-white/10"
+                    size="lg"
+                  >
+                    <XCircle className="w-5 h-5 mr-2" />
+                    Cancel
+                  </Button>
+                </div>
+              </div>
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
