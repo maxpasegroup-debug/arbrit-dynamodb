@@ -491,6 +491,7 @@ class DB:
         self.booking_requests = DynamoDBClient('booking_requests')
         self.duplicate_alerts = DynamoDBClient('duplicate_alerts')
         self.lead_history = DynamoDBClient('lead_history')
+        self.training_library = DynamoDBClient('training_library')
 
 
 # Create global db instance
