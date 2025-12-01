@@ -387,13 +387,8 @@ const MDDashboard = () => {
             <TrainingLibrary />
           </TabsContent>
 
-          <TabsContent value="add-training">
-            <AddPastTraining onSuccess={() => {
-              toast.success('Training record added! Switching to Library...');
-              setTimeout(() => {
-                document.querySelector('[value="library"]')?.click();
-              }, 1500);
-            }} />
+          <TabsContent value="certifications">
+            <CertificationsReports />
           </TabsContent>
 
           <TabsContent value="deletions">
