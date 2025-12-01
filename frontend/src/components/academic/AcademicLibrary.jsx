@@ -47,6 +47,9 @@ const AcademicLibrary = () => {
     tags: '',
     access_level: 'All Trainers'
   });
+  
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [uploading, setUploading] = useState(false);
 
   useEffect(() => {
     fetchFolders();
