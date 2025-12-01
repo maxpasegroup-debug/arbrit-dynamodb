@@ -4,7 +4,7 @@ import { LogOut, TrendingUp, Users, GraduationCap, AlertTriangle, Lightbulb, Bui
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import LeadSubmissionModal from '@/components/coo/LeadSubmissionModal';
+import EnhancedLeadForm from '@/components/sales/EnhancedLeadForm';
 import ExpenseSubmissionModal from '@/components/coo/ExpenseSubmissionModal';
 import DeletionApprovals from '@/components/executive/DeletionApprovals';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
