@@ -2465,9 +2465,19 @@ async def resolve_duplicate(alert_id: str, resolution: dict, current_user: dict 
     if current_user["role"] not in ["Sales Head", "COO", "MD", "CEO"]:
         raise HTTPException(status_code=403, detail="Access denied")
     
-    action = resolution.get('action')  # 'merge', 'different', 'duplicate', 'reassign'
+    action = resolution.get('action')  # 'assign_to_a', 'assign_to_b', 'split_credit', 'different', 'reject_both'
     
     try:
+        # Get the alert first
+        alert = await db.duplicate_alerts.find_one({"id": alert_id})
+        if not alert:
+            raise HTTPException(status_code=404, detail="Alert not found")
+        
+        lead_ids = alert.get('lead_ids', [])
+        if isinstance(lead_ids, str):
+            import json
+            lead_ids = json.loads(lead_ids)
+        
         # Update alert status
         await db.duplicate_alerts.update_one(
             {"id": alert_id},
@@ -2477,31 +2487,60 @@ async def resolve_duplicate(alert_id: str, resolution: dict, current_user: dict 
                 "resolved_by": current_user["id"],
                 "resolved_by_name": current_user["name"],
                 "resolved_at": datetime.now(timezone.utc).isoformat(),
-                "resolution_notes": resolution.get('notes', '')
+                "resolution_notes": resolution.get('notes', ''),
+                "credit_assigned_to": resolution.get('credit_assigned_to', '')
             }}
         )
         
         # Take action based on resolution
-        if action == 'merge':
-            # Merge logic: keep first lead, archive second
-            lead_a_id = resolution.get('keep_lead_id')
-            lead_b_id = resolution.get('archive_lead_id')
-            await db.leads.update_one(
-                {"id": lead_b_id},
-                {"$set": {"status": "merged", "merged_into": lead_a_id}}
-            )
-        elif action == 'duplicate':
-            # Mark second submission as duplicate
-            duplicate_lead_id = resolution.get('duplicate_lead_id')
-            await db.leads.update_one(
-                {"id": duplicate_lead_id},
-                {"$set": {"status": "duplicate"}}
-            )
+        if action == 'assign_to_a':
+            # Give credit to first lead, mark second as duplicate
+            if len(lead_ids) >= 2:
+                await db.leads.update_one(
+                    {"id": lead_ids[0]},
+                    {"$set": {"status": "New", "duplicate_resolved": True}}
+                )
+                await db.leads.update_one(
+                    {"id": lead_ids[1]},
+                    {"$set": {"status": "duplicate", "duplicate_of": lead_ids[0]}}
+                )
+        elif action == 'assign_to_b':
+            # Give credit to second lead, mark first as duplicate
+            if len(lead_ids) >= 2:
+                await db.leads.update_one(
+                    {"id": lead_ids[1]},
+                    {"$set": {"status": "New", "duplicate_resolved": True}}
+                )
+                await db.leads.update_one(
+                    {"id": lead_ids[0]},
+                    {"$set": {"status": "duplicate", "duplicate_of": lead_ids[1]}}
+                )
+        elif action == 'split_credit':
+            # Both get credit, mark as co-leads
+            for lead_id in lead_ids[:2]:
+                await db.leads.update_one(
+                    {"id": lead_id},
+                    {"$set": {"status": "New", "credit_type": "split", "duplicate_resolved": True}}
+                )
+        elif action == 'different':
+            # They are different, both stay active
+            for lead_id in lead_ids[:2]:
+                await db.leads.update_one(
+                    {"id": lead_id},
+                    {"$set": {"duplicate_resolved": True, "marked_as_different": True}}
+                )
+        elif action == 'reject_both':
+            # Both are rejected
+            for lead_id in lead_ids[:2]:
+                await db.leads.update_one(
+                    {"id": lead_id},
+                    {"$set": {"status": "rejected", "rejection_reason": "duplicate"}}
+                )
         
-        return {"message": "Duplicate resolved successfully"}
+        return {"message": "Duplicate resolved successfully", "action": action}
     except Exception as e:
         logger.error(f"Error resolving duplicate: {e}")
-        raise HTTPException(status_code=500, detail="Failed to resolve duplicate")
+        raise HTTPException(status_code=500, detail=f"Failed to resolve duplicate: {str(e)}")
 
 
 # TEST ENDPOINT: Create sample duplicate alert
