@@ -3,8 +3,10 @@ Script to create certificate_tracking table in DynamoDB
 """
 import boto3
 import os
+from dotenv import load_dotenv
 
 def create_certificate_tracking_table():
+    load_dotenv()
     dynamodb = boto3.client(
         'dynamodb',
         region_name=os.environ.get('AWS_REGION', 'us-east-1'),
