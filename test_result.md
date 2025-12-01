@@ -519,7 +519,7 @@ metadata:
 
 test_plan:
   current_focus:
-    - "Enhanced Duplicate Management System with Realistic Al Futtaim Scenario"
+    - "NEW Integrated Duplicate Management System (Option 2 Implementation)"
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
