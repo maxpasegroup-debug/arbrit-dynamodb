@@ -49,6 +49,7 @@ const LeadTracker = () => {
 
   useEffect(() => {
     fetchLeads();
+    fetchDuplicateAlerts();
   }, []);
 
   useEffect(() => {
@@ -68,6 +69,18 @@ const LeadTracker = () => {
       toast.error('Failed to load leads');
     } finally {
       setLoading(false);
+    }
+  };
+
+  const fetchDuplicateAlerts = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      const response = await axios.get(`${API}/sales/duplicate-alerts`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      setDuplicateAlerts(response.data || []);
+    } catch (error) {
+      console.error('Error fetching duplicate alerts:', error);
     }
   };
 
