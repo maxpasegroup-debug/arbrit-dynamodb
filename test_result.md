@@ -507,7 +507,7 @@ metadata:
 
 test_plan:
   current_focus:
-    - "Metro-Style Lead Progress Tracker Integration"
+    - "RED ALERT BADGE Feature on Sales Head Dashboard"
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
