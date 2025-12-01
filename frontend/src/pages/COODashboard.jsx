@@ -11,7 +11,7 @@ import EnhancedLeadForm from '@/components/sales/EnhancedLeadForm';
 import ExpenseSubmissionModal from '@/components/coo/ExpenseSubmissionModal';
 import DeletionApprovals from '@/components/executive/DeletionApprovals';
 import TrainingLibrary from '@/components/library/TrainingLibrary';
-import AddPastTraining from '@/components/library/AddPastTraining';
+import CertificationsReports from '@/components/library/CertificationsReports';
 import { toast } from 'sonner';
 
 const COODashboard = () => {
