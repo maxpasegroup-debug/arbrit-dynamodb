@@ -199,6 +199,112 @@ const LeadTracker = () => {
     fetchLeads();
   };
 
+  // Duplicate management handlers
+  const openComparison = (alert) => {
+    setSelectedAlert(alert);
+    setSelectedAction('different');
+    setResolutionNotes('');
+    setComparisonOpen(true);
+  };
+
+  const resolveAlert = async () => {
+    if (!selectedAlert) return;
+
+    try {
+      const token = localStorage.getItem('token');
+      await axios.post(
+        `${API}/sales/resolve-duplicate/${selectedAlert.id}`,
+        { 
+          action: selectedAction,
+          notes: resolutionNotes,
+          credit_assigned_to: selectedAction === 'assign_to_a' ? 'Lead A' : selectedAction === 'assign_to_b' ? 'Lead B' : ''
+        },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      
+      const actionMessages = {
+        'assign_to_a': 'Credit assigned to Lead A (First submission)',
+        'assign_to_b': 'Credit assigned to Lead B (Second submission)',
+        'split_credit': 'Credit split between both sales reps',
+        'different': 'Marked as different leads - both approved',
+        'reject_both': 'Both leads rejected'
+      };
+      
+      toast.success(actionMessages[selectedAction] || 'Duplicate resolved');
+      setComparisonOpen(false);
+      fetchLeads();
+      fetchDuplicateAlerts();
+    } catch (error) {
+      console.error('Error resolving duplicate:', error);
+      toast.error('Failed to resolve duplicate');
+    }
+  };
+
+  const LeadComparisonCard = ({ lead, label, color }) => (
+    <div className={`flex-1 bg-${color}-500/10 rounded-lg p-4 border-2 border-${color}-400/30`}>
+      <div className="flex items-center justify-between mb-3">
+        <Badge className={`bg-${color}-500/20 text-${color}-300 border-${color}-400/50`}>
+          {label}
+        </Badge>
+        <Badge className="bg-white/10 text-white">
+          {lead?.lead_score?.toUpperCase() || 'N/A'}
+        </Badge>
+      </div>
+
+      <h3 className="text-xl font-bold text-white mb-4">{lead?.company_name || 'Unknown'}</h3>
+
+      <div className="space-y-3 text-sm">
+        <div className="grid grid-cols-2 gap-2">
+          <div>
+            <p className="text-slate-400">Contact Person</p>
+            <p className="text-white font-medium">{lead?.contact_person || 'N/A'}</p>
+          </div>
+          <div>
+            <p className="text-slate-400">Designation</p>
+            <p className="text-white">{lead?.contact_designation || 'N/A'}</p>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-2 gap-2">
+          <div>
+            <p className="text-slate-400">Mobile</p>
+            <p className="text-white font-medium">{lead?.contact_mobile || 'N/A'}</p>
+          </div>
+          <div>
+            <p className="text-slate-400">Email</p>
+            <p className="text-white text-xs">{lead?.contact_email || 'N/A'}</p>
+          </div>
+        </div>
+
+        <div>
+          <p className="text-slate-400">Course</p>
+          <p className="text-white font-medium">{lead?.course_name || 'N/A'}</p>
+        </div>
+
+        <div>
+          <p className="text-slate-400">Lead Value</p>
+          <p className="text-green-400 font-bold text-lg">{lead?.lead_value ? `${lead.lead_value} AED` : 'N/A'}</p>
+        </div>
+
+        <div>
+          <p className="text-slate-400">Requirements</p>
+          <p className="text-white text-xs">{lead?.requirement || 'No requirements specified'}</p>
+        </div>
+
+        <div className="pt-3 border-t border-white/10">
+          <p className="text-slate-400 text-xs">Submitted By</p>
+          <p className="text-white font-semibold">{lead?.submitted_by || 'Unknown'}</p>
+          <p className="text-slate-400 text-xs">{lead?.submitted_by_role || ''}</p>
+        </div>
+
+        <div>
+          <p className="text-slate-400 text-xs">Submission Time</p>
+          <p className="text-white text-xs">{lead?.created_at ? new Date(lead.created_at).toLocaleString() : 'N/A'}</p>
+        </div>
+      </div>
+    </div>
+  );
+
   return (
     <div className="space-y-6">
       {/* Pipeline Bar */}
