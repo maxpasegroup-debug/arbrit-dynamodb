@@ -236,14 +236,8 @@ const COODashboard = () => {
         <TrainingLibrary />
       </TabsContent>
 
-      <TabsContent value="add-training">
-        <AddPastTraining onSuccess={() => {
-          toast.success('Training record added! Switching to Library...');
-          // Switch to library tab after successful addition
-          setTimeout(() => {
-            document.querySelector('[value="library"]')?.click();
-          }, 1500);
-        }} />
+      <TabsContent value="certifications">
+        <CertificationsReports />
       </TabsContent>
 
       <TabsContent value="deletions">
