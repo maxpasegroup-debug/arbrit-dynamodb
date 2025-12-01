@@ -242,7 +242,7 @@ const CertificationsReports = () => {
       <div className="bg-slate-900/50 backdrop-blur-sm rounded-xl border border-white/10 p-6">
         <h3 className="text-xl font-semibold text-white mb-4 flex items-center gap-2">
           <FileText className="w-5 h-5 text-blue-400" />
-          Certificate Tracking
+          Certificate Registry
         </h3>
 
         {loading ? (
@@ -253,56 +253,137 @@ const CertificationsReports = () => {
             <p className="text-slate-400 text-lg">No certificates issued yet</p>
           </div>
         ) : (
-          <div className="space-y-3">
+          <div className="space-y-4">
             {records.map((record) => {
               const training = new Date(record.training_date);
               const expiry = new Date(training);
               expiry.setFullYear(expiry.getFullYear() + 3);
               const status = getCertificateStatus(record.training_date);
+              const isExpanded = expandedRecords[record.id];
+              const certCount = record.certificate_numbers?.length || 0;
               
               return (
                 <div
                   key={record.id}
-                  className="bg-white/5 border border-white/10 rounded-lg p-4 hover:bg-white/10 transition-all"
+                  className="bg-white/5 border border-white/10 rounded-xl overflow-hidden hover:border-white/20 transition-all"
                 >
-                  <div className="flex items-center justify-between">
-                    <div className="flex-1 grid grid-cols-5 gap-4">
-                      <div>
-                        <p className="text-xs text-slate-400">Company</p>
-                        <p className="font-semibold text-white">{record.company_name}</p>
-                        <p className="text-sm text-slate-400">{record.contact_person}</p>
+                  {/* Main Card Content */}
+                  <div className="p-5">
+                    <div className="flex items-start justify-between mb-4">
+                      <div className="flex-1">
+                        <div className="flex items-center gap-3 mb-2">
+                          <Building2 className="w-5 h-5 text-blue-400" />
+                          <h4 className="text-lg font-bold text-white">{record.company_name}</h4>
+                          <Badge className={`${
+                            status.color === 'green' 
+                              ? 'bg-green-500/20 text-green-300 border-green-400/50'
+                              : status.color === 'orange'
+                              ? 'bg-orange-500/20 text-orange-300 border-orange-400/50'
+                              : 'bg-red-500/20 text-red-300 border-red-400/50'
+                          }`}>
+                            {status.label}
+                          </Badge>
+                        </div>
+                        <p className="text-sm text-slate-400">{record.contact_person} • {record.contact_mobile}</p>
                       </div>
-                      <div>
-                        <p className="text-xs text-slate-400">Course</p>
-                        <p className="text-sm text-slate-300">{record.course_name}</p>
-                      </div>
-                      <div>
-                        <p className="text-xs text-slate-400">Training Date</p>
-                        <p className="text-sm text-slate-300">{new Date(record.training_date).toLocaleDateString()}</p>
-                      </div>
-                      <div>
-                        <p className="text-xs text-slate-400">Expiry Date</p>
-                        <p className="text-sm text-slate-300">{expiry.toLocaleDateString()}</p>
-                      </div>
-                      <div>
-                        <p className="text-xs text-slate-400">Status</p>
-                        <Badge className={`${
-                          status.color === 'green' 
-                            ? 'bg-green-500/20 text-green-300 border-green-400/50'
-                            : status.color === 'orange'
-                            ? 'bg-orange-500/20 text-orange-300 border-orange-400/50'
-                            : 'bg-red-500/20 text-red-300 border-red-400/50'
-                        }`}>
-                          {status.label}
-                        </Badge>
+                      
+                      <div className="text-right">
+                        <div className="flex items-center gap-2 text-blue-400 mb-1">
+                          <FileCheck className="w-4 h-4" />
+                          <span className="text-sm font-semibold">{certCount} Certificate{certCount !== 1 ? 's' : ''}</span>
+                        </div>
+                        <p className="text-xs text-slate-500">Issued</p>
                       </div>
                     </div>
+
+                    {/* Course and Date Info Grid */}
+                    <div className="grid grid-cols-4 gap-4 mb-4">
+                      <div className="bg-white/5 rounded-lg p-3">
+                        <p className="text-xs text-slate-400 mb-1">Course</p>
+                        <p className="text-sm font-medium text-white">{record.course_name}</p>
+                      </div>
+                      <div className="bg-white/5 rounded-lg p-3">
+                        <p className="text-xs text-slate-400 mb-1">Training Date</p>
+                        <p className="text-sm font-medium text-white">{training.toLocaleDateString()}</p>
+                      </div>
+                      <div className="bg-white/5 rounded-lg p-3">
+                        <p className="text-xs text-slate-400 mb-1">Valid Until</p>
+                        <p className="text-sm font-medium text-white">{expiry.toLocaleDateString()}</p>
+                      </div>
+                      <div className="bg-white/5 rounded-lg p-3">
+                        <p className="text-xs text-slate-400 mb-1">Participants</p>
+                        <p className="text-sm font-medium text-white">{record.participants_count || certCount}</p>
+                      </div>
+                    </div>
+
+                    {/* Certificate Numbers Section */}
+                    {certCount > 0 && (
+                      <div className="border-t border-white/10 pt-4">
+                        <button
+                          onClick={() => toggleExpand(record.id)}
+                          className="w-full flex items-center justify-between text-left hover:bg-white/5 p-2 rounded-lg transition-colors"
+                        >
+                          <div className="flex items-center gap-2">
+                            <Award className="w-4 h-4 text-yellow-400" />
+                            <span className="text-sm font-semibold text-white">
+                              Certificate Numbers ({certCount})
+                            </span>
+                          </div>
+                          {isExpanded ? (
+                            <ChevronUp className="w-4 h-4 text-slate-400" />
+                          ) : (
+                            <ChevronDown className="w-4 h-4 text-slate-400" />
+                          )}
+                        </button>
+
+                        {isExpanded && (
+                          <div className="mt-3 bg-slate-800/50 rounded-lg p-4">
+                            <div className="grid grid-cols-4 gap-2">
+                              {record.certificate_numbers.map((certNum, idx) => (
+                                <div
+                                  key={idx}
+                                  className="bg-white/5 border border-white/10 rounded px-3 py-2 text-center hover:bg-white/10 transition-colors"
+                                >
+                                  <p className="text-xs text-slate-500 mb-1">Cert #{idx + 1}</p>
+                                  <p className="text-sm font-mono text-blue-300 font-semibold">{certNum}</p>
+                                </div>
+                              ))}
+                            </div>
+                            
+                            {/* Summary Info */}
+                            <div className="mt-3 pt-3 border-t border-white/10 flex items-center justify-between text-xs">
+                              <span className="text-slate-400">
+                                Total Certificates: <span className="text-white font-semibold">{certCount}</span>
+                              </span>
+                              <span className="text-slate-400">
+                                Range: <span className="text-blue-300 font-mono">{record.certificate_numbers[0]}</span> to <span className="text-blue-300 font-mono">{record.certificate_numbers[certCount - 1]}</span>
+                              </span>
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    )}
                   </div>
-                  
-                  {record.certificate_numbers && record.certificate_numbers.length > 0 && (
-                    <div className="mt-3 pt-3 border-t border-white/10">
-                      <p className="text-xs text-slate-400 mb-1">Certificate Numbers:</p>
-                      <p className="text-sm text-slate-300">{record.certificate_numbers.join(', ')}</p>
+
+                  {/* Dispatch Status Footer (if available) */}
+                  {record.dispatch_status && (
+                    <div className="bg-white/5 border-t border-white/10 px-5 py-3 flex items-center justify-between">
+                      <div className="flex items-center gap-2 text-xs text-slate-400">
+                        <span>Dispatch Status:</span>
+                        <Badge className={`text-xs ${
+                          record.dispatch_status === 'delivered' ? 'bg-green-500/20 text-green-300' :
+                          record.dispatch_status === 'in_transit' ? 'bg-purple-500/20 text-purple-300' :
+                          record.dispatch_status === 'dispatched' ? 'bg-yellow-500/20 text-yellow-300' :
+                          'bg-blue-500/20 text-blue-300'
+                        }`}>
+                          {record.dispatch_status.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}
+                        </Badge>
+                      </div>
+                      {record.tracking_number && (
+                        <div className="text-xs text-slate-400">
+                          Tracking: <span className="text-blue-300 font-mono">{record.tracking_number}</span>
+                        </div>
+                      )}
                     </div>
                   )}
                 </div>
