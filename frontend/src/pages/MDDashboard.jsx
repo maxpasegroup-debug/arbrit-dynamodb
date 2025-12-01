@@ -153,19 +153,23 @@ const MDDashboard = () => {
 
         {/* Tabs Navigation */}
         <Tabs defaultValue="dashboard" className="mb-8">
-          <TabsList className="grid w-full grid-cols-4 bg-white/10 border border-white/20">
+          <TabsList className="grid w-full grid-cols-5 bg-white/10 border border-white/20">
             <TabsTrigger value="dashboard">Dashboard</TabsTrigger>
             <TabsTrigger value="library">
               <FileText className="w-4 h-4 mr-2" />
-              Training Library
+              Library
             </TabsTrigger>
             <TabsTrigger value="certifications">
               <Award className="w-4 h-4 mr-2" />
               Certifications
             </TabsTrigger>
+            <TabsTrigger value="dispatch">
+              <Package className="w-4 h-4 mr-2" />
+              Dispatch
+            </TabsTrigger>
             <TabsTrigger value="deletions">
               <Trash2 className="w-4 h-4 mr-2" />
-              Deletion Approvals
+              Deletions
             </TabsTrigger>
           </TabsList>
 
