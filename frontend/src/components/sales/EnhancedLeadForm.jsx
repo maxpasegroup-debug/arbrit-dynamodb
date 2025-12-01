@@ -627,6 +627,37 @@ const EnhancedLeadForm = ({ open, onOpenChange, onSuccess, existingLead = null }
             </div>
           </div>
 
+          {/* Auto-Calculated Lead Score Display */}
+          {formData.lead_score && (
+            <div className={`p-4 rounded-lg border ${
+              formData.lead_score === 'hot' ? 'bg-red-500/10 border-red-400/30' :
+              formData.lead_score === 'warm' ? 'bg-orange-500/10 border-orange-400/30' :
+              'bg-blue-500/10 border-blue-400/30'
+            }`}>
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-xs text-slate-400 mb-1">Auto-Calculated Lead Score</p>
+                  <div className="flex items-center gap-2">
+                    <Badge className={`text-lg px-4 py-1 ${
+                      formData.lead_score === 'hot' ? 'bg-red-500/20 text-red-300 border-red-400/50' :
+                      formData.lead_score === 'warm' ? 'bg-orange-500/20 text-orange-300 border-orange-400/50' :
+                      'bg-blue-500/20 text-blue-300 border-blue-400/50'
+                    }`}>
+                      {formData.lead_score === 'hot' ? '🔥 HOT' :
+                       formData.lead_score === 'warm' ? '🟡 WARM' :
+                       '🔵 COLD'} LEAD
+                    </Badge>
+                  </div>
+                </div>
+                <div className="text-right text-xs text-slate-400">
+                  <p>Based on:</p>
+                  <p>• Urgency • Deal Size • Trainees</p>
+                  <p>• Category • Source • Company Size</p>
+                </div>
+              </div>
+            </div>
+          )}
+
           {/* Additional Notes */}
           <div className="space-y-4 p-4 bg-slate-800/50 border border-white/10 rounded-lg">
             <h4 className="text-sm font-semibold text-slate-200">Additional Information</h4>
