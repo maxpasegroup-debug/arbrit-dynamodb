@@ -498,7 +498,7 @@ const AcademicLibrary = () => {
                                   size="sm"
                                   variant="ghost"
                                   className="h-6 w-6 p-0"
-                                  onClick={() => window.open(doc.file_url, '_blank')}
+                                  onClick={() => window.open(`${BACKEND_URL}${doc.file_url}`, '_blank')}
                                 >
                                   <Eye className="w-3 h-3" />
                                 </Button>
