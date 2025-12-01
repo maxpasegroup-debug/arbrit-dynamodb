@@ -7049,6 +7049,290 @@ async def create_certificate_demo_data(current_user: dict = Depends(get_current_
         raise HTTPException(status_code=500, detail=f"Failed to create demo data: {str(e)}")
 
 
+# ============================================================================
+# ACADEMIC LIBRARY MODULE - PHASE 1: Folder & Document Management
+# ============================================================================
+
+# Get all folders
+@api_router.get("/academic-library/folders")
+async def get_all_folders(current_user: dict = Depends(get_current_user)):
+    """Get all academic library folders"""
+    if current_user["role"] not in ["Academic Head", "COO", "MD", "CEO", "Trainer"]:
+        raise HTTPException(status_code=403, detail="Access denied")
+    
+    try:
+        all_folders = await db.academic_library_folders.find({})
+        folders = await all_folders.to_list(10000)
+        
+        # Sort by created_at descending
+        folders.sort(key=lambda x: x.get('created_at', ''), reverse=True)
+        
+        return folders
+    except Exception as e:
+        logger.error(f"Error fetching folders: {e}")
+        raise HTTPException(status_code=500, detail="Failed to fetch folders")
+
+
+# Create folder
+@api_router.post("/academic-library/folders")
+async def create_folder(folder_data: dict, current_user: dict = Depends(get_current_user)):
+    """Create a new folder in academic library"""
+    if current_user["role"] not in ["Academic Head", "COO", "MD", "CEO"]:
+        raise HTTPException(status_code=403, detail="Only Academic Head can create folders")
+    
+    try:
+        new_folder = {
+            "id": str(uuid.uuid4()),
+            "folder_name": folder_data.get("folder_name", ""),
+            "description": folder_data.get("description", ""),
+            "color": folder_data.get("color", "blue"),
+            "icon": folder_data.get("icon", "folder"),
+            "parent_folder_id": folder_data.get("parent_folder_id", None),
+            "created_by": current_user["id"],
+            "created_by_name": current_user["name"],
+            "created_at": datetime.now(timezone.utc).isoformat(),
+            "updated_at": datetime.now(timezone.utc).isoformat(),
+            "document_count": 0
+        }
+        
+        await db.academic_library_folders.insert_one(new_folder)
+        
+        return {"success": True, "folder_id": new_folder["id"], "folder": new_folder}
+    except Exception as e:
+        logger.error(f"Error creating folder: {e}")
+        raise HTTPException(status_code=500, detail="Failed to create folder")
+
+
+# Update folder
+@api_router.put("/academic-library/folders/{folder_id}")
+async def update_folder(folder_id: str, folder_data: dict, current_user: dict = Depends(get_current_user)):
+    """Update folder details"""
+    if current_user["role"] not in ["Academic Head", "COO", "MD", "CEO"]:
+        raise HTTPException(status_code=403, detail="Access denied")
+    
+    try:
+        folder = await db.academic_library_folders.find_one({"id": folder_id}, {"_id": 0})
+        if not folder:
+            raise HTTPException(status_code=404, detail="Folder not found")
+        
+        # Update fields
+        folder["folder_name"] = folder_data.get("folder_name", folder["folder_name"])
+        folder["description"] = folder_data.get("description", folder["description"])
+        folder["color"] = folder_data.get("color", folder["color"])
+        folder["icon"] = folder_data.get("icon", folder["icon"])
+        folder["updated_at"] = datetime.now(timezone.utc).isoformat()
+        
+        await db.academic_library_folders.update_one(
+            {"id": folder_id},
+            {"$set": folder}
+        )
+        
+        return {"success": True, "folder": folder}
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error updating folder: {e}")
+        raise HTTPException(status_code=500, detail="Failed to update folder")
+
+
+# Delete folder
+@api_router.delete("/academic-library/folders/{folder_id}")
+async def delete_folder(folder_id: str, current_user: dict = Depends(get_current_user)):
+    """Delete a folder (must be empty)"""
+    if current_user["role"] not in ["Academic Head", "COO", "MD", "CEO"]:
+        raise HTTPException(status_code=403, detail="Access denied")
+    
+    try:
+        # Check if folder has documents
+        docs_cursor = await db.academic_library_documents.find({"folder_id": folder_id})
+        docs = await docs_cursor.to_list(1)
+        
+        if len(docs) > 0:
+            raise HTTPException(status_code=400, detail="Cannot delete folder with documents. Please move or delete documents first.")
+        
+        await db.academic_library_folders.delete_one({"id": folder_id})
+        
+        return {"success": True, "message": "Folder deleted successfully"}
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error deleting folder: {e}")
+        raise HTTPException(status_code=500, detail="Failed to delete folder")
+
+
+# Get documents (with optional folder filter)
+@api_router.get("/academic-library/documents")
+async def get_documents(folder_id: str = None, current_user: dict = Depends(get_current_user)):
+    """Get all documents or documents in a specific folder"""
+    if current_user["role"] not in ["Academic Head", "COO", "MD", "CEO", "Trainer"]:
+        raise HTTPException(status_code=403, detail="Access denied")
+    
+    try:
+        query = {}
+        if folder_id:
+            query["folder_id"] = folder_id
+        
+        all_docs = await db.academic_library_documents.find(query)
+        documents = await all_docs.to_list(10000)
+        
+        # Sort by uploaded_at descending
+        documents.sort(key=lambda x: x.get('uploaded_at', ''), reverse=True)
+        
+        return documents
+    except Exception as e:
+        logger.error(f"Error fetching documents: {e}")
+        raise HTTPException(status_code=500, detail="Failed to fetch documents")
+
+
+# Create document (metadata only - file upload handled separately)
+@api_router.post("/academic-library/documents")
+async def create_document(doc_data: dict, current_user: dict = Depends(get_current_user)):
+    """Create document metadata"""
+    if current_user["role"] not in ["Academic Head", "COO", "MD", "CEO"]:
+        raise HTTPException(status_code=403, detail="Only Academic Head can upload documents")
+    
+    try:
+        new_document = {
+            "id": str(uuid.uuid4()),
+            "folder_id": doc_data.get("folder_id", ""),
+            "document_name": doc_data.get("document_name", ""),
+            "document_type": doc_data.get("document_type", "PDF"),
+            "file_url": doc_data.get("file_url", ""),
+            "file_size": doc_data.get("file_size", 0),
+            "description": doc_data.get("description", ""),
+            "tags": doc_data.get("tags", []),
+            "access_level": doc_data.get("access_level", "All Trainers"),
+            "uploaded_by": current_user["id"],
+            "uploaded_by_name": current_user["name"],
+            "uploaded_at": datetime.now(timezone.utc).isoformat(),
+            "updated_at": datetime.now(timezone.utc).isoformat(),
+            "download_count": 0,
+            "last_accessed": None
+        }
+        
+        await db.academic_library_documents.insert_one(new_document)
+        
+        # Update folder document count
+        folder_id = doc_data.get("folder_id")
+        if folder_id:
+            folder = await db.academic_library_folders.find_one({"id": folder_id}, {"_id": 0})
+            if folder:
+                folder["document_count"] = folder.get("document_count", 0) + 1
+                await db.academic_library_folders.update_one(
+                    {"id": folder_id},
+                    {"$set": {"document_count": folder["document_count"]}}
+                )
+        
+        return {"success": True, "document_id": new_document["id"], "document": new_document}
+    except Exception as e:
+        logger.error(f"Error creating document: {e}")
+        raise HTTPException(status_code=500, detail="Failed to create document")
+
+
+# Update document
+@api_router.put("/academic-library/documents/{document_id}")
+async def update_document(document_id: str, doc_data: dict, current_user: dict = Depends(get_current_user)):
+    """Update document metadata"""
+    if current_user["role"] not in ["Academic Head", "COO", "MD", "CEO"]:
+        raise HTTPException(status_code=403, detail="Access denied")
+    
+    try:
+        document = await db.academic_library_documents.find_one({"id": document_id}, {"_id": 0})
+        if not document:
+            raise HTTPException(status_code=404, detail="Document not found")
+        
+        # Update fields
+        document["document_name"] = doc_data.get("document_name", document["document_name"])
+        document["description"] = doc_data.get("description", document["description"])
+        document["tags"] = doc_data.get("tags", document["tags"])
+        document["access_level"] = doc_data.get("access_level", document["access_level"])
+        document["updated_at"] = datetime.now(timezone.utc).isoformat()
+        
+        await db.academic_library_documents.update_one(
+            {"id": document_id},
+            {"$set": document}
+        )
+        
+        return {"success": True, "document": document}
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error updating document: {e}")
+        raise HTTPException(status_code=500, detail="Failed to update document")
+
+
+# Delete document
+@api_router.delete("/academic-library/documents/{document_id}")
+async def delete_document(document_id: str, current_user: dict = Depends(get_current_user)):
+    """Delete a document"""
+    if current_user["role"] not in ["Academic Head", "COO", "MD", "CEO"]:
+        raise HTTPException(status_code=403, detail="Access denied")
+    
+    try:
+        document = await db.academic_library_documents.find_one({"id": document_id}, {"_id": 0})
+        if not document:
+            raise HTTPException(status_code=404, detail="Document not found")
+        
+        folder_id = document.get("folder_id")
+        
+        await db.academic_library_documents.delete_one({"id": document_id})
+        
+        # Update folder document count
+        if folder_id:
+            folder = await db.academic_library_folders.find_one({"id": folder_id}, {"_id": 0})
+            if folder:
+                folder["document_count"] = max(0, folder.get("document_count", 1) - 1)
+                await db.academic_library_folders.update_one(
+                    {"id": folder_id},
+                    {"$set": {"document_count": folder["document_count"]}}
+                )
+        
+        return {"success": True, "message": "Document deleted successfully"}
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error deleting document: {e}")
+        raise HTTPException(status_code=500, detail="Failed to delete document")
+
+
+# Get library statistics
+@api_router.get("/academic-library/stats")
+async def get_library_stats(current_user: dict = Depends(get_current_user)):
+    """Get academic library statistics"""
+    if current_user["role"] not in ["Academic Head", "COO", "MD", "CEO"]:
+        raise HTTPException(status_code=403, detail="Access denied")
+    
+    try:
+        # Get folder count
+        all_folders = await db.academic_library_folders.find({})
+        folders = await all_folders.to_list(10000)
+        
+        # Get document count
+        all_docs = await db.academic_library_documents.find({})
+        documents = await all_docs.to_list(10000)
+        
+        # Calculate total size
+        total_size = sum(doc.get("file_size", 0) for doc in documents)
+        
+        # Document types breakdown
+        doc_types = {}
+        for doc in documents:
+            doc_type = doc.get("document_type", "Other")
+            doc_types[doc_type] = doc_types.get(doc_type, 0) + 1
+        
+        return {
+            "total_folders": len(folders),
+            "total_documents": len(documents),
+            "total_size_bytes": total_size,
+            "total_size_mb": round(total_size / (1024 * 1024), 2),
+            "document_types": doc_types,
+            "recent_uploads": documents[:5] if documents else []
+        }
+    except Exception as e:
+        logger.error(f"Error fetching library stats: {e}")
+        raise HTTPException(status_code=500, detail="Failed to fetch statistics")
+
+
 # Include the router in the main app
 app.include_router(api_router)
 
