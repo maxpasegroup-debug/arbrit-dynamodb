@@ -494,6 +494,7 @@ class DB:
         self.duplicate_alerts = DynamoDBClient('duplicate_alerts')
         self.lead_history = DynamoDBClient('lead_history')
         self.training_library = DynamoDBClient('training_library')
+        self.certificate_tracking = DynamoDBClient('certificate_tracking')
 
 
 # Create global db instance
