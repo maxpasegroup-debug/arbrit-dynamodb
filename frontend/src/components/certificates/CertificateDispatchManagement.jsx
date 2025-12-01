@@ -333,11 +333,21 @@ const CertificateDispatchManagement = () => {
         ) : (
           filteredRecords.map((record) => {
             const statusBadge = getStatusBadge(record.status);
+            const aging = calculateAging(record);
+            const AgingIcon = aging?.icon;
             
             return (
               <div
                 key={record.id}
-                className="bg-white/5 rounded-lg p-5 border border-white/10 hover:bg-white/10 transition-all"
+                className={`rounded-lg p-5 border transition-all ${
+                  aging?.severity === 'critical' 
+                    ? 'bg-red-500/10 border-red-400/50' 
+                    : aging?.severity === 'urgent'
+                    ? 'bg-orange-500/10 border-orange-400/50'
+                    : aging?.severity === 'warning'
+                    ? 'bg-yellow-500/10 border-yellow-400/50'
+                    : 'bg-white/5 border-white/10 hover:bg-white/10'
+                }`}
               >
                 <div className="flex items-start justify-between mb-4">
                   <div className="flex-1">
@@ -346,6 +356,11 @@ const CertificateDispatchManagement = () => {
                       <Badge className={statusBadge.color}>
                         {statusBadge.label}
                       </Badge>
+                      {record.certificate_type && (
+                        <Badge className="bg-blue-500/20 text-blue-300 border-blue-400/50">
+                          {record.certificate_type}
+                        </Badge>
+                      )}
                     </div>
                     <div className="grid grid-cols-3 gap-3 text-sm text-slate-300">
                       <div>
