@@ -593,6 +593,49 @@ agent_communication:
 
     All executive dashboards are production-ready and meet the specified requirements."
   - agent: "testing"
+    message: "🎉 UPDATED RED ALERT FEATURE TESTING COMPLETED SUCCESSFULLY - Comprehensive testing of the enhanced RED ALERT feature on Sales Head Dashboard completed with 100% success rate. The feature has been updated so the ENTIRE 'Leads' tab turns RED (not just a badge) when duplicates exist.
+
+    **AUTHENTICATION RESULTS:**
+    - ✅ Sales Head login successful with credentials 971545844387/4387
+    - ✅ Dashboard loaded correctly showing 'Welcome back, Mohammad!'
+
+    **FULL RED TAB VERIFICATION:**
+    - ✅ ENTIRE Leads tab has RED BACKGROUND (bg-red-600) with pulsing animation (animate-pulse)
+    - ✅ Red shadow effects (shadow-lg shadow-red-500/50) for dramatic visibility
+    - ✅ White alert badge showing '1 ALERT' within the red tab
+    - ✅ Highly visible and urgent-looking design that stands out dramatically from other tabs
+    - ✅ Tab styling: 'bg-red-600 hover:bg-red-700 text-white animate-pulse shadow-lg shadow-red-500/50'
+
+    **NOTIFICATION BELL TESTING:**
+    - ✅ Bell icon found in header (near logout button)
+    - ✅ Red badge with count '1' displayed on bell
+    - ✅ Popover opens correctly when bell is clicked
+    - ✅ 'TEST COMPANY - DUPLICATE ALERT' displayed in popover
+    - ✅ Similarity score shown: 92%
+    - ✅ Detection reason displayed: 'Company name match: 92% similar to existing lead (TEST DATA)'
+
+    **DUPLICATES TAB TESTING:**
+    - ✅ Duplicates tab accessible and functional
+    - ✅ Duplicate Alert Management page loads correctly
+    - ✅ Alert card displays with similarity score badge (92% Match)
+    - ✅ Company name 'TEST COMPANY - DUPLICATE ALERT' prominently shown
+    - ✅ Contact details displayed: John Doe, 971501234567, Safety Training, 25000 AED
+    - ✅ Detection reason visible: 'Company name match: 92% similar to existing lead (TEST DATA)'
+    - ✅ Approve (green) and Reject (red) buttons present and functional
+
+    **RED TAB PERSISTENCE:**
+    - ✅ Navigated to Overview tab and back to verify persistence
+    - ✅ Leads tab remains fully RED with pulsing animation after navigation
+    - ✅ Feature works consistently across tab switches
+
+    **PRODUCTION READINESS:**
+    - ✅ All specified requirements met perfectly
+    - ✅ No console errors detected
+    - ✅ Feature is highly visible and urgent-looking as required
+    - ✅ Screenshots captured showing complete workflow
+
+    **CONCLUSION:** The updated RED ALERT feature is FULLY FUNCTIONAL and production-ready! The ENTIRE Leads tab now turns RED with pulsing animation when duplicates exist, making it impossible to miss. The notification bell and duplicates management work perfectly with the test data 'TEST COMPANY - DUPLICATE ALERT'."
+  - agent: "testing"
     message: "✅ ASSESSMENT & QR GENERATION WORKFLOW TESTING COMPLETED - Successfully tested the complete Assessment & Feedback QR Generation workflow with 100% pass rate:
 
     **CRITICAL FIXES APPLIED:**
