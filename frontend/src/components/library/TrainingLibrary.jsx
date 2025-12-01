@@ -34,6 +34,7 @@ const TrainingLibrary = () => {
   const [viewMode, setViewMode] = useState('grid'); // 'grid' or 'list'
   const [selectedRecord, setSelectedRecord] = useState(null);
   const [detailsOpen, setDetailsOpen] = useState(false);
+  const [addTrainingOpen, setAddTrainingOpen] = useState(false);
   const [stats, setStats] = useState(null);
 
   useEffect(() => {
