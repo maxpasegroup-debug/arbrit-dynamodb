@@ -94,8 +94,8 @@
 
 ## URLs
 
-- **Login Page**: https://bugfix-crm.preview.emergentagent.com/login
-- **COO Dashboard**: https://bugfix-crm.preview.emergentagent.com/dashboard/coo
+- **Login Page**: https://lead-track-pro.preview.emergentagent.com/login
+- **COO Dashboard**: https://lead-track-pro.preview.emergentagent.com/dashboard/coo
 
 ## API Endpoints
 

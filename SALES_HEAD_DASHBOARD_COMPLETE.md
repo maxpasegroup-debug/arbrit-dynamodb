@@ -396,10 +396,10 @@ Designation: "Sales Head"
 
 ## 📍 URLs
 
-- **Login**: https://bugfix-crm.preview.emergentagent.com/login
-- **COO Dashboard**: https://bugfix-crm.preview.emergentagent.com/dashboard/coo
-- **HR Dashboard**: https://bugfix-crm.preview.emergentagent.com/dashboard/hr
-- **Sales Head Dashboard**: https://bugfix-crm.preview.emergentagent.com/dashboard/sales-head
+- **Login**: https://lead-track-pro.preview.emergentagent.com/login
+- **COO Dashboard**: https://lead-track-pro.preview.emergentagent.com/dashboard/coo
+- **HR Dashboard**: https://lead-track-pro.preview.emergentagent.com/dashboard/hr
+- **Sales Head Dashboard**: https://lead-track-pro.preview.emergentagent.com/dashboard/sales-head
 
 ## ⚠️ Important Notes
 
