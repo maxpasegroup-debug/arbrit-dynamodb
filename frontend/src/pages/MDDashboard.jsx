@@ -149,26 +149,11 @@ const MDDashboard = () => {
 
         {/* Tabs Navigation */}
         <Tabs defaultValue="dashboard" className="mb-8">
-          <TabsList className="grid grid-cols-5 bg-white/10 border border-white/20">
-            <TabsTrigger value="dashboard">
-              <Building2 className="w-4 h-4 mr-2" />
-              Dashboard
-            </TabsTrigger>
-            <TabsTrigger value="sales">
-              <Briefcase className="w-4 h-4 mr-2" />
-              Sales
-            </TabsTrigger>
-            <TabsTrigger value="academic">
-              <GraduationCap className="w-4 h-4 mr-2" />
-              Academic
-            </TabsTrigger>
-            <TabsTrigger value="duplicates">
-              <AlertTriangle className="w-4 h-4 mr-2" />
-              Duplicates
-            </TabsTrigger>
+          <TabsList className="bg-white/10 border border-white/20">
+            <TabsTrigger value="dashboard">Dashboard</TabsTrigger>
             <TabsTrigger value="deletions">
               <Trash2 className="w-4 h-4 mr-2" />
-              Deletions
+              Deletion Approvals
             </TabsTrigger>
           </TabsList>
 
