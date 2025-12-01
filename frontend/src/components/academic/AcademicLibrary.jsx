@@ -659,48 +659,33 @@ const AcademicLibrary = () => {
           </DialogHeader>
           <form onSubmit={handleCreateDocument}>
             <div className="space-y-4">
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <Label className="text-white">Document Name *</Label>
-                  <Input
-                    value={newDocument.document_name}
-                    onChange={(e) => setNewDocument({ ...newDocument, document_name: e.target.value })}
-                    placeholder="e.g., Fire Safety Guidelines"
-                    required
-                    className="bg-slate-800 border-white/10 text-white"
-                  />
-                </div>
-                <div>
-                  <Label className="text-white">Document Type *</Label>
-                  <Select 
-                    value={newDocument.document_type} 
-                    onValueChange={(val) => setNewDocument({ ...newDocument, document_type: val })}
-                  >
-                    <SelectTrigger className="bg-slate-800 border-white/10 text-white">
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent className="bg-slate-800 border-white/10">
-                      <SelectItem value="PDF">PDF Document</SelectItem>
-                      <SelectItem value="Video">Video</SelectItem>
-                      <SelectItem value="Presentation">Presentation</SelectItem>
-                      <SelectItem value="Spreadsheet">Spreadsheet</SelectItem>
-                      <SelectItem value="Document">Document</SelectItem>
-                      <SelectItem value="Other">Other</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-              </div>
               <div>
-                <Label className="text-white">File URL *</Label>
+                <Label className="text-white">Upload File *</Label>
+                <FileUpload
+                  onFileSelect={(file) => {
+                    setSelectedFile(file);
+                    // Auto-fill document name from filename if empty
+                    if (!newDocument.document_name) {
+                      const nameWithoutExt = file.name.substring(0, file.name.lastIndexOf('.'));
+                      setNewDocument({ ...newDocument, document_name: nameWithoutExt });
+                    }
+                  }}
+                  onFileRemove={() => setSelectedFile(null)}
+                  maxSize={50}
+                />
+              </div>
+              
+              <div>
+                <Label className="text-white">Document Name *</Label>
                 <Input
-                  value={newDocument.file_url}
-                  onChange={(e) => setNewDocument({ ...newDocument, file_url: e.target.value })}
-                  placeholder="https://example.com/document.pdf"
+                  value={newDocument.document_name}
+                  onChange={(e) => setNewDocument({ ...newDocument, document_name: e.target.value })}
+                  placeholder="e.g., Fire Safety Guidelines"
                   required
                   className="bg-slate-800 border-white/10 text-white"
                 />
-                <p className="text-xs text-slate-400 mt-1">For this demo, use any public URL. File upload will be added in Phase 2.</p>
               </div>
+              
               <div>
                 <Label className="text-white">Description</Label>
                 <Textarea
@@ -711,17 +696,8 @@ const AcademicLibrary = () => {
                   rows={3}
                 />
               </div>
+              
               <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <Label className="text-white">File Size (KB)</Label>
-                  <Input
-                    type="number"
-                    value={newDocument.file_size}
-                    onChange={(e) => setNewDocument({ ...newDocument, file_size: parseInt(e.target.value) || 0 })}
-                    placeholder="e.g., 1024"
-                    className="bg-slate-800 border-white/10 text-white"
-                  />
-                </div>
                 <div>
                   <Label className="text-white">Access Level</Label>
                   <Select 
@@ -738,15 +714,15 @@ const AcademicLibrary = () => {
                     </SelectContent>
                   </Select>
                 </div>
-              </div>
-              <div>
-                <Label className="text-white">Tags (comma separated)</Label>
-                <Input
-                  value={newDocument.tags}
-                  onChange={(e) => setNewDocument({ ...newDocument, tags: e.target.value })}
-                  placeholder="e.g., fire safety, emergency, training"
-                  className="bg-slate-800 border-white/10 text-white"
-                />
+                <div>
+                  <Label className="text-white">Tags (comma separated)</Label>
+                  <Input
+                    value={newDocument.tags}
+                    onChange={(e) => setNewDocument({ ...newDocument, tags: e.target.value })}
+                    placeholder="e.g., fire safety, emergency"
+                    className="bg-slate-800 border-white/10 text-white"
+                  />
+                </div>
               </div>
             </div>
             <DialogFooter className="mt-6">
