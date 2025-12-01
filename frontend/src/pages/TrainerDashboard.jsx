@@ -249,6 +249,10 @@ const TrainerDashboard = () => {
             <TabsContent value="expenses" className="mt-0">
               <ExpenseSubmission />
             </TabsContent>
+
+            <TabsContent value="materials" className="mt-0">
+              <TrainerMaterials />
+            </TabsContent>
           </div>
         </Tabs>
       </main>
