@@ -140,9 +140,9 @@ const COODashboard = () => {
               <FileText className="mr-2 h-4 w-4" />
               Library
             </TabsTrigger>
-            <TabsTrigger value="add-training" id="add-training">
-              <Plus className="mr-2 h-4 w-4" />
-              Add Training
+            <TabsTrigger value="certifications">
+              <Award className="mr-2 h-4 w-4" />
+              Certifications
             </TabsTrigger>
             <TabsTrigger value="deletions">
               <Users className="mr-2 h-4 w-4" />
