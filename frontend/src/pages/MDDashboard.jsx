@@ -158,9 +158,9 @@ const MDDashboard = () => {
               <FileText className="w-4 h-4 mr-2" />
               Training Library
             </TabsTrigger>
-            <TabsTrigger value="add-training" id="add-training">
-              <Plus className="w-4 h-4 mr-2" />
-              Add Training
+            <TabsTrigger value="certifications">
+              <Award className="w-4 h-4 mr-2" />
+              Certifications
             </TabsTrigger>
             <TabsTrigger value="deletions">
               <Trash2 className="w-4 h-4 mr-2" />
