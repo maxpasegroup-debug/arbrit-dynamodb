@@ -2504,6 +2504,44 @@ async def resolve_duplicate(alert_id: str, resolution: dict, current_user: dict 
         raise HTTPException(status_code=500, detail="Failed to resolve duplicate")
 
 
+# TEST ENDPOINT: Create sample duplicate alert
+@api_router.post("/sales/test-duplicate-alert")
+async def create_test_duplicate_alert(current_user: dict = Depends(get_current_user)):
+    """Create a sample duplicate alert for testing the RED ALERT feature"""
+    if current_user["role"] not in ["Sales Head", "COO", "MD", "CEO"]:
+        raise HTTPException(status_code=403, detail="Access denied")
+    
+    try:
+        test_alert = {
+            "id": str(uuid.uuid4()),
+            "lead_ids": [str(uuid.uuid4()), str(uuid.uuid4())],
+            "new_lead_data": {
+                "company_name": "TEST COMPANY - DUPLICATE ALERT",
+                "contact_person": "John Doe",
+                "contact_mobile": "971501234567",
+                "course_name": "Safety Training",
+                "lead_value": 25000,
+                "urgency": "high"
+            },
+            "similarity_score": 0.92,
+            "status": "pending",
+            "created_at": datetime.now(timezone.utc).isoformat(),
+            "detection_reason": "Company name match: 92% similar to existing lead (TEST DATA)"
+        }
+        
+        await db.duplicate_alerts.insert_one(test_alert)
+        
+        return {
+            "message": "Test duplicate alert created successfully!",
+            "alert_id": test_alert["id"],
+            "status": "pending",
+            "note": "🔴 The 'Leads' tab should now show a RED PULSING BADGE!"
+        }
+    except Exception as e:
+        logger.error(f"Error creating test duplicate alert: {e}")
+        raise HTTPException(status_code=500, detail="Failed to create test alert")
+
+
 # Get lead details with history
 @api_router.get("/sales/leads/{lead_id}")
 async def get_lead_details(lead_id: str, current_user: dict = Depends(get_current_user)):
