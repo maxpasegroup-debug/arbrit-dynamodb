@@ -519,7 +519,7 @@ metadata:
 
 test_plan:
   current_focus:
-    - "RED ALERT BADGE Feature on Sales Head Dashboard"
+    - "Enhanced Duplicate Management System with Realistic Al Futtaim Scenario"
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
