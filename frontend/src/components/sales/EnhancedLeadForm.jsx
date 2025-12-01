@@ -121,6 +121,50 @@ const EnhancedLeadForm = ({ open, onOpenChange, onSuccess, existingLead = null }
     }
   }, []);
 
+  // Intelligent Lead Scoring Algorithm (Hybrid Approach)
+  const calculateLeadScore = (data) => {
+    let points = 50; // Start at 50 (Warm baseline)
+    
+    // Factor 1: Urgency (30 points range)
+    if (data.urgency === 'high') points += 30;
+    else if (data.urgency === 'medium') points += 10;
+    else if (data.urgency === 'low') points -= 20;
+    
+    // Factor 2: Deal Size (20 points range)
+    const value = parseFloat(data.lead_value) || 0;
+    if (value > 50000) points += 20;
+    else if (value > 20000) points += 10;
+    else if (value < 5000) points -= 10;
+    
+    // Factor 3: Number of Trainees (20 points range)
+    const trainees = parseInt(data.num_trainees) || 0;
+    if (trainees >= 20) points += 20;
+    else if (trainees >= 10) points += 10;
+    else if (trainees < 5) points -= 10;
+    
+    // Factor 4: Lead Category (30 points range)
+    if (data.lead_category === 'Hot') points += 30;
+    else if (data.lead_category === 'Warm') points += 10;
+    else if (data.lead_category === 'Cold') points -= 20;
+    else if (data.lead_category === 'Qualified') points += 15;
+    
+    // Factor 5: Lead Source (15 points range)
+    if (data.source === 'Referral') points += 15;
+    else if (data.source === 'Walk-in') points += 10;
+    else if (data.source === 'Website') points += 5;
+    else if (data.source === 'Cold Call') points -= 5;
+    
+    // Factor 6: Company Size (10 points range)
+    if (data.employee_count === '500+') points += 10;
+    else if (data.employee_count === '201-500') points += 5;
+    else if (data.employee_count === '1-10') points -= 5;
+    
+    // Convert points to Hot/Warm/Cold
+    if (points >= 80) return 'hot';
+    if (points <= 35) return 'cold';
+    return 'warm';
+  };
+
   const handleCourseChange = (courseId) => {
     const course = courses.find(c => c.id === courseId);
     if (course) {
@@ -137,19 +181,17 @@ const EnhancedLeadForm = ({ open, onOpenChange, onSuccess, existingLead = null }
       
       const leadValue = (pricePerTrainee * numTrainees).toFixed(0);
       
-      // Auto-calculate lead score
-      let leadScore = 'warm';
-      if (formData.urgency === 'high' && numTrainees >= 10) {
-        leadScore = 'hot';
-      } else if (formData.urgency === 'low' || numTrainees < 3) {
-        leadScore = 'cold';
-      }
-      
-      setFormData({
+      // Calculate intelligent lead score
+      const updatedData = {
         ...formData,
         course_id: courseId,
         course_name: course.name,
-        lead_value: leadValue,
+        lead_value: leadValue
+      };
+      const leadScore = calculateLeadScore(updatedData);
+      
+      setFormData({
+        ...updatedData,
         lead_score: leadScore
       });
     }
