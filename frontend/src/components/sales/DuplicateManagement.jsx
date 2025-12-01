@@ -61,16 +61,22 @@ const DuplicateManagement = () => {
     }
   };
 
-  const resolveAlert = async (action, data = {}) => {
+  const resolveAlert = async (action, data = {}, alertId = null) => {
+    const targetAlertId = alertId || selectedAlert?.id;
+    if (!targetAlertId) {
+      toast.error('No alert selected');
+      return;
+    }
+    
     try {
       const token = localStorage.getItem('token');
       await axios.post(
-        `${API}/sales/resolve-duplicate/${selectedAlert.id}`,
+        `${API}/sales/resolve-duplicate/${targetAlertId}`,
         { action, ...data },
         { headers: { Authorization: `Bearer ${token}` } }
       );
       
-      toast.success(`Duplicate ${action === 'merge' ? 'merged' : 'resolved'} successfully`);
+      toast.success(`Duplicate ${action === 'different' ? 'approved' : action === 'duplicate' ? 'rejected' : 'resolved'} successfully`);
       setComparisonOpen(false);
       fetchAlerts();
     } catch (error) {
