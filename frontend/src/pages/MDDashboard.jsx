@@ -22,7 +22,7 @@ import TrainingRequests from '@/components/academic/TrainingRequests';
 import AssessmentFormBuilder from '@/components/assessment/AssessmentFormBuilder';
 // Import Training Library Components
 import TrainingLibrary from '@/components/library/TrainingLibrary';
-import AddPastTraining from '@/components/library/AddPastTraining';
+import CertificationsReports from '@/components/library/CertificationsReports';
 import { toast } from 'sonner';
 import axios from 'axios';
 
