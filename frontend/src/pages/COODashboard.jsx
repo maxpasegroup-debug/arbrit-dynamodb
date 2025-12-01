@@ -245,6 +245,10 @@ const COODashboard = () => {
         <CertificationsReports />
       </TabsContent>
 
+      <TabsContent value="dispatch">
+        <CertificateDispatchManagement />
+      </TabsContent>
+
       <TabsContent value="deletions">
         <DeletionApprovals />
       </TabsContent>
