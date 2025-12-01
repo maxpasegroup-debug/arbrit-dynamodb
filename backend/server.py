@@ -7444,6 +7444,10 @@ async def upload_academic_file(
 # Include the router in the main app
 app.include_router(api_router)
 
+# Mount static files for uploaded documents
+from fastapi.staticfiles import StaticFiles
+app.mount("/uploads", StaticFiles(directory="/app/backend/uploads"), name="uploads")
+
 app.add_middleware(
     CORSMiddleware,
     allow_credentials=True,
