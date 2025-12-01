@@ -125,60 +125,101 @@ const DuplicateManagement = () => {
         </div>
       ) : (
         <div className="space-y-4">
-          {alerts.map((alert) => (
-            <div
-              key={alert.id}
-              className="bg-white/5 rounded-lg p-4 border border-white/10 hover:border-orange-400/50 transition-all"
-            >
-              <div className="flex items-start justify-between">
-                <div className="flex-1">
-                  <div className="flex items-center gap-3 mb-3">
-                    <Badge className={`${
-                      alert.confidence === 'high'
-                        ? 'bg-red-500/20 text-red-300 border-red-400/50'
-                        : 'bg-orange-500/20 text-orange-300 border-orange-400/50'
-                    }`}>
-                      {alert.similarity_score}% Match
-                    </Badge>
-                    <Badge className="bg-purple-500/20 text-purple-300">
-                      {alert.confidence.toUpperCase()} Confidence
-                    </Badge>
-                  </div>
-                  
-                  <div className="grid grid-cols-2 gap-4 mb-3">
-                    <div className="bg-blue-500/10 rounded p-3 border border-blue-400/30">
-                      <p className="text-xs text-slate-400 mb-1">Lead A (Original)</p>
-                      <p className="text-white font-semibold">{alert.company_name_a}</p>
-                      <p className="text-sm text-slate-300 mt-1">
-                        Submitted by: {alert.submitted_by_a}
-                      </p>
+          {alerts.map((alert) => {
+            const newLeadData = typeof alert.new_lead_data === 'string' 
+              ? JSON.parse(alert.new_lead_data) 
+              : alert.new_lead_data;
+            const similarityScore = typeof alert.similarity_score === 'string'
+              ? parseInt(alert.similarity_score)
+              : Math.round(alert.similarity_score * 100);
+            const confidence = similarityScore >= 80 ? 'high' : 'medium';
+            
+            return (
+              <div
+                key={alert.id}
+                className="bg-white/5 rounded-lg p-4 border border-white/10 hover:border-orange-400/50 transition-all"
+              >
+                <div className="flex items-start justify-between">
+                  <div className="flex-1">
+                    <div className="flex items-center gap-3 mb-3">
+                      <Badge className={`${
+                        confidence === 'high'
+                          ? 'bg-red-500/20 text-red-300 border-red-400/50'
+                          : 'bg-orange-500/20 text-orange-300 border-orange-400/50'
+                      }`}>
+                        {similarityScore}% Match
+                      </Badge>
+                      <Badge className="bg-purple-500/20 text-purple-300">
+                        {confidence.toUpperCase()} Confidence
+                      </Badge>
+                      <Badge className="bg-yellow-500/20 text-yellow-300">
+                        {alert.status === 'pending' ? 'PENDING REVIEW' : alert.status.toUpperCase()}
+                      </Badge>
                     </div>
-                    <div className="bg-orange-500/10 rounded p-3 border border-orange-400/30">
-                      <p className="text-xs text-slate-400 mb-1">Lead B (New)</p>
-                      <p className="text-white font-semibold">{alert.company_name_b}</p>
-                      <p className="text-sm text-slate-300 mt-1">
-                        Submitted by: {alert.submitted_by_b}
-                      </p>
+                    
+                    <div className="bg-orange-500/10 rounded p-4 border border-orange-400/30 mb-3">
+                      <p className="text-xs text-slate-400 mb-2">New Lead Submission:</p>
+                      <p className="text-white font-semibold text-lg mb-2">{newLeadData?.company_name || 'Unknown Company'}</p>
+                      <div className="grid grid-cols-2 gap-3 text-sm">
+                        <div>
+                          <span className="text-slate-400">Contact:</span>
+                          <span className="text-slate-200 ml-2">{newLeadData?.contact_person || 'N/A'}</span>
+                        </div>
+                        <div>
+                          <span className="text-slate-400">Mobile:</span>
+                          <span className="text-slate-200 ml-2">{newLeadData?.contact_mobile || 'N/A'}</span>
+                        </div>
+                        <div>
+                          <span className="text-slate-400">Course:</span>
+                          <span className="text-slate-200 ml-2">{newLeadData?.course_name || 'N/A'}</span>
+                        </div>
+                        <div>
+                          <span className="text-slate-400">Value:</span>
+                          <span className="text-green-400 ml-2 font-semibold">
+                            {newLeadData?.lead_value ? `${newLeadData.lead_value} AED` : 'N/A'}
+                          </span>
+                        </div>
+                      </div>
                     </div>
+
+                    <div className="bg-blue-500/10 rounded p-3 border border-blue-400/30 mb-2">
+                      <p className="text-xs text-orange-300 font-semibold">⚠️ Detection Reason:</p>
+                      <p className="text-slate-300 text-sm mt-1">{alert.detection_reason || 'Similar lead detected in system'}</p>
+                    </div>
+
+                    <p className="text-xs text-slate-500">
+                      Detected: {new Date(alert.created_at).toLocaleString()}
+                    </p>
                   </div>
 
-                  <p className="text-xs text-slate-500">
-                    Detected: {new Date(alert.created_at).toLocaleString()}
-                  </p>
-                </div>
-
-                <div className="ml-4">
-                  <Button
-                    onClick={() => openComparison(alert)}
-                    className="bg-blue-600 hover:bg-blue-700"
-                  >
-                    <Users className="w-4 h-4 mr-2" />
-                    Review
-                  </Button>
+                  <div className="ml-4 flex flex-col gap-2">
+                    <Button
+                      onClick={() => {
+                        // For now, just resolve it as different
+                        resolveAlert('different');
+                      }}
+                      className="bg-green-600 hover:bg-green-700"
+                      size="sm"
+                    >
+                      <Check className="w-4 h-4 mr-2" />
+                      Approve
+                    </Button>
+                    <Button
+                      onClick={() => {
+                        resolveAlert('duplicate', { duplicate_lead_id: alert.lead_ids?.[1] || alert.id });
+                      }}
+                      variant="outline"
+                      className="border-red-400/50 hover:bg-red-500/20 text-red-300"
+                      size="sm"
+                    >
+                      <X className="w-4 h-4 mr-2" />
+                      Reject
+                    </Button>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       )}
 
