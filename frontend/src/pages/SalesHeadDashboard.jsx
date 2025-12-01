@@ -13,6 +13,7 @@ import QuotationManagementEnhanced from '@/components/sales/QuotationManagementE
 import LeaveApprovals from '@/components/sales/LeaveApprovals';
 import RequestsView from '@/components/sales/RequestsView';
 import ExpenseSubmission from '@/components/expenses/ExpenseSubmission';
+import CertificateDispatchManagement from '@/components/certificates/CertificateDispatchManagement';
 import ExpenseApprovals from '@/components/expenses/ExpenseApprovals';
 import DuplicateManagement from '@/components/sales/DuplicateManagement';
 import EnhancedDuplicateManagement from '@/components/sales/EnhancedDuplicateManagement';
