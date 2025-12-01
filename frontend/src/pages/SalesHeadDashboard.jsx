@@ -237,6 +237,13 @@ const SalesHeadDashboard = () => {
               <CheckSquare className="w-4 h-4 mr-2" />
               Approve Expenses
             </TabsTrigger>
+            <TabsTrigger 
+              value="dispatch"
+              className="data-[state=active]:bg-blue-500/20 data-[state=active]:text-white text-gray-300"
+            >
+              <Package className="w-4 h-4 mr-2" />
+              Dispatch
+            </TabsTrigger>
           </TabsList>
 
           <div className="mt-6">
