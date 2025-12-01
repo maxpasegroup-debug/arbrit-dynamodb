@@ -271,13 +271,16 @@ const CertificateDispatchManagement = () => {
             </h2>
             <p className="text-indigo-100 mt-1">Metro-style tracking from initiation to delivery</p>
           </div>
-          <Button
-            onClick={() => setCreateOpen(true)}
-            className="bg-white text-indigo-600 hover:bg-indigo-50"
-          >
-            <Plus className="w-4 h-4 mr-2" />
-            New Certificate
-          </Button>
+          <div className="flex gap-3">
+            <AgingAlertsButton />
+            <Button
+              onClick={() => setCreateOpen(true)}
+              className="bg-white text-indigo-600 hover:bg-indigo-50"
+            >
+              <Plus className="w-4 h-4 mr-2" />
+              New Certificate
+            </Button>
+          </div>
         </div>
 
         {stats && (
