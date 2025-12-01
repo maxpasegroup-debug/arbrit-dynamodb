@@ -197,13 +197,16 @@ const CertificationsReports = () => {
             </h2>
             <p className="text-green-100 mt-1">Track certificate validity and expiration management</p>
           </div>
-          <Button
-            onClick={exportCertificateReport}
-            className="bg-white text-green-600 hover:bg-green-50"
-          >
-            <Download className="w-4 h-4 mr-2" />
-            Export Report
-          </Button>
+          <div className="flex gap-3">
+            <AgingAlertsButton />
+            <Button
+              onClick={exportCertificateReport}
+              className="bg-white text-green-600 hover:bg-green-50"
+            >
+              <Download className="w-4 h-4 mr-2" />
+              Export Report
+            </Button>
+          </div>
         </div>
 
         {/* Stats Cards */}
