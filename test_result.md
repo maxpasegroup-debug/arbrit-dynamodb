@@ -567,7 +567,10 @@ metadata:
 
 test_plan:
   current_focus:
-    - "NEW Integrated Duplicate Management System (Option 2 Implementation)"
+    - "COO Dashboard Training Library System - Phase 1: Backend APIs"
+    - "COO Dashboard Training Library System - Phase 2: Beautiful Library Widget"
+    - "COO Dashboard Training Library System - Phase 3: Add Past Training Forms"
+    - "COO Dashboard Integration - 7 Tabs with Library and Add Training"
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
