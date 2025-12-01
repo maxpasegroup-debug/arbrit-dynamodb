@@ -134,7 +134,7 @@ const MDDashboard = () => {
                 Good {new Date().getHours() < 12 ? 'Morning' : new Date().getHours() < 18 ? 'Afternoon' : 'Evening'}, {user?.name?.split(' ')[0]}
               </h2>
               <p className="text-sm sm:text-base text-amber-200/70">
-                Here's your strategic business intelligence for today
+                Here&apos;s your strategic business intelligence for today
               </p>
             </div>
             <Button
