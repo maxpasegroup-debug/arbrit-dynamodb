@@ -423,6 +423,21 @@ const CertificateDispatchManagement = () => {
                   className="bg-slate-800 border-white/10 text-white"
                 />
               </div>
+              <div>
+                <Label className="text-white">Certificate Type *</Label>
+                <Select 
+                  value={newCertificate.certificate_type} 
+                  onValueChange={(val) => setNewCertificate({...newCertificate, certificate_type: val})}
+                >
+                  <SelectTrigger className="bg-slate-800 border-white/10 text-white">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent className="bg-slate-800 border-white/10">
+                    <SelectItem value="In-House">In-House (48h delivery)</SelectItem>
+                    <SelectItem value="International">International (30/60/90 days)</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
             </div>
             <div>
               <Label className="text-white">Certificate Numbers (comma separated) *</Label>
