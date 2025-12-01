@@ -15,6 +15,7 @@ import axios from 'axios';
 import EnhancedLeadForm from './EnhancedLeadForm';
 import TrainerCalendar from './TrainerCalendar';
 import LeadDetailsModal from './LeadDetailsModal';
+import LeadProgressTracker from './LeadProgressTracker';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
