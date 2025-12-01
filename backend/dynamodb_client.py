@@ -489,6 +489,8 @@ class DB:
         # CRM Enhancement clients
         self.courses = DynamoDBClient('courses')
         self.booking_requests = DynamoDBClient('booking_requests')
+        self.duplicate_alerts = DynamoDBClient('duplicate_alerts')
+        self.lead_history = DynamoDBClient('lead_history')
 
 
 # Create global db instance
