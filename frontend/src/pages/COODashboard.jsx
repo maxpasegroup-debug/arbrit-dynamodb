@@ -127,7 +127,7 @@ const COODashboard = () => {
 
       <main className="max-w-6xl mx-auto px-6 py-12">
         <Tabs defaultValue="modules" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-7 bg-white/10 border border-white/20">
+          <TabsList className="grid w-full grid-cols-8 bg-white/10 border border-white/20">
             <TabsTrigger value="modules">Modules</TabsTrigger>
             <TabsTrigger value="leads">
               <TrendingUp className="mr-2 h-4 w-4" />
@@ -144,6 +144,10 @@ const COODashboard = () => {
             <TabsTrigger value="certifications">
               <Award className="mr-2 h-4 w-4" />
               Certifications
+            </TabsTrigger>
+            <TabsTrigger value="dispatch">
+              <Package className="mr-2 h-4 w-4" />
+              Dispatch
             </TabsTrigger>
             <TabsTrigger value="deletions">
               <Users className="mr-2 h-4 w-4" />
