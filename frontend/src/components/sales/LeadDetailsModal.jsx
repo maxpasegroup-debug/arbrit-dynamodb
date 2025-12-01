@@ -166,9 +166,24 @@ const LeadDetailsModal = ({ open, onOpenChange, lead, onSuccess }) => {
               <div className="flex items-center justify-between">
                 <div>
                   <Label className="text-slate-400 text-xs">Current Status</Label>
-                  <Badge className={`${getStatusColor(leadData.status)} text-lg px-4 py-1 mt-1`}>
-                    {leadData.status?.toUpperCase() || 'NEW'}
-                  </Badge>
+                  {isEditing ? (
+                    <select
+                      value={leadData.status || 'new'}
+                      onChange={(e) => setLeadData({ ...leadData, status: e.target.value })}
+                      className="w-full bg-slate-800 border border-white/10 text-slate-100 rounded-md p-2 mt-1"
+                    >
+                      <option value="new">New</option>
+                      <option value="contacted">Contacted</option>
+                      <option value="quoted">Quoted</option>
+                      <option value="negotiation">Negotiation</option>
+                      <option value="won">Won</option>
+                      <option value="lost">Lost</option>
+                    </select>
+                  ) : (
+                    <Badge className={`${getStatusColor(leadData.status)} text-lg px-4 py-1 mt-1`}>
+                      {leadData.status?.toUpperCase() || 'NEW'}
+                    </Badge>
+                  )}
                 </div>
                 <div>
                   <Label className="text-slate-400 text-xs">Lead Score (Manual Override)</Label>
