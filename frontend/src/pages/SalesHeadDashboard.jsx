@@ -251,10 +251,6 @@ const SalesHeadDashboard = () => {
               <LeadTracker />
             </TabsContent>
 
-            <TabsContent value="duplicates" className="mt-0">
-              <EnhancedDuplicateManagement />
-            </TabsContent>
-
             <TabsContent value="quotations" className="mt-0">
               <QuotationManagementEnhanced />
             </TabsContent>
