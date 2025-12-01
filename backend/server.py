@@ -2551,7 +2551,14 @@ async def create_test_duplicate_scenario(current_user: dict = Depends(get_curren
         raise HTTPException(status_code=403, detail="Access denied")
     
     try:
-        # Create first lead (submitted by Field Sales)
+        # Get REAL employees from database
+        field_sales_user = await db.users.find_one({"mobile": "971545844386"})  # Afshan Firdose
+        sales_head_user = await db.users.find_one({"mobile": "971545844387"})  # Mohammad Akbar (acting as tele sales for test)
+        
+        if not field_sales_user or not sales_head_user:
+            raise HTTPException(status_code=404, detail="Required employees not found in system")
+        
+        # Create first lead (submitted by Field Sales - Afshan Firdose)
         lead_a_id = str(uuid.uuid4())
         lead_a = {
             "id": lead_a_id,
@@ -2567,14 +2574,14 @@ async def create_test_duplicate_scenario(current_user: dict = Depends(get_curren
             "requirement": "Fire safety training for 50 employees, needs certification",
             "status": "pending_duplicate_review",  # RED status for sales rep
             "lead_score": "hot",
-            "created_by": "field-sales-rep-1",
-            "submitted_by": "Afshan Firdose",
-            "submitted_by_role": "Field Sales",
+            "created_by": field_sales_user.get("id"),  # REAL employee ID
+            "submitted_by": field_sales_user.get("name"),  # REAL employee name
+            "submitted_by_role": field_sales_user.get("role"),  # REAL role
             "created_at": datetime.now(timezone.utc).isoformat(),
             "updated_at": datetime.now(timezone.utc).isoformat()
         }
         
-        # Create second lead (submitted by Tele Sales - 2 hours later)
+        # Create second lead (submitted 2 hours later - using Sales Head as example)
         lead_b_id = str(uuid.uuid4())
         lead_b = {
             "id": lead_b_id,
@@ -2590,9 +2597,9 @@ async def create_test_duplicate_scenario(current_user: dict = Depends(get_curren
             "requirement": "Comprehensive fire safety program for warehouse staff",
             "status": "pending_duplicate_review",  # RED status for sales rep
             "lead_score": "warm",
-            "created_by": "tele-sales-rep-1",
-            "submitted_by": "Mohammad Akbar",
-            "submitted_by_role": "Tele Sales",
+            "created_by": sales_head_user.get("id"),  # REAL employee ID (for testing)
+            "submitted_by": sales_head_user.get("name"),  # REAL employee name
+            "submitted_by_role": "Tele Sales",  # Using as Tele Sales for scenario
             "created_at": (datetime.now(timezone.utc) + timedelta(hours=2)).isoformat(),
             "updated_at": (datetime.now(timezone.utc) + timedelta(hours=2)).isoformat()
         }
