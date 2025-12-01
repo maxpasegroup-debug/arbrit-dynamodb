@@ -2512,6 +2512,8 @@ async def create_test_duplicate_alert(current_user: dict = Depends(get_current_u
         raise HTTPException(status_code=403, detail="Access denied")
     
     try:
+        from decimal import Decimal
+        
         test_alert = {
             "id": str(uuid.uuid4()),
             "lead_ids": [str(uuid.uuid4()), str(uuid.uuid4())],
@@ -2520,10 +2522,10 @@ async def create_test_duplicate_alert(current_user: dict = Depends(get_current_u
                 "contact_person": "John Doe",
                 "contact_mobile": "971501234567",
                 "course_name": "Safety Training",
-                "lead_value": 25000,
+                "lead_value": "25000",
                 "urgency": "high"
             },
-            "similarity_score": 0.92,
+            "similarity_score": "92",  # Store as string to avoid Decimal conversion issues
             "status": "pending",
             "created_at": datetime.now(timezone.utc).isoformat(),
             "detection_reason": "Company name match: 92% similar to existing lead (TEST DATA)"
@@ -2539,7 +2541,7 @@ async def create_test_duplicate_alert(current_user: dict = Depends(get_current_u
         }
     except Exception as e:
         logger.error(f"Error creating test duplicate alert: {e}")
-        raise HTTPException(status_code=500, detail="Failed to create test alert")
+        raise HTTPException(status_code=500, detail=f"Failed to create test alert: {str(e)}")
 
 
 # Get lead details with history
