@@ -492,8 +492,7 @@ metadata:
 
 test_plan:
   current_focus:
-    - "Employee Document Management Frontend"
-    - "Company Document Management Frontend"
+    - "Metro-Style Lead Progress Tracker Integration"
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
