@@ -66,28 +66,37 @@ const DuplicateAlertsNotification = ({ onViewAll }) => {
             </div>
           ) : (
             <div className="divide-y divide-white/10">
-              {alerts.slice(0, 5).map((alert) => (
-                <div key={alert.id} className="p-3 hover:bg-white/5 cursor-pointer">
-                  <div className="flex items-start justify-between mb-2">
-                    <p className="text-sm font-medium text-white">
-                      Possible Duplicate
+              {alerts.slice(0, 5).map((alert) => {
+                const newLeadData = typeof alert.new_lead_data === 'string' 
+                  ? JSON.parse(alert.new_lead_data) 
+                  : alert.new_lead_data;
+                const similarityScore = typeof alert.similarity_score === 'string'
+                  ? parseInt(alert.similarity_score)
+                  : Math.round(alert.similarity_score * 100);
+                
+                return (
+                  <div key={alert.id} className="p-3 hover:bg-white/5 cursor-pointer" onClick={onViewAll}>
+                    <div className="flex items-start justify-between mb-2">
+                      <p className="text-sm font-medium text-white">
+                        🔴 Possible Duplicate
+                      </p>
+                      <Badge className={`text-xs ${
+                        similarityScore >= 80
+                          ? 'bg-red-500/20 text-red-300'
+                          : 'bg-orange-500/20 text-orange-300'
+                      }`}>
+                        {similarityScore}%
+                      </Badge>
+                    </div>
+                    <p className="text-xs text-slate-400 mb-1">
+                      Company: {newLeadData?.company_name || 'Unknown'}
                     </p>
-                    <Badge className={`text-xs ${
-                      alert.confidence === 'high'
-                        ? 'bg-red-500/20 text-red-300'
-                        : 'bg-orange-500/20 text-orange-300'
-                    }`}>
-                      {alert.similarity_score}%
-                    </Badge>
+                    <p className="text-xs text-slate-500">
+                      {alert.detection_reason || 'Similar lead detected'}
+                    </p>
                   </div>
-                  <p className="text-xs text-slate-400 mb-1">
-                    "{alert.company_name_a}" vs "{alert.company_name_b}"
-                  </p>
-                  <p className="text-xs text-slate-500">
-                    Submitted by: {alert.submitted_by_a} & {alert.submitted_by_b}
-                  </p>
-                </div>
-              ))}
+                );
+              })}
             </div>
           )}
         </div>
