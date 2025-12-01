@@ -214,7 +214,7 @@ const COODashboard = () => {
 
       <TabsContent value="leads">
         <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-lg p-6">
-          <LeadManagementEnhanced />
+          <LeadTracker />
         </div>
       </TabsContent>
 
