@@ -6871,6 +6871,7 @@ async def create_certificate_demo_data(current_user: dict = Depends(get_current_
                 "training_date": (datetime.now(timezone.utc) - timedelta(days=1050)).strftime("%Y-%m-%d"),
                 "participants_count": 12,
                 "certificate_numbers": [f"WAH-2022-{str(i).zfill(3)}" for i in range(1, 13)],
+                "certificate_type": "In-House",
                 "dispatch_status": "delivered",
                 "courier_service": "FedEx",
                 "tracking_number": "FDX-UAE-2022-11111",
