@@ -726,11 +726,33 @@ const AcademicLibrary = () => {
               </div>
             </div>
             <DialogFooter className="mt-6">
-              <Button type="button" variant="outline" onClick={() => setDocumentModalOpen(false)}>
+              <Button 
+                type="button" 
+                variant="outline" 
+                onClick={() => {
+                  setDocumentModalOpen(false);
+                  setSelectedFile(null);
+                }}
+                disabled={uploading}
+              >
                 Cancel
               </Button>
-              <Button type="submit" className="bg-green-600 hover:bg-green-700">
-                Add Document
+              <Button 
+                type="submit" 
+                className="bg-green-600 hover:bg-green-700"
+                disabled={uploading || !selectedFile}
+              >
+                {uploading ? (
+                  <>
+                    <Upload className="w-4 h-4 mr-2 animate-spin" />
+                    Uploading...
+                  </>
+                ) : (
+                  <>
+                    <Upload className="w-4 h-4 mr-2" />
+                    Upload Document
+                  </>
+                )}
               </Button>
             </DialogFooter>
           </form>
