@@ -12,6 +12,7 @@ import ExpenseSubmissionModal from '@/components/coo/ExpenseSubmissionModal';
 import DeletionApprovals from '@/components/executive/DeletionApprovals';
 import TrainingLibrary from '@/components/library/TrainingLibrary';
 import CertificationsReports from '@/components/library/CertificationsReports';
+import CertificateDispatchManagement from '@/components/certificates/CertificateDispatchManagement';
 import { toast } from 'sonner';
 
 const COODashboard = () => {
