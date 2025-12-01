@@ -294,6 +294,11 @@ const LeadTracker = () => {
                       )}
                     </div>
 
+                    {/* Metro-Style Progress Tracker */}
+                    <div className="mb-3">
+                      <LeadProgressTracker currentStatus={lead.status} />
+                    </div>
+
                     <div className="flex gap-2 flex-wrap">
                       <Button
                         size="sm"
