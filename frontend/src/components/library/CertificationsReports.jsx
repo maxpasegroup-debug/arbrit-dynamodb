@@ -12,12 +12,20 @@ const API = `${BACKEND_URL}/api`;
 const CertificationsReports = () => {
   const [loading, setLoading] = useState(false);
   const [records, setRecords] = useState([]);
+  const [expandedRecords, setExpandedRecords] = useState({});
   const [stats, setStats] = useState({
     total_certificates: 0,
     expiring_soon: 0,
     expired: 0,
     active: 0
   });
+
+  const toggleExpand = (recordId) => {
+    setExpandedRecords(prev => ({
+      ...prev,
+      [recordId]: !prev[recordId]
+    }));
+  };
 
   useEffect(() => {
     fetchCertificationData();
