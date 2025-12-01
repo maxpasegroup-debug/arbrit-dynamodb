@@ -4,7 +4,7 @@ import base64
 from datetime import datetime, timedelta
 
 class ArbritDocumentManagementTester:
-    def __init__(self, base_url="https://lead-track-pro.preview.emergentagent.com"):
+    def __init__(self, base_url="https://unified-sales-hub.preview.emergentagent.com"):
         self.base_url = base_url
         self.api_url = f"{base_url}/api"
         self.token = None

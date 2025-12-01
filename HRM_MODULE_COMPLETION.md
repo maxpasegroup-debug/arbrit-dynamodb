@@ -148,8 +148,8 @@
 
 ## URLs
 
-- **HRM Dashboard**: https://lead-track-pro.preview.emergentagent.com/hrm
-- **COO Dashboard**: https://lead-track-pro.preview.emergentagent.com/dashboard/coo
+- **HRM Dashboard**: https://unified-sales-hub.preview.emergentagent.com/hrm
+- **COO Dashboard**: https://unified-sales-hub.preview.emergentagent.com/dashboard/coo
 
 ## Key Features
 

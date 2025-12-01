@@ -293,10 +293,10 @@ Delete Employee
 
 ## 📍 URLs
 
-- **Login**: https://lead-track-pro.preview.emergentagent.com/login
-- **COO Dashboard**: https://lead-track-pro.preview.emergentagent.com/dashboard/coo
-- **HR Dashboard**: https://lead-track-pro.preview.emergentagent.com/dashboard/hr
-- **HRM Modules** (COO access): https://lead-track-pro.preview.emergentagent.com/hrm
+- **Login**: https://unified-sales-hub.preview.emergentagent.com/login
+- **COO Dashboard**: https://unified-sales-hub.preview.emergentagent.com/dashboard/coo
+- **HR Dashboard**: https://unified-sales-hub.preview.emergentagent.com/dashboard/hr
+- **HRM Modules** (COO access): https://unified-sales-hub.preview.emergentagent.com/hrm
 
 ---
 
