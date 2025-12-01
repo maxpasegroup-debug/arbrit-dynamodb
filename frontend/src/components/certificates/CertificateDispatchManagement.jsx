@@ -128,6 +128,7 @@ const CertificateDispatchManagement = () => {
         training_date: '',
         certificate_numbers: '',
         participants_count: '',
+        certificate_type: 'In-House',
         courier_service: ''
       });
     } catch (error) {
