@@ -6732,6 +6732,91 @@ async def get_certificate_tracking_stats(current_user: dict = Depends(get_curren
         raise HTTPException(status_code=500, detail="Failed to fetch statistics")
 
 
+# Get certificate aging alerts
+@api_router.get("/certificate-tracking/aging-alerts")
+async def get_certificate_aging_alerts(current_user: dict = Depends(get_current_user)):
+    """Get aging alerts for certificates based on type and delivery timeline"""
+    if current_user["role"] not in ["COO", "MD", "CEO", "Sales Head", "Academic Head"]:
+        raise HTTPException(status_code=403, detail="Access denied")
+    
+    try:
+        all_records = await db.certificate_tracking.find({})
+        records = await all_records.to_list(10000)
+        
+        alerts = []
+        now = datetime.now(timezone.utc)
+        
+        for record in records:
+            # Skip if already delivered
+            if record.get("status") == "delivered":
+                continue
+            
+            # Calculate aging from created_at
+            created_at = datetime.fromisoformat(record.get("created_at", now.isoformat()))
+            age_hours = (now - created_at).total_seconds() / 3600
+            age_days = age_hours / 24
+            
+            certificate_type = record.get("certificate_type", "In-House")
+            
+            alert = None
+            severity = None
+            
+            if certificate_type == "In-House":
+                # In-House: Alert if > 48 hours
+                if age_hours > 72:  # Critical: >72 hours
+                    severity = "critical"
+                    alert = f"CRITICAL: {int(age_hours)} hours - Severely overdue!"
+                elif age_hours > 48:  # Urgent: >48 hours
+                    severity = "urgent"
+                    alert = f"URGENT: {int(age_hours)} hours - Delivery overdue!"
+                elif age_hours > 36:  # Warning: approaching 48h
+                    severity = "warning"
+                    alert = f"Warning: {int(age_hours)} hours - Approaching deadline"
+            
+            elif certificate_type == "International":
+                # International: Alert at 30/60/90 days
+                if age_days > 90:
+                    severity = "critical"
+                    alert = f"CRITICAL: {int(age_days)} days - Action required immediately!"
+                elif age_days > 60:
+                    severity = "urgent"
+                    alert = f"URGENT: {int(age_days)} days - Significant delay"
+                elif age_days > 30:
+                    severity = "warning"
+                    alert = f"Warning: {int(age_days)} days - Follow-up needed"
+            
+            if alert:
+                alerts.append({
+                    "id": record.get("id"),
+                    "company_name": record.get("company_name"),
+                    "course_name": record.get("course_name"),
+                    "certificate_type": certificate_type,
+                    "status": record.get("status"),
+                    "age_hours": int(age_hours),
+                    "age_days": int(age_days),
+                    "created_at": record.get("created_at"),
+                    "severity": severity,
+                    "alert_message": alert,
+                    "contact_person": record.get("contact_person"),
+                    "contact_mobile": record.get("contact_mobile")
+                })
+        
+        # Sort by severity: critical > urgent > warning
+        severity_order = {"critical": 0, "urgent": 1, "warning": 2}
+        alerts.sort(key=lambda x: severity_order.get(x["severity"], 999))
+        
+        return {
+            "total_alerts": len(alerts),
+            "critical": len([a for a in alerts if a["severity"] == "critical"]),
+            "urgent": len([a for a in alerts if a["severity"] == "urgent"]),
+            "warning": len([a for a in alerts if a["severity"] == "warning"]),
+            "alerts": alerts
+        }
+    except Exception as e:
+        logger.error(f"Error fetching aging alerts: {e}")
+        raise HTTPException(status_code=500, detail="Failed to fetch aging alerts")
+
+
 # Admin endpoint to create comprehensive certificate demo data
 @api_router.post("/admin/create-certificate-demo-data")
 async def create_certificate_demo_data(current_user: dict = Depends(get_current_user)):
