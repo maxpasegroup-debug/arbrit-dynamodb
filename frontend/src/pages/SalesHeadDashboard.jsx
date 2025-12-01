@@ -15,6 +15,7 @@ import RequestsView from '@/components/sales/RequestsView';
 import ExpenseSubmission from '@/components/expenses/ExpenseSubmission';
 import ExpenseApprovals from '@/components/expenses/ExpenseApprovals';
 import DuplicateManagement from '@/components/sales/DuplicateManagement';
+import EnhancedDuplicateManagement from '@/components/sales/EnhancedDuplicateManagement';
 import DuplicateAlertsNotification from '@/components/sales/DuplicateAlertsNotification';
 import { toast } from 'sonner';
 import axios from 'axios';
