@@ -6731,6 +6731,231 @@ async def get_certificate_tracking_stats(current_user: dict = Depends(get_curren
         raise HTTPException(status_code=500, detail="Failed to fetch statistics")
 
 
+# Admin endpoint to create comprehensive certificate demo data
+@api_router.post("/admin/create-certificate-demo-data")
+async def create_certificate_demo_data(current_user: dict = Depends(get_current_user)):
+    """Create comprehensive demo data for certificate system"""
+    if current_user["role"] not in ["COO", "MD", "CEO"]:
+        raise HTTPException(status_code=403, detail="Access denied. Admin role required.")
+    
+    try:
+        # Demo data scenarios
+        scenarios = [
+            {
+                "company_name": "Al Mansouri Construction",
+                "contact_person": "Ahmed Al Mansouri",
+                "contact_mobile": "971501234567",
+                "course_name": "Fire Safety Management",
+                "training_date": (datetime.now(timezone.utc) - timedelta(days=730)).strftime("%Y-%m-%d"),
+                "participants_count": 15,
+                "certificate_numbers": [f"FSM-2023-{str(i).zfill(3)}" for i in range(1, 16)],
+                "dispatch_status": "delivered",
+                "courier_service": "Aramex",
+                "tracking_number": "ARM-AE-2023-12345",
+                "dispatch_date": (datetime.now(timezone.utc) - timedelta(days=725)).strftime("%Y-%m-%d"),
+                "expected_delivery_date": (datetime.now(timezone.utc) - timedelta(days=720)).strftime("%Y-%m-%d"),
+                "actual_delivery_date": (datetime.now(timezone.utc) - timedelta(days=720)).strftime("%Y-%m-%d"),
+                "delivery_note_photo": "https://via.placeholder.com/600x400/4ade80/ffffff?text=Delivery+Proof+FSM",
+                "recipient_name": "Ahmed Al Mansouri"
+            },
+            {
+                "company_name": "Dubai Steel Industries",
+                "contact_person": "Mohammed Hassan",
+                "contact_mobile": "971502345678",
+                "course_name": "Industrial Safety Protocols",
+                "training_date": (datetime.now(timezone.utc) - timedelta(days=365)).strftime("%Y-%m-%d"),
+                "participants_count": 25,
+                "certificate_numbers": [f"ISP-2024-{str(i).zfill(3)}" for i in range(1, 26)],
+                "dispatch_status": "delivered",
+                "courier_service": "DHL Express",
+                "tracking_number": "DHL-UAE-2024-56789",
+                "dispatch_date": (datetime.now(timezone.utc) - timedelta(days=360)).strftime("%Y-%m-%d"),
+                "expected_delivery_date": (datetime.now(timezone.utc) - timedelta(days=357)).strftime("%Y-%m-%d"),
+                "actual_delivery_date": (datetime.now(timezone.utc) - timedelta(days=357)).strftime("%Y-%m-%d"),
+                "delivery_note_photo": "https://via.placeholder.com/600x400/3b82f6/ffffff?text=Delivery+Proof+ISP",
+                "recipient_name": "Mohammed Hassan"
+            },
+            {
+                "company_name": "Emirates Tower Contracting",
+                "contact_person": "Khalid Rahman",
+                "contact_mobile": "971503456789",
+                "course_name": "Working at Heights Safety",
+                "training_date": (datetime.now(timezone.utc) - timedelta(days=1050)).strftime("%Y-%m-%d"),
+                "participants_count": 12,
+                "certificate_numbers": [f"WAH-2022-{str(i).zfill(3)}" for i in range(1, 13)],
+                "dispatch_status": "delivered",
+                "courier_service": "FedEx",
+                "tracking_number": "FDX-UAE-2022-11111",
+                "dispatch_date": (datetime.now(timezone.utc) - timedelta(days=1045)).strftime("%Y-%m-%d"),
+                "expected_delivery_date": (datetime.now(timezone.utc) - timedelta(days=1042)).strftime("%Y-%m-%d"),
+                "actual_delivery_date": (datetime.now(timezone.utc) - timedelta(days=1042)).strftime("%Y-%m-%d"),
+                "delivery_note_photo": "https://via.placeholder.com/600x400/f59e0b/ffffff?text=Delivery+Proof+WAH",
+                "recipient_name": "Khalid Rahman"
+            },
+            {
+                "company_name": "Abu Dhabi Engineering Ltd",
+                "contact_person": "Fatima Al Hashmi",
+                "contact_mobile": "971504567890",
+                "course_name": "Electrical Safety Standards",
+                "training_date": (datetime.now(timezone.utc) - timedelta(days=30)).strftime("%Y-%m-%d"),
+                "participants_count": 8,
+                "certificate_numbers": [f"ESS-2025-{str(i).zfill(3)}" for i in range(1, 9)],
+                "dispatch_status": "in_transit",
+                "courier_service": "Aramex",
+                "tracking_number": "ARM-AE-2025-99999",
+                "dispatch_date": (datetime.now(timezone.utc) - timedelta(days=5)).strftime("%Y-%m-%d"),
+                "expected_delivery_date": (datetime.now(timezone.utc) + timedelta(days=2)).strftime("%Y-%m-%d"),
+                "actual_delivery_date": None,
+                "delivery_note_photo": None,
+                "recipient_name": None
+            },
+            {
+                "company_name": "Saudi Technical Services",
+                "contact_person": "Abdullah Nasser",
+                "contact_mobile": "966501234567",
+                "course_name": "Confined Space Safety",
+                "training_date": (datetime.now(timezone.utc) - timedelta(days=7)).strftime("%Y-%m-%d"),
+                "participants_count": 18,
+                "certificate_numbers": [f"CSS-2025-{str(i).zfill(3)}" for i in range(1, 19)],
+                "dispatch_status": "prepared",
+                "courier_service": None,
+                "tracking_number": None,
+                "dispatch_date": None,
+                "expected_delivery_date": None,
+                "actual_delivery_date": None,
+                "delivery_note_photo": None,
+                "recipient_name": None
+            },
+            {
+                "company_name": "Gulf Safety Training Center",
+                "contact_person": "Rashid Al Maktoum",
+                "contact_mobile": "971505678901",
+                "course_name": "Hazardous Materials Handling",
+                "training_date": (datetime.now(timezone.utc) - timedelta(days=2)).strftime("%Y-%m-%d"),
+                "participants_count": 20,
+                "certificate_numbers": [f"HMH-2025-{str(i).zfill(3)}" for i in range(1, 21)],
+                "dispatch_status": "initiated",
+                "courier_service": None,
+                "tracking_number": None,
+                "dispatch_date": None,
+                "expected_delivery_date": None,
+                "actual_delivery_date": None,
+                "delivery_note_photo": None,
+                "recipient_name": None
+            }
+        ]
+        
+        created_records = []
+        
+        for scenario in scenarios:
+            record_id = str(uuid.uuid4())
+            
+            # 1. Create Training Library Record
+            training_record = {
+                "id": record_id,
+                "company_name": scenario["company_name"],
+                "contact_person": scenario["contact_person"],
+                "contact_mobile": scenario["contact_mobile"],
+                "course_name": scenario["course_name"],
+                "training_date": scenario["training_date"],
+                "training_location": "Dubai Main Branch",
+                "training_mode": "Onsite",
+                "trainer_name": "Khalid Rahman",
+                "participants_count": scenario["participants_count"],
+                "certificate_issued": True,
+                "certificate_numbers": scenario["certificate_numbers"],
+                "created_at": datetime.now(timezone.utc).isoformat(),
+                "updated_at": datetime.now(timezone.utc).isoformat()
+            }
+            await db.training_library.insert_one(training_record)
+            
+            # 2. Create Certificate Tracking Record
+            status_history = [{
+                "status": "initiated",
+                "timestamp": (datetime.now(timezone.utc) - timedelta(days=1)).isoformat(),
+                "updated_by": current_user["name"],
+                "notes": "Certificate dispatch initiated"
+            }]
+            
+            if scenario["dispatch_status"] in ["prepared", "dispatched", "in_transit", "delivered"]:
+                status_history.append({
+                    "status": "prepared",
+                    "timestamp": (datetime.now(timezone.utc) - timedelta(hours=20)).isoformat(),
+                    "updated_by": "Academic Team",
+                    "notes": "Certificates prepared and ready for dispatch"
+                })
+            
+            if scenario["dispatch_status"] in ["dispatched", "in_transit", "delivered"]:
+                dispatch_time = scenario["dispatch_date"] + "T09:00:00Z" if scenario["dispatch_date"] else datetime.now(timezone.utc).isoformat()
+                status_history.append({
+                    "status": "dispatched",
+                    "timestamp": dispatch_time,
+                    "updated_by": "Dispatch Team",
+                    "notes": f"Dispatched via {scenario['courier_service']}"
+                })
+            
+            if scenario["dispatch_status"] in ["in_transit", "delivered"]:
+                transit_time = scenario["dispatch_date"] + "T12:00:00Z" if scenario["dispatch_date"] else datetime.now(timezone.utc).isoformat()
+                status_history.append({
+                    "status": "in_transit",
+                    "timestamp": transit_time,
+                    "updated_by": "System",
+                    "notes": "Package in transit"
+                })
+            
+            if scenario["dispatch_status"] == "delivered":
+                delivery_time = scenario["actual_delivery_date"] + "T15:30:00Z" if scenario["actual_delivery_date"] else datetime.now(timezone.utc).isoformat()
+                status_history.append({
+                    "status": "delivered",
+                    "timestamp": delivery_time,
+                    "updated_by": "Courier",
+                    "notes": f"Delivered to {scenario['recipient_name']}"
+                })
+            
+            certificate_tracking_record = {
+                "id": record_id,
+                "company_name": scenario["company_name"],
+                "contact_person": scenario["contact_person"],
+                "contact_mobile": scenario["contact_mobile"],
+                "course_name": scenario["course_name"],
+                "training_date": scenario["training_date"],
+                "certificate_numbers": scenario["certificate_numbers"],
+                "participants_count": scenario["participants_count"],
+                "status": scenario["dispatch_status"],
+                "status_history": status_history,
+                "dispatch_date": scenario["dispatch_date"],
+                "expected_delivery_date": scenario["expected_delivery_date"],
+                "actual_delivery_date": scenario["actual_delivery_date"],
+                "courier_service": scenario["courier_service"],
+                "tracking_number": scenario["tracking_number"],
+                "delivery_note_photo": scenario["delivery_note_photo"],
+                "recipient_name": scenario["recipient_name"],
+                "recipient_signature": "Signed" if scenario["dispatch_status"] == "delivered" else None,
+                "created_by": current_user["id"],
+                "created_by_name": current_user["name"],
+                "created_at": datetime.now(timezone.utc).isoformat(),
+                "updated_at": datetime.now(timezone.utc).isoformat()
+            }
+            await db.certificate_tracking.insert_one(certificate_tracking_record)
+            
+            created_records.append({
+                "company": scenario["company_name"],
+                "course": scenario["course_name"],
+                "status": scenario["dispatch_status"]
+            })
+        
+        return {
+            "success": True,
+            "message": "Comprehensive certificate demo data created successfully",
+            "records_created": len(created_records),
+            "details": created_records
+        }
+        
+    except Exception as e:
+        logger.error(f"Error creating demo data: {e}")
+        raise HTTPException(status_code=500, detail=f"Failed to create demo data: {str(e)}")
+
+
 # Include the router in the main app
 app.include_router(api_router)
 
