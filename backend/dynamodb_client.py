@@ -62,6 +62,8 @@ tables = {
     # Duplicate detection and lead management
     'duplicate_alerts': dynamodb.Table(f'{TABLE_PREFIX}_duplicate_alerts'),
     'lead_history': dynamodb.Table(f'{TABLE_PREFIX}_lead_history'),
+    # Training Library system
+    'training_library': dynamodb.Table(f'{TABLE_PREFIX}_training_library'),
 }
 
 logger.info(f"✅ DynamoDB client initialized with table prefix: {TABLE_PREFIX}")
