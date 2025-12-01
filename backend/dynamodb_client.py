@@ -497,6 +497,11 @@ class DB:
         self.lead_history = DynamoDBClient('lead_history')
         self.training_library = DynamoDBClient('training_library')
         self.certificate_tracking = DynamoDBClient('certificate_tracking')
+        
+        # Academic Library clients
+        self.academic_library_folders = DynamoDBClient('academic_library_folders')
+        self.academic_library_documents = DynamoDBClient('academic_library_documents')
+        self.academic_library_access = DynamoDBClient('academic_library_access')
 
 
 # Create global db instance
