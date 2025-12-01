@@ -6531,6 +6531,206 @@ async def get_training_library_stats(current_user: dict = Depends(get_current_us
         raise HTTPException(status_code=500, detail="Failed to fetch statistics")
 
 
+# ==================== CERTIFICATE DISPATCH & TRACKING ENDPOINTS ====================
+
+# Get all certificate tracking records
+@api_router.get("/certificate-tracking")
+async def get_certificate_tracking(
+    status: str = None,
+    current_user: dict = Depends(get_current_user)
+):
+    """Get all certificate tracking records with optional status filter"""
+    if current_user["role"] not in ["COO", "MD", "CEO", "Sales Head", "Academic Head"]:
+        raise HTTPException(status_code=403, detail="Access denied")
+    
+    try:
+        query = {}
+        if status:
+            query["status"] = status
+        
+        result = await db.certificate_tracking.find(query)
+        records = await result.sort("created_at", -1).to_list(1000)
+        return records
+    except Exception as e:
+        logger.error(f"Error fetching certificate tracking: {e}")
+        raise HTTPException(status_code=500, detail="Failed to fetch certificate tracking")
+
+
+# Create new certificate tracking record
+@api_router.post("/certificate-tracking")
+async def create_certificate_tracking(record: dict, current_user: dict = Depends(get_current_user)):
+    """Create a new certificate tracking record"""
+    if current_user["role"] not in ["COO", "MD", "CEO", "Sales Head", "Academic Head"]:
+        raise HTTPException(status_code=403, detail="Access denied")
+    
+    try:
+        new_record = {
+            "id": str(uuid.uuid4()),
+            "company_name": record.get("company_name", ""),
+            "contact_person": record.get("contact_person", ""),
+            "contact_mobile": record.get("contact_mobile", ""),
+            "course_name": record.get("course_name", ""),
+            "training_date": record.get("training_date", ""),
+            "certificate_numbers": record.get("certificate_numbers", []),
+            "participants_count": record.get("participants_count", 0),
+            "status": "initiated",  # Initial status
+            "status_history": [{
+                "status": "initiated",
+                "timestamp": datetime.now(timezone.utc).isoformat(),
+                "updated_by": current_user["name"],
+                "notes": "Certificate dispatch initiated"
+            }],
+            "dispatch_date": None,
+            "expected_delivery_date": None,
+            "actual_delivery_date": None,
+            "courier_service": record.get("courier_service", ""),
+            "tracking_number": record.get("tracking_number", ""),
+            "delivery_note_photo": None,
+            "recipient_name": None,
+            "recipient_signature": None,
+            "created_by": current_user["id"],
+            "created_by_name": current_user["name"],
+            "created_at": datetime.now(timezone.utc).isoformat(),
+            "updated_at": datetime.now(timezone.utc).isoformat()
+        }
+        
+        await db.certificate_tracking.insert_one(new_record)
+        
+        return {
+            "message": "Certificate tracking created successfully",
+            "record_id": new_record["id"]
+        }
+    except Exception as e:
+        logger.error(f"Error creating certificate tracking: {e}")
+        raise HTTPException(status_code=500, detail="Failed to create certificate tracking")
+
+
+# Update certificate status
+@api_router.put("/certificate-tracking/{record_id}/status")
+async def update_certificate_status(
+    record_id: str,
+    status_update: dict,
+    current_user: dict = Depends(get_current_user)
+):
+    """Update certificate status with photo upload support"""
+    if current_user["role"] not in ["COO", "MD", "CEO", "Sales Head", "Academic Head"]:
+        raise HTTPException(status_code=403, detail="Access denied")
+    
+    try:
+        record = await db.certificate_tracking.find_one({"id": record_id})
+        if not record:
+            raise HTTPException(status_code=404, detail="Certificate tracking record not found")
+        
+        new_status = status_update.get("status")
+        notes = status_update.get("notes", "")
+        
+        # Valid status transitions
+        valid_statuses = ["initiated", "prepared", "dispatched", "in_transit", "delivered"]
+        if new_status not in valid_statuses:
+            raise HTTPException(status_code=400, detail="Invalid status")
+        
+        # Update status history
+        status_history = record.get("status_history", [])
+        status_history.append({
+            "status": new_status,
+            "timestamp": datetime.now(timezone.utc).isoformat(),
+            "updated_by": current_user["name"],
+            "notes": notes
+        })
+        
+        update_data = {
+            "status": new_status,
+            "status_history": status_history,
+            "updated_at": datetime.now(timezone.utc).isoformat()
+        }
+        
+        # Handle specific status updates
+        if new_status == "dispatched":
+            update_data["dispatch_date"] = status_update.get("dispatch_date", datetime.now(timezone.utc).isoformat())
+            update_data["courier_service"] = status_update.get("courier_service", "")
+            update_data["tracking_number"] = status_update.get("tracking_number", "")
+            update_data["expected_delivery_date"] = status_update.get("expected_delivery_date", "")
+        
+        elif new_status == "delivered":
+            update_data["actual_delivery_date"] = status_update.get("delivery_date", datetime.now(timezone.utc).isoformat())
+            update_data["recipient_name"] = status_update.get("recipient_name", "")
+            update_data["delivery_note_photo"] = status_update.get("delivery_note_photo", "")
+        
+        await db.certificate_tracking.update_one(
+            {"id": record_id},
+            {"$set": update_data}
+        )
+        
+        return {"message": f"Certificate status updated to {new_status}"}
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error updating certificate status: {e}")
+        raise HTTPException(status_code=500, detail="Failed to update certificate status")
+
+
+# Upload delivery note photo
+@api_router.post("/certificate-tracking/{record_id}/delivery-photo")
+async def upload_delivery_photo(
+    record_id: str,
+    photo_data: dict,
+    current_user: dict = Depends(get_current_user)
+):
+    """Upload delivery note photo"""
+    if current_user["role"] not in ["COO", "MD", "CEO", "Sales Head", "Academic Head"]:
+        raise HTTPException(status_code=403, detail="Access denied")
+    
+    try:
+        photo_url = photo_data.get("photo_url", "")
+        recipient_name = photo_data.get("recipient_name", "")
+        
+        await db.certificate_tracking.update_one(
+            {"id": record_id},
+            {"$set": {
+                "delivery_note_photo": photo_url,
+                "recipient_name": recipient_name,
+                "updated_at": datetime.now(timezone.utc).isoformat()
+            }}
+        )
+        
+        return {"message": "Delivery photo uploaded successfully"}
+    except Exception as e:
+        logger.error(f"Error uploading delivery photo: {e}")
+        raise HTTPException(status_code=500, detail="Failed to upload delivery photo")
+
+
+# Get certificate tracking statistics
+@api_router.get("/certificate-tracking/stats/summary")
+async def get_certificate_tracking_stats(current_user: dict = Depends(get_current_user)):
+    """Get certificate tracking statistics"""
+    if current_user["role"] not in ["COO", "MD", "CEO", "Sales Head"]:
+        raise HTTPException(status_code=403, detail="Access denied")
+    
+    try:
+        all_records = await db.certificate_tracking.find({})
+        records = await all_records.to_list(10000)
+        
+        total_certificates = len(records)
+        initiated = len([r for r in records if r.get("status") == "initiated"])
+        prepared = len([r for r in records if r.get("status") == "prepared"])
+        dispatched = len([r for r in records if r.get("status") == "dispatched"])
+        in_transit = len([r for r in records if r.get("status") == "in_transit"])
+        delivered = len([r for r in records if r.get("status") == "delivered"])
+        
+        return {
+            "total_certificates": total_certificates,
+            "initiated": initiated,
+            "prepared": prepared,
+            "dispatched": dispatched,
+            "in_transit": in_transit,
+            "delivered": delivered,
+            "delivery_rate": round((delivered / total_certificates * 100) if total_certificates > 0 else 0, 1)
+        }
+    except Exception as e:
+        logger.error(f"Error fetching certificate stats: {e}")
+        raise HTTPException(status_code=500, detail="Failed to fetch statistics")
+
+
 # Include the router in the main app
 app.include_router(api_router)
 
