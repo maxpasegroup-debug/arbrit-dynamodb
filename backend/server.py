@@ -1221,6 +1221,186 @@ async def get_me(current_user: dict = Depends(get_current_user)):
     }
 
 
+# ====== PIN MANAGEMENT ENDPOINTS ======
+
+@api_router.post("/user/change-pin")
+async def change_own_pin(request: ChangePinRequest, current_user: dict = Depends(get_current_user)):
+    """
+    Allow any user to change their own PIN.
+    Requires current PIN verification.
+    """
+    try:
+        # Get user from database
+        user = await db.users.find_one({"id": current_user["id"]})
+        
+        if not user:
+            raise HTTPException(status_code=404, detail="User not found")
+        
+        # Verify current PIN
+        if not verify_pin(request.current_pin, user["pin_hash"]):
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="Current PIN is incorrect"
+            )
+        
+        # Validate new PIN
+        if len(request.new_pin) != 4 or not request.new_pin.isdigit():
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="PIN must be exactly 4 digits"
+            )
+        
+        # Hash new PIN
+        new_pin_hash = hash_pin(request.new_pin)
+        
+        # Update user in database
+        await db.users.update_one(
+            {"id": current_user["id"]},
+            {
+                "$set": {
+                    "pin_hash": new_pin_hash,
+                    "pin_status": "custom",
+                    "pin_last_changed": datetime.now(timezone.utc).isoformat(),
+                    "pin_change_required": False
+                }
+            }
+        )
+        
+        logger.info(f"User {current_user['name']} successfully changed their PIN")
+        
+        return {"message": "PIN changed successfully", "success": True}
+    
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error changing PIN: {e}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Failed to change PIN"
+        )
+
+
+@api_router.post("/hr/reset-pin/{user_id}")
+async def reset_user_pin(user_id: str, request: ResetPinRequest, current_user: dict = Depends(get_current_user)):
+    """
+    Allow MD/COO to reset PIN for other users.
+    Hierarchy: MD can reset anyone except self. COO can reset anyone except MD and self.
+    """
+    try:
+        # Check if current user has permission
+        if current_user["role"] not in ["MD", "COO"]:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="Access denied. MD or COO role required."
+            )
+        
+        # Get target user
+        target_user = await db.users.find_one({"id": user_id})
+        
+        if not target_user:
+            raise HTTPException(status_code=404, detail="Target user not found")
+        
+        # Enforce hierarchy rules
+        # Users cannot reset their own PIN via this endpoint
+        if target_user["id"] == current_user["id"]:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="Cannot reset your own PIN. Use the change PIN feature instead."
+            )
+        
+        # COO cannot reset MD's PIN
+        if current_user["role"] == "COO" and target_user["role"] == "MD":
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="COO cannot reset MD's PIN"
+            )
+        
+        # Validate new PIN
+        if len(request.new_pin) != 4 or not request.new_pin.isdigit():
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="PIN must be exactly 4 digits"
+            )
+        
+        # Hash new PIN
+        new_pin_hash = hash_pin(request.new_pin)
+        
+        # Determine PIN status
+        pin_status = "temporary" if request.temporary else "custom"
+        
+        # Update target user's PIN
+        await db.users.update_one(
+            {"id": user_id},
+            {
+                "$set": {
+                    "pin_hash": new_pin_hash,
+                    "pin_status": pin_status,
+                    "pin_last_changed": datetime.now(timezone.utc).isoformat(),
+                    "pin_change_required": request.temporary
+                }
+            }
+        )
+        
+        logger.info(f"{current_user['name']} ({current_user['role']}) reset PIN for {target_user['name']}")
+        
+        return {
+            "message": f"PIN reset successfully for {target_user['name']}",
+            "success": True,
+            "pin_status": pin_status
+        }
+    
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error resetting PIN: {e}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Failed to reset PIN"
+        )
+
+
+@api_router.get("/hr/pin-status/all")
+async def get_all_pin_status(current_user: dict = Depends(get_current_user)):
+    """
+    Get PIN status for all users. MD/COO only.
+    """
+    try:
+        # Check permission
+        if current_user["role"] not in ["MD", "COO"]:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="Access denied. MD or COO role required."
+            )
+        
+        # Get all users
+        users_cursor = db.users.find({}, {"_id": 0})
+        users = await users_cursor.to_list(1000)
+        
+        # Format response
+        pin_status_list = []
+        for user in users:
+            pin_status_list.append({
+                "id": user.get("id"),
+                "name": user.get("name"),
+                "mobile": user.get("mobile"),
+                "role": user.get("role"),
+                "pin_status": user.get("pin_status", "default"),
+                "pin_last_changed": user.get("pin_last_changed"),
+                "pin_change_required": user.get("pin_change_required", False)
+            })
+        
+        return pin_status_list
+    
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error fetching PIN status: {e}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Failed to fetch PIN status"
+        )
+
+
 @api_router.get("/dashboard/coo")
 async def coo_dashboard(current_user: dict = Depends(get_current_user)):
     if current_user["role"] != "COO":
