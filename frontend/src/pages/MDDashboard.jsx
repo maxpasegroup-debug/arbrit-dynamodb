@@ -376,6 +376,7 @@ const MDDashboard = () => {
       {/* Modals */}
       <UnifiedLeadForm mode="enhanced" open={leadModalOpen} onOpenChange={setLeadModalOpen} />
       <ExpenseSubmissionModal open={expenseModalOpen} onOpenChange={setExpenseModalOpen} />
+      <ResetPinModal open={resetPinModalOpen} onOpenChange={setResetPinModalOpen} />
     </div>
   );
 };
