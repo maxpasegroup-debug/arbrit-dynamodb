@@ -22,8 +22,7 @@ import TrainingRequests from '@/components/academic/TrainingRequests';
 import AssessmentFormBuilder from '@/components/assessment/AssessmentFormBuilder';
 // Import Training Library Components
 import TrainingLibrary from '@/components/library/TrainingLibrary';
-import CertificationsReports from '@/components/library/CertificationsReports';
-import CertificateDispatchManagement from '@/components/certificates/CertificateDispatchManagement';
+import CertificateManagement from '@/components/certificates/CertificateManagement';
 import { toast } from 'sonner';
 import axios from 'axios';
 
