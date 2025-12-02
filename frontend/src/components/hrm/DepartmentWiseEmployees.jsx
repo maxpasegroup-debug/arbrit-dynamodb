@@ -220,6 +220,40 @@ const DepartmentWiseEmployees = () => {
     return Award;
   };
 
+  const handleAddEmployee = () => {
+    setEditingEmployee(null);
+    setShowAddDialog(true);
+  };
+
+  const handleEditEmployee = (employee) => {
+    setEditingEmployee(employee);
+    setShowAddDialog(true);
+  };
+
+  const handleDeleteEmployee = async (employee) => {
+    if (!window.confirm(`Are you sure you want to delete ${employee.name}?`)) {
+      return;
+    }
+
+    try {
+      const token = localStorage.getItem('token');
+      await axios.delete(`${API}/hrm/employees/${employee.id}`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      toast.success('Employee deleted successfully');
+      fetchEmployees();
+    } catch (error) {
+      console.error('Error deleting employee:', error);
+      toast.error('Failed to delete employee');
+    }
+  };
+
+  const handleDialogClose = () => {
+    setShowAddDialog(false);
+    setEditingEmployee(null);
+    fetchEmployees();
+  };
+
   if (loading && employees.length === 0) {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
