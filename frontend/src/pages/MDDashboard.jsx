@@ -271,10 +271,6 @@ const MDDashboard = () => {
 
       {/* Modals */}
       <UnifiedLeadForm mode="enhanced" open={leadModalOpen} onOpenChange={setLeadModalOpen} />
-      </main>
-
-      {/* Modals */}
-      <UnifiedLeadForm mode="enhanced" open={leadModalOpen} onOpenChange={setLeadModalOpen} />
       <ExpenseSubmissionModal open={expenseModalOpen} onOpenChange={setExpenseModalOpen} />
     </div>
   );
