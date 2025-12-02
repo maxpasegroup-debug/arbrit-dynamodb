@@ -44,7 +44,9 @@ const CompletedTrainings = () => {
       });
     } catch (error) {
       console.error('Error fetching completed trainings:', error);
-      toast.error('Failed to load completed trainings');
+      // Don't show error toast - just show empty state
+      setTrainings([]);
+      setStats({ total: 0, thisMonth: 0, certificates: 0 });
     } finally {
       setLoading(false);
     }
