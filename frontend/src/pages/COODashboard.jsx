@@ -4,7 +4,7 @@ import {
   LogOut, TrendingUp, Users, GraduationCap, AlertTriangle, Lightbulb, 
   Building2, BarChart4, Shield, Plus, DollarSign, Briefcase, Award, 
   Package, FileText, Trash2, Calendar, UserCheck, ClipboardCheck, 
-  Receipt, BookOpen, LayoutDashboard, FileCheck, MessageSquare
+  Receipt, BookOpen, LayoutDashboard, FileCheck, MessageSquare, Key
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
