@@ -45,7 +45,7 @@ def create_demo_data():
             'description': 'First aid procedures and emergency protocols'
         },
         {
-            'folder_id': str(uuid4()),
+            'id': str(uuid4()),
             'name': 'Fire Safety & Prevention',
             'parent_id': None,
             'created_at': datetime.utcnow().isoformat(),
@@ -54,7 +54,7 @@ def create_demo_data():
             'description': 'Fire safety guidelines and prevention measures'
         },
         {
-            'folder_id': str(uuid4()),
+            'id': str(uuid4()),
             'name': 'Construction Safety',
             'parent_id': None,
             'created_at': datetime.utcnow().isoformat(),
@@ -63,7 +63,7 @@ def create_demo_data():
             'description': 'Construction site safety protocols and guidelines'
         },
         {
-            'folder_id': str(uuid4()),
+            'id': str(uuid4()),
             'name': 'Trainer Resources',
             'parent_id': None,
             'created_at': datetime.utcnow().isoformat(),
@@ -83,7 +83,7 @@ def create_demo_data():
     documents_data = [
         # Safety Training Materials
         {
-            'document_id': str(uuid4()),
+            'id': str(uuid4()),
             'name': 'OSHA Safety Standards Guide.pdf',
             'folder_id': folders_data[0]['folder_id'],
             'file_path': 'https://example.com/docs/osha-standards.pdf',
@@ -95,7 +95,7 @@ def create_demo_data():
             'version': '1.0'
         },
         {
-            'document_id': str(uuid4()),
+            'id': str(uuid4()),
             'name': 'Workplace Hazard Identification.pptx',
             'folder_id': folders_data[0]['folder_id'],
             'file_path': 'https://example.com/docs/hazard-identification.pptx',
@@ -107,7 +107,7 @@ def create_demo_data():
             'version': '2.1'
         },
         {
-            'document_id': str(uuid4()),
+            'id': str(uuid4()),
             'name': 'Safety Equipment Checklist.xlsx',
             'folder_id': folders_data[0]['folder_id'],
             'file_path': 'https://example.com/docs/safety-equipment.xlsx',
@@ -121,7 +121,7 @@ def create_demo_data():
         
         # First Aid & Emergency Response
         {
-            'document_id': str(uuid4()),
+            'id': str(uuid4()),
             'name': 'CPR Training Manual.pdf',
             'folder_id': folders_data[1]['folder_id'],
             'file_path': 'https://example.com/docs/cpr-manual.pdf',
@@ -133,7 +133,7 @@ def create_demo_data():
             'version': '3.0'
         },
         {
-            'document_id': str(uuid4()),
+            'id': str(uuid4()),
             'name': 'Emergency Response Plan Template.docx',
             'folder_id': folders_data[1]['folder_id'],
             'file_path': 'https://example.com/docs/emergency-response.docx',
@@ -145,7 +145,7 @@ def create_demo_data():
             'version': '1.2'
         },
         {
-            'document_id': str(uuid4()),
+            'id': str(uuid4()),
             'name': 'First Aid Kit Contents Guide.pdf',
             'folder_id': folders_data[1]['folder_id'],
             'file_path': 'https://example.com/docs/first-aid-kit.pdf',
@@ -159,7 +159,7 @@ def create_demo_data():
         
         # Fire Safety & Prevention
         {
-            'document_id': str(uuid4()),
+            'id': str(uuid4()),
             'name': 'Fire Extinguisher Types and Usage.pdf',
             'folder_id': folders_data[2]['folder_id'],
             'file_path': 'https://example.com/docs/fire-extinguisher.pdf',
@@ -171,7 +171,7 @@ def create_demo_data():
             'version': '1.8'
         },
         {
-            'document_id': str(uuid4()),
+            'id': str(uuid4()),
             'name': 'Fire Evacuation Procedures.pptx',
             'folder_id': folders_data[2]['folder_id'],
             'file_path': 'https://example.com/docs/fire-evacuation.pptx',
@@ -185,7 +185,7 @@ def create_demo_data():
         
         # Construction Safety
         {
-            'document_id': str(uuid4()),
+            'id': str(uuid4()),
             'name': 'Scaffolding Safety Standards.pdf',
             'folder_id': folders_data[3]['folder_id'],
             'file_path': 'https://example.com/docs/scaffolding-safety.pdf',
@@ -197,7 +197,7 @@ def create_demo_data():
             'version': '1.4'
         },
         {
-            'document_id': str(uuid4()),
+            'id': str(uuid4()),
             'name': 'Fall Protection Guidelines.pdf',
             'folder_id': folders_data[3]['folder_id'],
             'file_path': 'https://example.com/docs/fall-protection.pdf',
@@ -209,7 +209,7 @@ def create_demo_data():
             'version': '2.0'
         },
         {
-            'document_id': str(uuid4()),
+            'id': str(uuid4()),
             'name': 'Heavy Equipment Operation Safety.pptx',
             'folder_id': folders_data[3]['folder_id'],
             'file_path': 'https://example.com/docs/equipment-safety.pptx',
@@ -223,7 +223,7 @@ def create_demo_data():
         
         # Trainer Resources
         {
-            'document_id': str(uuid4()),
+            'id': str(uuid4()),
             'name': 'Effective Training Techniques.pdf',
             'folder_id': folders_data[4]['folder_id'],
             'file_path': 'https://example.com/docs/training-techniques.pdf',
@@ -235,7 +235,7 @@ def create_demo_data():
             'version': '1.6'
         },
         {
-            'document_id': str(uuid4()),
+            'id': str(uuid4()),
             'name': 'Assessment and Evaluation Forms.xlsx',
             'folder_id': folders_data[4]['folder_id'],
             'file_path': 'https://example.com/docs/assessment-forms.xlsx',
