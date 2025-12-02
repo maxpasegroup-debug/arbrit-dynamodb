@@ -927,6 +927,52 @@ const CertificateDispatchManagement = () => {
           </DialogContent>
         </Dialog>
       )}
+
+      {/* Delivery Note Modal */}
+      <Dialog open={deliveryNoteModalOpen} onOpenChange={setDeliveryNoteModalOpen}>
+        <DialogContent className="max-w-3xl bg-slate-900 border-white/10">
+          <DialogHeader>
+            <DialogTitle className="text-white flex items-center gap-2">
+              <Camera className="w-5 h-5 text-green-400" />
+              Delivery Note / Proof of Delivery
+            </DialogTitle>
+          </DialogHeader>
+          <div className="mt-4">
+            {selectedDeliveryNote ? (
+              <div className="space-y-4">
+                <img 
+                  src={selectedDeliveryNote} 
+                  alt="Delivery Note" 
+                  className="w-full rounded-lg border border-white/10"
+                />
+                <div className="flex gap-3">
+                  <Button
+                    onClick={() => window.open(selectedDeliveryNote, '_blank')}
+                    className="flex-1 bg-blue-600 hover:bg-blue-700"
+                  >
+                    <Eye className="w-4 h-4 mr-2" />
+                    Open in New Tab
+                  </Button>
+                  <Button
+                    onClick={() => {
+                      const link = document.createElement('a');
+                      link.href = selectedDeliveryNote;
+                      link.download = 'delivery_note.jpg';
+                      link.click();
+                    }}
+                    className="flex-1 bg-green-600 hover:bg-green-700"
+                  >
+                    <Upload className="w-4 h-4 mr-2" />
+                    Download
+                  </Button>
+                </div>
+              </div>
+            ) : (
+              <p className="text-center text-slate-400 py-8">No delivery note available</p>
+            )}
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
