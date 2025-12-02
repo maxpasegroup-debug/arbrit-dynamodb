@@ -125,40 +125,48 @@ const UnifiedLeadForm = ({
     }
   };
 
+  // Intelligent Lead Scoring Algorithm (Hybrid Approach) - From EnhancedLeadForm
   const calculateLeadScore = (data) => {
-    let score = 50; // Base score
+    let points = 50; // Start at 50 (Warm baseline)
     
-    // Value-based scoring
+    // Factor 1: Urgency (30 points range)
+    if (data.urgency === 'high') points += 30;
+    else if (data.urgency === 'medium') points += 10;
+    else if (data.urgency === 'low') points -= 20;
+    
+    // Factor 2: Deal Size (20 points range)
     const value = parseFloat(data.lead_value) || 0;
-    if (value > 50000) score += 30;
-    else if (value > 20000) score += 20;
-    else if (value > 10000) score += 10;
+    if (value > 50000) points += 20;
+    else if (value > 20000) points += 10;
+    else if (value < 5000) points -= 10;
     
-    // Trainee count
+    // Factor 3: Number of Trainees (20 points range)
     const trainees = parseInt(data.num_trainees) || 0;
-    if (trainees > 20) score += 15;
-    else if (trainees > 10) score += 10;
-    else if (trainees > 5) score += 5;
+    if (trainees >= 20) points += 20;
+    else if (trainees >= 10) points += 10;
+    else if (trainees < 5) points -= 10;
     
-    // Urgency
-    if (data.urgency === 'high') score += 15;
-    else if (data.urgency === 'medium') score += 5;
+    // Factor 4: Lead Category (30 points range)
+    if (data.lead_category === 'Hot') points += 30;
+    else if (data.lead_category === 'Warm') points += 10;
+    else if (data.lead_category === 'Cold') points -= 20;
+    else if (data.lead_category === 'Qualified') points += 15;
     
-    // Training date proximity
-    if (data.training_date) {
-      const today = new Date();
-      const trainingDate = new Date(data.training_date);
-      const daysUntil = Math.ceil((trainingDate - today) / (1000 * 60 * 60 * 24));
-      if (daysUntil <= 7) score += 20;
-      else if (daysUntil <= 30) score += 10;
-    }
+    // Factor 5: Lead Source (15 points range)
+    if (data.source === 'Referral') points += 15;
+    else if (data.source === 'Walk-in') points += 10;
+    else if (data.source === 'Website') points += 5;
+    else if (data.source === 'Cold Call') points -= 5;
     
-    // Company details bonus
-    if (data.company_name) score += 5;
-    if (data.website) score += 5;
-    if (data.employee_count) score += 5;
+    // Factor 6: Company Size (10 points range)
+    if (data.employee_count === '500+') points += 10;
+    else if (data.employee_count === '201-500') points += 5;
+    else if (data.employee_count === '1-10') points -= 5;
     
-    return Math.min(score, 100);
+    // Convert points to Hot/Warm/Cold
+    if (points >= 80) return 'hot';
+    if (points <= 35) return 'cold';
+    return 'warm';
   };
 
   const handleCourseChange = (courseId) => {
