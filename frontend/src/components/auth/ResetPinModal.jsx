@@ -109,7 +109,7 @@ const ResetPinModal = ({ open, onOpenChange }) => {
               </Label>
               <Input
                 type="password"
-                maxLength="6"
+                maxLength="4"
                 value={pinData.currentPin}
                 onChange={(e) => setPinData({ ...pinData, currentPin: e.target.value.replace(/\D/g, '') })}
                 placeholder="Enter current PIN"
