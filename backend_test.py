@@ -162,18 +162,25 @@ class ArbritBackendHealthTester:
             data={"mobile": "9876543210"}
         )
 
-    def test_get_current_user(self):
-        """Test getting current user info"""
+    def test_auth_me_endpoint(self):
+        """Test /api/auth/me endpoint with MD token"""
         if not self.token:
             print("❌ Skipping - No token available")
             return False, {}
         
-        return self.run_test(
-            "Get Current User",
+        success, response = self.run_test(
+            "Get Current User (/api/auth/me)",
             "GET",
             "auth/me",
             200
         )
+        
+        if success:
+            print(f"   Authenticated User: {response.get('name', 'Unknown')}")
+            print(f"   Role: {response.get('role', 'Unknown')}")
+            print(f"   Mobile: {response.get('mobile', 'Unknown')}")
+        
+        return success, response
 
     def test_get_current_user_no_token(self):
         """Test getting current user without token"""
