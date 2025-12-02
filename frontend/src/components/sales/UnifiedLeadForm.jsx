@@ -213,66 +213,49 @@ const UnifiedLeadForm = ({
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // Validation
+    if (leadType === 'company' && !formData.company_name) {
+      toast.error('Company name is required');
+      return;
+    }
+    if (leadType === 'company' && !formData.contact_person) {
+      toast.error('Contact person is required');
+      return;
+    }
+    if (leadType === 'individual' && !formData.client_name) {
+      toast.error('Client name is required');
+      return;
+    }
+    if (!formData.course_id) {
+      toast.error('Please select a course');
+      return;
+    }
+
     setLoading(true);
 
     try {
       const token = localStorage.getItem('token');
-      const endpoint = existingLead ? 
-        `${API}/sales/leads/${existingLead.id}` : 
-        `${API}/sales/leads`;
-      
-      const method = existingLead ? 'put' : 'post';
-      
-      await axios[method](endpoint, formData, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
+      const submitData = {
+        ...formData,
+        client_name: leadType === 'company' ? formData.company_name : formData.client_name,
+        lead_type: leadType
+      };
 
-      toast.success(existingLead ? 'Lead updated successfully!' : 'Lead created successfully!');
-      
-      // Reset form
-      setFormData({
-        lead_type: 'company',
-        source: 'Self',
-        lead_owner: '',
-        lead_category: '',
-        company_name: '',
-        contact_person: '',
-        contact_designation: '',
-        phone: '',
-        contact_mobile: '',
-        contact_email: '',
-        website: '',
-        industry: '',
-        employee_count: '',
-        client_name: '',
-        client_mobile: '',
-        client_email: '',
-        first_name: '',
-        last_name: '',
-        training_service_details: '',
-        product_services_required: '',
-        course_id: '',
-        course_name: '',
-        num_trainees: 1,
-        training_site: '',
-        training_location: '',
-        training_date: '',
-        requirement: '',
-        urgency: 'medium',
-        payment_mode: '',
-        payment_terms: '',
-        remarks: '',
-        description: '',
-        next_followup_date: '',
-        branch: '',
-        lead_value: '0',
-        lead_score: 0,
-        status: 'New',
-        field_sales_type: ''
-      });
-      
-      setLeadType('company');
-      
+      if (existingLead) {
+        await axios.put(`${API}/sales-head/leads/${existingLead.id}`, submitData, {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+        toast.success('Lead updated successfully!');
+      } else {
+        // Use different endpoints based on mode
+        const endpoint = mode === 'self' ? `${API}/sales/self-lead` : `${API}/sales-head/leads`;
+        await axios.post(endpoint, submitData, {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+        toast.success('Lead created successfully!');
+      }
+
       // Close dialog based on mode
       if (mode === 'enhanced' && onOpenChange) {
         onOpenChange(false);
