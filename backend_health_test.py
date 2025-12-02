@@ -267,10 +267,9 @@ class ArbritBackendHealthTester:
         # Try different possible certificate endpoints
         endpoints_to_try = [
             "certificates/aging-alerts",
-            "certificates/alerts", 
+            "academic/certificate-requests",
             "hrm/employee-documents/alerts/all",
-            "hrm/company-documents/alerts/all",
-            "academic/certificates/alerts"
+            "hrm/company-documents/alerts/all"
         ]
         
         success = False
