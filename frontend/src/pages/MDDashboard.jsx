@@ -60,6 +60,7 @@ const MDDashboard = () => {
   const [dashboardData, setDashboardData] = useState(null);
   const [leadModalOpen, setLeadModalOpen] = useState(false);
   const [expenseModalOpen, setExpenseModalOpen] = useState(false);
+  const [controlPanelOpen, setControlPanelOpen] = useState(false);
 
   useEffect(() => {
     const storedUser = localStorage.getItem('user');
