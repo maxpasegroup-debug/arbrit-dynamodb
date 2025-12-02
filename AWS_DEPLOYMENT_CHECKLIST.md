@@ -33,7 +33,7 @@ Your AWS deployment MUST have these environment variables:
 ```bash
 # Required - DynamoDB Configuration
 AWS_REGION=us-east-1
-AWS_ACCESS_KEY_ID=AKIAXUYGPVORP4JKXL37
+AWS_ACCESS_KEY_ID=YOUR_AWS_ACCESS_KEY_HERE
 AWS_SECRET_ACCESS_KEY=RxbQGlvjqx90TnQ9mDg1taqw2nA94WXjYIWs0O+g
 DYNAMODB_TABLE_PREFIX=arbrit_workdesk
 
@@ -196,7 +196,7 @@ If deployment fails, you can rollback by:
 
 ## AWS IAM Permissions Required
 
-Your AWS user (AKIAXUYGPVORP4JKXL37) needs these DynamoDB permissions:
+Your AWS user (YOUR_AWS_ACCESS_KEY_HERE) needs these DynamoDB permissions:
 - `dynamodb:GetItem`
 - `dynamodb:PutItem`
 - `dynamodb:UpdateItem`
