@@ -1,0 +1,653 @@
+import { useState, useEffect } from 'react';
+import { Building2, User, Plus, X } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Badge } from '@/components/ui/badge';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Textarea } from '@/components/ui/textarea';
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { toast } from 'sonner';
+import axios from 'axios';
+
+const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
+const API = `${BACKEND_URL}/api`;
+
+/**
+ * UnifiedLeadForm - Single component for both Enhanced and Self lead creation
+ * 
+ * @param {Object} props
+ * @param {boolean} props.open - Dialog open state (for enhanced mode)
+ * @param {Function} props.onOpenChange - Dialog state handler (for enhanced mode)
+ * @param {Function} props.onSuccess - Success callback
+ * @param {Object} props.existingLead - Existing lead data for edit mode
+ * @param {boolean} props.showFieldType - Show field sales type selector (for self mode)
+ * @param {string} props.mode - 'enhanced' or 'self' (determines UI style)
+ */
+const UnifiedLeadForm = ({ 
+  open, 
+  onOpenChange, 
+  onSuccess, 
+  existingLead = null,
+  showFieldType = false,
+  mode = 'enhanced' // 'enhanced' or 'self'
+}) => {
+  const [courses, setCourses] = useState([]);
+  const [leadType, setLeadType] = useState('company');
+  const [loading, setLoading] = useState(false);
+  const [showDialog, setShowDialog] = useState(false);
+  
+  // Unified form data state
+  const [formData, setFormData] = useState({
+    lead_type: 'company',
+    source: 'Self',
+    lead_owner: '',
+    lead_category: '',
+    // Company fields
+    company_name: '',
+    contact_person: '',
+    contact_designation: '',
+    phone: '',
+    contact_mobile: '',
+    contact_email: '',
+    website: '',
+    industry: '',
+    employee_count: '',
+    // Individual fields
+    client_name: '',
+    client_mobile: '',
+    client_email: '',
+    first_name: '',
+    last_name: '',
+    // Training details
+    training_service_details: '',
+    product_services_required: '',
+    course_id: '',
+    course_name: '',
+    num_trainees: 1,
+    training_site: '',
+    training_location: '',
+    training_date: '',
+    requirement: '',
+    urgency: 'medium',
+    payment_mode: '',
+    payment_terms: '',
+    remarks: '',
+    description: '',
+    next_followup_date: '',
+    branch: '',
+    lead_value: '0',
+    lead_score: 0,
+    status: 'New',
+    field_sales_type: ''
+  });
+
+  useEffect(() => {
+    fetchCourses();
+    
+    // Auto-populate user data
+    const user = JSON.parse(localStorage.getItem('user') || '{}');
+    if (user.name) {
+      setFormData(prev => ({
+        ...prev,
+        lead_owner: user.name,
+        branch: user.branch || ''
+      }));
+    }
+
+    // Populate existing lead data if editing
+    if (existingLead) {
+      setFormData(prev => ({
+        ...prev,
+        ...existingLead
+      }));
+      setLeadType(existingLead.lead_type || 'company');
+    }
+  }, [existingLead]);
+
+  useEffect(() => {
+    // Recalculate lead score when relevant fields change
+    if (formData.course_id || formData.num_trainees || formData.lead_value) {
+      const newScore = calculateLeadScore(formData);
+      setFormData(prev => ({ ...prev, lead_score: newScore }));
+    }
+  }, [formData.course_id, formData.num_trainees, formData.lead_value, formData.urgency, formData.training_date]);
+
+  const fetchCourses = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      const response = await axios.get(`${API}/courses`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      setCourses(response.data || []);
+    } catch (error) {
+      console.error('Error fetching courses:', error);
+    }
+  };
+
+  const calculateLeadScore = (data) => {
+    let score = 50; // Base score
+    
+    // Value-based scoring
+    const value = parseFloat(data.lead_value) || 0;
+    if (value > 50000) score += 30;
+    else if (value > 20000) score += 20;
+    else if (value > 10000) score += 10;
+    
+    // Trainee count
+    const trainees = parseInt(data.num_trainees) || 0;
+    if (trainees > 20) score += 15;
+    else if (trainees > 10) score += 10;
+    else if (trainees > 5) score += 5;
+    
+    // Urgency
+    if (data.urgency === 'high') score += 15;
+    else if (data.urgency === 'medium') score += 5;
+    
+    // Training date proximity
+    if (data.training_date) {
+      const today = new Date();
+      const trainingDate = new Date(data.training_date);
+      const daysUntil = Math.ceil((trainingDate - today) / (1000 * 60 * 60 * 24));
+      if (daysUntil <= 7) score += 20;
+      else if (daysUntil <= 30) score += 10;
+    }
+    
+    // Company details bonus
+    if (data.company_name) score += 5;
+    if (data.website) score += 5;
+    if (data.employee_count) score += 5;
+    
+    return Math.min(score, 100);
+  };
+
+  const handleCourseChange = (courseId) => {
+    const course = courses.find(c => c.id === courseId);
+    if (course) {
+      const numTrainees = parseInt(formData.num_trainees) || 1;
+      const baseFee = parseFloat(course.base_fee) || 0;
+      
+      let pricePerTrainee = baseFee;
+      if (numTrainees >= 20) pricePerTrainee = baseFee * 0.75;
+      else if (numTrainees >= 10) pricePerTrainee = baseFee * 0.85;
+      else if (numTrainees >= 5) pricePerTrainee = baseFee * 0.90;
+      
+      const leadValue = (pricePerTrainee * numTrainees).toFixed(0);
+      
+      setFormData(prev => ({
+        ...prev,
+        course_id: courseId,
+        course_name: course.course_name,
+        lead_value: leadValue
+      }));
+    }
+  };
+
+  const handleTraineesChange = (value) => {
+    const numTrainees = parseInt(value) || 1;
+    setFormData(prev => ({ ...prev, num_trainees: numTrainees }));
+    
+    // Recalculate lead value if course is selected
+    if (formData.course_id) {
+      handleCourseChange(formData.course_id);
+    }
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+
+    try {
+      const token = localStorage.getItem('token');
+      const endpoint = existingLead ? 
+        `${API}/sales/leads/${existingLead.id}` : 
+        `${API}/sales/leads`;
+      
+      const method = existingLead ? 'put' : 'post';
+      
+      await axios[method](endpoint, formData, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+
+      toast.success(existingLead ? 'Lead updated successfully!' : 'Lead created successfully!');
+      
+      // Reset form
+      setFormData({
+        lead_type: 'company',
+        source: 'Self',
+        lead_owner: '',
+        lead_category: '',
+        company_name: '',
+        contact_person: '',
+        contact_designation: '',
+        phone: '',
+        contact_mobile: '',
+        contact_email: '',
+        website: '',
+        industry: '',
+        employee_count: '',
+        client_name: '',
+        client_mobile: '',
+        client_email: '',
+        first_name: '',
+        last_name: '',
+        training_service_details: '',
+        product_services_required: '',
+        course_id: '',
+        course_name: '',
+        num_trainees: 1,
+        training_site: '',
+        training_location: '',
+        training_date: '',
+        requirement: '',
+        urgency: 'medium',
+        payment_mode: '',
+        payment_terms: '',
+        remarks: '',
+        description: '',
+        next_followup_date: '',
+        branch: '',
+        lead_value: '0',
+        lead_score: 0,
+        status: 'New',
+        field_sales_type: ''
+      });
+      
+      setLeadType('company');
+      
+      // Close dialog based on mode
+      if (mode === 'enhanced' && onOpenChange) {
+        onOpenChange(false);
+      } else if (mode === 'self') {
+        setShowDialog(false);
+      }
+      
+      if (onSuccess) onSuccess();
+    } catch (error) {
+      console.error('Error saving lead:', error);
+      toast.error(error.response?.data?.detail || 'Failed to save lead');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Form content (same for both modes)
+  const formContent = (
+    <form onSubmit={handleSubmit} className="space-y-6">
+      {/* Lead Type Selector */}
+      <div className="flex gap-2 p-1 bg-white/5 rounded-lg">
+        <Button
+          type="button"
+          onClick={() => {
+            setLeadType('company');
+            setFormData(prev => ({ ...prev, lead_type: 'company' }));
+          }}
+          className={`flex-1 ${
+            leadType === 'company'
+              ? 'bg-blue-600 text-white'
+              : 'bg-transparent text-slate-400 hover:text-white'
+          }`}
+        >
+          <Building2 className="w-4 h-4 mr-2" />
+          Company Lead
+        </Button>
+        <Button
+          type="button"
+          onClick={() => {
+            setLeadType('individual');
+            setFormData(prev => ({ ...prev, lead_type: 'individual' }));
+          }}
+          className={`flex-1 ${
+            leadType === 'individual'
+              ? 'bg-blue-600 text-white'
+              : 'bg-transparent text-slate-400 hover:text-white'
+          }`}
+        >
+          <User className="w-4 h-4 mr-2" />
+          Individual Lead
+        </Button>
+      </div>
+
+      {/* Field Sales Type (Self mode only) */}
+      {showFieldType && mode === 'self' && (
+        <div>
+          <Label className="text-white">Field Sales Type</Label>
+          <Select
+            value={formData.field_sales_type}
+            onValueChange={(val) => setFormData(prev => ({ ...prev, field_sales_type: val }))}
+          >
+            <SelectTrigger className="bg-slate-800 border-white/10 text-white">
+              <SelectValue placeholder="Select type" />
+            </SelectTrigger>
+            <SelectContent className="bg-slate-800 border-white/10">
+              <SelectItem value="new">New Lead</SelectItem>
+              <SelectItem value="followup">Follow-up</SelectItem>
+              <SelectItem value="conversion">Conversion</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+      )}
+
+      {/* Company Lead Fields */}
+      {leadType === 'company' && (
+        <div className="space-y-4">
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <Label className="text-white">Company Name *</Label>
+              <Input
+                value={formData.company_name}
+                onChange={(e) => setFormData(prev => ({ ...prev, company_name: e.target.value }))}
+                placeholder="Enter company name"
+                required
+                className="bg-slate-800 border-white/10 text-white"
+              />
+            </div>
+            <div>
+              <Label className="text-white">Industry</Label>
+              <Input
+                value={formData.industry}
+                onChange={(e) => setFormData(prev => ({ ...prev, industry: e.target.value }))}
+                placeholder="e.g., Construction, Oil & Gas"
+                className="bg-slate-800 border-white/10 text-white"
+              />
+            </div>
+          </div>
+
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <Label className="text-white">Contact Person *</Label>
+              <Input
+                value={formData.contact_person}
+                onChange={(e) => setFormData(prev => ({ ...prev, contact_person: e.target.value }))}
+                placeholder="Enter name"
+                required
+                className="bg-slate-800 border-white/10 text-white"
+              />
+            </div>
+            <div>
+              <Label className="text-white">Designation</Label>
+              <Input
+                value={formData.contact_designation}
+                onChange={(e) => setFormData(prev => ({ ...prev, contact_designation: e.target.value }))}
+                placeholder="e.g., HR Manager"
+                className="bg-slate-800 border-white/10 text-white"
+              />
+            </div>
+          </div>
+
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <Label className="text-white">Phone *</Label>
+              <Input
+                value={formData.phone}
+                onChange={(e) => setFormData(prev => ({ ...prev, phone: e.target.value }))}
+                placeholder="971XXXXXXXXX"
+                required
+                className="bg-slate-800 border-white/10 text-white"
+              />
+            </div>
+            <div>
+              <Label className="text-white">Email</Label>
+              <Input
+                type="email"
+                value={formData.contact_email}
+                onChange={(e) => setFormData(prev => ({ ...prev, contact_email: e.target.value }))}
+                placeholder="contact@company.com"
+                className="bg-slate-800 border-white/10 text-white"
+              />
+            </div>
+          </div>
+
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <Label className="text-white">Website</Label>
+              <Input
+                value={formData.website}
+                onChange={(e) => setFormData(prev => ({ ...prev, website: e.target.value }))}
+                placeholder="www.company.com"
+                className="bg-slate-800 border-white/10 text-white"
+              />
+            </div>
+            <div>
+              <Label className="text-white">Employee Count</Label>
+              <Input
+                type="number"
+                value={formData.employee_count}
+                onChange={(e) => setFormData(prev => ({ ...prev, employee_count: e.target.value }))}
+                placeholder="Number of employees"
+                className="bg-slate-800 border-white/10 text-white"
+              />
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Individual Lead Fields */}
+      {leadType === 'individual' && (
+        <div className="space-y-4">
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <Label className="text-white">Client Name *</Label>
+              <Input
+                value={formData.client_name}
+                onChange={(e) => setFormData(prev => ({ ...prev, client_name: e.target.value }))}
+                placeholder="Enter full name"
+                required
+                className="bg-slate-800 border-white/10 text-white"
+              />
+            </div>
+            <div>
+              <Label className="text-white">Mobile *</Label>
+              <Input
+                value={formData.client_mobile}
+                onChange={(e) => setFormData(prev => ({ ...prev, client_mobile: e.target.value }))}
+                placeholder="971XXXXXXXXX"
+                required
+                className="bg-slate-800 border-white/10 text-white"
+              />
+            </div>
+          </div>
+          <div>
+            <Label className="text-white">Email</Label>
+            <Input
+              type="email"
+              value={formData.client_email}
+              onChange={(e) => setFormData(prev => ({ ...prev, client_email: e.target.value }))}
+              placeholder="client@email.com"
+              className="bg-slate-800 border-white/10 text-white"
+            />
+          </div>
+        </div>
+      )}
+
+      {/* Training Details (Common) */}
+      <div className="space-y-4">
+        <h4 className="text-white font-semibold">Training Details</h4>
+        
+        <div className="grid grid-cols-2 gap-4">
+          <div>
+            <Label className="text-white">Course *</Label>
+            <Select
+              value={formData.course_id}
+              onValueChange={handleCourseChange}
+            >
+              <SelectTrigger className="bg-slate-800 border-white/10 text-white">
+                <SelectValue placeholder="Select course" />
+              </SelectTrigger>
+              <SelectContent className="bg-slate-800 border-white/10 max-h-60">
+                {courses.map((course) => (
+                  <SelectItem key={course.id} value={course.id}>
+                    {course.course_name}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+          <div>
+            <Label className="text-white">Number of Trainees *</Label>
+            <Input
+              type="number"
+              value={formData.num_trainees}
+              onChange={(e) => handleTraineesChange(e.target.value)}
+              min="1"
+              required
+              className="bg-slate-800 border-white/10 text-white"
+            />
+          </div>
+        </div>
+
+        <div className="grid grid-cols-2 gap-4">
+          <div>
+            <Label className="text-white">Training Site</Label>
+            <Select
+              value={formData.training_site}
+              onValueChange={(val) => setFormData(prev => ({ ...prev, training_site: val }))}
+            >
+              <SelectTrigger className="bg-slate-800 border-white/10 text-white">
+                <SelectValue placeholder="Select site" />
+              </SelectTrigger>
+              <SelectContent className="bg-slate-800 border-white/10">
+                <SelectItem value="onsite">Onsite</SelectItem>
+                <SelectItem value="online">Online</SelectItem>
+                <SelectItem value="hybrid">Hybrid</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <div>
+            <Label className="text-white">Training Location</Label>
+            <Input
+              value={formData.training_location}
+              onChange={(e) => setFormData(prev => ({ ...prev, training_location: e.target.value }))}
+              placeholder="Enter location"
+              className="bg-slate-800 border-white/10 text-white"
+            />
+          </div>
+        </div>
+
+        <div className="grid grid-cols-2 gap-4">
+          <div>
+            <Label className="text-white">Preferred Training Date</Label>
+            <Input
+              type="date"
+              value={formData.training_date}
+              onChange={(e) => setFormData(prev => ({ ...prev, training_date: e.target.value }))}
+              className="bg-slate-800 border-white/10 text-white"
+            />
+          </div>
+          <div>
+            <Label className="text-white">Urgency</Label>
+            <Select
+              value={formData.urgency}
+              onValueChange={(val) => setFormData(prev => ({ ...prev, urgency: val }))}
+            >
+              <SelectTrigger className="bg-slate-800 border-white/10 text-white">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent className="bg-slate-800 border-white/10">
+                <SelectItem value="low">Low</SelectItem>
+                <SelectItem value="medium">Medium</SelectItem>
+                <SelectItem value="high">High</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+        </div>
+
+        <div>
+          <Label className="text-white">Requirements / Notes</Label>
+          <Textarea
+            value={formData.requirement}
+            onChange={(e) => setFormData(prev => ({ ...prev, requirement: e.target.value }))}
+            placeholder="Enter any specific requirements or notes"
+            className="bg-slate-800 border-white/10 text-white"
+            rows={3}
+          />
+        </div>
+      </div>
+
+      {/* Lead Score Display */}
+      <div className="bg-blue-500/10 border border-blue-400/30 rounded-lg p-4">
+        <div className="flex items-center justify-between">
+          <span className="text-white font-semibold">Lead Score:</span>
+          <Badge className={`text-lg ${
+            formData.lead_score >= 80 ? 'bg-green-500/20 text-green-300 border-green-400/50' :
+            formData.lead_score >= 60 ? 'bg-yellow-500/20 text-yellow-300 border-yellow-400/50' :
+            'bg-red-500/20 text-red-300 border-red-400/50'
+          }`}>
+            {formData.lead_score}/100
+          </Badge>
+        </div>
+        <p className="text-xs text-slate-400 mt-1">
+          Estimated Value: AED {formData.lead_value || '0'}
+        </p>
+      </div>
+
+      {/* Submit Button */}
+      <div className="flex justify-end gap-3">
+        <Button
+          type="button"
+          variant="outline"
+          onClick={() => {
+            if (mode === 'enhanced' && onOpenChange) onOpenChange(false);
+            else if (mode === 'self') setShowDialog(false);
+          }}
+          className="border-white/10"
+        >
+          Cancel
+        </Button>
+        <Button
+          type="submit"
+          disabled={loading}
+          className="bg-blue-600 hover:bg-blue-700"
+        >
+          {loading ? 'Saving...' : (existingLead ? 'Update Lead' : 'Create Lead')}
+        </Button>
+      </div>
+    </form>
+  );
+
+  // Return based on mode
+  if (mode === 'enhanced') {
+    return (
+      <Dialog open={open} onOpenChange={onOpenChange}>
+        <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto bg-slate-900 border-white/10">
+          <DialogHeader>
+            <DialogTitle className="text-white text-xl">
+              {existingLead ? 'Edit Lead' : 'Create New Lead'}
+            </DialogTitle>
+            <DialogDescription className="text-slate-400">
+              Fill in the details below to create a new lead
+            </DialogDescription>
+          </DialogHeader>
+          {formContent}
+        </DialogContent>
+      </Dialog>
+    );
+  } else {
+    // Self mode - button that opens dialog
+    return (
+      <>
+        <Button
+          onClick={() => setShowDialog(true)}
+          className="bg-green-600 hover:bg-green-700"
+        >
+          <Plus className="w-4 h-4 mr-2" />
+          Add Self Lead
+        </Button>
+
+        <Dialog open={showDialog} onOpenChange={setShowDialog}>
+          <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto bg-slate-900 border-white/10">
+            <DialogHeader>
+              <DialogTitle className="text-white text-xl">Add Self Lead</DialogTitle>
+              <DialogDescription className="text-slate-400">
+                Create a new lead for your pipeline
+              </DialogDescription>
+            </DialogHeader>
+            {formContent}
+          </DialogContent>
+        </Dialog>
+      </>
+    );
+  }
+};
+
+export default UnifiedLeadForm;
