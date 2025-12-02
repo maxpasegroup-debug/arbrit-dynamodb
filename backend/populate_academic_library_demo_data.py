@@ -6,9 +6,15 @@ Populate Academic Library with comprehensive demo data
 import boto3
 from datetime import datetime
 from uuid import uuid4
+import os
 
-# Initialize DynamoDB
-dynamodb = boto3.resource('dynamodb', region_name='us-east-1')
+# Initialize DynamoDB with environment credentials
+dynamodb = boto3.resource(
+    'dynamodb',
+    region_name=os.environ.get('AWS_REGION', 'us-east-1'),
+    aws_access_key_id=os.environ.get('AWS_ACCESS_KEY_ID'),
+    aws_secret_access_key=os.environ.get('AWS_SECRET_ACCESS_KEY')
+)
 
 folders_table = dynamodb.Table('arbrit_workdesk_academic_library_folders')
 documents_table = dynamodb.Table('arbrit_workdesk_academic_library_documents')
