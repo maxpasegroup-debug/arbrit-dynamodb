@@ -172,7 +172,8 @@ class ArbritBackendHealthTester:
         tables_to_verify = [
             ("arbrit_workdesk_users", "auth/me", "Users table"),
             ("arbrit_workdesk_leads", "sales/leads", "Leads table"), 
-            ("arbrit_workdesk_courses", "academic/courses", "Courses table"),
+            ("arbrit_workdesk_courses", "courses", "Courses table"),
+            ("arbrit_workdesk_certificate_tracking", "academic/certificate-requests", "Certificate Tracking table"),
             ("arbrit_workdesk_work_orders", "academic/work-orders", "Work Orders table")
         ]
         
