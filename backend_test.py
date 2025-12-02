@@ -72,14 +72,47 @@ class ArbritBackendHealthTester:
             })
             return False, {}
 
-    def test_root_endpoint(self):
-        """Test root API endpoint"""
-        return self.run_test(
-            "Root API Endpoint",
+    def test_health_check(self):
+        """Test health check endpoint - verify backend and DynamoDB connectivity"""
+        success, response = self.run_test(
+            "Health Check Endpoint",
             "GET",
-            "",
+            "health",
             200
         )
+        
+        if success:
+            # Verify required fields in health response
+            required_fields = {
+                "status": "healthy",
+                "database": "connected", 
+                "database_type": "DynamoDB",
+                "user_count": 35
+            }
+            
+            print("   Verifying health check response fields:")
+            for field, expected_value in required_fields.items():
+                actual_value = response.get(field)
+                if field == "user_count":
+                    # For user_count, just verify it's a number
+                    if isinstance(actual_value, int):
+                        print(f"   ✅ {field}: {actual_value} (integer)")
+                    else:
+                        print(f"   ❌ {field}: Expected integer, got {type(actual_value)}")
+                        success = False
+                elif actual_value == expected_value:
+                    print(f"   ✅ {field}: {actual_value}")
+                else:
+                    print(f"   ❌ {field}: Expected '{expected_value}', got '{actual_value}'")
+                    success = False
+            
+            # Additional verification
+            if response.get("region"):
+                print(f"   ✅ region: {response.get('region')}")
+            if response.get("table_prefix"):
+                print(f"   ✅ table_prefix: {response.get('table_prefix')}")
+        
+        return success, response
 
     def test_login_valid_credentials(self):
         """Test login with valid COO credentials"""
