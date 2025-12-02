@@ -1373,8 +1373,8 @@ async def get_all_pin_status(current_user: dict = Depends(get_current_user)):
             )
         
         # Get all users
-        users_cursor = db.users.find({}, {"_id": 0})
-        users = await users_cursor.to_list(1000)
+        users_query_result = await db.users.find({}, {"_id": 0})
+        users = await users_query_result.to_list(1000)
         
         # Format response
         pin_status_list = []
