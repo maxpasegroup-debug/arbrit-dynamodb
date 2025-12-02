@@ -36,7 +36,7 @@ def create_demo_data():
             'description': 'Core safety training materials and resources'
         },
         {
-            'folder_id': str(uuid4()),
+            'id': str(uuid4()),
             'name': 'First Aid & Emergency Response',
             'parent_id': None,
             'created_at': datetime.utcnow().isoformat(),
