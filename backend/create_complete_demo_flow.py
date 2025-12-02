@@ -87,7 +87,7 @@ def create_complete_flow():
             'trainer_assigned': 'John Smith',
             'training_site': 'On-site',
             'training_location': 'Dubai',
-            'feedback_rating': round(random.uniform(4.2, 4.9), 1),
+            'feedback_rating': Decimal(str(round(random.uniform(4.2, 4.9), 1))),
             'feedback': f"Excellent training session. Very informative and practical.",
             'created_at': training_date.isoformat(),
             'updated_at': completion_date.isoformat(),
