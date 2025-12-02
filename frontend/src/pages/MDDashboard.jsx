@@ -1,28 +1,48 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { LogOut, TrendingUp, Users, GraduationCap, AlertTriangle, Lightbulb, Building2, BarChart4, Shield, Plus, DollarSign, Briefcase, Award, Package } from 'lucide-react';
+import { 
+  LogOut, TrendingUp, Users, GraduationCap, AlertTriangle, Lightbulb, 
+  Building2, BarChart4, Shield, Plus, DollarSign, Briefcase, Award, 
+  Package, FileText, Trash2, Calendar, UserCheck, ClipboardCheck, 
+  Receipt, BookOpen, LayoutDashboard, FileCheck
+} from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import UnifiedLeadForm from '@/components/sales/UnifiedLeadForm';
-import ExpenseSubmissionModal from '@/components/coo/ExpenseSubmissionModal';
-import DeletionApprovals from '@/components/executive/DeletionApprovals';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { FileText, Trash2 } from 'lucide-react';
-// Import Sales Head Components
+
+// Sales Components
+import UnifiedLeadForm from '@/components/sales/UnifiedLeadForm';
 import SalesOverview from '@/components/sales/SalesOverview';
 import EmployeeMonitoring from '@/components/sales/EmployeeMonitoring';
 import LeadTracker from '@/components/sales/LeadTracker';
-import DuplicateManagement from '@/components/sales/DuplicateManagement';
-import DuplicateAlertsNotification from '@/components/sales/DuplicateAlertsNotification';
 import QuotationManagementEnhanced from '@/components/sales/QuotationManagementEnhanced';
-// Import Academic Head Components
+
+// Academic Components
 import CourseManagement from '@/components/academic/CourseManagement';
 import TrainingRequests from '@/components/academic/TrainingRequests';
+import TrainerAllocation from '@/components/academic/TrainerAllocation';
+import WorkOrderManagement from '@/components/academic/WorkOrderManagement';
+import TrainingSchedule from '@/components/academic/TrainingSchedule';
+import CertificateApproval from '@/components/academic/CertificateApproval';
+import CertificateGeneration from '@/components/academic/CertificateGeneration';
+import TeamMonitoring from '@/components/academic/TeamMonitoring';
+import AcademicLibrary from '@/components/academic/AcademicLibrary';
+
+// Assessment Components
 import AssessmentFormBuilder from '@/components/assessment/AssessmentFormBuilder';
-// Import Training Library Components
+
+// Certificate & Library Components
 import TrainingLibrary from '@/components/library/TrainingLibrary';
 import CertificateManagement from '@/components/certificates/CertificateManagement';
+
+// Accounting Components
+import AccountingDashboard from '@/components/accounting/AccountingDashboard';
+
+// Executive Components
+import ExpenseSubmissionModal from '@/components/coo/ExpenseSubmissionModal';
+import DeletionApprovals from '@/components/executive/DeletionApprovals';
+
 import { toast } from 'sonner';
 import axios from 'axios';
 
