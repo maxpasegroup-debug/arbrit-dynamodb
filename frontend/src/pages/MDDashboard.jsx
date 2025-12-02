@@ -289,20 +289,90 @@ const MDDashboard = () => {
 
       {/* Control Panel Dialog */}
       <Dialog open={controlPanelOpen} onOpenChange={setControlPanelOpen}>
-        <DialogContent className="max-w-2xl bg-slate-900 border-white/10">
+        <DialogContent className="max-w-5xl bg-slate-900 border-white/10">
           <DialogHeader>
-            <DialogTitle className="text-white text-2xl">MD Control Panel</DialogTitle>
+            <DialogTitle className="text-white text-2xl">MD Control Panel - Department Access</DialogTitle>
             <DialogDescription className="text-slate-400">
-              Administrative controls and system management
+              Access all department dashboards and administrative controls
             </DialogDescription>
           </DialogHeader>
           
-          <div className="space-y-4 mt-6">
-            <div className="bg-blue-500/10 border border-blue-400/30 rounded-lg p-4 mb-6">
-              <p className="text-blue-300 text-sm">
-                <strong>Note:</strong> All department data is accessible through the dashboard tabs above (Sales, Academics, Certificates, Feedbacks, Arbrit's Journey). Use this panel for administrative functions.
-              </p>
-            </div>
+          <div className="grid grid-cols-2 gap-6 mt-6">
+            {/* Sales Department Card */}
+            <Card className="bg-white/5 border-blue-500/30 hover:border-blue-500/50 transition-all cursor-pointer group"
+                  onClick={() => navigate('/dashboard/sales-head')}>
+              <CardContent className="p-6">
+                <div className="flex items-center gap-4 mb-4">
+                  <div className="p-3 bg-blue-500/20 rounded-lg">
+                    <TrendingUp className="w-8 h-8 text-blue-400" />
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-bold text-white">Sales Department</h3>
+                    <p className="text-slate-400 text-sm">Lead Management & CRM</p>
+                  </div>
+                </div>
+                <Button className="w-full bg-blue-600 hover:bg-blue-700">
+                  Access Sales Dashboard
+                </Button>
+              </CardContent>
+            </Card>
+
+            {/* Academic Department Card */}
+            <Card className="bg-white/5 border-purple-500/30 hover:border-purple-500/50 transition-all cursor-pointer group"
+                  onClick={() => navigate('/dashboard/academic')}>
+              <CardContent className="p-6">
+                <div className="flex items-center gap-4 mb-4">
+                  <div className="p-3 bg-purple-500/20 rounded-lg">
+                    <GraduationCap className="w-8 h-8 text-purple-400" />
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-bold text-white">Academic Department</h3>
+                    <p className="text-slate-400 text-sm">Training & Course Management</p>
+                  </div>
+                </div>
+                <Button className="w-full bg-purple-600 hover:bg-purple-700">
+                  Access Academic Dashboard
+                </Button>
+              </CardContent>
+            </Card>
+
+            {/* Accounts/Finance Department Card */}
+            <Card className="bg-white/5 border-green-500/30 hover:border-green-500/50 transition-all cursor-pointer group"
+                  onClick={() => navigate('/dashboard/accounts')}>
+              <CardContent className="p-6">
+                <div className="flex items-center gap-4 mb-4">
+                  <div className="p-3 bg-green-500/20 rounded-lg">
+                    <DollarSign className="w-8 h-8 text-green-400" />
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-bold text-white">Finance Department</h3>
+                    <p className="text-slate-400 text-sm">Accounting & Payments</p>
+                  </div>
+                </div>
+                <Button className="w-full bg-green-600 hover:bg-green-700">
+                  Access Finance Dashboard
+                </Button>
+              </CardContent>
+            </Card>
+
+            {/* Operations/HR Department Card */}
+            <Card className="bg-white/5 border-orange-500/30 hover:border-orange-500/50 transition-all cursor-pointer group"
+                  onClick={() => navigate('/dashboard/hr')}>
+              <CardContent className="p-6">
+                <div className="flex items-center gap-4 mb-4">
+                  <div className="p-3 bg-orange-500/20 rounded-lg">
+                    <Users className="w-8 h-8 text-orange-400" />
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-bold text-white">HR & Operations</h3>
+                    <p className="text-slate-400 text-sm">Team & Resource Management</p>
+                  </div>
+                </div>
+                <Button className="w-full bg-orange-600 hover:bg-orange-700">
+                  Access HR Dashboard
+                </Button>
+              </CardContent>
+            </Card>
 
             {/* PIN Management Card */}
             <Card className="bg-white/5 border-amber-500/30 hover:border-amber-500/50 transition-all cursor-pointer group"
@@ -311,18 +381,18 @@ const MDDashboard = () => {
                     setPinManagementOpen(true);
                   }}>
               <CardContent className="p-6">
-                <div className="flex items-center gap-4">
+                <div className="flex items-center gap-4 mb-4">
                   <div className="p-3 bg-amber-500/20 rounded-lg">
                     <Key className="w-8 h-8 text-amber-400" />
                   </div>
-                  <div className="flex-1">
+                  <div>
                     <h3 className="text-xl font-bold text-white">PIN Management</h3>
-                    <p className="text-slate-400 text-sm">Reset & manage user PINs securely</p>
+                    <p className="text-slate-400 text-sm">Reset & Manage User PINs</p>
                   </div>
-                  <Button className="bg-amber-600 hover:bg-amber-700 text-white">
-                    Manage PINs
-                  </Button>
                 </div>
+                <Button className="w-full bg-amber-600 hover:bg-amber-700">
+                  Manage User PINs
+                </Button>
               </CardContent>
             </Card>
           </div>
