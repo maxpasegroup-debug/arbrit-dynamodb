@@ -175,19 +175,29 @@ const UnifiedLeadForm = ({
       const numTrainees = parseInt(formData.num_trainees) || 1;
       const baseFee = parseFloat(course.base_fee) || 0;
       
+      // Calculate lead value based on pricing tiers
       let pricePerTrainee = baseFee;
-      if (numTrainees >= 20) pricePerTrainee = baseFee * 0.75;
-      else if (numTrainees >= 10) pricePerTrainee = baseFee * 0.85;
-      else if (numTrainees >= 5) pricePerTrainee = baseFee * 0.90;
+      if (numTrainees >= 10) {
+        pricePerTrainee = parseFloat(course.pricing_tiers?.group_10_plus || baseFee * 0.8);
+      } else if (numTrainees >= 5) {
+        pricePerTrainee = parseFloat(course.pricing_tiers?.group_5_10 || baseFee * 0.9);
+      }
       
       const leadValue = (pricePerTrainee * numTrainees).toFixed(0);
       
-      setFormData(prev => ({
-        ...prev,
+      // Calculate intelligent lead score
+      const updatedData = {
+        ...formData,
         course_id: courseId,
-        course_name: course.course_name,
+        course_name: course.name,
         lead_value: leadValue
-      }));
+      };
+      const leadScore = calculateLeadScore(updatedData);
+      
+      setFormData({
+        ...updatedData,
+        lead_score: leadScore
+      });
     }
   };
 
