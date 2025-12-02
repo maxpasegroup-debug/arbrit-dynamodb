@@ -615,9 +615,7 @@ metadata:
 
 test_plan:
   current_focus:
-    - "COO Dashboard Integration - 7 Tabs with Library and Add Training"
-    - "NEW Certifications Status & Reports Tab"
-    - "MD Dashboard Certificate Widget Merge Verification"
+    - "PIN Management System - Phase 2 Implementation"
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
