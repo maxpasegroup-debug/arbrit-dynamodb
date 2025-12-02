@@ -357,12 +357,8 @@ const AcademicHeadDashboard = () => {
               <ExpenseSubmission />
             </TabsContent>
 
-            <TabsContent value="dispatch" className="mt-0">
-              <CertificateDispatchManagement />
-            </TabsContent>
-
-            <TabsContent value="cert-reports" className="mt-0">
-              <CertificationsReports />
+            <TabsContent value="certificate-management" className="mt-0">
+              <CertificateManagement />
             </TabsContent>
 
             <TabsContent value="library" className="mt-0">
