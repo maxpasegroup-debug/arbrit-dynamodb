@@ -118,11 +118,26 @@ const DepartmentWiseEmployees = () => {
     const grouped = {};
     
     employees.forEach(emp => {
-      let dept = emp.department || 'Other';
+      let dept = emp.department;
       
       // Special handling for management roles
-      if (['MD', 'COO', 'CEO'].includes(emp.role)) {
+      if (['MD', 'COO', 'CEO'].includes(emp.designation) || ['MD', 'COO', 'CEO'].includes(emp.role)) {
         dept = 'Management';
+      }
+      
+      // Handle Sales Head
+      if (!dept && (emp.designation === 'Sales Head' || emp.role === 'Sales Head')) {
+        dept = 'Sales';
+      }
+      
+      // Handle HR Manager
+      if (!dept && (emp.designation?.includes('HR') || emp.role?.includes('HR'))) {
+        dept = 'HR';
+      }
+      
+      // Fallback to Other
+      if (!dept) {
+        dept = 'Other';
       }
       
       if (!grouped[dept]) {
