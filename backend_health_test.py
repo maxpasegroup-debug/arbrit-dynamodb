@@ -235,9 +235,9 @@ class ArbritBackendHealthTester:
             return False, {}
         
         success, response = self.run_test(
-            "Academic Courses Endpoint (/api/academic/courses)",
+            "Academic Courses Endpoint (/api/courses)",
             "GET",
-            "academic/courses",
+            "courses",
             200
         )
         
