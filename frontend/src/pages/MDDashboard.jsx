@@ -65,6 +65,7 @@ const MDDashboard = () => {
   const [leadModalOpen, setLeadModalOpen] = useState(false);
   const [expenseModalOpen, setExpenseModalOpen] = useState(false);
   const [controlPanelOpen, setControlPanelOpen] = useState(false);
+  const [resetPinModalOpen, setResetPinModalOpen] = useState(false);
 
   useEffect(() => {
     const storedUser = localStorage.getItem('user');
