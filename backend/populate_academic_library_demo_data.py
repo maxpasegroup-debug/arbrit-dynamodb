@@ -27,7 +27,7 @@ def create_demo_data():
     # Define demo folders structure
     folders_data = [
         {
-            'folder_id': str(uuid4()),
+            'id': str(uuid4()),
             'name': 'Safety Training Materials',
             'parent_id': None,
             'created_at': datetime.utcnow().isoformat(),
