@@ -7,6 +7,7 @@ This demonstrates the full lifecycle of the CRM system
 import boto3
 from datetime import datetime, timedelta
 from uuid import uuid4
+from decimal import Decimal
 import os
 import random
 
