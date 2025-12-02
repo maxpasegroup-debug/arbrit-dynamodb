@@ -78,10 +78,25 @@ const CertificateProgressTracker = ({ currentStatus, deliveryNotePhoto, onViewDe
       {/* Status Info */}
       <div className="mt-4 text-center">
         <p className="text-sm text-slate-400">
-          <span className="font-semibold text-blue-400">{currentIndex + 1}</span> / {stages.length}
+          <span className={`font-semibold ${isDelivered ? 'text-green-400' : 'text-blue-400'}`}>
+            {currentIndex + 1}
+          </span> / {stages.length}
           {' - '}
-          <span className="text-slate-300">{stages[currentIndex]?.label || 'Unknown'}</span>
+          <span className={`${isDelivered ? 'text-green-300' : 'text-slate-300'}`}>
+            {stages[currentIndex]?.label || 'Unknown'}
+          </span>
         </p>
+        
+        {/* Delivery Note Button (only for delivered status) */}
+        {isDelivered && deliveryNotePhoto && (
+          <button
+            onClick={onViewDeliveryNote}
+            className="mt-3 px-4 py-2 bg-green-500/20 hover:bg-green-500/30 border border-green-400/50 rounded-lg text-green-300 text-sm font-semibold flex items-center gap-2 mx-auto transition-all"
+          >
+            <ImageIcon className="w-4 h-4" />
+            View Delivery Note
+          </button>
+        )}
       </div>
     </div>
   );
