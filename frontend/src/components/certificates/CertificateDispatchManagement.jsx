@@ -321,10 +321,49 @@ const CertificateDispatchManagement = () => {
         )}
       </div>
 
-      {/* Filter Tabs */}
+      {/* Category Filter Tabs */}
+      <div className="bg-white/5 border border-white/10 rounded-lg p-2">
+        <div className="grid grid-cols-3 gap-2">
+          <button
+            onClick={() => setFilterCategory('all')}
+            className={`py-2 px-4 rounded-lg font-semibold transition-all ${
+              filterCategory === 'all'
+                ? 'bg-blue-600 text-white'
+                : 'bg-transparent text-slate-400 hover:text-white hover:bg-white/5'
+            }`}
+          >
+            📋 All Certificates
+            <span className="ml-2 text-xs opacity-75">({records.length})</span>
+          </button>
+          <button
+            onClick={() => setFilterCategory('In-House')}
+            className={`py-2 px-4 rounded-lg font-semibold transition-all ${
+              filterCategory === 'In-House'
+                ? 'bg-green-600 text-white'
+                : 'bg-transparent text-slate-400 hover:text-white hover:bg-white/5'
+            }`}
+          >
+            🏠 In-House (48h Rule)
+            <span className="ml-2 text-xs opacity-75">({inHouseCount})</span>
+          </button>
+          <button
+            onClick={() => setFilterCategory('International')}
+            className={`py-2 px-4 rounded-lg font-semibold transition-all ${
+              filterCategory === 'International'
+                ? 'bg-purple-600 text-white'
+                : 'bg-transparent text-slate-400 hover:text-white hover:bg-white/5'
+            }`}
+          >
+            🌍 International (30/60/90d)
+            <span className="ml-2 text-xs opacity-75">({internationalCount})</span>
+          </button>
+        </div>
+      </div>
+
+      {/* Status Filter Tabs */}
       <Tabs value={filterStatus} onValueChange={setFilterStatus} className="w-full">
         <TabsList className="grid w-full grid-cols-6 bg-white/5 border border-white/10">
-          <TabsTrigger value="all">All ({records.length})</TabsTrigger>
+          <TabsTrigger value="all">All ({filteredRecords.length})</TabsTrigger>
           <TabsTrigger value="initiated">Initiated</TabsTrigger>
           <TabsTrigger value="prepared">Prepared</TabsTrigger>
           <TabsTrigger value="dispatched">Dispatched</TabsTrigger>
