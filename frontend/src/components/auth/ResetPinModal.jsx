@@ -123,11 +123,11 @@ const ResetPinModal = ({ open, onOpenChange }) => {
             <div className="space-y-2">
               <Label className="text-white flex items-center gap-2">
                 <Key className="w-4 h-4 text-green-400" />
-                New PIN (6 digits)
+                New PIN (4 digits)
               </Label>
               <Input
                 type="password"
-                maxLength="6"
+                maxLength="4"
                 value={pinData.newPin}
                 onChange={(e) => setPinData({ ...pinData, newPin: e.target.value.replace(/\D/g, '') })}
                 placeholder="Enter new PIN"
@@ -144,7 +144,7 @@ const ResetPinModal = ({ open, onOpenChange }) => {
               </Label>
               <Input
                 type="password"
-                maxLength="6"
+                maxLength="4"
                 value={pinData.confirmPin}
                 onChange={(e) => setPinData({ ...pinData, confirmPin: e.target.value.replace(/\D/g, '') })}
                 placeholder="Confirm new PIN"
@@ -160,9 +160,9 @@ const ResetPinModal = ({ open, onOpenChange }) => {
                 <div className="space-y-1 text-sm">
                   <p className="text-blue-300 font-semibold">PIN Requirements:</p>
                   <ul className="text-slate-400 space-y-1 ml-4">
-                    <li>• Must be exactly 6 digits</li>
-                    <li>• Cannot be sequential (123456)</li>
-                    <li>• Cannot be repeated digits (111111)</li>
+                    <li>• Must be exactly 4 digits</li>
+                    <li>• Cannot be sequential (1234)</li>
+                    <li>• Cannot be repeated digits (1111)</li>
                     <li>• Should be easy to remember but hard to guess</li>
                   </ul>
                 </div>
