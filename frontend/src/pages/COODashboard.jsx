@@ -65,6 +65,7 @@ const COODashboard = () => {
   const [leadModalOpen, setLeadModalOpen] = useState(false);
   const [expenseModalOpen, setExpenseModalOpen] = useState(false);
   const [departmentPanelOpen, setDepartmentPanelOpen] = useState(false);
+  const [resetPinModalOpen, setResetPinModalOpen] = useState(false);
 
   useEffect(() => {
     const storedUser = localStorage.getItem('user');
