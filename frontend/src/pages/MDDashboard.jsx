@@ -387,12 +387,8 @@ const MDDashboard = () => {
             <TrainingLibrary />
           </TabsContent>
 
-          <TabsContent value="certifications">
-            <CertificationsReports />
-          </TabsContent>
-
-          <TabsContent value="dispatch">
-            <CertificateDispatchManagement />
+          <TabsContent value="certificate-management">
+            <CertificateManagement />
           </TabsContent>
 
           <TabsContent value="deletions">
