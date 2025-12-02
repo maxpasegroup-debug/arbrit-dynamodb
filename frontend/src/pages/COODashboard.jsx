@@ -87,14 +87,10 @@ const COODashboard = () => {
   const fetchDashboardData = async () => {
     try {
       setLoading(true);
-      const token = localStorage.getItem('token');
-      const response = await axios.get(`${API}/coo/dashboard-stats`, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
-      setDashboardData(response.data);
+      // COO dashboard doesn't need to fetch data - tabs handle their own data
+      setDashboardData({});
     } catch (error) {
       console.error('Error fetching dashboard data:', error);
-      toast.error('Failed to load dashboard data');
     } finally {
       setLoading(false);
     }
