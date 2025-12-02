@@ -103,63 +103,42 @@
 #====================================================================================================
 
 user_problem_statement: |
-  Test the Employee Document Management and Company Document Management features for the Arbrit Safety Training application:
-  
-  **Test Credentials:**
-  - MD/HR Manager: Mobile 971564022503, PIN: 2503
+  Comprehensive Backend Health Check & Database Verification
 
-  **Backend API Endpoints to Test:**
+  **Objective:** Verify backend health, DynamoDB connectivity, and data integrity.
 
-  1. **Employee Documents:**
-     - GET `/api/hrm/employee-documents/{employee_id}` - Fetch employee documents
-     - POST `/api/hrm/employee-documents` - Upload employee document
-     - GET `/api/hrm/employee-documents/alerts/all` - Get expiry alerts
-     - DELETE `/api/hrm/employee-documents/{doc_id}` - Delete document
+  **Tests to Perform:**
 
-  2. **Company Documents:**
-     - GET `/api/hrm/company-documents` - Fetch all company documents
-     - POST `/api/hrm/company-documents` - Upload company document
-     - GET `/api/hrm/company-documents/alerts/all` - Get expiry alerts
-     - DELETE `/api/hrm/company-documents/{doc_id}` - Delete document
+  1. **Health Check:**
+     - GET /api/health
+     - Verify: status=healthy, database=connected, database_type=DynamoDB
+     - Verify: user_count=35
 
-  **Test Scenarios:**
+  2. **Authentication System:**
+     - Test login endpoint: POST /api/auth/login
+     - Use MD credentials: {"mobile": "971564022503", "pin": "2503"}
+     - Verify token is returned
+     - Test /api/auth/me with token
 
-  **Scenario 1: Employee Document Upload**
-  1. Login and get token
-  2. Get list of employees
-  3. Select an employee (e.g., Afshan Firdose - 971545844386)
-  4. Upload a test document with:
-     - doc_name: "Passport Copy"
-     - doc_type: "Identity Document"
-     - expiry_date: "2026-01-15"
-     - file: (simulate file upload)
-  5. Verify document is saved
-  6. Fetch employee documents and confirm it's listed
+  3. **Database Tables Verification:**
+     - Verify key tables exist and have data:
+       - arbrit_workdesk_users
+       - arbrit_workdesk_leads
+       - arbrit_workdesk_courses
+       - arbrit_workdesk_certificate_tracking
+       - arbrit_workdesk_work_orders
 
-  **Scenario 2: Company Document Upload**
-  1. Upload a company document with:
-     - doc_name: "Trade License"
-     - doc_type: "Legal Document"
-     - expiry_date: "2025-12-31"
-     - file: (simulate file upload)
-  2. Verify document is saved
-  3. Fetch company documents and confirm it's listed
-
-  **Scenario 3: Expiry Alerts**
-  1. Create a document with expiry_date in the past or near future
-  2. Fetch alerts using `/api/hrm/employee-documents/alerts/all`
-  3. Verify alert is generated for documents expiring within 30 days
-  4. Test company document alerts similarly
-
-  **Scenario 4: Document Deletion**
-  1. Delete an uploaded document
-  2. Verify it's removed from the list
+  4. **Key API Endpoints:**
+     - GET /api/sales/leads (with auth)
+     - GET /api/courses (with auth)
+     - GET /api/certificates/aging-alerts (with auth)
 
   **Expected Results:**
-  - All CRUD operations working
-  - Expiry alerts generated correctly
-  - Documents properly associated with employees
-  - File upload/storage mechanism functional
+  - All endpoints return 200 OK
+  - Data is retrieved from DynamoDB
+  - No 500 errors or database connection issues
+
+  **Document all responses with status codes.**
 
 backend:
   - task: "Trainer Request API Endpoints"
