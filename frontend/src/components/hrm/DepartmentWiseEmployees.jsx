@@ -84,6 +84,15 @@ const DepartmentWiseEmployees = () => {
   const [selectedBranch, setSelectedBranch] = useState('all');
   const [showAddDialog, setShowAddDialog] = useState(false);
   const [editingEmployee, setEditingEmployee] = useState(null);
+  const [formData, setFormData] = useState({
+    name: '',
+    mobile: '',
+    branch: '',
+    email: '',
+    designation: '',
+    department: '',
+    badge_title: ''
+  });
 
   useEffect(() => {
     fetchEmployees();
