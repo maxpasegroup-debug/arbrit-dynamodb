@@ -195,6 +195,82 @@ const MDDashboard = () => {
             </TabsTrigger>
           </TabsList>
 
+
+          {/* Sales Tab */}
+          <TabsContent value="sales">
+            <Tabs defaultValue="overview" className="w-full">
+              <TabsList className="bg-white/5 border border-white/10">
+                <TabsTrigger value="overview">Overview</TabsTrigger>
+                <TabsTrigger value="leads">Leads</TabsTrigger>
+                <TabsTrigger value="quotations">Quotations</TabsTrigger>
+                <TabsTrigger value="team">Team Monitoring</TabsTrigger>
+              </TabsList>
+              <TabsContent value="overview" className="mt-4">
+                <SalesOverview />
+              </TabsContent>
+              <TabsContent value="leads" className="mt-4">
+                <LeadTracker />
+              </TabsContent>
+              <TabsContent value="quotations" className="mt-4">
+                <QuotationManagementEnhanced />
+              </TabsContent>
+              <TabsContent value="team" className="mt-4">
+                <EmployeeMonitoring />
+              </TabsContent>
+            </Tabs>
+          </TabsContent>
+
+          {/* Academics Tab */}
+          <TabsContent value="academics">
+            <Tabs defaultValue="courses" className="w-full">
+              <TabsList className="bg-white/5 border border-white/10">
+                <TabsTrigger value="courses">Courses</TabsTrigger>
+                <TabsTrigger value="requests">Requests</TabsTrigger>
+                <TabsTrigger value="trainers">Trainers</TabsTrigger>
+                <TabsTrigger value="work-orders">Work Orders</TabsTrigger>
+                <TabsTrigger value="schedule">Schedule</TabsTrigger>
+                <TabsTrigger value="academic-library">Library</TabsTrigger>
+              </TabsList>
+              <TabsContent value="courses" className="mt-4">
+                <CourseManagement />
+              </TabsContent>
+              <TabsContent value="requests" className="mt-4">
+                <TrainingRequests />
+              </TabsContent>
+              <TabsContent value="trainers" className="mt-4">
+                <TrainerAllocation />
+              </TabsContent>
+              <TabsContent value="work-orders" className="mt-4">
+                <WorkOrderManagement />
+              </TabsContent>
+              <TabsContent value="schedule" className="mt-4">
+                <TrainingSchedule />
+              </TabsContent>
+              <TabsContent value="academic-library" className="mt-4">
+                <AcademicLibrary />
+              </TabsContent>
+            </Tabs>
+          </TabsContent>
+
+          {/* Certificates & Dispatch Tab */}
+          <TabsContent value="certificates">
+            <CertificateManagement />
+          </TabsContent>
+
+          {/* Feedbacks Tab */}
+          <TabsContent value="feedbacks">
+            <FeedbackManagement />
+          </TabsContent>
+
+          {/* Arbrit's Journey Tab */}
+          <TabsContent value="arbrits-journey">
+            <CompletedTrainings />
+          </TabsContent>
+        </Tabs>
+      </main>
+
+      {/* Modals */}
+      <UnifiedLeadForm mode="enhanced" open={leadModalOpen} onOpenChange={setLeadModalOpen} />
       </main>
 
       {/* Modals */}
