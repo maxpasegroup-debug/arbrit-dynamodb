@@ -374,7 +374,36 @@ const COODashboard = () => {
                 </Button>
               </CardContent>
             </Card>
+
+            {/* PIN Management Card */}
+            <Card className="bg-white/5 border-amber-500/30 hover:border-amber-500/50 transition-all cursor-pointer group"
+                  onClick={() => {
+                    setDepartmentPanelOpen(false);
+                    setPinManagementOpen(true);
+                  }}>
+              <CardContent className="p-6">
+                <div className="flex items-center gap-4 mb-4">
+                  <div className="p-3 bg-amber-500/20 rounded-lg">
+                    <Key className="w-8 h-8 text-amber-400" />
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-bold text-white">PIN Management</h3>
+                    <p className="text-slate-400 text-sm">Reset & Manage User PINs</p>
+                  </div>
+                </div>
+                <Button className="w-full bg-amber-600 hover:bg-amber-700">
+                  Manage User PINs
+                </Button>
+              </CardContent>
+            </Card>
           </div>
+        </DialogContent>
+      </Dialog>
+
+      {/* PIN Management Modal */}
+      <Dialog open={pinManagementOpen} onOpenChange={setPinManagementOpen}>
+        <DialogContent className="max-w-6xl bg-slate-900 border-white/10 max-h-[90vh] overflow-y-auto">
+          <PinManagement />
         </DialogContent>
       </Dialog>
 
