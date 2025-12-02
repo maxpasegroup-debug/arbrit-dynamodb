@@ -148,8 +148,8 @@
 
 ## URLs
 
-- **HRM Dashboard**: https://crmsuite-16.preview.emergentagent.com/hrm
-- **COO Dashboard**: https://crmsuite-16.preview.emergentagent.com/dashboard/coo
+- **HRM Dashboard**: https://salescrm-6.preview.emergentagent.com/hrm
+- **COO Dashboard**: https://salescrm-6.preview.emergentagent.com/dashboard/coo
 
 ## Key Features
 
