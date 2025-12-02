@@ -20,13 +20,13 @@ const ResetPinModal = ({ open, onOpenChange }) => {
   });
 
   const validatePin = (pin) => {
-    // Must be 6 digits
-    if (!/^\d{6}$/.test(pin)) {
-      return 'PIN must be exactly 6 digits';
+    // Must be 4 digits
+    if (!/^\d{4}$/.test(pin)) {
+      return 'PIN must be exactly 4 digits';
     }
     
-    // Cannot be sequential
-    if (pin === '123456' || pin === '654321' || pin === '111111' || pin === '000000') {
+    // Cannot be sequential or repeated
+    if (pin === '1234' || pin === '4321' || pin === '1111' || pin === '0000') {
       return 'PIN cannot be sequential or repeated digits';
     }
     
