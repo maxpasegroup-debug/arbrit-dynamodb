@@ -293,10 +293,10 @@ Delete Employee
 
 ## 📍 URLs
 
-- **Login**: https://unified-sales-hub.preview.emergentagent.com/login
-- **COO Dashboard**: https://unified-sales-hub.preview.emergentagent.com/dashboard/coo
-- **HR Dashboard**: https://unified-sales-hub.preview.emergentagent.com/dashboard/hr
-- **HRM Modules** (COO access): https://unified-sales-hub.preview.emergentagent.com/hrm
+- **Login**: https://crmsuite-16.preview.emergentagent.com/login
+- **COO Dashboard**: https://crmsuite-16.preview.emergentagent.com/dashboard/coo
+- **HR Dashboard**: https://crmsuite-16.preview.emergentagent.com/dashboard/hr
+- **HRM Modules** (COO access): https://crmsuite-16.preview.emergentagent.com/hrm
 
 ---
 

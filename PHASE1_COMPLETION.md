@@ -94,8 +94,8 @@
 
 ## URLs
 
-- **Login Page**: https://unified-sales-hub.preview.emergentagent.com/login
-- **COO Dashboard**: https://unified-sales-hub.preview.emergentagent.com/dashboard/coo
+- **Login Page**: https://crmsuite-16.preview.emergentagent.com/login
+- **COO Dashboard**: https://crmsuite-16.preview.emergentagent.com/dashboard/coo
 
 ## API Endpoints
 
