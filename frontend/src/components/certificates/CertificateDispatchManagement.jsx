@@ -497,7 +497,14 @@ const CertificateDispatchManagement = () => {
                 )}
 
                 {/* Metro Progress Tracker */}
-                <CertificateProgressTracker currentStatus={record.status} />
+                <CertificateProgressTracker 
+                  currentStatus={record.status}
+                  deliveryNotePhoto={record.delivery_note_photo}
+                  onViewDeliveryNote={() => {
+                    setSelectedDeliveryNote(record.delivery_note_photo);
+                    setDeliveryNoteModalOpen(true);
+                  }}
+                />
               </div>
             );
           })
