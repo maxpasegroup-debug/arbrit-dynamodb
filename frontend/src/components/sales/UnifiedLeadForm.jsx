@@ -77,8 +77,8 @@ const UnifiedLeadForm = ({
     next_followup_date: '',
     branch: '',
     lead_value: '0',
-    lead_score: 0,
-    status: 'New',
+    lead_score: 'warm',
+    status: 'new',
     field_sales_type: ''
   });
 
