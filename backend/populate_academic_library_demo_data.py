@@ -264,7 +264,7 @@ def create_demo_data():
     print("\n🔄 Updating folder document counts...")
     for folder in folders_data:
         folders_table.update_item(
-            Key={'folder_id': folder['folder_id']},
+            Key={'id': folder['id']},
             UpdateExpression='SET document_count = :count',
             ExpressionAttributeValues={':count': folder['document_count']}
         )
