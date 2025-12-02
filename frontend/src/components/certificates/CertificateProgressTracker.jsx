@@ -17,7 +17,11 @@ const CertificateProgressTracker = ({ currentStatus, deliveryNotePhoto, onViewDe
       {/* Progress Line */}
       <div className="absolute top-8 left-0 right-0 h-1 bg-slate-700">
         <div
-          className="h-full bg-gradient-to-r from-green-500 to-blue-500 transition-all duration-500"
+          className={`h-full transition-all duration-500 ${
+            isDelivered 
+              ? 'bg-gradient-to-r from-green-500 to-green-400' 
+              : 'bg-gradient-to-r from-green-500 to-blue-500'
+          }`}
           style={{ width: `${(currentIndex / (stages.length - 1)) * 100}%` }}
         />
       </div>
