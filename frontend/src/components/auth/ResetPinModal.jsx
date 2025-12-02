@@ -52,7 +52,7 @@ const ResetPinModal = ({ open, onOpenChange }) => {
     setLoading(true);
     try {
       const token = localStorage.getItem('token');
-      await axios.post(`${API}/auth/change-pin`, {
+      await axios.post(`${API}/user/change-pin`, {
         current_pin: pinData.currentPin,
         new_pin: pinData.newPin
       }, {
