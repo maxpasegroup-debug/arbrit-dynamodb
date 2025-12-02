@@ -156,7 +156,7 @@ const MDDashboard = () => {
               <h2 className="text-3xl font-bold text-white mb-2">
                 Good {new Date().getHours() < 12 ? 'Morning' : new Date().getHours() < 18 ? 'Afternoon' : 'Evening'}, {user?.name?.split(' ')[0]}
               </h2>
-              <p className="text-gray-300 text-lg">Here's your strategic business intelligence for today</p>
+              <p className="text-gray-300 text-lg">Here&apos;s your strategic business intelligence for today</p>
             </div>
             <Button
               onClick={() => setControlPanelOpen(true)}
