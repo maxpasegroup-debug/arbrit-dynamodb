@@ -191,7 +191,7 @@ const MDDashboard = () => {
             </TabsTrigger>
             <TabsTrigger value="arbrits-journey">
               <BookOpen className="w-4 h-4 mr-2" />
-              Arbrit's Journey
+              Arbrit&apos;s Journey
             </TabsTrigger>
           </TabsList>
 
@@ -262,7 +262,7 @@ const MDDashboard = () => {
             <FeedbackManagement />
           </TabsContent>
 
-          {/* Arbrit's Journey Tab */}
+          {/* Arbrit&apos;s Journey Tab */}
           <TabsContent value="arbrits-journey">
             <CompletedTrainings />
           </TabsContent>
