@@ -128,7 +128,7 @@ const MDDashboard = () => {
               <BarChart3 className="w-10 h-10" />
               Executive Intelligence Panel
             </h1>
-            <p className="text-amber-100 mt-1 text-sm">Strategic Overview & Business Insights</p>
+            <p className="text-amber-100 mt-1 text-sm">Strategic Overview &amp; Business Insights</p>
           </div>
           <div className="flex items-center gap-4">
             <div className="text-right">
