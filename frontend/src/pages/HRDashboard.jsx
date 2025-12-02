@@ -188,7 +188,7 @@ const HRDashboard = () => {
 
           <div className="mt-6">
             <TabsContent value="employees" className="mt-0">
-              <EmployeeManagement />
+              <DepartmentWiseEmployees />
             </TabsContent>
 
             <TabsContent value="attendance" className="mt-0">
