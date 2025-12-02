@@ -1328,9 +1328,9 @@ async def reset_user_pin(user_id: str, request: ResetPinRequest, current_user: d
         # Determine PIN status
         pin_status = "temporary" if request.temporary else "custom"
         
-        # Update target user's PIN
+        # Update target user's PIN (use mobile as the key)
         await db.users.update_one(
-            {"id": user_id},
+            {"mobile": target_user["mobile"]},
             {
                 "$set": {
                     "pin_hash": new_pin_hash,
