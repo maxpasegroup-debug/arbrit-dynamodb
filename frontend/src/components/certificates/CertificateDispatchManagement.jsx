@@ -38,6 +38,9 @@ const CertificateDispatchManagement = () => {
   const [statusUpdateOpen, setStatusUpdateOpen] = useState(false);
   const [photoUploadOpen, setPhotoUploadOpen] = useState(false);
   const [filterStatus, setFilterStatus] = useState('all');
+  const [filterCategory, setFilterCategory] = useState('all'); // In-House, International, All
+  const [deliveryNoteModalOpen, setDeliveryNoteModalOpen] = useState(false);
+  const [selectedDeliveryNote, setSelectedDeliveryNote] = useState(null);
 
   // Form states
   const [newCertificate, setNewCertificate] = useState({
