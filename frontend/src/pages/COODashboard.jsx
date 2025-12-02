@@ -162,7 +162,7 @@ const COODashboard = () => {
               </p>
             </div>
             <Button
-              onClick={() => navigate('/dashboard/coo')}
+              onClick={() => setDepartmentPanelOpen(true)}
               className="bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-slate-900 font-semibold px-4 sm:px-6 py-2 sm:py-3 shadow-lg hover:shadow-xl transition-all w-full sm:w-auto text-sm sm:text-base"
             >
               <Shield className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
