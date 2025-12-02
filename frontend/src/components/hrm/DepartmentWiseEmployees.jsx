@@ -396,15 +396,33 @@ const DepartmentWiseEmployees = () => {
                                         {employee.name}
                                       </h4>
                                       <p className={`text-sm font-semibold ${config.iconColor}`}>
-                                        {employee.role || employee.designation || 'Employee'}
+                                        {role || 'Employee'}
                                       </p>
                                     </div>
-                                    {isManagement && (
-                                      <Badge className="bg-amber-500/20 text-amber-300 border-amber-400/50 flex-shrink-0">
-                                        <Crown className="w-3 h-3 mr-1" />
-                                        Leadership
-                                      </Badge>
-                                    )}
+                                    <div className="flex gap-2 flex-shrink-0">
+                                      {isManagement && (
+                                        <Badge className="bg-amber-500/20 text-amber-300 border-amber-400/50">
+                                          <Crown className="w-3 h-3 mr-1" />
+                                          Leadership
+                                        </Badge>
+                                      )}
+                                      <Button
+                                        size="sm"
+                                        variant="ghost"
+                                        onClick={() => handleEditEmployee(employee)}
+                                        className="h-8 w-8 p-0 text-blue-400 hover:text-blue-300 hover:bg-blue-500/10"
+                                      >
+                                        <Pencil className="w-4 h-4" />
+                                      </Button>
+                                      <Button
+                                        size="sm"
+                                        variant="ghost"
+                                        onClick={() => handleDeleteEmployee(employee)}
+                                        className="h-8 w-8 p-0 text-red-400 hover:text-red-300 hover:bg-red-500/10"
+                                      >
+                                        <Trash2 className="w-4 h-4" />
+                                      </Button>
+                                    </div>
                                   </div>
 
                                   {/* Contact Info */}
