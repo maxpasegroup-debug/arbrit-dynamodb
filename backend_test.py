@@ -3,7 +3,7 @@ import sys
 import base64
 from datetime import datetime, timedelta
 
-class ArbritDocumentManagementTester:
+class ArbritBackendHealthTester:
     def __init__(self, base_url="https://crmsuite-16.preview.emergentagent.com"):
         self.base_url = base_url
         self.api_url = f"{base_url}/api"
