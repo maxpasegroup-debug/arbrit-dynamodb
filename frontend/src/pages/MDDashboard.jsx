@@ -486,12 +486,14 @@ const MDDashboard = () => {
             </Tabs>
           </TabsContent>
 
-          {/* Certificates */}
-          <TabsContent value="certificates">
+          {/* Certificate Management - Unified */}
+          <TabsContent value="certificate-management">
             <Tabs defaultValue="approval" className="w-full">
               <TabsList className="bg-white/5 border border-white/10">
                 <TabsTrigger value="approval">Approval</TabsTrigger>
                 <TabsTrigger value="generation">Generation</TabsTrigger>
+                <TabsTrigger value="dispatch">Dispatch & Tracking</TabsTrigger>
+                <TabsTrigger value="reports">Status & Reports</TabsTrigger>
               </TabsList>
               <TabsContent value="approval" className="mt-4">
                 <CertificateApproval />
@@ -499,12 +501,13 @@ const MDDashboard = () => {
               <TabsContent value="generation" className="mt-4">
                 <CertificateGeneration />
               </TabsContent>
+              <TabsContent value="dispatch" className="mt-4">
+                <CertificateManagement />
+              </TabsContent>
+              <TabsContent value="reports" className="mt-4">
+                <CertificateManagement />
+              </TabsContent>
             </Tabs>
-          </TabsContent>
-
-          {/* Certificate Management (Dispatch & Reports) */}
-          <TabsContent value="certificate-management">
-            <CertificateManagement />
           </TabsContent>
 
           {/* Accounting */}
