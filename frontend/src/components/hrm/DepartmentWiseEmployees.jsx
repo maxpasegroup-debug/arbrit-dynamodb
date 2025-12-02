@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { 
   Users, Building2, TrendingUp, GraduationCap, DollarSign, 
   Package, Briefcase, Search, ChevronDown, ChevronUp, 
-  Mail, Phone, MapPin, Award, Crown, Star, Plus
+  Mail, Phone, MapPin, Award, Crown, Star, Plus, Pencil, Trash2
 } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
