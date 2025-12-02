@@ -111,7 +111,8 @@ const UnifiedLeadForm = ({
       const newScore = calculateLeadScore(formData);
       setFormData(prev => ({ ...prev, lead_score: newScore }));
     }
-  }, [formData.course_id, formData.num_trainees, formData.lead_value, formData.urgency, formData.training_date]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [formData.course_id, formData.num_trainees, formData.lead_value, formData.urgency, formData.training_date, formData.lead_category, formData.source, formData.employee_count]);
 
   const fetchCourses = async () => {
     try {
