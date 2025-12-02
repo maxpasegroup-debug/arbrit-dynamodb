@@ -12,7 +12,7 @@ import {
 } from '@/components/ui/dialog';
 import { toast } from 'sonner';
 import axios from 'axios';
-import EnhancedLeadForm from './EnhancedLeadForm';
+import UnifiedLeadForm from './UnifiedLeadForm';
 import TrainerCalendar from './TrainerCalendar';
 import LeadDetailsModal from './LeadDetailsModal';
 import LeadProgressTracker from './LeadProgressTracker';
@@ -586,7 +586,7 @@ const LeadTracker = () => {
         )}
       </div>
 
-      <EnhancedLeadForm
+      <UnifiedLeadForm mode="enhanced"
         open={formOpen}
         onOpenChange={setFormOpen}
         existingLead={selectedLead}
