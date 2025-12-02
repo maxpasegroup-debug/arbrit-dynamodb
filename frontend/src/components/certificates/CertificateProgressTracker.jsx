@@ -42,11 +42,13 @@ const CertificateProgressTracker = ({ currentStatus, deliveryNotePhoto, onViewDe
                   isCompleted
                     ? 'bg-green-500 border-green-400 shadow-lg shadow-green-500/50'
                     : isCurrent
-                    ? 'bg-blue-500 border-blue-400 shadow-lg shadow-blue-500/50 animate-pulse'
+                    ? isDelivered
+                      ? 'bg-green-500 border-green-400 shadow-lg shadow-green-500/50'
+                      : 'bg-blue-500 border-blue-400 shadow-lg shadow-blue-500/50 animate-pulse'
                     : 'bg-slate-700 border-slate-600'
                 }`}
               >
-                {isCompleted ? (
+                {isCompleted || (isCurrent && isDelivered) ? (
                   <CheckCircle className="w-6 h-6 text-white" />
                 ) : (
                   <Icon className={`w-6 h-6 ${isCurrent ? 'text-white' : 'text-slate-400'}`} />
