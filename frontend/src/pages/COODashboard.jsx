@@ -48,6 +48,9 @@ import CompletedTrainings from '@/components/library/CompletedTrainings';
 import ExpenseSubmissionModal from '@/components/coo/ExpenseSubmissionModal';
 import DeletionApprovals from '@/components/executive/DeletionApprovals';
 
+// Auth Components
+import ResetPinModal from '@/components/auth/ResetPinModal';
+
 import { toast } from 'sonner';
 import axios from 'axios';
 
