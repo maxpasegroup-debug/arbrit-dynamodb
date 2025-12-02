@@ -299,7 +299,7 @@ const MDDashboard = () => {
                   <div className="p-3 bg-cyan-500/20 rounded-lg">
                     <BookOpen className="w-6 h-6 text-cyan-400" />
                   </div>
-                  <span>Arbrit's Journey</span>
+                  <span>Arbrit&apos;s Journey</span>
                 </div>
                 <ChevronRight className="w-5 h-5 text-gray-400 group-hover:text-cyan-400 transition-colors" />
               </CardTitle>
