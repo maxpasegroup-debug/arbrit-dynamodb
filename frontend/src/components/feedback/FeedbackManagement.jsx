@@ -20,8 +20,8 @@ const FeedbackManagement = () => {
   const fetchFeedbacks = async () => {
     try {
       const token = localStorage.getItem('token');
-      // Try to fetch work orders which may contain feedback
-      const response = await axios.get(`${API}/academic/work-orders`, {
+      // Fetch work orders for executive dashboard (MD/COO)
+      const response = await axios.get(`${API}/executive/work-orders`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       
