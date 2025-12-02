@@ -1253,9 +1253,9 @@ async def change_own_pin(request: ChangePinRequest, current_user: dict = Depends
         # Hash new PIN
         new_pin_hash = hash_pin(request.new_pin)
         
-        # Update user in database
+        # Update user in database (use mobile as the key since it's the primary key in DynamoDB)
         await db.users.update_one(
-            {"id": current_user["id"]},
+            {"mobile": current_user["mobile"]},
             {
                 "$set": {
                     "pin_hash": new_pin_hash,
