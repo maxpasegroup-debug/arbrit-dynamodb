@@ -128,7 +128,7 @@ const MDDashboard = () => {
               <BarChart3 className="w-10 h-10" />
               Executive Intelligence Panel
             </h1>
-            <p className="text-amber-100 mt-1 text-sm">Strategic Overview &amp; Business Insights</p>
+            <p className="text-amber-100 mt-1 text-sm">Strategic Overview & Business Insights</p>
           </div>
           <div className="flex items-center gap-4">
             <div className="text-right">
@@ -156,7 +156,7 @@ const MDDashboard = () => {
               <h2 className="text-3xl font-bold text-white mb-2">
                 Good {new Date().getHours() < 12 ? 'Morning' : new Date().getHours() < 18 ? 'Afternoon' : 'Evening'}, {user?.name?.split(' ')[0]}
               </h2>
-              <p className="text-gray-300 text-lg">Here&apos;s your strategic business intelligence for today</p>
+              <p className="text-gray-300 text-lg">Here's your strategic business intelligence for today</p>
             </div>
             <Button
               onClick={() => setControlPanelOpen(true)}
@@ -299,7 +299,7 @@ const MDDashboard = () => {
                   <div className="p-3 bg-cyan-500/20 rounded-lg">
                     <BookOpen className="w-6 h-6 text-cyan-400" />
                   </div>
-                  <span>Arbrit&apos;s Journey</span>
+                  <span>Arbrit's Journey</span>
                 </div>
                 <ChevronRight className="w-5 h-5 text-gray-400 group-hover:text-cyan-400 transition-colors" />
               </CardTitle>
