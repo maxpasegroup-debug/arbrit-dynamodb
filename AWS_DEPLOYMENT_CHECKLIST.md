@@ -34,7 +34,7 @@ Your AWS deployment MUST have these environment variables:
 # Required - DynamoDB Configuration
 AWS_REGION=us-east-1
 AWS_ACCESS_KEY_ID=YOUR_AWS_ACCESS_KEY_HERE
-AWS_SECRET_ACCESS_KEY=RxbQGlvjqx90TnQ9mDg1taqw2nA94WXjYIWs0O+g
+AWS_SECRET_ACCESS_KEY=YOUR_AWS_SECRET_ACCESS_KEY_HERE
 DYNAMODB_TABLE_PREFIX=arbrit_workdesk
 
 # Required - Application Configuration
