@@ -21,7 +21,8 @@ const CompletedTrainings = () => {
   const fetchCompletedTrainings = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.get(`${API}/academic/work-orders`, {
+      // Fetch work orders for executive dashboard (MD/COO)
+      const response = await axios.get(`${API}/executive/work-orders`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       
