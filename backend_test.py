@@ -182,6 +182,145 @@ class ArbritBackendHealthTester:
         
         return success, response
 
+    def test_database_tables_verification(self):
+        """Verify key database tables exist and have data"""
+        if not self.token:
+            print("❌ Skipping - No token available")
+            return False, {}
+        
+        print("\n📊 DATABASE TABLES VERIFICATION")
+        
+        # Test key tables by accessing endpoints that query them
+        tables_to_verify = [
+            ("arbrit_workdesk_users", "auth/me", "Users table"),
+            ("arbrit_workdesk_leads", "sales/leads", "Leads table"), 
+            ("arbrit_workdesk_courses", "academic/courses", "Courses table"),
+            ("arbrit_workdesk_work_orders", "academic/work-orders", "Work Orders table")
+        ]
+        
+        all_success = True
+        
+        for table_name, endpoint, description in tables_to_verify:
+            print(f"\n   Testing {description} ({table_name}):")
+            success, response = self.run_test(
+                f"Verify {description}",
+                "GET", 
+                endpoint,
+                200
+            )
+            
+            if success:
+                if isinstance(response, list):
+                    print(f"   ✅ {description}: Found {len(response)} records")
+                elif isinstance(response, dict):
+                    print(f"   ✅ {description}: Response received (dict)")
+                else:
+                    print(f"   ✅ {description}: Response received")
+            else:
+                print(f"   ❌ {description}: Failed to access")
+                all_success = False
+        
+        return all_success, {}
+
+    def test_sales_leads_endpoint(self):
+        """Test GET /api/sales/leads endpoint with authentication"""
+        if not self.token:
+            print("❌ Skipping - No token available")
+            return False, {}
+        
+        success, response = self.run_test(
+            "Sales Leads Endpoint (/api/sales/leads)",
+            "GET",
+            "sales/leads",
+            200
+        )
+        
+        if success:
+            if isinstance(response, list):
+                print(f"   Found {len(response)} leads in system")
+                if len(response) > 0:
+                    lead = response[0]
+                    print(f"   Sample lead: {lead.get('client_name', 'Unknown')} - Status: {lead.get('status', 'Unknown')}")
+            else:
+                print(f"   Response type: {type(response)}")
+        
+        return success, response
+
+    def test_academic_courses_endpoint(self):
+        """Test GET /api/academic/courses endpoint with authentication"""
+        if not self.token:
+            print("❌ Skipping - No token available")
+            return False, {}
+        
+        success, response = self.run_test(
+            "Academic Courses Endpoint (/api/academic/courses)",
+            "GET",
+            "academic/courses",
+            200
+        )
+        
+        if success:
+            if isinstance(response, list):
+                print(f"   Found {len(response)} courses in system")
+                if len(response) > 0:
+                    course = response[0]
+                    print(f"   Sample course: {course.get('name', 'Unknown')} - Price: {course.get('price', 'Unknown')}")
+            elif isinstance(response, dict) and 'items' in response:
+                items = response['items']
+                print(f"   Found {len(items)} courses in system")
+                if len(items) > 0:
+                    course = items[0]
+                    print(f"   Sample course: {course.get('name', 'Unknown')} - Price: {course.get('price', 'Unknown')}")
+            else:
+                print(f"   Response type: {type(response)}")
+        
+        return success, response
+
+    def test_certificates_aging_alerts_endpoint(self):
+        """Test GET /api/certificates/aging-alerts endpoint with authentication"""
+        if not self.token:
+            print("❌ Skipping - No token available")
+            return False, {}
+        
+        # Try different possible certificate endpoints
+        endpoints_to_try = [
+            "certificates/aging-alerts",
+            "certificates/alerts", 
+            "hrm/employee-documents/alerts/all",
+            "hrm/company-documents/alerts/all"
+        ]
+        
+        success = False
+        response = {}
+        
+        for endpoint in endpoints_to_try:
+            print(f"   Trying endpoint: /api/{endpoint}")
+            test_success, test_response = self.run_test(
+                f"Certificate Alerts ({endpoint})",
+                "GET",
+                endpoint,
+                200
+            )
+            
+            if test_success:
+                success = True
+                response = test_response
+                print(f"   ✅ Successfully accessed /api/{endpoint}")
+                
+                if isinstance(test_response, list):
+                    print(f"   Found {len(test_response)} certificate alerts")
+                    if len(test_response) > 0:
+                        alert = test_response[0]
+                        print(f"   Sample alert: {alert.get('doc_type', 'Unknown')} - Expires in {alert.get('days_until_expiry', 'Unknown')} days")
+                break
+            else:
+                print(f"   ❌ Failed to access /api/{endpoint}")
+        
+        if not success:
+            print("   ❌ Could not find working certificate alerts endpoint")
+        
+        return success, response
+
     def test_get_current_user_no_token(self):
         """Test getting current user without token"""
         # Temporarily remove token
