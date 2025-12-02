@@ -38,8 +38,6 @@ import CertificateManagement from '@/components/certificates/CertificateManageme
 
 // Accounting Components
 import AccountingDashboard from '@/components/accounting/AccountingDashboard';
-import FeedbackManagement from '@/components/feedback/FeedbackManagement';
-import CompletedTrainings from '@/components/library/CompletedTrainings';
 
 // Executive Components
 import ExpenseSubmissionModal from '@/components/coo/ExpenseSubmissionModal';
@@ -173,27 +171,43 @@ const MDDashboard = () => {
         </div>
 
         {/* Tabs Navigation */}
-        <Tabs defaultValue="sales" className="mb-8">
-          <TabsList className="grid w-full grid-cols-5 bg-white/10 border border-white/20">
+        <Tabs defaultValue="dashboard" className="mb-8">
+          <TabsList className="grid w-full grid-cols-9 bg-white/10 border border-white/20 text-xs">
+            <TabsTrigger value="dashboard">
+              <LayoutDashboard className="w-4 h-4 mr-1" />
+              Dashboard
+            </TabsTrigger>
             <TabsTrigger value="sales">
-              <TrendingUp className="w-4 h-4 mr-2" />
+              <TrendingUp className="w-4 h-4 mr-1" />
               Sales
             </TabsTrigger>
-            <TabsTrigger value="academics">
-              <GraduationCap className="w-4 h-4 mr-2" />
-              Academics
+            <TabsTrigger value="academic">
+              <GraduationCap className="w-4 h-4 mr-1" />
+              Academic
             </TabsTrigger>
-            <TabsTrigger value="certificates">
-              <Award className="w-4 h-4 mr-2" />
-              Certificates & Dispatch
+            <TabsTrigger value="certificate-management">
+              <Award className="w-4 h-4 mr-1" />
+              Certificates
             </TabsTrigger>
-            <TabsTrigger value="feedbacks">
-              <MessageSquare className="w-4 h-4 mr-2" />
-              Feedbacks
+            <TabsTrigger value="accounting">
+              <DollarSign className="w-4 h-4 mr-1" />
+              Accounting
             </TabsTrigger>
-            <TabsTrigger value="arbrits-journey">
-              <BookOpen className="w-4 h-4 mr-2" />
-              Arbrit&apos;s Journey
+            <TabsTrigger value="assessments">
+              <ClipboardCheck className="w-4 h-4 mr-1" />
+              Assessments
+            </TabsTrigger>
+            <TabsTrigger value="team">
+              <Users className="w-4 h-4 mr-1" />
+              Team
+            </TabsTrigger>
+            <TabsTrigger value="library">
+              <FileText className="w-4 h-4 mr-1" />
+              Library
+            </TabsTrigger>
+            <TabsTrigger value="deletions">
+              <Trash2 className="w-4 h-4 mr-1" />
+              Deletions
             </TabsTrigger>
           </TabsList>
 
