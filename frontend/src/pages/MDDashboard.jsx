@@ -269,6 +269,96 @@ const MDDashboard = () => {
         </Tabs>
       </main>
 
+      {/* Control Panel Dialog */}
+      <Dialog open={controlPanelOpen} onOpenChange={setControlPanelOpen}>
+        <DialogContent className="max-w-5xl bg-slate-900 border-white/10">
+          <DialogHeader>
+            <DialogTitle className="text-white text-2xl">MD Control Panel - Department Access</DialogTitle>
+            <DialogDescription className="text-slate-400">
+              Access all department dashboards and administrative controls
+            </DialogDescription>
+          </DialogHeader>
+          
+          <div className="grid grid-cols-2 gap-6 mt-6">
+            {/* Sales Department Card */}
+            <Card className="bg-white/5 border-blue-500/30 hover:border-blue-500/50 transition-all cursor-pointer group"
+                  onClick={() => navigate('/dashboard/sales-head')}>
+              <CardContent className="p-6">
+                <div className="flex items-center gap-4 mb-4">
+                  <div className="p-3 bg-blue-500/20 rounded-lg">
+                    <TrendingUp className="w-8 h-8 text-blue-400" />
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-bold text-white">Sales Department</h3>
+                    <p className="text-slate-400 text-sm">Lead Management & CRM</p>
+                  </div>
+                </div>
+                <Button className="w-full bg-blue-600 hover:bg-blue-700">
+                  Access Sales Dashboard
+                </Button>
+              </CardContent>
+            </Card>
+
+            {/* Academic Department Card */}
+            <Card className="bg-white/5 border-purple-500/30 hover:border-purple-500/50 transition-all cursor-pointer group"
+                  onClick={() => navigate('/dashboard/academic-head')}>
+              <CardContent className="p-6">
+                <div className="flex items-center gap-4 mb-4">
+                  <div className="p-3 bg-purple-500/20 rounded-lg">
+                    <GraduationCap className="w-8 h-8 text-purple-400" />
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-bold text-white">Academic Department</h3>
+                    <p className="text-slate-400 text-sm">Training & Course Management</p>
+                  </div>
+                </div>
+                <Button className="w-full bg-purple-600 hover:bg-purple-700">
+                  Access Academic Dashboard
+                </Button>
+              </CardContent>
+            </Card>
+
+            {/* Accounts/Finance Department Card */}
+            <Card className="bg-white/5 border-green-500/30 hover:border-green-500/50 transition-all cursor-pointer group"
+                  onClick={() => navigate('/dashboard/accounts')}>
+              <CardContent className="p-6">
+                <div className="flex items-center gap-4 mb-4">
+                  <div className="p-3 bg-green-500/20 rounded-lg">
+                    <DollarSign className="w-8 h-8 text-green-400" />
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-bold text-white">Finance Department</h3>
+                    <p className="text-slate-400 text-sm">Accounting & Payments</p>
+                  </div>
+                </div>
+                <Button className="w-full bg-green-600 hover:bg-green-700">
+                  Access Finance Dashboard
+                </Button>
+              </CardContent>
+            </Card>
+
+            {/* Operations/HR Department Card */}
+            <Card className="bg-white/5 border-orange-500/30 hover:border-orange-500/50 transition-all cursor-pointer group"
+                  onClick={() => navigate('/dashboard/hr')}>
+              <CardContent className="p-6">
+                <div className="flex items-center gap-4 mb-4">
+                  <div className="p-3 bg-orange-500/20 rounded-lg">
+                    <Users className="w-8 h-8 text-orange-400" />
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-bold text-white">HR & Operations</h3>
+                    <p className="text-slate-400 text-sm">Team & Resource Management</p>
+                  </div>
+                </div>
+                <Button className="w-full bg-orange-600 hover:bg-orange-700">
+                  Access HR Dashboard
+                </Button>
+              </CardContent>
+            </Card>
+          </div>
+        </DialogContent>
+      </Dialog>
+
       {/* Modals */}
       <UnifiedLeadForm mode="enhanced" open={leadModalOpen} onOpenChange={setLeadModalOpen} />
       <ExpenseSubmissionModal open={expenseModalOpen} onOpenChange={setExpenseModalOpen} />
