@@ -557,126 +557,211 @@ const UnifiedLeadForm = ({
         </div>
       )}
 
-      {/* Training Details (Common) */}
-      <div className="space-y-4">
-        <h4 className="text-white font-semibold">Training Details</h4>
-        
+      {/* Course & Training Details */}
+      <div className="space-y-4 p-4 bg-green-500/10 border border-green-400/30 rounded-lg">
+        <h4 className="text-sm font-semibold text-slate-200">Training Requirements</h4>
         <div className="grid grid-cols-2 gap-4">
-          <div>
-            <Label className="text-white">Course *</Label>
-            <Select
+          <div className="col-span-2">
+            <Label className="text-slate-300">Training/Service Details</Label>
+            <Input
+              value={formData.training_service_details}
+              onChange={(e) => setFormData({ ...formData, training_service_details: e.target.value })}
+              placeholder="Brief description of training needs"
+              className="bg-slate-800 border-white/10 text-slate-100"
+            />
+          </div>
+          <div className="col-span-2">
+            <Label className="text-slate-300">Product/Services Required</Label>
+            <Input
+              value={formData.product_services_required}
+              onChange={(e) => setFormData({ ...formData, product_services_required: e.target.value })}
+              placeholder="Specific products or services needed"
+              className="bg-slate-800 border-white/10 text-slate-100"
+            />
+          </div>
+          <div className="col-span-2">
+            <Label className="text-slate-300">Select Training Course *</Label>
+            <select
               value={formData.course_id}
-              onValueChange={handleCourseChange}
+              onChange={(e) => handleCourseChange(e.target.value)}
+              className="w-full bg-slate-800 border border-white/10 text-slate-100 rounded-md p-2"
+              required
             >
-              <SelectTrigger className="bg-slate-800 border-white/10 text-white">
-                <SelectValue placeholder="Select course" />
-              </SelectTrigger>
-              <SelectContent className="bg-slate-800 border-white/10 max-h-60">
-                {courses.map((course) => (
-                  <SelectItem key={course.id} value={course.id}>
-                    {course.course_name}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+              <option value="">Select Course</option>
+              {courses.map(course => (
+                <option key={course.id} value={course.id}>
+                  {course.name} - {course.base_fee} AED ({course.duration})
+                </option>
+              ))}
+            </select>
           </div>
           <div>
-            <Label className="text-white">Number of Trainees *</Label>
+            <Label className="text-slate-300">Number of Participants</Label>
             <Input
               type="number"
-              value={formData.num_trainees}
-              onChange={(e) => handleTraineesChange(e.target.value)}
               min="1"
-              required
-              className="bg-slate-800 border-white/10 text-white"
+              value={formData.num_trainees}
+              onChange={(e) => {
+                const val = e.target.value;
+                setFormData({ ...formData, num_trainees: parseInt(val) || 1 });
+                if (formData.course_id) handleCourseChange(formData.course_id);
+              }}
+              className="bg-slate-800 border-white/10 text-slate-100"
             />
           </div>
-        </div>
-
-        <div className="grid grid-cols-2 gap-4">
           <div>
-            <Label className="text-white">Training Site</Label>
-            <Select
-              value={formData.training_site}
-              onValueChange={(val) => setFormData(prev => ({ ...prev, training_site: val }))}
-            >
-              <SelectTrigger className="bg-slate-800 border-white/10 text-white">
-                <SelectValue placeholder="Select site" />
-              </SelectTrigger>
-              <SelectContent className="bg-slate-800 border-white/10">
-                <SelectItem value="onsite">Onsite</SelectItem>
-                <SelectItem value="online">Online</SelectItem>
-                <SelectItem value="hybrid">Hybrid</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-          <div>
-            <Label className="text-white">Training Location</Label>
-            <Input
-              value={formData.training_location}
-              onChange={(e) => setFormData(prev => ({ ...prev, training_location: e.target.value }))}
-              placeholder="Enter location"
-              className="bg-slate-800 border-white/10 text-white"
-            />
-          </div>
-        </div>
-
-        <div className="grid grid-cols-2 gap-4">
-          <div>
-            <Label className="text-white">Preferred Training Date</Label>
+            <Label className="text-slate-300">Training Date</Label>
             <Input
               type="date"
               value={formData.training_date}
-              onChange={(e) => setFormData(prev => ({ ...prev, training_date: e.target.value }))}
-              className="bg-slate-800 border-white/10 text-white"
+              onChange={(e) => setFormData({ ...formData, training_date: e.target.value })}
+              className="bg-slate-800 border-white/10 text-slate-100"
             />
           </div>
           <div>
-            <Label className="text-white">Urgency</Label>
-            <Select
+            <Label className="text-slate-300">Training Site</Label>
+            <Input
+              value={formData.training_site}
+              onChange={(e) => setFormData({ ...formData, training_site: e.target.value })}
+              placeholder="On-site / Off-site"
+              className="bg-slate-800 border-white/10 text-slate-100"
+            />
+          </div>
+          <div>
+            <Label className="text-slate-300">Training Location</Label>
+            <Input
+              value={formData.training_location}
+              onChange={(e) => setFormData({ ...formData, training_location: e.target.value })}
+              placeholder="City, Country"
+              className="bg-slate-800 border-white/10 text-slate-100"
+            />
+          </div>
+          <div>
+            <Label className="text-slate-300">Urgency</Label>
+            <select
               value={formData.urgency}
-              onValueChange={(val) => setFormData(prev => ({ ...prev, urgency: val }))}
+              onChange={(e) => setFormData({ ...formData, urgency: e.target.value })}
+              className="w-full bg-slate-800 border border-white/10 text-slate-100 rounded-md p-2"
             >
-              <SelectTrigger className="bg-slate-800 border-white/10 text-white">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent className="bg-slate-800 border-white/10">
-                <SelectItem value="low">Low</SelectItem>
-                <SelectItem value="medium">Medium</SelectItem>
-                <SelectItem value="high">High</SelectItem>
-              </SelectContent>
-            </Select>
+              <option value="low">Low</option>
+              <option value="medium">Medium</option>
+              <option value="high">High</option>
+            </select>
           </div>
         </div>
+      </div>
 
-        <div>
-          <Label className="text-white">Requirements / Notes</Label>
-          <Textarea
-            value={formData.requirement}
-            onChange={(e) => setFormData(prev => ({ ...prev, requirement: e.target.value }))}
-            placeholder="Enter any specific requirements or notes"
-            className="bg-slate-800 border-white/10 text-white"
-            rows={3}
-          />
+      {/* Payment Information */}
+      <div className="space-y-4 p-4 bg-yellow-500/10 border border-yellow-400/30 rounded-lg">
+        <h4 className="text-sm font-semibold text-slate-200">Payment Information</h4>
+        <div className="grid grid-cols-2 gap-4">
+          <div>
+            <Label className="text-slate-300">Payment Mode</Label>
+            <select
+              value={formData.payment_mode}
+              onChange={(e) => setFormData({ ...formData, payment_mode: e.target.value })}
+              className="w-full bg-slate-800 border border-white/10 text-slate-100 rounded-md p-2"
+            >
+              <option value="">Select Payment Mode</option>
+              <option value="Cash">Cash</option>
+              <option value="Bank Transfer">Bank Transfer</option>
+              <option value="Credit Card">Credit Card</option>
+              <option value="Cheque">Cheque</option>
+              <option value="Online Payment">Online Payment</option>
+            </select>
+          </div>
+          <div>
+            <Label className="text-slate-300">Payment Terms</Label>
+            <select
+              value={formData.payment_terms}
+              onChange={(e) => setFormData({ ...formData, payment_terms: e.target.value })}
+              className="w-full bg-slate-800 border border-white/10 text-slate-100 rounded-md p-2"
+            >
+              <option value="">Select Payment Terms</option>
+              <option value="Advance">100% Advance</option>
+              <option value="50-50">50% Advance, 50% Post-Training</option>
+              <option value="Net 30">Net 30 Days</option>
+              <option value="Net 60">Net 60 Days</option>
+              <option value="Custom">Custom Terms</option>
+            </select>
+          </div>
         </div>
       </div>
 
-      {/* Lead Score Display */}
-      <div className="bg-blue-500/10 border border-blue-400/30 rounded-lg p-4">
-        <div className="flex items-center justify-between">
-          <span className="text-white font-semibold">Lead Score:</span>
-          <Badge className={`text-lg ${
-            formData.lead_score >= 80 ? 'bg-green-500/20 text-green-300 border-green-400/50' :
-            formData.lead_score >= 60 ? 'bg-yellow-500/20 text-yellow-300 border-yellow-400/50' :
-            'bg-red-500/20 text-red-300 border-red-400/50'
-          }`}>
-            {formData.lead_score}/100
-          </Badge>
+      {/* Auto-Calculated Lead Score Display */}
+      {formData.lead_score && (
+        <div className={`p-4 rounded-lg border ${
+          formData.lead_score === 'hot' ? 'bg-red-500/10 border-red-400/30' :
+          formData.lead_score === 'warm' ? 'bg-orange-500/10 border-orange-400/30' :
+          'bg-blue-500/10 border-blue-400/30'
+        }`}>
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-xs text-slate-400 mb-1">Auto-Calculated Lead Score</p>
+              <div className="flex items-center gap-2">
+                {getLeadScoreBadge(formData.lead_score)}
+              </div>
+            </div>
+            <div className="text-right text-xs text-slate-400">
+              <p>Based on:</p>
+              <p>• Urgency • Deal Size • Trainees</p>
+              <p>• Category • Source • Company Size</p>
+            </div>
+          </div>
         </div>
-        <p className="text-xs text-slate-400 mt-1">
-          Estimated Value: AED {formData.lead_value || '0'}
-        </p>
+      )}
+
+      {/* Additional Notes */}
+      <div className="space-y-4 p-4 bg-slate-800/50 border border-white/10 rounded-lg">
+        <h4 className="text-sm font-semibold text-slate-200">Additional Information</h4>
+        <div className="grid grid-cols-1 gap-4">
+          <div>
+            <Label className="text-slate-300">Remarks & Description</Label>
+            <textarea
+              value={formData.remarks}
+              onChange={(e) => setFormData({ ...formData, remarks: e.target.value })}
+              className="w-full bg-slate-800 border border-white/10 text-slate-100 rounded-md p-2 min-h-[80px]"
+              placeholder="Any remarks or special notes..."
+            />
+          </div>
+          <div>
+            <Label className="text-slate-300">Description</Label>
+            <textarea
+              value={formData.description}
+              onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+              className="w-full bg-slate-800 border border-white/10 text-slate-100 rounded-md p-2 min-h-[80px]"
+              placeholder="Detailed description of requirements..."
+            />
+          </div>
+        </div>
       </div>
+
+      {/* Lead Intelligence */}
+      {formData.course_id && (
+        <div className="p-4 bg-purple-500/10 border border-purple-400/30 rounded-lg">
+          <h4 className="text-sm font-semibold text-slate-200 mb-3">Lead Intelligence</h4>
+          <div className="grid grid-cols-3 gap-4">
+            <div>
+              <p className="text-xs text-slate-400 mb-1">Estimated Value</p>
+              <p className="text-xl font-bold text-green-400">{formData.lead_value || 0} AED</p>
+            </div>
+            <div>
+              <p className="text-xs text-slate-400 mb-1">Lead Score</p>
+              {getLeadScoreBadge(formData.lead_score || 'warm')}
+            </div>
+            <div>
+              <p className="text-xs text-slate-400 mb-1">Urgency</p>
+              <Badge className={
+                formData.urgency === 'high' ? 'bg-red-500/20 text-red-300 border-red-400/50' :
+                formData.urgency === 'medium' ? 'bg-yellow-500/20 text-yellow-300 border-yellow-400/50' :
+                'bg-blue-500/20 text-blue-300 border-blue-400/50'
+              }>
+                {formData.urgency?.toUpperCase()}
+              </Badge>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Submit Button */}
       <div className="flex justify-end gap-3">
