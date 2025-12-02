@@ -211,7 +211,8 @@ const DepartmentWiseEmployees = () => {
     return Array.from(branches);
   };
 
-  const getRoleIcon = (role) => {
+  const getRoleIcon = (emp) => {
+    const role = emp.role || emp.designation;
     if (['MD', 'COO', 'CEO'].includes(role)) return Crown;
     if (role?.includes('Head')) return Star;
     return Award;
