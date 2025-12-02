@@ -137,7 +137,7 @@ const COODashboard = () => {
       <main className="max-w-full px-6 py-8">
         {/* Tabs Navigation */}
         <Tabs defaultValue="dashboard" className="mb-8">
-          <TabsList className="grid w-full grid-cols-10 bg-white/10 border border-white/20 text-xs">
+          <TabsList className="grid w-full grid-cols-9 bg-white/10 border border-white/20 text-xs">
             <TabsTrigger value="dashboard">
               <LayoutDashboard className="w-4 h-4 mr-1" />
               Dashboard
@@ -150,13 +150,9 @@ const COODashboard = () => {
               <GraduationCap className="w-4 h-4 mr-1" />
               Academic
             </TabsTrigger>
-            <TabsTrigger value="certificates">
+            <TabsTrigger value="certificate-management">
               <Award className="w-4 h-4 mr-1" />
               Certificates
-            </TabsTrigger>
-            <TabsTrigger value="certificate-management">
-              <Package className="w-4 h-4 mr-1" />
-              Cert Mgmt
             </TabsTrigger>
             <TabsTrigger value="accounting">
               <DollarSign className="w-4 h-4 mr-1" />
