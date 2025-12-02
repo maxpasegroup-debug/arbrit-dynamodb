@@ -1401,6 +1401,33 @@ async def get_all_pin_status(current_user: dict = Depends(get_current_user)):
         )
 
 
+@api_router.get("/executive/work-orders")
+async def get_executive_work_orders(current_user: dict = Depends(get_current_user)):
+    """
+    Get all work orders for MD/COO dashboards.
+    Used for Feedbacks and Arbrit's Journey tabs.
+    """
+    try:
+        # Check permission - MD or COO only
+        if current_user["role"] not in ["MD", "COO", "CEO", "Management"]:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="Access denied. Executive role required."
+            )
+        
+        # Get all work orders
+        query_result = await db.work_orders.find({}, {"_id": 0})
+        work_orders = await query_result.sort("created_at", -1).to_list(1000)
+        
+        return work_orders
+    
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error fetching work orders for executive: {e}")
+        return []
+
+
 @api_router.get("/dashboard/coo")
 async def coo_dashboard(current_user: dict = Depends(get_current_user)):
     if current_user["role"] != "COO":
