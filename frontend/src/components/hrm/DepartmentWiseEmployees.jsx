@@ -234,12 +234,67 @@ const DepartmentWiseEmployees = () => {
 
   const handleAddEmployee = () => {
     setEditingEmployee(null);
+    setFormData({
+      name: '',
+      mobile: '',
+      branch: '',
+      email: '',
+      designation: '',
+      department: '',
+      badge_title: ''
+    });
     setShowAddDialog(true);
   };
 
   const handleEditEmployee = (employee) => {
     setEditingEmployee(employee);
+    setFormData({
+      name: employee.name || '',
+      mobile: employee.mobile || '',
+      branch: employee.branch || '',
+      email: employee.email || '',
+      designation: employee.designation || '',
+      department: employee.department || '',
+      badge_title: employee.badge_title || ''
+    });
     setShowAddDialog(true);
+  };
+
+  const handleSubmitEmployee = async (e) => {
+    e.preventDefault();
+    
+    if (!formData.name || !formData.mobile || !formData.branch) {
+      toast.error('Please fill in all required fields');
+      return;
+    }
+
+    setLoading(true);
+    try {
+      const token = localStorage.getItem('token');
+      
+      if (editingEmployee) {
+        await axios.put(
+          `${API}/hrm/employees/${editingEmployee.id}`,
+          formData,
+          { headers: { Authorization: `Bearer ${token}` } }
+        );
+        toast.success('Employee updated successfully');
+      } else {
+        await axios.post(
+          `${API}/hrm/employees`,
+          formData,
+          { headers: { Authorization: `Bearer ${token}` } }
+        );
+        toast.success('Employee added successfully');
+      }
+      
+      handleDialogClose();
+    } catch (error) {
+      console.error('Error saving employee:', error);
+      toast.error('Failed to save employee');
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleDeleteEmployee = async (employee) => {
