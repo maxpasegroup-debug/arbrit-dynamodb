@@ -171,43 +171,27 @@ const MDDashboard = () => {
         </div>
 
         {/* Tabs Navigation */}
-        <Tabs defaultValue="dashboard" className="mb-8">
-          <TabsList className="grid w-full grid-cols-9 bg-white/10 border border-white/20 text-xs">
-            <TabsTrigger value="dashboard">
-              <LayoutDashboard className="w-4 h-4 mr-1" />
-              Dashboard
-            </TabsTrigger>
+        <Tabs defaultValue="sales" className="mb-8">
+          <TabsList className="grid w-full grid-cols-5 bg-white/10 border border-white/20">
             <TabsTrigger value="sales">
-              <TrendingUp className="w-4 h-4 mr-1" />
+              <TrendingUp className="w-4 h-4 mr-2" />
               Sales
             </TabsTrigger>
-            <TabsTrigger value="academic">
-              <GraduationCap className="w-4 h-4 mr-1" />
-              Academic
+            <TabsTrigger value="academics">
+              <GraduationCap className="w-4 h-4 mr-2" />
+              Academics
             </TabsTrigger>
-            <TabsTrigger value="certificate-management">
-              <Award className="w-4 h-4 mr-1" />
-              Certificates
+            <TabsTrigger value="certificates">
+              <Award className="w-4 h-4 mr-2" />
+              Certificates & Dispatch
             </TabsTrigger>
-            <TabsTrigger value="accounting">
-              <DollarSign className="w-4 h-4 mr-1" />
-              Accounting
+            <TabsTrigger value="feedbacks">
+              <MessageSquare className="w-4 h-4 mr-2" />
+              Feedbacks
             </TabsTrigger>
-            <TabsTrigger value="assessments">
-              <ClipboardCheck className="w-4 h-4 mr-1" />
-              Assessments
-            </TabsTrigger>
-            <TabsTrigger value="team">
-              <Users className="w-4 h-4 mr-1" />
-              Team
-            </TabsTrigger>
-            <TabsTrigger value="library">
-              <FileText className="w-4 h-4 mr-1" />
-              Library
-            </TabsTrigger>
-            <TabsTrigger value="deletions">
-              <Trash2 className="w-4 h-4 mr-1" />
-              Deletions
+            <TabsTrigger value="arbrits-journey">
+              <BookOpen className="w-4 h-4 mr-2" />
+              Arbrit's Journey
             </TabsTrigger>
           </TabsList>
 
