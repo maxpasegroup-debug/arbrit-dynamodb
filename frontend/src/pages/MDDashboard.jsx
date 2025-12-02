@@ -1,13 +1,14 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { 
-  LogOut, TrendingUp, GraduationCap, Award, MessageSquare, BookOpen,
-  Settings, Users, DollarSign, Package, ChevronRight, BarChart3
+  LogOut, TrendingUp, Users, GraduationCap, AlertTriangle, Lightbulb, 
+  Building2, BarChart4, Shield, Plus, DollarSign, Briefcase, Award, 
+  Package, FileText, Trash2, Calendar, UserCheck, ClipboardCheck, 
+  Receipt, BookOpen, LayoutDashboard, FileCheck
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 // Sales Components
@@ -23,20 +24,24 @@ import TrainingRequests from '@/components/academic/TrainingRequests';
 import TrainerAllocation from '@/components/academic/TrainerAllocation';
 import WorkOrderManagement from '@/components/academic/WorkOrderManagement';
 import TrainingSchedule from '@/components/academic/TrainingSchedule';
-import AcademicLibrary from '@/components/academic/AcademicLibrary';
-
-// Certificate Components
 import CertificateApproval from '@/components/academic/CertificateApproval';
 import CertificateGeneration from '@/components/academic/CertificateGeneration';
+import TeamMonitoring from '@/components/academic/TeamMonitoring';
+import AcademicLibrary from '@/components/academic/AcademicLibrary';
+
+// Assessment Components
+import AssessmentFormBuilder from '@/components/assessment/AssessmentFormBuilder';
+
+// Certificate & Library Components
+import TrainingLibrary from '@/components/library/TrainingLibrary';
 import CertificateManagement from '@/components/certificates/CertificateManagement';
 
-// Other Components
-import TrainingLibrary from '@/components/library/TrainingLibrary';
+// Accounting Components
 import AccountingDashboard from '@/components/accounting/AccountingDashboard';
-import AssessmentFormBuilder from '@/components/assessment/AssessmentFormBuilder';
-import TeamMonitoring from '@/components/academic/TeamMonitoring';
-import DeletionApprovals from '@/components/executive/DeletionApprovals';
+
+// Executive Components
 import ExpenseSubmissionModal from '@/components/coo/ExpenseSubmissionModal';
+import DeletionApprovals from '@/components/executive/DeletionApprovals';
 
 import { toast } from 'sonner';
 import axios from 'axios';
@@ -51,45 +56,33 @@ const MDDashboard = () => {
   const [dashboardData, setDashboardData] = useState(null);
   const [leadModalOpen, setLeadModalOpen] = useState(false);
   const [expenseModalOpen, setExpenseModalOpen] = useState(false);
-  const [controlPanelOpen, setControlPanelOpen] = useState(false);
 
   useEffect(() => {
-    const checkAuth = async () => {
-      const token = localStorage.getItem('token');
-      const userData = localStorage.getItem('user');
+    const storedUser = localStorage.getItem('user');
+    if (!storedUser) {
+      navigate('/login');
+      return;
+    }
 
-      if (!token || !userData) {
-        toast.error('Please login to continue');
+    try {
+      const parsedUser = JSON.parse(storedUser);
+      if (!['MD', 'CEO', 'Management'].includes(parsedUser.role)) {
+        toast.error('Access denied. MD/CEO access only.');
         navigate('/login');
         return;
       }
-
-      try {
-        const response = await axios.get(`${API}/auth/me`, {
-          headers: { Authorization: `Bearer ${token}` }
-        });
-
-        const userInfo = response.data;
-        if (userInfo.role !== 'MD') {
-          toast.error('Access denied. MD access required.');
-          navigate('/login');
-          return;
-        }
-
-        setUser(userInfo);
-        fetchDashboardData();
-      } catch (error) {
-        console.error('Auth check failed:', error);
-        toast.error('Session expired. Please login again.');
-        navigate('/login');
-      }
-    };
-
-    checkAuth();
+      setUser(parsedUser);
+      fetchDashboardData();
+    } catch (error) {
+      console.error('Error parsing user:', error);
+      toast.error('Session expired. Please login again.');
+      navigate('/login');
+    }
   }, [navigate]);
 
   const fetchDashboardData = async () => {
     try {
+      setLoading(true);
       const token = localStorage.getItem('token');
       const response = await axios.get(`${API}/executive/md-dashboard`, {
         headers: { Authorization: `Bearer ${token}` }
@@ -110,316 +103,439 @@ const MDDashboard = () => {
     navigate('/login');
   };
 
-  if (loading) {
+  const getHealthColor = (score) => {
+    if (score >= 80) return 'from-green-500 to-emerald-400';
+    if (score >= 60) return 'from-yellow-500 to-amber-400';
+    return 'from-red-500 to-rose-400';
+  };
+
+  if (loading || !dashboardData) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-[#0a1e3d] via-[#1a2f4d] to-[#0a1e3d] flex items-center justify-center">
-        <p className="text-white">Loading...</p>
+      <div className="min-h-screen bg-gradient-to-br from-[#0f172a] via-[#1e293b] to-[#0f172a] flex items-center justify-center">
+        <p className="text-amber-200">Loading executive intelligence...</p>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#0a1e3d] via-[#1a2f4d] to-[#0a1e3d]">
-      {/* Header */}
-      <div className="bg-gradient-to-r from-amber-600 to-yellow-600 border-b border-amber-500/30">
-        <div className="max-w-full px-6 py-6 flex justify-between items-center">
-          <div>
-            <h1 className="text-3xl font-bold text-white flex items-center gap-3">
-              <BarChart3 className="w-10 h-10" />
-              Executive Intelligence Panel
-            </h1>
-            <p className="text-amber-100 mt-1 text-sm">Strategic Overview &amp; Business Insights</p>
-          </div>
-          <div className="flex items-center gap-4">
-            <div className="text-right">
-              <p className="text-sm font-medium text-white">{user?.name}</p>
-              <p className="text-xs text-amber-200">{user?.role}</p>
+    <div className="min-h-screen bg-gradient-to-br from-[#0f172a] via-[#1e293b] to-[#0f172a]">
+      {/* Royal Header */}
+      <div className="bg-gradient-to-r from-amber-900/20 via-amber-800/10 to-amber-900/20 backdrop-blur-sm border-b border-amber-500/20">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6">
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+            <div>
+              <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold bg-gradient-to-r from-amber-200 to-amber-400 bg-clip-text text-transparent">
+                Executive Intelligence Panel
+              </h1>
+              <p className="text-xs sm:text-sm text-amber-300/70 mt-1">Strategic Overview & Business Insights</p>
             </div>
-            <Button
-              onClick={handleLogout}
-              variant="outline"
-              className="border-white/30 text-white hover:bg-white/10"
-            >
-              <LogOut className="w-4 h-4 mr-2" />
-              Logout
-            </Button>
+            <div className="flex items-center gap-3 w-full sm:w-auto">
+              <div className="text-left sm:text-right flex-1 sm:flex-initial">
+                <p className="text-sm font-medium text-amber-100">{user?.name}</p>
+                <p className="text-xs text-amber-300/70">{user?.role}</p>
+              </div>
+              <Button
+                onClick={handleLogout}
+                variant="outline"
+                size="sm"
+                className="border-amber-500/30 text-amber-200 hover:bg-amber-500/10"
+              >
+                <LogOut className="w-4 h-4 sm:mr-2" />
+                <span className="hidden sm:inline">Logout</span>
+              </Button>
+            </div>
           </div>
         </div>
       </div>
 
-      {/* Main Content */}
-      <main className="max-w-full px-6 py-8">
-        {/* Welcome Banner */}
-        <div className="mb-8 bg-gradient-to-r from-slate-800/80 to-slate-900/80 backdrop-blur-sm rounded-2xl border border-amber-500/20 p-8">
-          <div className="flex items-center justify-between">
-            <div>
-              <h2 className="text-3xl font-bold text-white mb-2">
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-10">
+        {/* Welcome Section */}
+        <div className="mb-6 sm:mb-10 bg-gradient-to-r from-amber-900/10 to-transparent rounded-xl sm:rounded-2xl border border-amber-500/20 p-4 sm:p-6 lg:p-8">
+          <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
+            <div className="text-center sm:text-left flex-1">
+              <h2 className="text-lg sm:text-xl lg:text-2xl font-bold text-amber-100 mb-2">
                 Good {new Date().getHours() < 12 ? 'Morning' : new Date().getHours() < 18 ? 'Afternoon' : 'Evening'}, {user?.name?.split(' ')[0]}
               </h2>
-              <p className="text-gray-300 text-lg">Here&apos;s your strategic business intelligence for today</p>
+              <p className="text-sm sm:text-base text-amber-200/70">
+                Here&apos;s your strategic business intelligence for today
+              </p>
             </div>
             <Button
-              onClick={() => setControlPanelOpen(true)}
-              className="bg-gradient-to-r from-amber-500 to-yellow-500 hover:from-amber-600 hover:to-yellow-600 text-slate-900 font-semibold px-8 py-6 text-lg"
+              onClick={() => navigate('/dashboard/coo')}
+              className="bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-slate-900 font-semibold px-4 sm:px-6 py-2 sm:py-3 shadow-lg hover:shadow-xl transition-all w-full sm:w-auto text-sm sm:text-base"
             >
-              <Settings className="w-5 h-5 mr-2" />
+              <Shield className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
               Access Control Panel
             </Button>
           </div>
         </div>
 
-        {/* Key Widgets Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {/* Sales Widget */}
-          <Card className="bg-white/5 border-blue-500/30 hover:border-blue-500/50 transition-all cursor-pointer group"
-                onClick={() => setControlPanelOpen(true)}>
-            <CardHeader>
-              <CardTitle className="text-white flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  <div className="p-3 bg-blue-500/20 rounded-lg">
-                    <TrendingUp className="w-6 h-6 text-blue-400" />
-                  </div>
-                  <span>Sales Performance</span>
-                </div>
-                <ChevronRight className="w-5 h-5 text-gray-400 group-hover:text-blue-400 transition-colors" />
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="flex justify-between items-center">
-                <span className="text-gray-400">Active Leads</span>
-                <span className="text-2xl font-bold text-white">{dashboardData?.leads?.active || 0}</span>
-              </div>
-              <div className="flex justify-between items-center">
-                <span className="text-gray-400">Conversion Rate</span>
-                <span className="text-2xl font-bold text-green-400">{dashboardData?.leads?.conversion_rate || 0}%</span>
-              </div>
-              <div className="flex justify-between items-center">
-                <span className="text-gray-400">Monthly Revenue</span>
-                <span className="text-xl font-bold text-yellow-400">AED {dashboardData?.revenue?.monthly || 0}</span>
-              </div>
-            </CardContent>
-          </Card>
+        {/* Tabs Navigation */}
+        <Tabs defaultValue="dashboard" className="mb-8">
+          <TabsList className="grid w-full grid-cols-9 bg-white/10 border border-white/20 text-xs">
+            <TabsTrigger value="dashboard">
+              <LayoutDashboard className="w-4 h-4 mr-1" />
+              Dashboard
+            </TabsTrigger>
+            <TabsTrigger value="sales">
+              <TrendingUp className="w-4 h-4 mr-1" />
+              Sales
+            </TabsTrigger>
+            <TabsTrigger value="academic">
+              <GraduationCap className="w-4 h-4 mr-1" />
+              Academic
+            </TabsTrigger>
+            <TabsTrigger value="certificate-management">
+              <Award className="w-4 h-4 mr-1" />
+              Certificates
+            </TabsTrigger>
+            <TabsTrigger value="accounting">
+              <DollarSign className="w-4 h-4 mr-1" />
+              Accounting
+            </TabsTrigger>
+            <TabsTrigger value="assessments">
+              <ClipboardCheck className="w-4 h-4 mr-1" />
+              Assessments
+            </TabsTrigger>
+            <TabsTrigger value="team">
+              <Users className="w-4 h-4 mr-1" />
+              Team
+            </TabsTrigger>
+            <TabsTrigger value="library">
+              <FileText className="w-4 h-4 mr-1" />
+              Library
+            </TabsTrigger>
+            <TabsTrigger value="deletions">
+              <Trash2 className="w-4 h-4 mr-1" />
+              Deletions
+            </TabsTrigger>
+          </TabsList>
 
-          {/* Academic Widget */}
-          <Card className="bg-white/5 border-purple-500/30 hover:border-purple-500/50 transition-all cursor-pointer group"
-                onClick={() => setControlPanelOpen(true)}>
-            <CardHeader>
-              <CardTitle className="text-white flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  <div className="p-3 bg-purple-500/20 rounded-lg">
-                    <GraduationCap className="w-6 h-6 text-purple-400" />
-                  </div>
-                  <span>Academic Operations</span>
-                </div>
-                <ChevronRight className="w-5 h-5 text-gray-400 group-hover:text-purple-400 transition-colors" />
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="flex justify-between items-center">
-                <span className="text-gray-400">Active Courses</span>
-                <span className="text-2xl font-bold text-white">{dashboardData?.courses?.active || 0}</span>
-              </div>
-              <div className="flex justify-between items-center">
-                <span className="text-gray-400">Training Requests</span>
-                <span className="text-2xl font-bold text-orange-400">{dashboardData?.training_requests?.pending || 0}</span>
-              </div>
-              <div className="flex justify-between items-center">
-                <span className="text-gray-400">Trainers</span>
-                <span className="text-2xl font-bold text-cyan-400">{dashboardData?.trainers?.total || 0}</span>
-              </div>
-            </CardContent>
-          </Card>
+          <TabsContent value="dashboard">
+            {/* Quick Actions */}
+            <div className="flex flex-wrap justify-center gap-4 mb-8">
+              <button
+                onClick={() => setLeadModalOpen(true)}
+                className="px-6 py-3 bg-gradient-to-r from-blue-500 to-cyan-600 hover:from-blue-600 hover:to-cyan-700 text-white rounded-lg font-semibold shadow-lg transition-all flex items-center gap-2"
+              >
+                <Plus className="w-5 h-5" /> Submit New Lead
+              </button>
+              <button
+                onClick={() => setExpenseModalOpen(true)}
+                className="px-6 py-3 bg-gradient-to-r from-purple-500 to-pink-600 hover:from-purple-600 hover:to-pink-700 text-white rounded-lg font-semibold shadow-lg transition-all flex items-center gap-2"
+              >
+                <DollarSign className="w-5 h-5" /> Submit Expense
+              </button>
+            </div>
 
-          {/* Certificates Widget */}
-          <Card className="bg-white/5 border-green-500/30 hover:border-green-500/50 transition-all cursor-pointer group"
-                onClick={() => setControlPanelOpen(true)}>
-            <CardHeader>
-              <CardTitle className="text-white flex items-center justify-between">
+        {/* Top Row - Corporate Health */}
+        <div className="mb-8">
+          <Card className="bg-gradient-to-br from-slate-800/50 to-slate-900/50 border-amber-500/30 hover:border-amber-500/50 transition-all">
+            <CardHeader className="pb-4">
+              <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                  <div className="p-3 bg-green-500/20 rounded-lg">
-                    <Award className="w-6 h-6 text-green-400" />
-                  </div>
-                  <span>Certificates & Dispatch</span>
+                  <Building2 className="w-6 h-6 text-amber-400" />
+                  <CardTitle className="text-xl text-amber-100">Corporate Health Score</CardTitle>
                 </div>
-                <ChevronRight className="w-5 h-5 text-gray-400 group-hover:text-green-400 transition-colors" />
-              </CardTitle>
+                <Badge className={`bg-gradient-to-r ${getHealthColor(dashboardData.corporate_health.score)} text-white px-4 py-1 text-lg`}>
+                  {dashboardData.corporate_health.score}%
+                </Badge>
+              </div>
             </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="flex justify-between items-center">
-                <span className="text-gray-400">Total Certificates</span>
-                <span className="text-2xl font-bold text-white">{dashboardData?.certificates?.total || 0}</span>
-              </div>
-              <div className="flex justify-between items-center">
-                <span className="text-gray-400">Pending Dispatch</span>
-                <span className="text-2xl font-bold text-red-400">{dashboardData?.alerts?.pending_dispatch || 0}</span>
-              </div>
-              <div className="flex justify-between items-center">
-                <span className="text-gray-400">Delivered</span>
-                <span className="text-2xl font-bold text-green-400">{dashboardData?.certificates?.delivered || 0}</span>
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Feedbacks Widget */}
-          <Card className="bg-white/5 border-pink-500/30 hover:border-pink-500/50 transition-all cursor-pointer group"
-                onClick={() => setControlPanelOpen(true)}>
-            <CardHeader>
-              <CardTitle className="text-white flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  <div className="p-3 bg-pink-500/20 rounded-lg">
-                    <MessageSquare className="w-6 h-6 text-pink-400" />
-                  </div>
-                  <span>Feedbacks</span>
+            <CardContent>
+              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
+                <div className="text-center">
+                  <p className="text-2xl sm:text-3xl font-bold text-amber-100 mb-1">{dashboardData.corporate_health.attendance_score.toFixed(0)}%</p>
+                  <p className="text-xs sm:text-sm text-amber-300/70">Workforce</p>
                 </div>
-                <ChevronRight className="w-5 h-5 text-gray-400 group-hover:text-pink-400 transition-colors" />
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="flex justify-between items-center">
-                <span className="text-gray-400">Total Feedback</span>
-                <span className="text-2xl font-bold text-white">{dashboardData?.feedback?.total || 0}</span>
-              </div>
-              <div className="flex justify-between items-center">
-                <span className="text-gray-400">Average Rating</span>
-                <span className="text-2xl font-bold text-yellow-400">{dashboardData?.feedback?.avg_rating || 0} ⭐</span>
-              </div>
-              <div className="flex justify-between items-center">
-                <span className="text-gray-400">Pending Review</span>
-                <span className="text-2xl font-bold text-orange-400">{dashboardData?.feedback?.pending || 0}</span>
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Arbrit&apos;s Journey (Library) Widget */}
-          <Card className="bg-white/5 border-cyan-500/30 hover:border-cyan-500/50 transition-all cursor-pointer group"
-                onClick={() => setControlPanelOpen(true)}>
-            <CardHeader>
-              <CardTitle className="text-white flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  <div className="p-3 bg-cyan-500/20 rounded-lg">
-                    <BookOpen className="w-6 h-6 text-cyan-400" />
-                  </div>
-                  <span>Arbrit&apos;s Journey</span>
+                <div className="text-center">
+                  <p className="text-2xl sm:text-3xl font-bold text-amber-100 mb-1">{dashboardData.corporate_health.sales_score.toFixed(0)}%</p>
+                  <p className="text-sm text-amber-300/70">Sales</p>
                 </div>
-                <ChevronRight className="w-5 h-5 text-gray-400 group-hover:text-cyan-400 transition-colors" />
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="flex justify-between items-center">
-                <span className="text-gray-400">Training Library</span>
-                <span className="text-2xl font-bold text-white">{dashboardData?.library?.total_documents || 0}</span>
-              </div>
-              <div className="flex justify-between items-center">
-                <span className="text-gray-400">Resources</span>
-                <span className="text-2xl font-bold text-blue-400">{dashboardData?.library?.resources || 0}</span>
-              </div>
-              <div className="flex justify-between items-center">
-                <span className="text-gray-400">Categories</span>
-                <span className="text-2xl font-bold text-purple-400">{dashboardData?.library?.categories || 0}</span>
+                <div className="text-center">
+                  <p className="text-2xl sm:text-3xl font-bold text-amber-100 mb-1">{dashboardData.corporate_health.operations_score.toFixed(0)}%</p>
+                  <p className="text-xs sm:text-sm text-amber-300/70">Operations</p>
+                </div>
+                <div className="text-center">
+                  <p className="text-xl font-bold text-amber-400 mb-1">{dashboardData.corporate_health.rating}</p>
+                  <p className="text-sm text-amber-300/70">Rating</p>
+                </div>
               </div>
             </CardContent>
           </Card>
         </div>
-      </main>
 
-      {/* Control Panel Dialog */}
-      <Dialog open={controlPanelOpen} onOpenChange={setControlPanelOpen}>
-        <DialogContent className="max-w-7xl max-h-[90vh] overflow-y-auto bg-slate-900 border-white/10">
-          <DialogHeader>
-            <DialogTitle className="text-white text-2xl">MD Control Panel</DialogTitle>
-          </DialogHeader>
-
-          <Tabs defaultValue="sales" className="w-full">
-            <TabsList className="grid w-full grid-cols-9 bg-white/5 border border-white/10 text-xs">
-              <TabsTrigger value="sales">Sales</TabsTrigger>
-              <TabsTrigger value="academic">Academic</TabsTrigger>
-              <TabsTrigger value="certificates">Certificates</TabsTrigger>
-              <TabsTrigger value="accounting">Accounting</TabsTrigger>
-              <TabsTrigger value="assessments">Assessments</TabsTrigger>
-              <TabsTrigger value="team">Team</TabsTrigger>
-              <TabsTrigger value="library">Library</TabsTrigger>
-              <TabsTrigger value="deletions">Deletions</TabsTrigger>
-              <TabsTrigger value="expenses">Expenses</TabsTrigger>
-            </TabsList>
-
-            {/* Sales */}
-            <TabsContent value="sales">
-              <Tabs defaultValue="overview" className="w-full">
-                <TabsList className="bg-white/5 border border-white/10">
-                  <TabsTrigger value="overview">Overview</TabsTrigger>
-                  <TabsTrigger value="leads">Leads</TabsTrigger>
-                  <TabsTrigger value="quotations">Quotations</TabsTrigger>
-                  <TabsTrigger value="team">Team Monitoring</TabsTrigger>
-                </TabsList>
-                <TabsContent value="overview" className="mt-4"><SalesOverview /></TabsContent>
-                <TabsContent value="leads" className="mt-4"><LeadTracker /></TabsContent>
-                <TabsContent value="quotations" className="mt-4"><QuotationManagementEnhanced /></TabsContent>
-                <TabsContent value="team" className="mt-4"><EmployeeMonitoring /></TabsContent>
-              </Tabs>
-            </TabsContent>
-
-            {/* Academic */}
-            <TabsContent value="academic">
-              <Tabs defaultValue="courses" className="w-full">
-                <TabsList className="bg-white/5 border border-white/10">
-                  <TabsTrigger value="courses">Courses</TabsTrigger>
-                  <TabsTrigger value="requests">Requests</TabsTrigger>
-                  <TabsTrigger value="trainers">Trainers</TabsTrigger>
-                  <TabsTrigger value="work-orders">Work Orders</TabsTrigger>
-                  <TabsTrigger value="schedule">Schedule</TabsTrigger>
-                  <TabsTrigger value="academic-library">Library</TabsTrigger>
-                </TabsList>
-                <TabsContent value="courses" className="mt-4"><CourseManagement /></TabsContent>
-                <TabsContent value="requests" className="mt-4"><TrainingRequests /></TabsContent>
-                <TabsContent value="trainers" className="mt-4"><TrainerAllocation /></TabsContent>
-                <TabsContent value="work-orders" className="mt-4"><WorkOrderManagement /></TabsContent>
-                <TabsContent value="schedule" className="mt-4"><TrainingSchedule /></TabsContent>
-                <TabsContent value="academic-library" className="mt-4"><AcademicLibrary /></TabsContent>
-              </Tabs>
-            </TabsContent>
-
-            {/* Certificates */}
-            <TabsContent value="certificates">
-              <Tabs defaultValue="approval" className="w-full">
-                <TabsList className="bg-white/5 border border-white/10">
-                  <TabsTrigger value="approval">Approval</TabsTrigger>
-                  <TabsTrigger value="generation">Generation</TabsTrigger>
-                  <TabsTrigger value="dispatch">Dispatch & Tracking</TabsTrigger>
-                  <TabsTrigger value="reports">Status & Reports</TabsTrigger>
-                </TabsList>
-                <TabsContent value="approval" className="mt-4"><CertificateApproval /></TabsContent>
-                <TabsContent value="generation" className="mt-4"><CertificateGeneration /></TabsContent>
-                <TabsContent value="dispatch" className="mt-4"><CertificateManagement /></TabsContent>
-                <TabsContent value="reports" className="mt-4"><CertificateManagement /></TabsContent>
-              </Tabs>
-            </TabsContent>
-
-            {/* Accounting */}
-            <TabsContent value="accounting"><AccountingDashboard /></TabsContent>
-
-            {/* Assessments */}
-            <TabsContent value="assessments"><AssessmentFormBuilder /></TabsContent>
-
-            {/* Team */}
-            <TabsContent value="team"><TeamMonitoring /></TabsContent>
-
-            {/* Library */}
-            <TabsContent value="library"><TrainingLibrary /></TabsContent>
-
-            {/* Deletions */}
-            <TabsContent value="deletions"><DeletionApprovals /></TabsContent>
-
-            {/* Expenses */}
-            <TabsContent value="expenses">
-              <div className="text-center py-12">
-                <Button onClick={() => setExpenseModalOpen(true)} className="bg-purple-600 hover:bg-purple-700">
-                  Submit Expense
-                </Button>
+        {/* Main Intelligence Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+          {/* Executive Analytics */}
+          <Card className="bg-gradient-to-br from-slate-800/40 to-slate-900/40 border-slate-700/50 hover:border-amber-500/30 transition-all">
+            <CardHeader className="pb-3">
+              <div className="flex items-center gap-2">
+                <BarChart4 className="w-5 h-5 text-amber-400" />
+                <CardTitle className="text-base text-amber-100">Executive Analytics</CardTitle>
               </div>
-            </TabsContent>
-          </Tabs>
-        </DialogContent>
-      </Dialog>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div>
+                <p className="text-2xl sm:text-3xl font-bold text-amber-100">{dashboardData.executive_analytics.total_employees}</p>
+                <p className="text-sm text-slate-400">Total Workforce</p>
+              </div>
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <p className="text-xl font-semibold text-amber-200">{dashboardData.executive_analytics.total_work_orders}</p>
+                  <p className="text-xs text-slate-400">Work Orders</p>
+                </div>
+                <div>
+                  <p className="text-xl font-semibold text-green-400">{dashboardData.executive_analytics.completion_rate}%</p>
+                  <p className="text-xs text-slate-400">Completion</p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Workforce Intelligence */}
+          <Card className="bg-gradient-to-br from-slate-800/40 to-slate-900/40 border-slate-700/50 hover:border-amber-500/30 transition-all">
+            <CardHeader className="pb-3">
+              <div className="flex items-center gap-2">
+                <Users className="w-5 h-5 text-blue-400" />
+                <CardTitle className="text-base text-amber-100">Workforce Intelligence</CardTitle>
+              </div>
+            </CardHeader>
+            <CardContent className="space-y-3">
+              <div>
+                <p className="text-2xl sm:text-3xl font-bold text-amber-100">{dashboardData.workforce.total}</p>
+                <p className="text-sm text-slate-400">Active Employees</p>
+              </div>
+              <div className="space-y-2">
+                {Object.entries(dashboardData.workforce.by_department).slice(0, 4).map(([dept, count]) => (
+                  <div key={dept} className="flex justify-between items-center">
+                    <span className="text-xs text-slate-400">{dept}</span>
+                    <Badge className="bg-slate-700/50 text-slate-200 border-slate-600">{count}</Badge>
+                  </div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Sales Intelligence */}
+          <Card className="bg-gradient-to-br from-slate-800/40 to-slate-900/40 border-slate-700/50 hover:border-amber-500/30 transition-all">
+            <CardHeader className="pb-3">
+              <div className="flex items-center gap-2">
+                <TrendingUp className="w-5 h-5 text-green-400" />
+                <CardTitle className="text-base text-amber-100">Sales Intelligence</CardTitle>
+              </div>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <p className="text-2xl font-bold text-amber-100">{dashboardData.sales.total_leads}</p>
+                  <p className="text-xs text-slate-400">Total Leads</p>
+                </div>
+                <div>
+                  <p className="text-2xl font-bold text-green-400">{dashboardData.sales.converted}</p>
+                  <p className="text-xs text-slate-400">Converted</p>
+                </div>
+              </div>
+              <div>
+                <p className="text-sm text-slate-400 mb-1">Conversion Rate</p>
+                <div className="flex items-center gap-3">
+                  <div className="flex-1 h-2 bg-slate-700 rounded-full overflow-hidden">
+                    <div 
+                      className="h-full bg-gradient-to-r from-green-500 to-emerald-400"
+                      style={{ width: `${dashboardData.sales.conversion_rate}%` }}
+                    />
+                  </div>
+                  <span className="text-sm font-semibold text-green-400">{dashboardData.sales.conversion_rate}%</span>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Academic Excellence */}
+          <Card className="bg-gradient-to-br from-slate-800/40 to-slate-900/40 border-slate-700/50 hover:border-amber-500/30 transition-all">
+            <CardHeader className="pb-3">
+              <div className="flex items-center gap-2">
+                <GraduationCap className="w-5 h-5 text-yellow-400" />
+                <CardTitle className="text-base text-amber-100">Academic Excellence</CardTitle>
+              </div>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div>
+                <p className="text-2xl sm:text-3xl font-bold text-amber-100">{dashboardData.academic.certificates_issued}</p>
+                <p className="text-sm text-slate-400">Certificates Issued</p>
+              </div>
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <p className="text-xl font-semibold text-amber-200">{dashboardData.academic.active_trainers}</p>
+                  <p className="text-xs text-slate-400">Active Trainers</p>
+                </div>
+                <div>
+                  <p className="text-xl font-semibold text-blue-400">{dashboardData.academic.completed_sessions}</p>
+                  <p className="text-xs text-slate-400">Sessions Done</p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Executive Alerts */}
+          <Card className="bg-gradient-to-br from-red-900/20 to-slate-900/40 border-red-500/30 hover:border-red-500/50 transition-all">
+            <CardHeader className="pb-3">
+              <div className="flex items-center gap-2">
+                <AlertTriangle className="w-5 h-5 text-red-400" />
+                <CardTitle className="text-base text-amber-100">Executive Alerts</CardTitle>
+              </div>
+            </CardHeader>
+            <CardContent className="space-y-3">
+              <div>
+                <p className="text-2xl sm:text-3xl font-bold text-red-400">{dashboardData.alerts.total_critical}</p>
+                <p className="text-sm text-slate-400">Critical Items</p>
+              </div>
+              <div className="space-y-2">
+                {dashboardData.alerts.pending_dispatch > 0 && (
+                  <div className="p-2 bg-red-500/10 border border-red-500/30 rounded">
+                    <p className="text-xs text-red-300">🚨 {dashboardData.alerts.pending_dispatch} Pending Dispatches</p>
+                  </div>
+                )}
+                {dashboardData.alerts.expiring_documents > 0 && (
+                  <div className="p-2 bg-amber-500/10 border border-amber-500/30 rounded">
+                    <p className="text-xs text-amber-300">⏰ {dashboardData.alerts.expiring_documents} Documents Expiring</p>
+                  </div>
+                )}
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* AI Insights */}
+          <Card className="bg-gradient-to-br from-purple-900/20 to-slate-900/40 border-purple-500/30 hover:border-purple-500/50 transition-all">
+            <CardHeader className="pb-3">
+              <div className="flex items-center gap-2">
+                <Lightbulb className="w-5 h-5 text-purple-400" />
+                <CardTitle className="text-base text-amber-100">AI Business Insights</CardTitle>
+              </div>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-2">
+                {dashboardData.ai_insights.map((insight, idx) => (
+                  <div key={idx} className="p-2 bg-slate-800/50 border border-slate-700 rounded text-xs text-slate-300">
+                    {insight}
+                  </div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+          </TabsContent>
+
+          <TabsContent value="library">
+            <TrainingLibrary />
+          </TabsContent>
+
+          {/* Sales Operations */}
+          <TabsContent value="sales">
+            <Tabs defaultValue="overview" className="w-full">
+              <TabsList className="bg-white/5 border border-white/10">
+                <TabsTrigger value="overview">Overview</TabsTrigger>
+                <TabsTrigger value="leads">Leads</TabsTrigger>
+                <TabsTrigger value="quotations">Quotations</TabsTrigger>
+                <TabsTrigger value="team">Team Monitoring</TabsTrigger>
+              </TabsList>
+              <TabsContent value="overview" className="mt-4">
+                <SalesOverview />
+              </TabsContent>
+              <TabsContent value="leads" className="mt-4">
+                <LeadTracker />
+              </TabsContent>
+              <TabsContent value="quotations" className="mt-4">
+                <QuotationManagementEnhanced />
+              </TabsContent>
+              <TabsContent value="team" className="mt-4">
+                <EmployeeMonitoring />
+              </TabsContent>
+            </Tabs>
+          </TabsContent>
+
+          {/* Academic Operations */}
+          <TabsContent value="academic">
+            <Tabs defaultValue="courses" className="w-full">
+              <TabsList className="bg-white/5 border border-white/10">
+                <TabsTrigger value="courses">Courses</TabsTrigger>
+                <TabsTrigger value="requests">Requests</TabsTrigger>
+                <TabsTrigger value="trainers">Trainers</TabsTrigger>
+                <TabsTrigger value="work-orders">Work Orders</TabsTrigger>
+                <TabsTrigger value="schedule">Schedule</TabsTrigger>
+                <TabsTrigger value="academic-library">Library</TabsTrigger>
+              </TabsList>
+              <TabsContent value="courses" className="mt-4">
+                <CourseManagement />
+              </TabsContent>
+              <TabsContent value="requests" className="mt-4">
+                <TrainingRequests />
+              </TabsContent>
+              <TabsContent value="trainers" className="mt-4">
+                <TrainerAllocation />
+              </TabsContent>
+              <TabsContent value="work-orders" className="mt-4">
+                <WorkOrderManagement />
+              </TabsContent>
+              <TabsContent value="schedule" className="mt-4">
+                <TrainingSchedule />
+              </TabsContent>
+              <TabsContent value="academic-library" className="mt-4">
+                <AcademicLibrary />
+              </TabsContent>
+            </Tabs>
+          </TabsContent>
+
+          {/* Certificate Management - Unified */}
+          <TabsContent value="certificate-management">
+            <Tabs defaultValue="approval" className="w-full">
+              <TabsList className="bg-white/5 border border-white/10">
+                <TabsTrigger value="approval">Approval</TabsTrigger>
+                <TabsTrigger value="generation">Generation</TabsTrigger>
+                <TabsTrigger value="dispatch">Dispatch & Tracking</TabsTrigger>
+                <TabsTrigger value="reports">Status & Reports</TabsTrigger>
+              </TabsList>
+              <TabsContent value="approval" className="mt-4">
+                <CertificateApproval />
+              </TabsContent>
+              <TabsContent value="generation" className="mt-4">
+                <CertificateGeneration />
+              </TabsContent>
+              <TabsContent value="dispatch" className="mt-4">
+                <CertificateManagement />
+              </TabsContent>
+              <TabsContent value="reports" className="mt-4">
+                <CertificateManagement />
+              </TabsContent>
+            </Tabs>
+          </TabsContent>
+
+          {/* Accounting */}
+          <TabsContent value="accounting">
+            <AccountingDashboard />
+          </TabsContent>
+
+          {/* Assessments */}
+          <TabsContent value="assessments">
+            <AssessmentFormBuilder />
+          </TabsContent>
+
+          {/* Team Monitoring */}
+          <TabsContent value="team">
+            <TeamMonitoring />
+          </TabsContent>
+
+          {/* Library */}
+          <TabsContent value="library">
+            <TrainingLibrary />
+          </TabsContent>
+
+          {/* Deletions */}
+          <TabsContent value="deletions">
+            <DeletionApprovals />
+          </TabsContent>
+        </Tabs>
+      </main>
 
       {/* Modals */}
       <UnifiedLeadForm mode="enhanced" open={leadModalOpen} onOpenChange={setLeadModalOpen} />
