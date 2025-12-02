@@ -518,40 +518,41 @@ const UnifiedLeadForm = ({
         </div>
       )}
 
-      {/* Individual Lead Fields */}
+      {/* Individual Fields */}
       {leadType === 'individual' && (
-        <div className="space-y-4">
+        <div className="space-y-4 p-4 bg-green-500/10 border border-green-400/30 rounded-lg">
+          <h4 className="text-sm font-semibold text-slate-200">Client Contact Information</h4>
           <div className="grid grid-cols-2 gap-4">
-            <div>
-              <Label className="text-white">Client Name *</Label>
+            <div className="col-span-2">
+              <Label className="text-slate-300">Client Full Name *</Label>
               <Input
                 value={formData.client_name}
-                onChange={(e) => setFormData(prev => ({ ...prev, client_name: e.target.value }))}
-                placeholder="Enter full name"
+                onChange={(e) => setFormData({ ...formData, client_name: e.target.value })}
+                placeholder="John Doe"
+                className="bg-slate-800 border-white/10 text-slate-100"
                 required
-                className="bg-slate-800 border-white/10 text-white"
               />
             </div>
             <div>
-              <Label className="text-white">Mobile *</Label>
+              <Label className="text-slate-300">Mobile Number *</Label>
               <Input
                 value={formData.client_mobile}
-                onChange={(e) => setFormData(prev => ({ ...prev, client_mobile: e.target.value }))}
-                placeholder="971XXXXXXXXX"
+                onChange={(e) => setFormData({ ...formData, client_mobile: e.target.value })}
+                placeholder="971xxxxxxxxx"
+                className="bg-slate-800 border-white/10 text-slate-100"
                 required
-                className="bg-slate-800 border-white/10 text-white"
               />
             </div>
-          </div>
-          <div>
-            <Label className="text-white">Email</Label>
-            <Input
-              type="email"
-              value={formData.client_email}
-              onChange={(e) => setFormData(prev => ({ ...prev, client_email: e.target.value }))}
-              placeholder="client@email.com"
-              className="bg-slate-800 border-white/10 text-white"
-            />
+            <div>
+              <Label className="text-slate-300">Email Address</Label>
+              <Input
+                type="email"
+                value={formData.client_email}
+                onChange={(e) => setFormData({ ...formData, client_email: e.target.value })}
+                placeholder="john@email.com"
+                className="bg-slate-800 border-white/10 text-slate-100"
+              />
+            </div>
           </div>
         </div>
       )}
