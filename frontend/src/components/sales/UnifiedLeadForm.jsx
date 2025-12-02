@@ -792,19 +792,21 @@ const UnifiedLeadForm = ({
     return (
       <>
         <Button
+          data-testid="submit-self-lead-button"
           onClick={() => setShowDialog(true)}
-          className="bg-green-600 hover:bg-green-700"
+          style={{ background: 'linear-gradient(135deg, #d4af37 0%, #c9a02c 100%)' }}
+          className="text-[#0a1e3d] font-semibold"
         >
           <Plus className="w-4 h-4 mr-2" />
-          Add Self Lead
+          Submit Self Lead
         </Button>
 
         <Dialog open={showDialog} onOpenChange={setShowDialog}>
-          <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto bg-slate-900 border-white/10">
+          <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto bg-slate-900 border-white/10">
             <DialogHeader>
-              <DialogTitle className="text-white text-xl">Add Self Lead</DialogTitle>
+              <DialogTitle className="text-white text-xl">ARBRIT Lead Submission Form</DialogTitle>
               <DialogDescription className="text-slate-400">
-                Create a new lead for your pipeline
+                Enhanced lead capture with intelligent scoring
               </DialogDescription>
             </DialogHeader>
             {formContent}
