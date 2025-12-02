@@ -51,6 +51,9 @@ import DeletionApprovals from '@/components/executive/DeletionApprovals';
 // Auth Components
 import ResetPinModal from '@/components/auth/ResetPinModal';
 
+// HR Components
+import PinManagement from '@/components/hr/PinManagement';
+
 import { toast } from 'sonner';
 import axios from 'axios';
 
