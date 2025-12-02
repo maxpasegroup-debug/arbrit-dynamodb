@@ -1,6 +1,6 @@
-import { CheckCircle, Circle, FileText, Package, Truck, MapPin } from 'lucide-react';
+import { CheckCircle, Circle, FileText, Package, Truck, MapPin, Image as ImageIcon } from 'lucide-react';
 
-const CertificateProgressTracker = ({ currentStatus }) => {
+const CertificateProgressTracker = ({ currentStatus, deliveryNotePhoto, onViewDeliveryNote }) => {
   const stages = [
     { key: 'initiated', label: 'Initiated', icon: FileText },
     { key: 'prepared', label: 'Prepared', icon: CheckCircle },
@@ -10,6 +10,7 @@ const CertificateProgressTracker = ({ currentStatus }) => {
   ];
 
   const currentIndex = stages.findIndex(stage => stage.key === currentStatus);
+  const isDelivered = currentStatus === 'delivered';
 
   return (
     <div className="relative py-4">
