@@ -217,6 +217,24 @@ const DepartmentWiseEmployees = () => {
       grouped[dept].push(emp);
     });
 
+    // Sort each department: Heads first, then others
+    Object.keys(grouped).forEach(dept => {
+      grouped[dept].sort((a, b) => {
+        const aRole = a.role || a.designation || '';
+        const bRole = b.role || b.designation || '';
+        
+        const aIsHead = aRole.includes('Head') || ['MD', 'COO', 'CEO'].includes(aRole);
+        const bIsHead = bRole.includes('Head') || ['MD', 'COO', 'CEO'].includes(bRole);
+        
+        // Heads come first
+        if (aIsHead && !bIsHead) return -1;
+        if (!aIsHead && bIsHead) return 1;
+        
+        // Within same category, sort alphabetically by name
+        return a.name.localeCompare(b.name);
+      });
+    });
+
     return grouped;
   };
 
