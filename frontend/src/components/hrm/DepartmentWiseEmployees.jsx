@@ -370,8 +370,9 @@ const DepartmentWiseEmployees = () => {
                   <div className="p-6 space-y-3">
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
                       {deptEmployees.map((employee, idx) => {
-                        const RoleIcon = getRoleIcon(employee.role);
-                        const isManagement = ['MD', 'COO', 'CEO'].includes(employee.role);
+                        const RoleIcon = getRoleIcon(employee);
+                        const role = employee.role || employee.designation;
+                        const isManagement = ['MD', 'COO', 'CEO'].includes(role);
 
                         return (
                           <Card
