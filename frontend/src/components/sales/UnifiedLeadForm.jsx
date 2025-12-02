@@ -289,41 +289,102 @@ const UnifiedLeadForm = ({
     }
   };
 
+  const getLeadScoreBadge = (score) => {
+    const config = {
+      hot: { color: 'bg-red-500/20 text-red-300 border-red-400/50', icon: '🔥' },
+      warm: { color: 'bg-yellow-500/20 text-yellow-300 border-yellow-400/50', icon: '🌡️' },
+      cold: { color: 'bg-blue-500/20 text-blue-300 border-blue-400/50', icon: '❄️' }
+    };
+    const { color, icon } = config[score] || config.warm;
+    return <Badge className={color}>{icon} {score.toUpperCase()}</Badge>;
+  };
+
   // Form content (same for both modes)
   const formContent = (
     <form onSubmit={handleSubmit} className="space-y-6">
+      {/* Lead Metadata Section */}
+      <div className="space-y-4 p-4 bg-purple-500/10 border border-purple-400/30 rounded-lg">
+        <h4 className="text-sm font-semibold text-slate-200">Lead Details</h4>
+        <div className="grid grid-cols-2 gap-4">
+          <div>
+            <Label className="text-slate-300">Lead Owner (Sales Rep) *</Label>
+            <Input
+              value={formData.lead_owner}
+              onChange={(e) => setFormData({...formData, lead_owner: e.target.value})}
+              placeholder="Auto-filled with your name"
+              className="bg-slate-800 border-white/10 text-slate-100"
+              required
+              readOnly
+            />
+          </div>
+          <div>
+            <Label className="text-slate-300">Lead Source</Label>
+            <select
+              value={formData.source}
+              onChange={(e) => setFormData({ ...formData, source: e.target.value })}
+              className="w-full bg-slate-800 border border-white/10 text-slate-100 rounded-md p-2"
+            >
+              <option value="Self">Self</option>
+              <option value="Website">Website</option>
+              <option value="Referral">Referral</option>
+              <option value="Social Media">Social Media</option>
+              <option value="Walk-in">Walk-in</option>
+              <option value="Cold Call">Cold Call</option>
+              <option value="Email Campaign">Email Campaign</option>
+              <option value="Trade Show">Trade Show</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+          <div className="col-span-2">
+            <Label className="text-slate-300">Lead Category</Label>
+            <select
+              value={formData.lead_category}
+              onChange={(e) => setFormData({ ...formData, lead_category: e.target.value })}
+              className="w-full bg-slate-800 border border-white/10 text-slate-100 rounded-md p-2"
+            >
+              <option value="">Select Category</option>
+              <option value="Hot">Hot Lead</option>
+              <option value="Warm">Warm Lead</option>
+              <option value="Cold">Cold Lead</option>
+              <option value="Qualified">Qualified</option>
+              <option value="Unqualified">Unqualified</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
       {/* Lead Type Selector */}
-      <div className="flex gap-2 p-1 bg-white/5 rounded-lg">
-        <Button
+      <div className="flex gap-2 p-1 bg-slate-800 rounded-lg">
+        <button
           type="button"
           onClick={() => {
             setLeadType('company');
             setFormData(prev => ({ ...prev, lead_type: 'company' }));
           }}
-          className={`flex-1 ${
+          className={`flex-1 flex items-center justify-center gap-2 py-2 px-4 rounded-md transition-all ${
             leadType === 'company'
               ? 'bg-blue-600 text-white'
-              : 'bg-transparent text-slate-400 hover:text-white'
+              : 'text-slate-400 hover:text-slate-200'
           }`}
         >
-          <Building2 className="w-4 h-4 mr-2" />
-          Company Lead
-        </Button>
-        <Button
+          <Building2 className="w-4 h-4" />
+          Company
+        </button>
+        <button
           type="button"
           onClick={() => {
             setLeadType('individual');
             setFormData(prev => ({ ...prev, lead_type: 'individual' }));
           }}
-          className={`flex-1 ${
+          className={`flex-1 flex items-center justify-center gap-2 py-2 px-4 rounded-md transition-all ${
             leadType === 'individual'
               ? 'bg-blue-600 text-white'
-              : 'bg-transparent text-slate-400 hover:text-white'
+              : 'text-slate-400 hover:text-slate-200'
           }`}
         >
-          <User className="w-4 h-4 mr-2" />
-          Individual Lead
-        </Button>
+          <User className="w-4 h-4" />
+          Individual
+        </button>
       </div>
 
       {/* Field Sales Type (Self mode only) */}
