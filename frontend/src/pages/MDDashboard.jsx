@@ -39,6 +39,10 @@ import CertificateManagement from '@/components/certificates/CertificateManageme
 // Accounting Components
 import AccountingDashboard from '@/components/accounting/AccountingDashboard';
 
+// Feedback & Library Components
+import FeedbackManagement from '@/components/feedback/FeedbackManagement';
+import CompletedTrainings from '@/components/library/CompletedTrainings';
+
 // Executive Components
 import ExpenseSubmissionModal from '@/components/coo/ExpenseSubmissionModal';
 import DeletionApprovals from '@/components/executive/DeletionApprovals';
