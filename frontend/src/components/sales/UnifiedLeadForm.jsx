@@ -109,10 +109,11 @@ const UnifiedLeadForm = ({
     // Recalculate lead score when relevant fields change
     if (formData.course_id || formData.num_trainees || formData.lead_value) {
       const newScore = calculateLeadScore(formData);
-      setFormData(prev => ({ ...prev, lead_score: newScore }));
+      if (newScore !== formData.lead_score) {
+        setFormData(prev => ({ ...prev, lead_score: newScore }));
+      }
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [formData.course_id, formData.num_trainees, formData.lead_value, formData.urgency, formData.training_date, formData.lead_category, formData.source, formData.employee_count]);
+  }, [formData.course_id, formData.num_trainees, formData.lead_value, formData.urgency, formData.training_date, formData.lead_category, formData.source, formData.employee_count, formData.lead_score]);
 
   const fetchCourses = async () => {
     try {
