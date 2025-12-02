@@ -4,7 +4,7 @@ import { LogOut, TrendingUp, Users, GraduationCap, AlertTriangle, Lightbulb, Bui
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import EnhancedLeadForm from '@/components/sales/EnhancedLeadForm';
+import UnifiedLeadForm from '@/components/sales/UnifiedLeadForm';
 import ExpenseSubmissionModal from '@/components/coo/ExpenseSubmissionModal';
 import DeletionApprovals from '@/components/executive/DeletionApprovals';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -407,7 +407,7 @@ const MDDashboard = () => {
       </main>
 
       {/* Modals */}
-      <EnhancedLeadForm open={leadModalOpen} onOpenChange={setLeadModalOpen} />
+      <UnifiedLeadForm mode="enhanced" open={leadModalOpen} onOpenChange={setLeadModalOpen} />
       <ExpenseSubmissionModal open={expenseModalOpen} onOpenChange={setExpenseModalOpen} />
     </div>
   );
