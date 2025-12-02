@@ -114,19 +114,21 @@ class ArbritBackendHealthTester:
         
         return success, response
 
-    def test_login_valid_credentials(self):
-        """Test login with valid COO credentials"""
-        # First try with the seeded COO user to get a token
+    def test_login_md_credentials(self):
+        """Test login with MD credentials as specified in review request"""
         success, response = self.run_test(
-            "Login with COO Credentials",
+            "Login with MD Credentials",
             "POST",
             "auth/login",
             200,
-            data={"mobile": "971566374020", "pin": "4020"}
+            data={"mobile": "971564022503", "pin": "2503"}
         )
         if success and 'token' in response:
             self.token = response['token']
-            print(f"   Token received: {self.token[:20]}...")
+            self.md_token = response['token']
+            print(f"   MD Token received: {self.token[:20]}...")
+            print(f"   User: {response.get('user', {}).get('name', 'Unknown')}")
+            print(f"   Role: {response.get('user', {}).get('role', 'Unknown')}")
             return True, response
         return False, {}
 
