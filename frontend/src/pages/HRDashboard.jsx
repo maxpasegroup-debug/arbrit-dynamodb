@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { LogOut, Users, Receipt, DollarSign } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import DepartmentWiseEmployees from '@/components/hrm/DepartmentWiseEmployees';
 import EmployeeManagement from '@/components/hrm/EmployeeManagement';
 import AttendanceManagement from '@/components/hrm/AttendanceManagement';
 import EmployeeRecords from '@/components/hrm/EmployeeRecords';
