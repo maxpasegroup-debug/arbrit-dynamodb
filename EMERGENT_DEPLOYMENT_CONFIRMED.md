@@ -9,7 +9,7 @@
 ```bash
 AWS_REGION="us-east-1"
 AWS_ACCESS_KEY_ID="YOUR_AWS_ACCESS_KEY_HERE"
-AWS_SECRET_ACCESS_KEY="RxbQGlvjqx90TnQ9mDg1taqw2nA94WXjYIWs0O+g"
+AWS_SECRET_ACCESS_KEY="YOUR_AWS_SECRET_ACCESS_KEY_HERE"
 DYNAMODB_TABLE_PREFIX="arbrit_workdesk"
 CORS_ORIGINS="*"
 JWT_SECRET_KEY="arbrit-jwt-secret-key-change-in-production-2025"
@@ -96,7 +96,7 @@ Emergent will ask you to configure environment variables. Use these:
 ```
 AWS_REGION=us-east-1
 AWS_ACCESS_KEY_ID=YOUR_AWS_ACCESS_KEY_HERE
-AWS_SECRET_ACCESS_KEY=RxbQGlvjqx90TnQ9mDg1taqw2nA94WXjYIWs0O+g
+AWS_SECRET_ACCESS_KEY=YOUR_AWS_SECRET_ACCESS_KEY_HERE
 DYNAMODB_TABLE_PREFIX=arbrit_workdesk
 CORS_ORIGINS=*
 JWT_SECRET_KEY=arbrit-jwt-secret-key-change-in-production-2025
