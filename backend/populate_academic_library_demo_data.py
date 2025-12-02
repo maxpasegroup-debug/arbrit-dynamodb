@@ -85,7 +85,7 @@ def create_demo_data():
         {
             'id': str(uuid4()),
             'name': 'OSHA Safety Standards Guide.pdf',
-            'folder_id': folders_data[0]['folder_id'],
+            'folder_id': folders_data[0]['id'],
             'file_path': 'https://example.com/docs/osha-standards.pdf',
             'file_type': 'application/pdf',
             'size': 2457600,  # ~2.4 MB
