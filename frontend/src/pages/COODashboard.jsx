@@ -88,7 +88,7 @@ const COODashboard = () => {
     try {
       setLoading(true);
       const token = localStorage.getItem('token');
-      const response = await axios.get(`${API}/executive/coo/dashboard-stats`, {
+      const response = await axios.get(`${API}/coo/dashboard-stats`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setDashboardData(response.data);
