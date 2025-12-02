@@ -407,95 +407,112 @@ const UnifiedLeadForm = ({
         </div>
       )}
 
-      {/* Company Lead Fields */}
+      {/* Company Fields */}
       {leadType === 'company' && (
-        <div className="space-y-4">
+        <div className="space-y-4 p-4 bg-blue-500/10 border border-blue-400/30 rounded-lg">
+          <h4 className="text-sm font-semibold text-slate-200">Company Information</h4>
           <div className="grid grid-cols-2 gap-4">
-            <div>
-              <Label className="text-white">Company Name *</Label>
+            <div className="col-span-2">
+              <Label className="text-slate-300">Company Name *</Label>
               <Input
                 value={formData.company_name}
-                onChange={(e) => setFormData(prev => ({ ...prev, company_name: e.target.value }))}
-                placeholder="Enter company name"
+                onChange={(e) => setFormData({ ...formData, company_name: e.target.value })}
+                placeholder="ABC Corporation"
+                className="bg-slate-800 border-white/10 text-slate-100"
                 required
-                className="bg-slate-800 border-white/10 text-white"
               />
             </div>
             <div>
-              <Label className="text-white">Industry</Label>
-              <Input
-                value={formData.industry}
-                onChange={(e) => setFormData(prev => ({ ...prev, industry: e.target.value }))}
-                placeholder="e.g., Construction, Oil & Gas"
-                className="bg-slate-800 border-white/10 text-white"
-              />
-            </div>
-          </div>
-
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <Label className="text-white">Contact Person *</Label>
+              <Label className="text-slate-300">Point of Contact *</Label>
               <Input
                 value={formData.contact_person}
-                onChange={(e) => setFormData(prev => ({ ...prev, contact_person: e.target.value }))}
-                placeholder="Enter name"
+                onChange={(e) => setFormData({ ...formData, contact_person: e.target.value })}
+                placeholder="John Smith"
+                className="bg-slate-800 border-white/10 text-slate-100"
                 required
-                className="bg-slate-800 border-white/10 text-white"
               />
             </div>
             <div>
-              <Label className="text-white">Designation</Label>
+              <Label className="text-slate-300">Designation *</Label>
               <Input
                 value={formData.contact_designation}
-                onChange={(e) => setFormData(prev => ({ ...prev, contact_designation: e.target.value }))}
-                placeholder="e.g., HR Manager"
-                className="bg-slate-800 border-white/10 text-white"
+                onChange={(e) => setFormData({ ...formData, contact_designation: e.target.value })}
+                placeholder="HR Manager"
+                className="bg-slate-800 border-white/10 text-slate-100"
+                required
               />
             </div>
-          </div>
-
-          <div className="grid grid-cols-2 gap-4">
             <div>
-              <Label className="text-white">Phone *</Label>
+              <Label className="text-slate-300">Contact Mobile *</Label>
+              <Input
+                value={formData.contact_mobile}
+                onChange={(e) => setFormData({ ...formData, contact_mobile: e.target.value })}
+                placeholder="971xxxxxxxxx"
+                className="bg-slate-800 border-white/10 text-slate-100"
+                required
+              />
+            </div>
+            <div>
+              <Label className="text-slate-300">Phone *</Label>
               <Input
                 value={formData.phone}
-                onChange={(e) => setFormData(prev => ({ ...prev, phone: e.target.value }))}
-                placeholder="971XXXXXXXXX"
+                onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                placeholder="971xxxxxxxxx"
+                className="bg-slate-800 border-white/10 text-slate-100"
                 required
-                className="bg-slate-800 border-white/10 text-white"
               />
             </div>
             <div>
-              <Label className="text-white">Email</Label>
+              <Label className="text-slate-300">Contact Email</Label>
               <Input
                 type="email"
                 value={formData.contact_email}
-                onChange={(e) => setFormData(prev => ({ ...prev, contact_email: e.target.value }))}
-                placeholder="contact@company.com"
-                className="bg-slate-800 border-white/10 text-white"
+                onChange={(e) => setFormData({ ...formData, contact_email: e.target.value })}
+                placeholder="john@company.com"
+                className="bg-slate-800 border-white/10 text-slate-100"
               />
             </div>
-          </div>
-
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <Label className="text-white">Website</Label>
+            <div className="col-span-2">
+              <Label className="text-slate-300">Website</Label>
               <Input
+                type="url"
                 value={formData.website}
-                onChange={(e) => setFormData(prev => ({ ...prev, website: e.target.value }))}
-                placeholder="www.company.com"
-                className="bg-slate-800 border-white/10 text-white"
+                onChange={(e) => setFormData({ ...formData, website: e.target.value })}
+                placeholder="https://www.company.com"
+                className="bg-slate-800 border-white/10 text-slate-100"
               />
             </div>
             <div>
-              <Label className="text-white">Employee Count</Label>
-              <Input
-                type="number"
+              <Label className="text-slate-300">Industry</Label>
+              <select
+                value={formData.industry}
+                onChange={(e) => setFormData({ ...formData, industry: e.target.value })}
+                className="w-full bg-slate-800 border border-white/10 text-slate-100 rounded-md p-2"
+              >
+                <option value="">Select Industry</option>
+                <option value="Construction">Construction</option>
+                <option value="Oil & Gas">Oil & Gas</option>
+                <option value="Manufacturing">Manufacturing</option>
+                <option value="Healthcare">Healthcare</option>
+                <option value="Hospitality">Hospitality</option>
+                <option value="Retail">Retail</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+            <div>
+              <Label className="text-slate-300">Employee Count</Label>
+              <select
                 value={formData.employee_count}
-                onChange={(e) => setFormData(prev => ({ ...prev, employee_count: e.target.value }))}
-                placeholder="Number of employees"
-                className="bg-slate-800 border-white/10 text-white"
-              />
+                onChange={(e) => setFormData({ ...formData, employee_count: e.target.value })}
+                className="w-full bg-slate-800 border border-white/10 text-slate-100 rounded-md p-2"
+              >
+                <option value="">Select Range</option>
+                <option value="1-10">1-10</option>
+                <option value="11-50">11-50</option>
+                <option value="51-200">51-200</option>
+                <option value="201-500">201-500</option>
+                <option value="500+">500+</option>
+              </select>
             </div>
           </div>
         </div>
