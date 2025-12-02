@@ -258,9 +258,14 @@ const CertificateDispatchManagement = () => {
     return severity ? { severity, message, icon, ageHours: Math.floor(ageHours), ageDays: Math.floor(ageDays) } : null;
   };
 
-  const filteredRecords = filterStatus === 'all' 
-    ? records 
-    : records.filter(r => r.status === filterStatus);
+  // Apply category and status filters
+  const filteredRecords = records
+    .filter(r => filterCategory === 'all' || r.certificate_type === filterCategory)
+    .filter(r => filterStatus === 'all' || r.status === filterStatus);
+  
+  // Calculate category stats
+  const inHouseCount = records.filter(r => r.certificate_type === 'In-House').length;
+  const internationalCount = records.filter(r => r.certificate_type === 'International').length;
 
   return (
     <div className="space-y-6">
