@@ -141,6 +141,15 @@ const COODashboard = () => {
                 <p className="text-xs text-amber-300/70">{user?.role}</p>
               </div>
               <Button
+                onClick={() => setResetPinModalOpen(true)}
+                variant="outline"
+                size="sm"
+                className="border-amber-500/30 text-amber-200 hover:bg-amber-500/10"
+                title="Reset PIN"
+              >
+                <Key className="w-4 h-4" />
+              </Button>
+              <Button
                 onClick={handleLogout}
                 variant="outline"
                 size="sm"
