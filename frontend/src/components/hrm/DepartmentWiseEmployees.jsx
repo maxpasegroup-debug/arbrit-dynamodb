@@ -556,6 +556,109 @@ const DepartmentWiseEmployees = () => {
           </CardContent>
         </Card>
       )}
+
+      {/* Add/Edit Employee Dialog */}
+      <Dialog open={showAddDialog} onOpenChange={setShowAddDialog}>
+        <DialogContent className="max-w-2xl bg-slate-900 border-white/10">
+          <DialogHeader>
+            <DialogTitle className="text-white text-2xl">
+              {editingEmployee ? 'Edit Employee' : 'Add New Employee'}
+            </DialogTitle>
+          </DialogHeader>
+
+          <form onSubmit={handleSubmitEmployee} className="space-y-4 mt-4">
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <Label className="text-white">Name *</Label>
+                <Input
+                  value={formData.name}
+                  onChange={(e) => setFormData({...formData, name: e.target.value})}
+                  className="bg-slate-800 border-white/10 text-white"
+                  required
+                />
+              </div>
+              <div>
+                <Label className="text-white">Mobile *</Label>
+                <Input
+                  value={formData.mobile}
+                  onChange={(e) => setFormData({...formData, mobile: e.target.value})}
+                  className="bg-slate-800 border-white/10 text-white"
+                  required
+                />
+              </div>
+              <div>
+                <Label className="text-white">Branch *</Label>
+                <Input
+                  value={formData.branch}
+                  onChange={(e) => setFormData({...formData, branch: e.target.value})}
+                  className="bg-slate-800 border-white/10 text-white"
+                  required
+                />
+              </div>
+              <div>
+                <Label className="text-white">Email</Label>
+                <Input
+                  type="email"
+                  value={formData.email}
+                  onChange={(e) => setFormData({...formData, email: e.target.value})}
+                  className="bg-slate-800 border-white/10 text-white"
+                />
+              </div>
+              <div>
+                <Label className="text-white">Department</Label>
+                <select
+                  value={formData.department}
+                  onChange={(e) => setFormData({...formData, department: e.target.value})}
+                  className="w-full px-3 py-2 bg-slate-800 border border-white/10 rounded-md text-white"
+                >
+                  <option value="">Select Department</option>
+                  <option value="Management">Management</option>
+                  <option value="Sales">Sales</option>
+                  <option value="Academic">Academic</option>
+                  <option value="HR">HR</option>
+                  <option value="Accounts">Accounts</option>
+                  <option value="Dispatch">Dispatch</option>
+                  <option value="Marketing">Marketing</option>
+                </select>
+              </div>
+              <div>
+                <Label className="text-white">Designation</Label>
+                <Input
+                  value={formData.designation}
+                  onChange={(e) => setFormData({...formData, designation: e.target.value})}
+                  className="bg-slate-800 border-white/10 text-white"
+                />
+              </div>
+              <div className="col-span-2">
+                <Label className="text-white">Badge Title</Label>
+                <Input
+                  value={formData.badge_title}
+                  onChange={(e) => setFormData({...formData, badge_title: e.target.value})}
+                  className="bg-slate-800 border-white/10 text-white"
+                />
+              </div>
+            </div>
+
+            <div className="flex gap-3 justify-end pt-4">
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => setShowAddDialog(false)}
+                className="border-white/20 text-white hover:bg-white/10"
+              >
+                Cancel
+              </Button>
+              <Button
+                type="submit"
+                className="bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600"
+                disabled={loading}
+              >
+                {loading ? 'Saving...' : (editingEmployee ? 'Update Employee' : 'Add Employee')}
+              </Button>
+            </div>
+          </form>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
