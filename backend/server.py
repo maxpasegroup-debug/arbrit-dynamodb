@@ -74,6 +74,27 @@ class UserResponse(BaseModel):
     role: str
 
 
+# PIN Management Models
+class ChangePinRequest(BaseModel):
+    current_pin: str
+    new_pin: str
+
+
+class ResetPinRequest(BaseModel):
+    new_pin: str
+    temporary: bool = False
+
+
+class PinStatusResponse(BaseModel):
+    id: str
+    name: str
+    mobile: str
+    role: str
+    pin_status: str
+    pin_last_changed: Optional[str] = None
+    pin_change_required: bool = False
+
+
 # HRM Models
 class Employee(BaseModel):
     model_config = ConfigDict(extra="ignore")
