@@ -588,12 +588,18 @@ const DepartmentWiseEmployees = () => {
               </div>
               <div>
                 <Label className="text-white">Branch *</Label>
-                <Input
+                <select
                   value={formData.branch}
                   onChange={(e) => setFormData({...formData, branch: e.target.value})}
-                  className="bg-slate-800 border-white/10 text-white"
+                  className="w-full px-3 py-2 bg-slate-800 border border-white/10 rounded-md text-white"
                   required
-                />
+                >
+                  <option value="">Select Branch</option>
+                  <option value="Dubai">Dubai</option>
+                  <option value="Saudi">Saudi</option>
+                  <option value="Abu Dhabi">Abu Dhabi</option>
+                  <option value="UK">UK</option>
+                </select>
               </div>
               <div>
                 <Label className="text-white">Email</Label>
