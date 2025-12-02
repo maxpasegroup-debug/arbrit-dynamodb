@@ -79,6 +79,8 @@ const DepartmentWiseEmployees = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [expandedDepts, setExpandedDepts] = useState({});
   const [selectedBranch, setSelectedBranch] = useState('all');
+  const [showAddDialog, setShowAddDialog] = useState(false);
+  const [editingEmployee, setEditingEmployee] = useState(null);
 
   useEffect(() => {
     fetchEmployees();
