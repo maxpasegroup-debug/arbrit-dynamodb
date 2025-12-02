@@ -172,18 +172,45 @@ const MDDashboard = () => {
 
         {/* Tabs Navigation */}
         <Tabs defaultValue="dashboard" className="mb-8">
-          <TabsList className="grid w-full grid-cols-4 bg-white/10 border border-white/20">
-            <TabsTrigger value="dashboard">Dashboard</TabsTrigger>
-            <TabsTrigger value="library">
-              <FileText className="w-4 h-4 mr-2" />
-              Library
+          <TabsList className="grid w-full grid-cols-10 bg-white/10 border border-white/20 text-xs">
+            <TabsTrigger value="dashboard">
+              <LayoutDashboard className="w-4 h-4 mr-1" />
+              Dashboard
+            </TabsTrigger>
+            <TabsTrigger value="sales">
+              <TrendingUp className="w-4 h-4 mr-1" />
+              Sales
+            </TabsTrigger>
+            <TabsTrigger value="academic">
+              <GraduationCap className="w-4 h-4 mr-1" />
+              Academic
+            </TabsTrigger>
+            <TabsTrigger value="certificates">
+              <Award className="w-4 h-4 mr-1" />
+              Certificates
             </TabsTrigger>
             <TabsTrigger value="certificate-management">
-              <Package className="w-4 h-4 mr-2" />
-              Certificate Mgmt
+              <Package className="w-4 h-4 mr-1" />
+              Cert Mgmt
+            </TabsTrigger>
+            <TabsTrigger value="accounting">
+              <DollarSign className="w-4 h-4 mr-1" />
+              Accounting
+            </TabsTrigger>
+            <TabsTrigger value="assessments">
+              <ClipboardCheck className="w-4 h-4 mr-1" />
+              Assessments
+            </TabsTrigger>
+            <TabsTrigger value="team">
+              <Users className="w-4 h-4 mr-1" />
+              Team
+            </TabsTrigger>
+            <TabsTrigger value="library">
+              <FileText className="w-4 h-4 mr-1" />
+              Library
             </TabsTrigger>
             <TabsTrigger value="deletions">
-              <Trash2 className="w-4 h-4 mr-2" />
+              <Trash2 className="w-4 h-4 mr-1" />
               Deletions
             </TabsTrigger>
           </TabsList>
