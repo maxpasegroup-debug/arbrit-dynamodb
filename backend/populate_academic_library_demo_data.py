@@ -256,7 +256,7 @@ def create_demo_data():
         
         # Update folder document count
         folder_id = doc['folder_id']
-        folder = next((f for f in folders_data if f['folder_id'] == folder_id), None)
+        folder = next((f for f in folders_data if f['id'] == folder_id), None)
         if folder:
             folder['document_count'] += 1
     
