@@ -201,7 +201,7 @@ python3 verify_users.py
 ### Environment Variables (.env)
 ```
 AWS_REGION=us-east-1
-AWS_ACCESS_KEY_ID=AKIAXXX...
+AWS_ACCESS_KEY_ID=YOUR_AWS_ACCESS_KEY_HERE
 AWS_SECRET_ACCESS_KEY=RxbQG...
 DYNAMODB_TABLE_PREFIX=arbrit_workdesk
 JWT_SECRET_KEY=arbrit-jwt-secret-key-change-in-production-2025
