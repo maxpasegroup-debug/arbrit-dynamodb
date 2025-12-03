@@ -279,11 +279,17 @@ const UnifiedLeadForm = ({
                          formData.course_name || 
                          'Training requirement';
       
+      // Ensure num_trainees is a valid number (backend expects int, not empty string)
+      const numTrainees = formData.num_trainees === '' || !formData.num_trainees 
+                         ? 1 
+                         : parseInt(formData.num_trainees);
+      
       const submitData = {
         ...formData,
         client_name: leadType === 'company' ? formData.company_name : formData.client_name,
         lead_type: leadType,
-        requirement: requirement
+        requirement: requirement,
+        num_trainees: numTrainees
       };
 
       if (existingLead) {
