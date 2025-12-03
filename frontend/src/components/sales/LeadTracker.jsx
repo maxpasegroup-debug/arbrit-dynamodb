@@ -1166,6 +1166,18 @@ const LeadTracker = () => {
 
                 <div className="flex gap-2">
                   <Button
+                    onClick={() => {
+                      // Open edit dialog for invoice
+                      toast.info('Edit invoice functionality - Update amount/notes');
+                    }}
+                    variant="outline"
+                    size="sm"
+                    className="border-blue-400/50 text-blue-300 hover:bg-blue-500/20"
+                  >
+                    <Edit className="w-4 h-4 mr-2" />
+                    Edit
+                  </Button>
+                  <Button
                     onClick={async () => {
                       try {
                         const token = localStorage.getItem('token');
@@ -1174,7 +1186,8 @@ const LeadTracker = () => {
                           { headers: { Authorization: `Bearer ${token}` } }
                         );
                         toast.success('Invoice request approved');
-                        fetchInvoiceRequests();
+                        setInvoiceRequestOpen(false);
+                        fetchLeads();
                       } catch (error) {
                         toast.error('Failed to approve invoice request');
                       }
@@ -1194,7 +1207,8 @@ const LeadTracker = () => {
                           { headers: { Authorization: `Bearer ${token}` } }
                         );
                         toast.success('Invoice request rejected');
-                        fetchInvoiceRequests();
+                        setInvoiceRequestOpen(false);
+                        fetchLeads();
                       } catch (error) {
                         toast.error('Failed to reject invoice request');
                       }
