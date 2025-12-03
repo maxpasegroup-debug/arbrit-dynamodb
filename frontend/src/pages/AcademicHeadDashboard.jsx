@@ -175,97 +175,62 @@ const AcademicHeadDashboard = () => {
         </div>
 
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-12 bg-white/5 border border-white/10">
+          <TabsList className="grid w-full grid-cols-7 bg-white/5 border border-white/10">
             <TabsTrigger 
               value="overview"
+              data-testid="tab-overview"
               className="data-[state=active]:bg-yellow-500/20 data-[state=active]:text-white text-gray-300"
             >
               <LayoutDashboard className="w-4 h-4 mr-2" />
               Overview
             </TabsTrigger>
             <TabsTrigger 
-              value="courses"
+              value="training-tracker"
+              data-testid="tab-training-tracker"
               className="data-[state=active]:bg-yellow-500/20 data-[state=active]:text-white text-gray-300"
             >
               <GraduationCap className="w-4 h-4 mr-2" />
-              Courses
+              Training Tracker
             </TabsTrigger>
             <TabsTrigger 
-              value="requests"
-              className="data-[state=active]:bg-yellow-500/20 data-[state=active]:text-white text-gray-300"
-            >
-              <GraduationCap className="w-4 h-4 mr-2" />
-              Training Requests
-            </TabsTrigger>
-            <TabsTrigger 
-              value="trainers"
-              className="data-[state=active]:bg-yellow-500/20 data-[state=active]:text-white text-gray-300"
-            >
-              <Users className="w-4 h-4 mr-2" />
-              Trainers
-            </TabsTrigger>
-            <TabsTrigger 
-              value="work-orders"
-              className="data-[state=active]:bg-yellow-500/20 data-[state=active]:text-white text-gray-300"
-            >
-              <FileText className="w-4 h-4 mr-2" />
-              Work Orders
-            </TabsTrigger>
-            <TabsTrigger 
-              value="schedule"
+              value="schedule-trainings"
+              data-testid="tab-schedule-trainings"
               className="data-[state=active]:bg-yellow-500/20 data-[state=active]:text-white text-gray-300"
             >
               <Calendar className="w-4 h-4 mr-2" />
-              Schedule
+              Schedule Trainings
             </TabsTrigger>
             <TabsTrigger 
-              value="certificates"
-              className="data-[state=active]:bg-yellow-500/20 data-[state=active]:text-white text-gray-300"
-            >
-              <Award className="w-4 h-4 mr-2" />
-              Certificates
-            </TabsTrigger>
-            <TabsTrigger 
-              value="generate"
-              className="data-[state=active]:bg-yellow-500/20 data-[state=active]:text-white text-gray-300"
-            >
-              <FileCheck className="w-4 h-4 mr-2" />
-              Generate
-            </TabsTrigger>
-            <TabsTrigger 
-              value="team"
-              className="data-[state=active]:bg-yellow-500/20 data-[state=active]:text-white text-gray-300"
-            >
-              <UserCheck className="w-4 h-4 mr-2" />
-              Team
-            </TabsTrigger>
-            <TabsTrigger 
-              value="assessments"
-              className="data-[state=active]:bg-yellow-500/20 data-[state=active]:text-white text-gray-300"
-            >
-              <ClipboardCheck className="w-4 h-4 mr-2" />
-              Assessments
-            </TabsTrigger>
-            <TabsTrigger 
-              value="my-expenses"
-              className="data-[state=active]:bg-yellow-500/20 data-[state=active]:text-white text-gray-300"
-            >
-              <Receipt className="w-4 h-4 mr-2" />
-              My Expenses
-            </TabsTrigger>
-            <TabsTrigger 
-              value="certificate-management"
-              className="data-[state=active]:bg-yellow-500/20 data-[state=active]:text-white text-gray-300"
-            >
-              <Package className="w-4 h-4 mr-2" />
-              Certificate Mgmt
-            </TabsTrigger>
-            <TabsTrigger 
-              value="library"
+              value="courses"
+              data-testid="tab-courses"
               className="data-[state=active]:bg-yellow-500/20 data-[state=active]:text-white text-gray-300"
             >
               <BookOpen className="w-4 h-4 mr-2" />
-              Library
+              Courses
+            </TabsTrigger>
+            <TabsTrigger 
+              value="my-team"
+              data-testid="tab-my-team"
+              className="data-[state=active]:bg-yellow-500/20 data-[state=active]:text-white text-gray-300"
+            >
+              <Users className="w-4 h-4 mr-2" />
+              My Team
+            </TabsTrigger>
+            <TabsTrigger 
+              value="certifications"
+              data-testid="tab-certifications"
+              className="data-[state=active]:bg-yellow-500/20 data-[state=active]:text-white text-gray-300"
+            >
+              <Award className="w-4 h-4 mr-2" />
+              Certifications & Despatch
+            </TabsTrigger>
+            <TabsTrigger 
+              value="assessments-feedbacks"
+              data-testid="tab-assessments-feedbacks"
+              className="data-[state=active]:bg-yellow-500/20 data-[state=active]:text-white text-gray-300"
+            >
+              <ClipboardCheck className="w-4 h-4 mr-2" />
+              Assessments & Feedbacks
             </TabsTrigger>
           </TabsList>
 
