@@ -578,6 +578,77 @@ const LeadTracker = () => {
                       >
                         <FileText className="w-3 h-3" />
                       </Button>
+
+                      {/* Invoice Request Button - Different behavior based on user role */}
+                      {(() => {
+                        const user = JSON.parse(localStorage.getItem('user') || '{}');
+                        const userRole = user.role || '';
+                        
+                        if (userRole.includes('Sales Head')) {
+                          // Sales Head: Show invoice management for leads with requests
+                          if (lead.invoiceRequests && lead.invoiceRequests.length > 0) {
+                            const pendingRequests = lead.invoiceRequests.filter(req => req.status === 'pending');
+                            if (pendingRequests.length > 0) {
+                              return (
+                                <Button
+                                  size="sm"
+                                  variant="outline"
+                                  className="border-yellow-400/50 text-yellow-300 hover:bg-yellow-500/20 animate-pulse"
+                                  title={`${pendingRequests.length} Invoice Request(s) Pending`}
+                                  onClick={() => {
+                                    // Handle invoice request management
+                                    toast.info(`${pendingRequests.length} invoice requests pending for ${lead.client_name || lead.company_name}`);
+                                  }}
+                                >
+                                  <DollarSign className="w-3 h-3" />
+                                  {pendingRequests.length}
+                                </Button>
+                              );
+                            }
+                          }
+                          return null;
+                        } else {
+                          // Sales Team Members: Show invoice request button
+                          const hasExistingRequest = lead.invoiceRequests?.some(req => req.requestedBy === user.id && req.status === 'pending');
+                          
+                          return (
+                            <Button
+                              size="sm"
+                              variant="outline"
+                              disabled={hasExistingRequest}
+                              className={
+                                hasExistingRequest 
+                                  ? "border-gray-400/50 text-gray-400" 
+                                  : "border-green-400/50 text-green-300 hover:bg-green-500/20"
+                              }
+                              title={hasExistingRequest ? "Invoice Request Already Submitted" : "Request Invoice for this Lead"}
+                              onClick={async () => {
+                                if (hasExistingRequest) return;
+                                
+                                try {
+                                  const token = localStorage.getItem('token');
+                                  await axios.post(`${API}/sales/request-invoice`, {
+                                    leadId: lead.id,
+                                    clientName: lead.client_name || lead.company_name,
+                                    leadValue: lead.lead_value || '0',
+                                    remarks: 'Invoice request for completed lead'
+                                  }, {
+                                    headers: { Authorization: `Bearer ${token}` }
+                                  });
+                                  
+                                  toast.success('Invoice request submitted to Sales Head');
+                                  fetchLeads(); // Refresh the leads list
+                                } catch (error) {
+                                  console.error('Error requesting invoice:', error);
+                                  toast.error('Failed to submit invoice request');
+                                }
+                              }}
+                            >
+                              <DollarSign className="w-3 h-3" />
+                            </Button>
+                          );
+                        }
+                      })()}
                       <Button
                         size="sm"
                         variant="outline"
