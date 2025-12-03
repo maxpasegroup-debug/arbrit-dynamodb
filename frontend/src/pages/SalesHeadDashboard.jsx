@@ -241,7 +241,7 @@ const SalesHeadDashboard = () => {
             </TabsContent>
 
             <TabsContent value="leaves" className="mt-0">
-              <LeaveManagement />
+              <LeaveApprovalManagement role="Sales Head" />
             </TabsContent>
 
             <TabsContent value="expenses" className="mt-0">
