@@ -6483,8 +6483,6 @@ async def delete_course(course_id: str, current_user: dict = Depends(get_current
 async def create_booking_request(request_data: dict, current_user: dict = Depends(get_current_user)):
     """Create booking request (Sales team to Academic Head)"""
     try:
-        from decimal import Decimal
-        
         booking_request = {
             "id": str(uuid4()),
             "lead_id": request_data.get("lead_id"),
@@ -6502,12 +6500,15 @@ async def create_booking_request(request_data: dict, current_user: dict = Depend
             "updated_at": datetime.now(timezone.utc).isoformat()
         }
         
+        # Convert floats to Decimals for DynamoDB
+        booking_request = convert_floats_to_decimals(booking_request)
+        
         await db.booking_requests.insert_one(booking_request)
         
         return {"message": "Booking request sent to Academic Head", "request": booking_request}
     except Exception as e:
         logger.error(f"Error creating booking request: {e}")
-        raise HTTPException(status_code=500, detail="Failed to create booking request")
+        raise HTTPException(status_code=500, detail=f"Failed to create booking request: {str(e)}")
 
 
 @api_router.get("/booking-requests")
