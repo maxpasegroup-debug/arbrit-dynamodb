@@ -1940,17 +1940,16 @@ class ArbritBackendHealthTester:
             print("   ❌ FAILED: No Field Sales token available")
             return False, {}
         
-        # Submit same company lead structure
+        # Submit company lead with correct data structure for self-lead endpoint
         lead_data = {
-            "lead_type": "company",
-            "company_name": "ABC Construction",
-            "contact_person": "Mohammed Hassan",
+            "client_name": "ABC Construction",
             "mobile": "971507654321",
             "email": "contact@abc.com",
-            "course_name": "Scaffolding Safety",
-            "number_of_participants": 20,
-            "urgency": "High",
-            "requirement": "Scaffolding training for new project"
+            "company_name": "ABC Construction",
+            "branch": "Dubai",
+            "requirement": "Scaffolding training for new project",
+            "lead_type": "Company",
+            "notes": "High priority - scaffolding safety training needed"
         }
         
         success, response = self.run_test(
