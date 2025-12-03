@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { LogOut, TrendingUp, CalendarCheck, Receipt, BarChart3, Target } from 'lucide-react';
+import { LogOut, TrendingUp, CalendarCheck, Receipt, BarChart3, Target, Calendar } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import PerformanceOverview from '@/components/sales/PerformanceOverview';
@@ -8,6 +8,7 @@ import LeadTracker from '@/components/sales/LeadTracker';
 import LeaveManagement from '@/components/sales/LeaveManagement';
 import ExpenseManagement from '@/components/sales/ExpenseManagement';
 import TargetManagement from '@/components/sales/TargetManagement';
+import AcademicCalendar from '@/components/sales/AcademicCalendar';
 import DuplicateAlertsNotification from '@/components/sales/DuplicateAlertsNotification';
 import { toast } from 'sonner';
 import axios from 'axios';
