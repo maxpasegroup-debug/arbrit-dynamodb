@@ -502,9 +502,56 @@ const LeadTracker = () => {
         </div>
       </div>
 
+      {/* Sales Head: Quotation & Invoice Request Alerts */}
+      {['Sales Head', 'COO', 'MD', 'CEO'].includes(userRole) && (
+        <div className="grid grid-cols-2 gap-4">
+          {/* Quotation Requests */}
+          <div className="bg-purple-500/10 backdrop-blur-sm rounded-xl border border-purple-400/50 p-4">
+            <div className="flex items-center justify-between">
+              <div>
+                <h3 className="text-lg font-bold text-purple-300">📋 Quotation Requests</h3>
+                <p className="text-sm text-slate-400">Pending review from team</p>
+              </div>
+              <Badge className="bg-purple-500/30 text-purple-200 text-lg px-3 py-1">
+                {quotationRequests.filter(q => q.status === 'pending').length}
+              </Badge>
+            </div>
+            {quotationRequests.filter(q => q.status === 'pending').length > 0 && (
+              <Button
+                onClick={() => setQuotationRequestOpen(true)}
+                className="mt-3 w-full bg-purple-600 hover:bg-purple-700"
+              >
+                Review Quotations
+              </Button>
+            )}
+          </div>
+
+          {/* Invoice Requests */}
+          <div className="bg-green-500/10 backdrop-blur-sm rounded-xl border border-green-400/50 p-4">
+            <div className="flex items-center justify-between">
+              <div>
+                <h3 className="text-lg font-bold text-green-300">💰 Invoice Requests</h3>
+                <p className="text-sm text-slate-400">Awaiting approval</p>
+              </div>
+              <Badge className="bg-green-500/30 text-green-200 text-lg px-3 py-1">
+                {invoiceRequests.filter(i => i.status === 'pending').length}
+              </Badge>
+            </div>
+            {invoiceRequests.filter(i => i.status === 'pending').length > 0 && (
+              <Button
+                onClick={() => setInvoiceRequestOpen(true)}
+                className="mt-3 w-full bg-green-600 hover:bg-green-700"
+              >
+                Review Invoices
+              </Button>
+            )}
+          </div>
+        </div>
+      )}
+
       {/* Filters */}
-      <div className="flex gap-4 items-center">
-        <div className="flex-1">
+      <div className="flex gap-4 items-center flex-wrap">
+        <div className="flex-1 min-w-[300px]">
           <div className="relative">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-slate-400" />
             <Input
@@ -515,6 +562,7 @@ const LeadTracker = () => {
             />
           </div>
         </div>
+        
         <select
           value={scoreFilter}
           onChange={(e) => setScoreFilter(e.target.value)}
@@ -525,6 +573,34 @@ const LeadTracker = () => {
           <option value="warm">🌡️ Warm</option>
           <option value="cold">❄️ Cold</option>
         </select>
+
+        {/* Sales Head Specific Filters */}
+        {['Sales Head', 'COO', 'MD', 'CEO'].includes(userRole) && (
+          <>
+            <select
+              value={areaFilter}
+              onChange={(e) => setAreaFilter(e.target.value)}
+              className="bg-slate-800 border border-white/10 text-slate-100 rounded-md p-2"
+            >
+              <option value="all">All Areas</option>
+              {areas.map(area => (
+                <option key={area} value={area}>{area}</option>
+              ))}
+            </select>
+
+            <select
+              value={employeeFilter}
+              onChange={(e) => setEmployeeFilter(e.target.value)}
+              className="bg-slate-800 border border-white/10 text-slate-100 rounded-md p-2"
+            >
+              <option value="all">All Employees</option>
+              {employees.map(emp => (
+                <option key={emp} value={emp}>{emp}</option>
+              ))}
+            </select>
+          </>
+        )}
+        
         <Button
           variant="outline"
           size="sm"
