@@ -1,13 +1,16 @@
 import { useEffect, useState } from 'react';
-import { Phone, Mail, MessageSquare, Edit } from 'lucide-react';
+import { Phone, Mail, MessageSquare, Edit, TrendingUp, Users, Target, Plus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
+import { Input } from '@/components/ui/input';
 import { toast } from 'sonner';
 import axios from 'axios';
+import UnifiedLeadForm from './UnifiedLeadForm';
+import QuotationDialog from './QuotationDialog';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
@@ -18,6 +21,11 @@ const LeadManagement = () => {
   const [showUpdateDialog, setShowUpdateDialog] = useState(false);
   const [selectedLead, setSelectedLead] = useState(null);
   const [updateData, setUpdateData] = useState({ status: '', remarks: '' });
+  const [searchTerm, setSearchTerm] = useState('');
+  const [statusFilter, setStatusFilter] = useState('all');
+  const [formOpen, setFormOpen] = useState(false);
+  const [quotationOpen, setQuotationOpen] = useState(false);
+  const [quotationLead, setQuotationLead] = useState(null);
 
   useEffect(() => {
     fetchLeads();
@@ -27,13 +35,14 @@ const LeadManagement = () => {
     setLoading(true);
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.get(`${API}/sales/my-leads`, {
+      // Sales Head endpoint to get ALL leads
+      const response = await axios.get(`${API}/sales-head/leads`, {
         headers: { Authorization: `Bearer ${token}` }
       });
-      setLeads(response.data);
+      setLeads(response.data || []);
     } catch (error) {
       console.error('Error fetching leads:', error);
-      // Silent fail - no toast on empty data
+      toast.error('Failed to load leads');
     } finally {
       setLoading(false);
     }
