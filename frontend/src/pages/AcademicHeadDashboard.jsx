@@ -389,6 +389,12 @@ const AcademicHeadDashboard = () => {
             </TabsContent>
 
             {/* 8. EXPENSES */}
+
+            {/* 9. LEAVES */}
+            <TabsContent value="leaves" className="mt-0">
+              <LeaveApprovalManagement role="Academic Head" />
+            </TabsContent>
+
             <TabsContent value="expenses" className="mt-0">
               <Tabs defaultValue="my-expenses" className="space-y-6">
                 <TabsList className="bg-white/10 border border-white/20">
