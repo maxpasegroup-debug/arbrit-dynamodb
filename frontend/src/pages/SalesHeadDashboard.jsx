@@ -203,15 +203,6 @@ const SalesHeadDashboard = () => {
               Expenses
             </TabsTrigger>
           </TabsList>
-            </TabsTrigger>
-            <TabsTrigger 
-              value="dispatch"
-              className="data-[state=active]:bg-blue-500/20 data-[state=active]:text-white text-gray-300"
-            >
-              <Package className="w-4 h-4 mr-2" />
-              Dispatch
-            </TabsTrigger>
-          </TabsList>
 
           <div className="mt-6">
             <TabsContent value="overview" className="mt-0">
