@@ -248,22 +248,45 @@ const UnifiedLeadForm = ({
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Validation
-    if (leadType === 'company' && !formData.company_name) {
-      toast.error('Company name is required');
-      return;
-    }
-    if (leadType === 'company' && !formData.contact_person) {
-      toast.error('Contact person is required');
-      return;
-    }
-    if (leadType === 'individual' && !formData.client_name) {
-      toast.error('Client name is required');
+    // Basic validation - backend will handle detailed validation
+    if (!formData.lead_owner) {
+      toast.error('Lead Owner (Sales Rep) is required');
       return;
     }
     if (!formData.course_id) {
-      toast.error('Please select a course');
+      toast.error('Please select a training course');
       return;
+    }
+    if (leadType === 'company') {
+      if (!formData.company_name) {
+        toast.error('Company name is required');
+        return;
+      }
+      if (!formData.contact_person) {
+        toast.error('Point of Contact is required');
+        return;
+      }
+      if (!formData.contact_designation) {
+        toast.error('Designation is required');
+        return;
+      }
+      if (!formData.contact_mobile) {
+        toast.error('Contact Mobile is required');
+        return;
+      }
+      if (!formData.phone) {
+        toast.error('Phone is required');
+        return;
+      }
+    } else if (leadType === 'individual') {
+      if (!formData.client_name) {
+        toast.error('Client name is required');
+        return;
+      }
+      if (!formData.client_mobile) {
+        toast.error('Mobile number is required');
+        return;
+      }
     }
 
     setLoading(true);
