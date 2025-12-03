@@ -159,6 +159,21 @@ const LeadTracker = () => {
       filtered = filtered.filter(lead => (lead.lead_score || 'warm') === scoreFilter);
     }
 
+    // Sales Head specific filters
+    if (areaFilter !== 'all') {
+      filtered = filtered.filter(lead => 
+        (lead.training_location === areaFilter || lead.branch === areaFilter)
+      );
+    }
+
+    if (employeeFilter !== 'all') {
+      filtered = filtered.filter(lead => 
+        (lead.lead_owner === employeeFilter || 
+         lead.assigned_to_name === employeeFilter ||
+         lead.created_by_name === employeeFilter)
+      );
+    }
+
     setFilteredLeads(filtered);
   };
 
