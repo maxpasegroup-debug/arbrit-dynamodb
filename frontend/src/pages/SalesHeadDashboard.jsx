@@ -169,63 +169,22 @@ const SalesHeadDashboard = () => {
         </div>
 
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-9 bg-white/5 border border-white/10">
+          <TabsList className="grid w-full grid-cols-4 bg-white/5 border border-white/10">
             <TabsTrigger 
               value="overview" 
               data-testid="tab-overview"
               className="data-[state=active]:bg-blue-500/20 data-[state=active]:text-white text-gray-300"
             >
-              <LayoutDashboard className="w-4 h-4 mr-2" />
+              <BarChart3 className="w-4 h-4 mr-2" />
               Overview
             </TabsTrigger>
             <TabsTrigger 
-              value="monitoring" 
-              data-testid="tab-monitoring"
+              value="lead-management"
+              data-testid="tab-lead-management"
               className="data-[state=active]:bg-blue-500/20 data-[state=active]:text-white text-gray-300"
-            >
-              <Users className="w-4 h-4 mr-2" />
-              Team
-            </TabsTrigger>
-            <TabsTrigger 
-              value="leads"
-              data-testid="tab-leads"
-              className={`relative transition-all duration-300 ${
-                duplicateCount > 0 
-                  ? 'bg-red-600 hover:bg-red-700 text-white animate-pulse data-[state=active]:bg-red-700 data-[state=active]:text-white shadow-lg shadow-red-500/50' 
-                  : 'data-[state=active]:bg-blue-500/20 data-[state=active]:text-white text-gray-300'
-              }`}
             >
               <TrendingUp className="w-4 h-4 mr-2" />
-              Leads
-              {duplicateCount > 0 && (
-                <Badge className="ml-2 bg-white text-red-600 font-bold text-xs px-2 animate-bounce">
-                  {duplicateCount} ALERT{duplicateCount > 1 ? 'S' : ''}
-                </Badge>
-              )}
-            </TabsTrigger>
-            <TabsTrigger 
-              value="quotations"
-              data-testid="tab-quotations"
-              className="data-[state=active]:bg-blue-500/20 data-[state=active]:text-white text-gray-300"
-            >
-              <FileText className="w-4 h-4 mr-2" />
-              Quotations
-            </TabsTrigger>
-            <TabsTrigger 
-              value="invoice"
-              data-testid="tab-invoice"
-              className="data-[state=active]:bg-blue-500/20 data-[state=active]:text-white text-gray-300"
-            >
-              <DollarSign className="w-4 h-4 mr-2" />
-              Invoice
-            </TabsTrigger>
-            <TabsTrigger 
-              value="requests"
-              data-testid="tab-requests"
-              className="data-[state=active]:bg-blue-500/20 data-[state=active]:text-white text-gray-300"
-            >
-              <ClipboardList className="w-4 h-4 mr-2" />
-              Requests
+              Lead Management
             </TabsTrigger>
             <TabsTrigger 
               value="leaves"
@@ -236,18 +195,14 @@ const SalesHeadDashboard = () => {
               Leaves
             </TabsTrigger>
             <TabsTrigger 
-              value="my-expenses"
+              value="expenses"
+              data-testid="tab-expenses"
               className="data-[state=active]:bg-blue-500/20 data-[state=active]:text-white text-gray-300"
             >
               <Receipt className="w-4 h-4 mr-2" />
-              My Expenses
+              Expenses
             </TabsTrigger>
-            <TabsTrigger 
-              value="expense-approvals"
-              className="data-[state=active]:bg-blue-500/20 data-[state=active]:text-white text-gray-300"
-            >
-              <CheckSquare className="w-4 h-4 mr-2" />
-              Approve Expenses
+          </TabsList>
             </TabsTrigger>
             <TabsTrigger 
               value="dispatch"
