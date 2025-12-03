@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { LogOut, Award, User, TrendingUp, Calendar, FileText, GraduationCap, Receipt, MessageCircle, UserCheck } from 'lucide-react';
+import { LogOut, Award, User, TrendingUp, Calendar, FileText, GraduationCap, Receipt, MessageCircle, UserCheck, BookOpen } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import LeadTracker from '@/components/sales/LeadTracker';
 import MyTrainingTracker from '@/components/sales/MyTrainingTracker';
-import AvailabilityCalendar from '@/components/sales/AvailabilityCalendar';
+import AcademicCalendar from '@/components/sales/AcademicCalendar';
 import ExpenseSubmission from '@/components/expenses/ExpenseSubmission';
 import FeedbackMessages from '@/components/sales/FeedbackMessages';
 import LeaveRequest from '@/components/sales/LeaveRequest';
