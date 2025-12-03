@@ -1894,6 +1894,201 @@ async def reject_invoice_academic(
         raise HTTPException(status_code=500, detail="Failed to reject invoice")
 
 
+
+# ================================================================================
+# ACCOUNTS & PAYMENT TRACKING
+# ================================================================================
+
+@api_router.get("/accounts/approved-invoices")
+async def get_approved_invoices_for_accounts(current_user: dict = Depends(get_current_user)):
+    """
+    Accounts Head gets all approved invoices ready for processing.
+    """
+    try:
+        if current_user["role"] not in ["Accounts Head", "Accountant", "MD", "COO", "CEO"]:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="Access denied. Accounts role required."
+            )
+        
+        # Get all approved and routed invoices
+        query_result = await db.invoice_requests.find(
+            {"status": "Approved", "routed_to_accounts": True}, 
+            {"_id": 0}
+        )
+        invoices = await query_result.sort("approved_at", -1).to_list(1000)
+        
+        return invoices
+    
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error fetching approved invoices: {e}")
+        return []
+
+
+@api_router.put("/accounts/invoices/{invoice_id}/mark-sent")
+async def mark_invoice_sent(
+    invoice_id: str,
+    send_data: dict,
+    current_user: dict = Depends(get_current_user)
+):
+    """
+    Mark invoice as sent to client.
+    """
+    try:
+        if current_user["role"] not in ["Accounts Head", "Accountant", "MD", "COO"]:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="Access denied. Accounts role required."
+            )
+        
+        invoice = await db.invoice_requests.find_one({"id": invoice_id}, {"_id": 0})
+        
+        if not invoice:
+            raise HTTPException(status_code=404, detail="Invoice not found")
+        
+        update_data = {
+            "invoice_status": "Sent",
+            "sent_to_client": True,
+            "sent_at": datetime.now(timezone.utc).isoformat(),
+            "sent_by": current_user["id"],
+            "sent_by_name": current_user["name"],
+            "invoice_number": send_data.get("invoice_number", ""),
+            "due_date": send_data.get("due_date", ""),
+            "sent_via": send_data.get("sent_via", "Email")
+        }
+        
+        await db.invoice_requests.update_one({"id": invoice_id}, {"$set": update_data})
+        
+        return {"message": "Invoice marked as sent", "invoice_id": invoice_id}
+    
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error marking invoice as sent: {e}")
+        raise HTTPException(status_code=500, detail="Failed to mark invoice as sent")
+
+
+@api_router.post("/accounts/payments")
+async def record_payment(payment_data: PaymentCreate, current_user: dict = Depends(get_current_user)):
+    """
+    Record payment received from client.
+    """
+    try:
+        if current_user["role"] not in ["Accounts Head", "Accountant", "MD", "COO"]:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="Access denied. Accounts role required."
+            )
+        
+        # Create payment record
+        payment = Payment(
+            **payment_data.model_dump(),
+            received_by=current_user["id"],
+            received_by_name=current_user["name"],
+            amount=Decimal(str(payment_data.amount))
+        )
+        
+        payment_doc = payment.model_dump()
+        payment_doc['created_at'] = payment_doc['created_at'].isoformat()
+        
+        # Convert floats to Decimals
+        payment_doc = convert_floats_to_decimals(payment_doc)
+        
+        # Insert payment
+        await db.payments.insert_one(payment_doc)
+        
+        # Update invoice status to Paid
+        if payment_data.invoice_id:
+            await db.invoice_requests.update_one(
+                {"id": payment_data.invoice_id},
+                {"$set": {
+                    "invoice_status": "Paid",
+                    "payment_received": True,
+                    "payment_date": payment_data.payment_date,
+                    "payment_id": payment.id
+                }}
+            )
+        
+        return {
+            "message": "Payment recorded successfully", 
+            "payment_id": payment.id
+        }
+    
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error recording payment: {e}")
+        raise HTTPException(status_code=500, detail="Failed to record payment")
+
+
+@api_router.get("/accounts/payments")
+async def get_payment_history(current_user: dict = Depends(get_current_user)):
+    """
+    Get payment history.
+    """
+    try:
+        if current_user["role"] not in ["Accounts Head", "Accountant", "MD", "COO", "CEO"]:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="Access denied. Accounts role required."
+            )
+        
+        query_result = await db.payments.find({}, {"_id": 0})
+        payments = await query_result.sort("created_at", -1).to_list(1000)
+        
+        return payments
+    
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error fetching payments: {e}")
+        return []
+
+
+@api_router.get("/accounts/pending-payments")
+async def get_pending_payments(current_user: dict = Depends(get_current_user)):
+    """
+    Get all invoices with pending payments.
+    """
+    try:
+        if current_user["role"] not in ["Accounts Head", "Accountant", "MD", "COO", "CEO"]:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="Access denied. Accounts role required."
+            )
+        
+        # Get invoices that are sent but not paid
+        query_result = await db.invoice_requests.find(
+            {"invoice_status": "Sent", "payment_received": {"$ne": True}},
+            {"_id": 0}
+        )
+        pending = await query_result.sort("sent_at", -1).to_list(1000)
+        
+        # Check for overdue invoices
+        current_date = datetime.now(timezone.utc).date()
+        for invoice in pending:
+            if invoice.get("due_date"):
+                try:
+                    due_date = datetime.fromisoformat(invoice["due_date"].replace('Z', '+00:00')).date()
+                    if due_date < current_date:
+                        invoice["is_overdue"] = True
+                        invoice["days_overdue"] = (current_date - due_date).days
+                    else:
+                        invoice["is_overdue"] = False
+                except:
+                    invoice["is_overdue"] = False
+        
+        return pending
+    
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error fetching pending payments: {e}")
+        return []
+
+
 @api_router.post("/academic/training-requests/{request_id}/allocate")
 async def allocate_training_request(
     request_id: str,
