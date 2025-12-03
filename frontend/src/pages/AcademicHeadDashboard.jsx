@@ -14,10 +14,10 @@ import TeamMonitoring from '@/components/academic/TeamMonitoring';
 import AssessmentFormBuilder from '@/components/assessment/AssessmentFormBuilder';
 import AssessmentQRGenerator from '@/components/assessment/AssessmentQRGenerator';
 import AssessmentReports from '@/components/assessment/AssessmentReports';
-import ExpenseSubmission from '@/components/expenses/ExpenseSubmission';
 import CourseManagement from '@/components/academic/CourseManagement';
 import CertificateManagement from '@/components/certificates/CertificateManagement';
-import AcademicLibrary from '@/components/academic/AcademicLibrary';
+import CertificateDispatchManagement from '@/components/certificates/CertificateDispatchManagement';
+import AcademicTrainingBoard from '@/components/training/AcademicTrainingBoard';
 import { toast } from 'sonner';
 import axios from 'axios';
 
