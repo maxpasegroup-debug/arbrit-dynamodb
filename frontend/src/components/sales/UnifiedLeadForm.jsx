@@ -250,8 +250,20 @@ const UnifiedLeadForm = ({
         });
         toast.success('Lead updated successfully!');
       } else {
-        // Use different endpoints based on mode
-        const endpoint = mode === 'self' ? `${API}/sales/self-lead` : `${API}/sales-head/leads`;
+        // Auto-detect endpoint based on user role
+        const user = JSON.parse(localStorage.getItem('user') || '{}');
+        const userRole = user.role || '';
+        
+        let endpoint;
+        if (userRole.includes('Sales Head')) {
+          endpoint = `${API}/sales-head/leads`;
+        } else if (mode === 'self' || userRole.includes('Field Sales') || userRole.includes('Tele Sales') || userRole.includes('Sales Employee')) {
+          endpoint = `${API}/sales/self-lead`;
+        } else {
+          // Default to Sales Head endpoint for other sales roles
+          endpoint = `${API}/sales-head/leads`;
+        }
+        
         await axios.post(endpoint, submitData, {
           headers: { Authorization: `Bearer ${token}` }
         });
