@@ -3121,7 +3121,7 @@ async def create_sales_quotation(quot_data: QuotationCreate, current_user: dict 
         **quot_data.model_dump(),
         created_by=current_user["id"],
         created_by_name=current_user["name"],
-        status="Approved"  # Auto-approved
+        status="Pending"  # Requires Academic Head approval
     )
     
     doc = quot_obj.model_dump()
