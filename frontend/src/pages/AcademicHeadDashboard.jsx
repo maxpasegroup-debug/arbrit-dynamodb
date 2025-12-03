@@ -32,6 +32,7 @@ import TeamMonitoring from '@/components/academic/TeamMonitoring';
 import ExpenseSubmission from '@/components/expenses/ExpenseSubmission';
 import QuotationApprovalManagement from '@/components/approvals/QuotationApprovalManagement';
 import InvoiceApprovalManagement from '@/components/approvals/InvoiceApprovalManagement';
+import LeaveApprovalManagement from '@/components/hr/LeaveApprovalManagement';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
