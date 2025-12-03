@@ -651,11 +651,7 @@ const UnifiedLeadForm = ({
               type="number"
               min="1"
               value={formData.num_trainees}
-              onChange={(e) => {
-                const val = e.target.value;
-                setFormData({ ...formData, num_trainees: val === '' ? '' : parseInt(val) });
-                if (formData.course_id) handleCourseChange(formData.course_id);
-              }}
+              onChange={(e) => handleTraineesChange(e.target.value)}
               className="bg-slate-800 border-white/10 text-slate-100"
               placeholder="Enter number of participants"
             />
