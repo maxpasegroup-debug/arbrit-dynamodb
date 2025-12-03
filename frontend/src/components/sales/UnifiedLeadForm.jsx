@@ -204,13 +204,45 @@ const UnifiedLeadForm = ({
   };
 
   const handleTraineesChange = (value) => {
-    const numTrainees = parseInt(value) || 1;
-    setFormData(prev => ({ ...prev, num_trainees: numTrainees }));
+    // Allow empty value or parse as integer
+    const numTrainees = value === '' ? '' : parseInt(value);
     
-    // Recalculate lead value if course is selected
-    if (formData.course_id) {
-      handleCourseChange(formData.course_id);
-    }
+    // Update num_trainees
+    setFormData(prev => {
+      const updated = { ...prev, num_trainees: numTrainees };
+      
+      // Recalculate lead value if course is selected and we have a valid number
+      if (prev.course_id && numTrainees && numTrainees > 0) {
+        const course = courses.find(c => c.id === prev.course_id);
+        if (course) {
+          const baseFee = parseFloat(course.base_fee) || 0;
+          
+          // Calculate lead value based on pricing tiers
+          let pricePerTrainee = baseFee;
+          if (numTrainees >= 10) {
+            pricePerTrainee = parseFloat(course.pricing_tiers?.group_10_plus || baseFee * 0.8);
+          } else if (numTrainees >= 5) {
+            pricePerTrainee = parseFloat(course.pricing_tiers?.group_5_10 || baseFee * 0.9);
+          }
+          
+          const leadValue = (pricePerTrainee * numTrainees).toFixed(0);
+          
+          // Calculate intelligent lead score
+          const leadScore = calculateLeadScore({
+            ...updated,
+            lead_value: leadValue
+          });
+          
+          return {
+            ...updated,
+            lead_value: leadValue,
+            lead_score: leadScore
+          };
+        }
+      }
+      
+      return updated;
+    });
   };
 
   const handleSubmit = async (e) => {
