@@ -193,7 +193,7 @@ const TeleSalesDashboard = () => {
           </TabsContent>
           
           <TabsContent value="calendar" className="mt-6">
-            <AvailabilityCalendar />
+            <AcademicCalendar />
           </TabsContent>
           
           <TabsContent value="expenses" className="mt-6">
