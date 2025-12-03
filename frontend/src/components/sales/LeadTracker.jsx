@@ -707,18 +707,50 @@ const LeadTracker = () => {
                       >
                         <MessageCircle className="w-3 h-3" />
                       </Button>
-                      <Button
-                        size="sm"
-                        variant="outline"
-                        onClick={() => {
-                          setQuotationLead(lead);
-                          setQuotationOpen(true);
-                        }}
-                        className="border-white/20 hover:bg-blue-500/20"
-                        title="Create Quotation"
-                      >
-                        <FileText className="w-3 h-3" />
-                      </Button>
+                      {/* Quotation Button - Different behavior based on user role */}
+                      {(() => {
+                        const user = JSON.parse(localStorage.getItem('user') || '{}');
+                        const isSalesHead = ['Sales Head', 'COO', 'MD', 'CEO'].includes(user.role);
+                        
+                        if (isSalesHead) {
+                          // Sales Head: Show quotation requests if pending
+                          const pendingQuotations = (lead.quotation_requests || []).filter(q => q.status === 'pending');
+                          if (pendingQuotations.length > 0) {
+                            return (
+                              <Button
+                                size="sm"
+                                variant="outline"
+                                className="border-purple-400/50 text-purple-300 hover:bg-purple-500/20 animate-pulse"
+                                title={`${pendingQuotations.length} Quotation Request(s) Pending`}
+                                onClick={() => {
+                                  setSelectedRequest({ type: 'quotation', lead, requests: pendingQuotations });
+                                  setQuotationRequestOpen(true);
+                                }}
+                              >
+                                <FileText className="w-3 h-3 mr-1" />
+                                {pendingQuotations.length}
+                              </Button>
+                            );
+                          }
+                          return null;
+                        } else {
+                          // Sales Team: Show create quotation button
+                          return (
+                            <Button
+                              size="sm"
+                              variant="outline"
+                              onClick={() => {
+                                setQuotationLead(lead);
+                                setQuotationOpen(true);
+                              }}
+                              className="border-purple-400/50 text-purple-300 hover:bg-purple-500/20"
+                              title="Create Quotation"
+                            >
+                              <FileText className="w-3 h-3" />
+                            </Button>
+                          );
+                        }
+                      })()}
 
                       {/* Invoice Request Button - Different behavior based on user role */}
                       {(() => {
