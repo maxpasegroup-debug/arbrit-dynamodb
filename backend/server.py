@@ -2424,18 +2424,16 @@ async def create_lead(lead: LeadCreate, current_user: dict = Depends(get_current
         lead_data["client_name"] = lead.company_name
     
     # Get assigned employee name if provided
-    assigned_to_name = None
     if lead.assigned_to:
         emp = await db.employees.find_one({"id": lead.assigned_to}, {"_id": 0})
         if emp:
-            assigned_to_name = emp["name"]
+            lead_data["assigned_to_name"] = emp["name"]
     
-    lead_obj = Lead(
-        **lead_data,
-        assigned_to_name=assigned_to_name,
-        assigned_by=current_user["id"],
-        assigned_by_name=current_user["name"]
-    )
+    # Set assignment tracking fields
+    lead_data["assigned_by"] = current_user["id"]
+    lead_data["assigned_by_name"] = current_user["name"]
+    
+    lead_obj = Lead(**lead_data)
     
     doc = lead_obj.model_dump()
     doc['created_at'] = doc['created_at'].isoformat()
