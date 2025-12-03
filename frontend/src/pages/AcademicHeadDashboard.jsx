@@ -22,10 +22,7 @@ import axios from 'axios';
 // Import components
 import TrainingTrackerMetro from '@/components/training/TrainingTrackerMetro';
 import CertificateDispatchManagement from '@/components/certificates/CertificateDispatchManagement';
-import TrainingRequests from '@/components/academic/TrainingRequests';
-import TrainingSchedule from '@/components/academic/TrainingSchedule';
-import TrainerAllocation from '@/components/academic/TrainerAllocation';
-import WorkOrderManagement from '@/components/academic/WorkOrderManagement';
+import TrainingCalendarUnified from '@/components/academic/TrainingCalendarUnified';
 import CourseManagement from '@/components/academic/CourseManagement';
 import AssessmentFormBuilder from '@/components/assessment/AssessmentFormBuilder';
 import AssessmentQRGenerator from '@/components/assessment/AssessmentQRGenerator';
