@@ -111,14 +111,47 @@ const LeadManagement = () => {
       'New': 'bg-blue-500/20 text-blue-300 border-blue-500/30',
       'In Progress': 'bg-yellow-500/20 text-yellow-300 border-yellow-500/30',
       'Proposal Sent': 'bg-purple-500/20 text-purple-300 border-purple-500/30',
+      'Contacted': 'bg-cyan-500/20 text-cyan-300 border-cyan-500/30',
+      'Quoted': 'bg-indigo-500/20 text-indigo-300 border-indigo-500/30',
+      'Negotiation': 'bg-orange-500/20 text-orange-300 border-orange-500/30',
+      'Won': 'bg-green-500/20 text-green-300 border-green-500/30',
       'Closed': 'bg-green-500/20 text-green-300 border-green-500/30',
-      'Dropped': 'bg-red-500/20 text-red-300 border-red-500/30'
+      'Dropped': 'bg-red-500/20 text-red-300 border-red-500/30',
+      'Lost': 'bg-red-500/20 text-red-300 border-red-500/30'
     };
     return colors[status] || colors['New'];
   };
 
-  const selfLeads = leads.filter(l => l.source === 'Self');
-  const assignedLeads = leads.filter(l => l.source !== 'Self');
+  // Filter leads based on search and status
+  const filteredLeads = leads.filter(lead => {
+    const matchesSearch = searchTerm === '' || 
+      (lead.client_name && lead.client_name.toLowerCase().includes(searchTerm.toLowerCase())) ||
+      (lead.company_name && lead.company_name.toLowerCase().includes(searchTerm.toLowerCase())) ||
+      (lead.mobile && lead.mobile.includes(searchTerm));
+    
+    const matchesStatus = statusFilter === 'all' || lead.status === statusFilter;
+    
+    return matchesSearch && matchesStatus;
+  });
+
+  // Group leads by assigned person
+  const leadsByAssignee = filteredLeads.reduce((acc, lead) => {
+    const assignee = lead.assigned_to || 'Unassigned';
+    if (!acc[assignee]) {
+      acc[assignee] = [];
+    }
+    acc[assignee].push(lead);
+    return acc;
+  }, {});
+
+  // Calculate statistics
+  const stats = {
+    total: leads.length,
+    new: leads.filter(l => l.status === 'New').length,
+    inProgress: leads.filter(l => l.status === 'In Progress' || l.status === 'Contacted').length,
+    won: leads.filter(l => l.status === 'Won' || l.status === 'Closed').length,
+    lost: leads.filter(l => l.status === 'Lost' || l.status === 'Dropped').length
+  };
 
   return (
     <div className="space-y-6">
