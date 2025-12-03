@@ -265,44 +265,84 @@ const AcademicHeadDashboard = () => {
               </div>
             </TabsContent>
 
+            {/* B. TRAINING TRACKER TAB */}
+            <TabsContent value="training-tracker" className="mt-0">
+              <AcademicTrainingBoard />
+            </TabsContent>
+
+            {/* C. SCHEDULE TRAININGS TAB - Calendar requests + scheduling */}
+            <TabsContent value="schedule-trainings" className="mt-0">
+              <Tabs defaultValue="requests" className="space-y-6">
+                <TabsList className="bg-white/10 border border-white/20">
+                  <TabsTrigger value="requests">Booking Requests</TabsTrigger>
+                  <TabsTrigger value="schedule">Training Schedule</TabsTrigger>
+                  <TabsTrigger value="trainers">Trainer Allocation</TabsTrigger>
+                  <TabsTrigger value="work-orders">Work Orders</TabsTrigger>
+                </TabsList>
+                
+                <TabsContent value="requests">
+                  <TrainingRequests />
+                </TabsContent>
+                
+                <TabsContent value="schedule">
+                  <TrainingSchedule />
+                </TabsContent>
+
+                <TabsContent value="trainers">
+                  <TrainerAllocation />
+                </TabsContent>
+
+                <TabsContent value="work-orders">
+                  <WorkOrderManagement />
+                </TabsContent>
+              </Tabs>
+            </TabsContent>
+
+            {/* D. COURSES TAB */}
             <TabsContent value="courses" className="mt-0">
               <CourseManagement />
             </TabsContent>
 
-            <TabsContent value="requests" className="mt-0">
-              <TrainingRequests />
-            </TabsContent>
-
-            <TabsContent value="trainers" className="mt-0">
-              <TrainerAllocation />
-            </TabsContent>
-
-            <TabsContent value="work-orders" className="mt-0">
-              <WorkOrderManagement />
-            </TabsContent>
-
-            <TabsContent value="schedule" className="mt-0">
-              <TrainingSchedule />
-            </TabsContent>
-
-            <TabsContent value="certificates" className="mt-0">
-              <CertificateApproval />
-            </TabsContent>
-
-            <TabsContent value="generate" className="mt-0">
-              <CertificateGeneration />
-            </TabsContent>
-
-            <TabsContent value="team" className="mt-0">
+            {/* E. MY TEAM TAB */}
+            <TabsContent value="my-team" className="mt-0">
               <TeamMonitoring />
             </TabsContent>
 
-            <TabsContent value="assessments" className="mt-0">
+            {/* F. CERTIFICATIONS AND DESPATCH TRACKER TAB */}
+            <TabsContent value="certifications" className="mt-0">
+              <Tabs defaultValue="approval" className="space-y-6">
+                <TabsList className="bg-white/10 border border-white/20">
+                  <TabsTrigger value="approval">Certificate Approval</TabsTrigger>
+                  <TabsTrigger value="generate">Generate Certificates</TabsTrigger>
+                  <TabsTrigger value="dispatch">Despatch Management</TabsTrigger>
+                  <TabsTrigger value="management">Certificate Mgmt</TabsTrigger>
+                </TabsList>
+                
+                <TabsContent value="approval">
+                  <CertificateApproval />
+                </TabsContent>
+                
+                <TabsContent value="generate">
+                  <CertificateGeneration />
+                </TabsContent>
+
+                <TabsContent value="dispatch">
+                  <CertificateDispatchManagement />
+                </TabsContent>
+
+                <TabsContent value="management">
+                  <CertificateManagement />
+                </TabsContent>
+              </Tabs>
+            </TabsContent>
+
+            {/* G. ASSESSMENTS AND FEEDBACKS TAB */}
+            <TabsContent value="assessments-feedbacks" className="mt-0">
               <Tabs defaultValue="create" className="space-y-6">
                 <TabsList className="bg-white/10 border border-white/20">
                   <TabsTrigger value="create">Create Form</TabsTrigger>
                   <TabsTrigger value="qr">Generate QR</TabsTrigger>
-                  <TabsTrigger value="reports">Reports</TabsTrigger>
+                  <TabsTrigger value="reports">Reports & Feedbacks</TabsTrigger>
                 </TabsList>
                 
                 <TabsContent value="create">
@@ -317,18 +357,6 @@ const AcademicHeadDashboard = () => {
                   <AssessmentReports />
                 </TabsContent>
               </Tabs>
-            </TabsContent>
-
-            <TabsContent value="my-expenses" className="mt-0">
-              <ExpenseSubmission />
-            </TabsContent>
-
-            <TabsContent value="certificate-management" className="mt-0">
-              <CertificateManagement />
-            </TabsContent>
-
-            <TabsContent value="library" className="mt-0">
-              <AcademicLibrary />
             </TabsContent>
           </div>
         </Tabs>
