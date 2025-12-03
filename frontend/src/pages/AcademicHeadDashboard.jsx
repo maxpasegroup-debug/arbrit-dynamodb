@@ -273,56 +273,18 @@ const AcademicHeadDashboard = () => {
               </div>
             </TabsContent>
 
-            {/* B. TRAINING TRACKER TAB */}
+            {/* 2. TRAINING TRACKER - Metro-style tracking */}
             <TabsContent value="training-tracker" className="mt-0">
               <AcademicTrainingBoard />
             </TabsContent>
 
-            {/* C. SCHEDULE TRAININGS TAB - Calendar requests + scheduling */}
-            <TabsContent value="schedule-trainings" className="mt-0">
-              <Tabs defaultValue="requests" className="space-y-6">
-                <TabsList className="bg-white/10 border border-white/20">
-                  <TabsTrigger value="requests">Booking Requests</TabsTrigger>
-                  <TabsTrigger value="schedule">Training Schedule</TabsTrigger>
-                  <TabsTrigger value="trainers">Trainer Allocation</TabsTrigger>
-                  <TabsTrigger value="work-orders">Work Orders</TabsTrigger>
-                </TabsList>
-                
-                <TabsContent value="requests">
-                  <TrainingRequests />
-                </TabsContent>
-                
-                <TabsContent value="schedule">
-                  <TrainingSchedule />
-                </TabsContent>
-
-                <TabsContent value="trainers">
-                  <TrainerAllocation />
-                </TabsContent>
-
-                <TabsContent value="work-orders">
-                  <WorkOrderManagement />
-                </TabsContent>
-              </Tabs>
-            </TabsContent>
-
-            {/* D. COURSES TAB */}
-            <TabsContent value="courses" className="mt-0">
-              <CourseManagement />
-            </TabsContent>
-
-            {/* E. MY TEAM TAB */}
-            <TabsContent value="my-team" className="mt-0">
-              <TeamMonitoring />
-            </TabsContent>
-
-            {/* F. CERTIFICATIONS AND DESPATCH TRACKER TAB */}
-            <TabsContent value="certifications" className="mt-0">
+            {/* 3. DESPATCH & DELIVERY TRACKER */}
+            <TabsContent value="despatch-delivery" className="mt-0">
               <Tabs defaultValue="approval" className="space-y-6">
                 <TabsList className="bg-white/10 border border-white/20">
                   <TabsTrigger value="approval">Certificate Approval</TabsTrigger>
                   <TabsTrigger value="generate">Generate Certificates</TabsTrigger>
-                  <TabsTrigger value="dispatch">Despatch Management</TabsTrigger>
+                  <TabsTrigger value="dispatch">Despatch Tracker</TabsTrigger>
                   <TabsTrigger value="management">Certificate Mgmt</TabsTrigger>
                 </TabsList>
                 
@@ -344,25 +306,114 @@ const AcademicHeadDashboard = () => {
               </Tabs>
             </TabsContent>
 
-            {/* G. ASSESSMENTS AND FEEDBACKS TAB */}
-            <TabsContent value="assessments-feedbacks" className="mt-0">
-              <Tabs defaultValue="create" className="space-y-6">
+            {/* 4. TRAINING CALENDAR - Receive requests + Allocate trainers */}
+            <TabsContent value="training-calendar" className="mt-0">
+              <Tabs defaultValue="requests" className="space-y-6">
                 <TabsList className="bg-white/10 border border-white/20">
-                  <TabsTrigger value="create">Create Form</TabsTrigger>
-                  <TabsTrigger value="qr">Generate QR</TabsTrigger>
-                  <TabsTrigger value="reports">Reports & Feedbacks</TabsTrigger>
+                  <TabsTrigger value="requests">Sales Booking Requests</TabsTrigger>
+                  <TabsTrigger value="schedule">Schedule Training</TabsTrigger>
+                  <TabsTrigger value="trainers">Allocate Trainers (FT/PT)</TabsTrigger>
+                  <TabsTrigger value="work-orders">Work Orders</TabsTrigger>
                 </TabsList>
                 
-                <TabsContent value="create">
-                  <AssessmentFormBuilder onBack={() => {}} onFormCreated={() => {}} />
+                <TabsContent value="requests">
+                  <TrainingRequests />
                 </TabsContent>
                 
-                <TabsContent value="qr">
-                  <AssessmentQRGenerator userRole="Academic Head" />
+                <TabsContent value="schedule">
+                  <TrainingSchedule />
+                </TabsContent>
+
+                <TabsContent value="trainers">
+                  <TrainerAllocation />
+                </TabsContent>
+
+                <TabsContent value="work-orders">
+                  <WorkOrderManagement />
+                </TabsContent>
+              </Tabs>
+            </TabsContent>
+
+            {/* 5. COURSES - Add/Edit/Remove + Upload course materials */}
+            <TabsContent value="courses" className="mt-0">
+              <CourseManagement />
+            </TabsContent>
+
+            {/* 6. ASSESSMENTS & FEEDBACK - Custom forms + QR generation */}
+            <TabsContent value="assessments-feedback" className="mt-0">
+              <Tabs defaultValue="assessments" className="space-y-6">
+                <TabsList className="bg-white/10 border border-white/20">
+                  <TabsTrigger value="assessments">Assessments</TabsTrigger>
+                  <TabsTrigger value="feedback">Feedback Forms</TabsTrigger>
+                  <TabsTrigger value="reports">Reports & Analysis</TabsTrigger>
+                </TabsList>
+                
+                <TabsContent value="assessments">
+                  <Tabs defaultValue="create" className="space-y-4">
+                    <TabsList className="bg-white/5 border border-white/10">
+                      <TabsTrigger value="create">Create Assessment</TabsTrigger>
+                      <TabsTrigger value="qr">Generate QR</TabsTrigger>
+                    </TabsList>
+                    
+                    <TabsContent value="create">
+                      <AssessmentFormBuilder onBack={() => {}} onFormCreated={() => {}} />
+                    </TabsContent>
+                    
+                    <TabsContent value="qr">
+                      <AssessmentQRGenerator userRole="Academic Head" />
+                    </TabsContent>
+                  </Tabs>
                 </TabsContent>
                 
+                <TabsContent value="feedback">
+                  <Tabs defaultValue="create" className="space-y-4">
+                    <TabsList className="bg-white/5 border border-white/10">
+                      <TabsTrigger value="create">Create Feedback Form</TabsTrigger>
+                      <TabsTrigger value="qr">Generate QR</TabsTrigger>
+                    </TabsList>
+                    
+                    <TabsContent value="create">
+                      <AssessmentFormBuilder onBack={() => {}} onFormCreated={() => {}} formType="feedback" />
+                    </TabsContent>
+                    
+                    <TabsContent value="qr">
+                      <AssessmentQRGenerator userRole="Academic Head" formType="feedback" />
+                    </TabsContent>
+                  </Tabs>
+                </TabsContent>
+
                 <TabsContent value="reports">
                   <AssessmentReports />
+                </TabsContent>
+              </Tabs>
+            </TabsContent>
+
+            {/* 7. MY TEAM - Trainers (FT/PT) + Academic Coordinators */}
+            <TabsContent value="my-team" className="mt-0">
+              <TeamMonitoring />
+            </TabsContent>
+
+            {/* 8. EXPENSES - Submit & Review (Self + Team) */}
+            <TabsContent value="expenses" className="mt-0">
+              <Tabs defaultValue="my-expenses" className="space-y-6">
+                <TabsList className="bg-white/10 border border-white/20">
+                  <TabsTrigger value="my-expenses">My Expenses</TabsTrigger>
+                  <TabsTrigger value="team-expenses">Team Expenses Review</TabsTrigger>
+                </TabsList>
+                
+                <TabsContent value="my-expenses">
+                  <ExpenseSubmission />
+                </TabsContent>
+                
+                <TabsContent value="team-expenses">
+                  <div className="bg-white/5 backdrop-blur-sm rounded-xl border border-white/10 p-6">
+                    <h3 className="text-xl font-semibold text-white mb-4">Team Expense Review</h3>
+                    <p className="text-slate-400 mb-4">Review and approve expense claims from your team members</p>
+                    {/* TODO: Create ExpenseApproval component */}
+                    <div className="text-center py-8 text-slate-400">
+                      Team expense review component - Coming soon
+                    </div>
+                  </div>
                 </TabsContent>
               </Tabs>
             </TabsContent>
