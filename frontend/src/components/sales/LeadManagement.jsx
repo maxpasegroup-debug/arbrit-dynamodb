@@ -320,6 +320,7 @@ const LeadManagement = () => {
         </Table>
       </div>
 
+      {/* Update Lead Dialog */}
       <Dialog open={showUpdateDialog} onOpenChange={setShowUpdateDialog}>
         <DialogContent className="bg-[#1a2f4d] border-white/20 text-white">
           <DialogHeader>
@@ -329,7 +330,7 @@ const LeadManagement = () => {
             <div className="space-y-4">
               <div className="bg-white/5 rounded-lg p-3">
                 <p className="text-sm text-gray-400">Client</p>
-                <p className="font-semibold">{selectedLead.client_name}</p>
+                <p className="font-semibold">{selectedLead.company_name || selectedLead.client_name}</p>
               </div>
               <div>
                 <label className="text-sm text-gray-300 mb-2 block">Status</label>
@@ -339,10 +340,11 @@ const LeadManagement = () => {
                   </SelectTrigger>
                   <SelectContent className="bg-[#1a2f4d] border-white/20 text-white">
                     <SelectItem value="New">New</SelectItem>
-                    <SelectItem value="In Progress">In Progress</SelectItem>
-                    <SelectItem value="Proposal Sent">Proposal Sent</SelectItem>
-                    <SelectItem value="Closed">Closed</SelectItem>
-                    <SelectItem value="Dropped">Dropped</SelectItem>
+                    <SelectItem value="Contacted">Contacted</SelectItem>
+                    <SelectItem value="Quoted">Quoted</SelectItem>
+                    <SelectItem value="Negotiation">Negotiation</SelectItem>
+                    <SelectItem value="Won">Won</SelectItem>
+                    <SelectItem value="Lost">Lost</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
@@ -367,6 +369,26 @@ const LeadManagement = () => {
           </DialogFooter>
         </DialogContent>
       </Dialog>
+
+      {/* Lead Form Dialog */}
+      <Dialog open={formOpen} onOpenChange={setFormOpen}>
+        <DialogContent className="bg-[#1a2f4d] border-white/20 text-white max-w-4xl max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>Create New Lead</DialogTitle>
+          </DialogHeader>
+          <UnifiedLeadForm onSuccess={() => { setFormOpen(false); fetchLeads(); }} />
+        </DialogContent>
+      </Dialog>
+
+      {/* Quotation Dialog */}
+      {quotationLead && (
+        <QuotationDialog
+          open={quotationOpen}
+          onOpenChange={setQuotationOpen}
+          lead={quotationLead}
+          onSubmit={handleQuotationSubmit}
+        />
+      )}
     </div>
   );
 };
