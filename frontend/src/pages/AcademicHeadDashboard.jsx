@@ -283,32 +283,9 @@ const AcademicHeadDashboard = () => {
               <CertificateDispatchManagement />
             </TabsContent>
 
-            {/* 4. TRAINING CALENDAR */}
+            {/* 4. TRAINING CALENDAR - Unified Workflow */}
             <TabsContent value="training-calendar" className="mt-0">
-              <Tabs defaultValue="requests" className="space-y-6">
-                <TabsList className="bg-white/10 border border-white/20">
-                  <TabsTrigger value="requests">Sales Booking Requests</TabsTrigger>
-                  <TabsTrigger value="schedule">Schedule Training</TabsTrigger>
-                  <TabsTrigger value="trainers">Allocate Trainers (FT/PT)</TabsTrigger>
-                  <TabsTrigger value="work-orders">Work Orders</TabsTrigger>
-                </TabsList>
-                
-                <TabsContent value="requests">
-                  <TrainingRequests />
-                </TabsContent>
-                
-                <TabsContent value="schedule">
-                  <TrainingSchedule />
-                </TabsContent>
-
-                <TabsContent value="trainers">
-                  <TrainerAllocation />
-                </TabsContent>
-
-                <TabsContent value="work-orders">
-                  <WorkOrderManagement />
-                </TabsContent>
-              </Tabs>
+              <TrainingCalendarUnified />
             </TabsContent>
 
             {/* 5. COURSES */}
