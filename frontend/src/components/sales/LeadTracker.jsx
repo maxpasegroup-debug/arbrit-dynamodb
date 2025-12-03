@@ -755,34 +755,34 @@ const LeadTracker = () => {
                       {/* Invoice Request Button - Different behavior based on user role */}
                       {(() => {
                         const user = JSON.parse(localStorage.getItem('user') || '{}');
-                        const userRole = user.role || '';
+                        const isSalesHead = ['Sales Head', 'COO', 'MD', 'CEO'].includes(user.role);
                         
-                        if (userRole.includes('Sales Head')) {
-                          // Sales Head: Show invoice management for leads with requests
-                          if (lead.invoiceRequests && lead.invoiceRequests.length > 0) {
-                            const pendingRequests = lead.invoiceRequests.filter(req => req.status === 'pending');
-                            if (pendingRequests.length > 0) {
-                              return (
-                                <Button
-                                  size="sm"
-                                  variant="outline"
-                                  className="border-yellow-400/50 text-yellow-300 hover:bg-yellow-500/20 animate-pulse"
-                                  title={`${pendingRequests.length} Invoice Request(s) Pending`}
-                                  onClick={() => {
-                                    // Handle invoice request management
-                                    toast.info(`${pendingRequests.length} invoice requests pending for ${lead.client_name || lead.company_name}`);
-                                  }}
-                                >
-                                  <DollarSign className="w-3 h-3" />
-                                  {pendingRequests.length}
-                                </Button>
-                              );
-                            }
+                        if (isSalesHead) {
+                          // Sales Head: Show invoice requests if pending
+                          const pendingInvoices = (lead.invoice_requests || []).filter(i => i.status === 'pending');
+                          if (pendingInvoices.length > 0) {
+                            return (
+                              <Button
+                                size="sm"
+                                variant="outline"
+                                className="border-green-400/50 text-green-300 hover:bg-green-500/20 animate-pulse"
+                                title={`${pendingInvoices.length} Invoice Request(s) Pending`}
+                                onClick={() => {
+                                  setSelectedRequest({ type: 'invoice', lead, requests: pendingInvoices });
+                                  setInvoiceRequestOpen(true);
+                                }}
+                              >
+                                <DollarSign className="w-3 h-3 mr-1" />
+                                {pendingInvoices.length}
+                              </Button>
+                            );
                           }
                           return null;
                         } else {
-                          // Sales Team Members: Show invoice request button
-                          const hasExistingRequest = lead.invoiceRequests?.some(req => req.requestedBy === user.id && req.status === 'pending');
+                          // Sales Team: Show invoice request button
+                          const hasExistingRequest = (lead.invoice_requests || []).some(
+                            req => req.requested_by === user.id && req.status === 'pending'
+                          );
                           
                           return (
                             <Button
@@ -800,17 +800,17 @@ const LeadTracker = () => {
                                 
                                 try {
                                   const token = localStorage.getItem('token');
-                                  await axios.post(`${API}/sales/request-invoice`, {
-                                    leadId: lead.id,
-                                    clientName: lead.client_name || lead.company_name,
-                                    leadValue: lead.lead_value || '0',
-                                    remarks: 'Invoice request for completed lead'
+                                  await axios.post(`${API}/sales/invoice-request`, {
+                                    lead_id: lead.id,
+                                    client_name: lead.client_name || lead.company_name,
+                                    invoice_amount: lead.lead_value || '0',
+                                    notes: 'Invoice request for completed lead'
                                   }, {
                                     headers: { Authorization: `Bearer ${token}` }
                                   });
                                   
                                   toast.success('Invoice request submitted to Sales Head');
-                                  fetchLeads(); // Refresh the leads list
+                                  fetchLeads();
                                 } catch (error) {
                                   console.error('Error requesting invoice:', error);
                                   toast.error('Failed to submit invoice request');
