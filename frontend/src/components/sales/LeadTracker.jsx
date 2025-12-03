@@ -1132,14 +1132,14 @@ const LeadTracker = () => {
       <Dialog open={invoiceRequestOpen} onOpenChange={setInvoiceRequestOpen}>
         <DialogContent className="bg-[#1a2f4d] border-white/20 text-white max-w-4xl max-h-[80vh] overflow-y-auto">
           <DialogHeader>
-            <DialogTitle className="text-2xl">💰 Invoice Requests - Pending Approval</DialogTitle>
+            <DialogTitle className="text-2xl">💰 Invoice Requests for {selectedRequest?.lead?.company_name || selectedRequest?.lead?.client_name}</DialogTitle>
             <DialogDescription className="text-slate-400">
-              Review and approve invoice requests from your sales team
+              Review, edit, approve or reject invoice requests
             </DialogDescription>
           </DialogHeader>
           
           <div className="space-y-4">
-            {invoiceRequests.filter(i => i.status === 'pending').map((inv) => (
+            {(selectedRequest?.requests || []).map((inv) => (
               <div key={inv.id} className="bg-white/5 rounded-lg p-4 border border-green-400/30">
                 <div className="flex justify-between items-start mb-3">
                   <div>
