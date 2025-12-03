@@ -67,13 +67,19 @@ const LeadTracker = () => {
   const employees = [...new Set(leads.map(l => l.lead_owner || l.assigned_to_name || l.created_by_name).filter(Boolean))];
 
   useEffect(() => {
+    const user = JSON.parse(localStorage.getItem('user') || '{}');
+    setUserRole(user.role || '');
     fetchLeads();
     fetchDuplicateAlerts();
+    if (['Sales Head', 'COO', 'MD', 'CEO'].includes(user.role)) {
+      fetchQuotationRequests();
+      fetchInvoiceRequests();
+    }
   }, []);
 
   useEffect(() => {
     filterLeads();
-  }, [leads, searchTerm, statusFilter, scoreFilter]);
+  }, [leads, searchTerm, statusFilter, scoreFilter, areaFilter, employeeFilter]);
 
   const fetchLeads = async () => {
     setLoading(true);
