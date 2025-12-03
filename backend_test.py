@@ -1786,6 +1786,184 @@ class ArbritBackendHealthTester:
         
         return success, response
 
+    def test_lead_submission_sales_head_individual(self):
+        """Test 1: Submit Individual Lead (Sales Head)"""
+        print("\n🎯 TEST 1: Submit Individual Lead (Sales Head)")
+        print("   Login: 971545844387/4387")
+        
+        # Login as Sales Head
+        success, response = self.run_test(
+            "Login as Sales Head for Lead Testing",
+            "POST",
+            "auth/login",
+            200,
+            data={"mobile": "971545844387", "pin": "4387"}
+        )
+        
+        if not success:
+            print("   ❌ FAILED: Cannot login as Sales Head")
+            return False, {}
+        
+        if 'token' in response:
+            self.token = response['token']
+            print(f"   ✅ Sales Head login successful: {response.get('user', {}).get('name', 'Unknown')}")
+        
+        # Submit individual lead with exact test data from review request
+        lead_data = {
+            "lead_type": "individual",
+            "contact_person": "Ahmed Ali",
+            "mobile": "971501234567",
+            "email": "ahmed@example.com",
+            "course_name": "First Aid Training",
+            "number_of_participants": 15,
+            "urgency": "Normal",
+            "requirement": "First aid certification needed"
+        }
+        
+        success, response = self.run_test(
+            "Submit Individual Lead (Sales Head)",
+            "POST",
+            "sales/leads",
+            200,
+            data=lead_data
+        )
+        
+        if success:
+            print(f"   ✅ SUCCESS: Individual lead submitted successfully!")
+            if 'id' in response:
+                print(f"   ✅ Lead ID: {response['id']}")
+        else:
+            print(f"   ❌ FAILED: Lead submission error detected")
+        
+        return success, response
+
+    def test_lead_submission_sales_head_company(self):
+        """Test 2: Submit Company Lead (Sales Head)"""
+        print("\n🎯 TEST 2: Submit Company Lead (Sales Head)")
+        
+        if not self.token:
+            print("   ❌ FAILED: No Sales Head token available")
+            return False, {}
+        
+        # Submit company lead with exact test data from review request
+        lead_data = {
+            "lead_type": "company",
+            "company_name": "ABC Construction",
+            "contact_person": "Mohammed Hassan",
+            "mobile": "971507654321",
+            "email": "contact@abc.com",
+            "course_name": "Scaffolding Safety",
+            "number_of_participants": 20,
+            "urgency": "High",
+            "requirement": "Scaffolding training for new project"
+        }
+        
+        success, response = self.run_test(
+            "Submit Company Lead (Sales Head)",
+            "POST",
+            "sales/leads",
+            200,
+            data=lead_data
+        )
+        
+        if success:
+            print(f"   ✅ SUCCESS: Company lead submitted successfully!")
+            if 'id' in response:
+                print(f"   ✅ Lead ID: {response['id']}")
+        else:
+            print(f"   ❌ FAILED: Lead submission error detected")
+        
+        return success, response
+
+    def test_lead_submission_field_sales_individual(self):
+        """Test 3: Submit Individual Lead (Field Sales)"""
+        print("\n🎯 TEST 3: Submit Individual Lead (Field Sales)")
+        print("   Login: 971563981061/1234")
+        
+        # Login as Field Sales
+        success, response = self.run_test(
+            "Login as Field Sales for Lead Testing",
+            "POST",
+            "auth/login",
+            200,
+            data={"mobile": "971563981061", "pin": "1234"}
+        )
+        
+        if not success:
+            print("   ❌ FAILED: Cannot login as Field Sales")
+            return False, {}
+        
+        if 'token' in response:
+            self.token = response['token']
+            print(f"   ✅ Field Sales login successful: {response.get('user', {}).get('name', 'Unknown')}")
+        
+        # Submit same individual lead structure
+        lead_data = {
+            "lead_type": "individual",
+            "contact_person": "Ahmed Ali",
+            "mobile": "971501234567",
+            "email": "ahmed@example.com",
+            "course_name": "First Aid Training",
+            "number_of_participants": 15,
+            "urgency": "Normal",
+            "requirement": "First aid certification needed"
+        }
+        
+        success, response = self.run_test(
+            "Submit Individual Lead (Field Sales)",
+            "POST",
+            "sales/leads",
+            200,
+            data=lead_data
+        )
+        
+        if success:
+            print(f"   ✅ SUCCESS: Individual lead submitted successfully!")
+            if 'id' in response:
+                print(f"   ✅ Lead ID: {response['id']}")
+        else:
+            print(f"   ❌ FAILED: Lead submission error detected")
+        
+        return success, response
+
+    def test_lead_submission_field_sales_company(self):
+        """Test 4: Submit Company Lead (Field Sales)"""
+        print("\n🎯 TEST 4: Submit Company Lead (Field Sales)")
+        
+        if not self.token:
+            print("   ❌ FAILED: No Field Sales token available")
+            return False, {}
+        
+        # Submit same company lead structure
+        lead_data = {
+            "lead_type": "company",
+            "company_name": "ABC Construction",
+            "contact_person": "Mohammed Hassan",
+            "mobile": "971507654321",
+            "email": "contact@abc.com",
+            "course_name": "Scaffolding Safety",
+            "number_of_participants": 20,
+            "urgency": "High",
+            "requirement": "Scaffolding training for new project"
+        }
+        
+        success, response = self.run_test(
+            "Submit Company Lead (Field Sales)",
+            "POST",
+            "sales/leads",
+            200,
+            data=lead_data
+        )
+        
+        if success:
+            print(f"   ✅ SUCCESS: Company lead submitted successfully!")
+            if 'id' in response:
+                print(f"   ✅ Lead ID: {response['id']}")
+        else:
+            print(f"   ❌ FAILED: Lead submission error detected")
+        
+        return success, response
+
 def main():
     print("🚀 CRITICAL FIX VERIFICATION - Expense & Quotation Float/Decimal Conversion")
     print("📋 Testing DynamoDB float-to-Decimal conversion fix")
