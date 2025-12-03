@@ -8,6 +8,17 @@ import PerformanceOverview from '@/components/sales/PerformanceOverview';
 import LeadManagement from '@/components/sales/LeadManagement';
 import LeaveManagement from '@/components/sales/LeaveManagement';
 import ExpenseManagement from '@/components/sales/ExpenseManagement';
+import DuplicateAlertsNotification from '@/components/sales/DuplicateAlertsNotification';
+import SalesOverview from '@/components/sales/SalesOverview';
+import EmployeeMonitoring from '@/components/sales/EmployeeMonitoring';
+import LeadTracker from '@/components/sales/LeadTracker';
+import QuotationManagementEnhanced from '@/components/sales/QuotationManagementEnhanced';
+import InvoiceRequest from '@/components/sales/InvoiceRequest';
+import RequestsView from '@/components/sales/RequestsView';
+import LeaveApprovals from '@/components/sales/LeaveApprovals';
+import ExpenseSubmission from '@/components/sales/ExpenseSubmission';
+import ExpenseApprovals from '@/components/sales/ExpenseApprovals';
+import CertificateDispatchManagement from '@/components/sales/CertificateDispatchManagement';
 import { toast } from 'sonner';
 import axios from 'axios';
 
