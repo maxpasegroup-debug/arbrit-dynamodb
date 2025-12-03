@@ -753,6 +753,14 @@ const LeadTracker = () => {
           )}
         </DialogContent>
       </Dialog>
+
+      {/* Quotation Dialog */}
+      <QuotationDialog
+        open={quotationOpen}
+        onOpenChange={setQuotationOpen}
+        lead={quotationLead}
+        onSuccess={fetchLeads}
+      />
     </div>
   );
 };
