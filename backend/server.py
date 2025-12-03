@@ -2465,10 +2465,27 @@ async def get_leads(
     
     leads = await query_result.sort("created_at", -1).to_list(1000)
     for lead in leads:
+        # Convert datetime strings
         if isinstance(lead.get('created_at'), str):
             lead['created_at'] = datetime.fromisoformat(lead['created_at'])
         if isinstance(lead.get('updated_at'), str):
             lead['updated_at'] = datetime.fromisoformat(lead['updated_at'])
+        
+        # Convert Decimal to string for lead_value
+        if 'lead_value' in lead and lead['lead_value'] is not None:
+            from decimal import Decimal
+            if isinstance(lead['lead_value'], Decimal):
+                lead['lead_value'] = str(lead['lead_value'])
+        
+        # Ensure optional fields have defaults
+        if 'client_name' not in lead or lead['client_name'] is None:
+            lead['client_name'] = lead.get('company_name', 'N/A')
+        if 'requirement' not in lead or lead['requirement'] is None:
+            lead['requirement'] = lead.get('course_name', 'N/A')
+        if 'assigned_by' not in lead:
+            lead['assigned_by'] = None
+        if 'assigned_by_name' not in lead:
+            lead['assigned_by_name'] = None
     
     return leads
 
