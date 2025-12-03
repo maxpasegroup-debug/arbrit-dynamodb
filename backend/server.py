@@ -2376,6 +2376,37 @@ async def create_lead(lead: LeadCreate, current_user: dict = Depends(get_current
     if current_user["role"] not in ["Sales Head", "COO", "MD", "CEO"]:
         raise HTTPException(status_code=403, detail="Access denied")
     
+    # Validate conditional required fields based on lead_type
+    if lead.lead_type == "company":
+        if not lead.company_name:
+            raise HTTPException(status_code=400, detail="Company name is required for company leads")
+        if not lead.contact_person:
+            raise HTTPException(status_code=400, detail="Point of Contact is required for company leads")
+        if not lead.contact_designation:
+            raise HTTPException(status_code=400, detail="Designation is required for company leads")
+        if not lead.contact_mobile:
+            raise HTTPException(status_code=400, detail="Contact Mobile is required for company leads")
+        if not lead.phone:
+            raise HTTPException(status_code=400, detail="Phone is required for company leads")
+    elif lead.lead_type == "individual":
+        if not lead.client_name:
+            raise HTTPException(status_code=400, detail="Client name is required for individual leads")
+        if not lead.client_mobile:
+            raise HTTPException(status_code=400, detail="Mobile number is required for individual leads")
+    
+    # Auto-populate requirement if not provided
+    if not lead.requirement:
+        lead.requirement = (lead.training_service_details or 
+                          lead.product_services_required or 
+                          lead.description or 
+                          lead.course_name or 
+                          "Training requirement")
+    
+    # Set client_name for company leads (for backward compatibility)
+    lead_data = lead.model_dump()
+    if lead.lead_type == "company" and not lead_data.get("client_name"):
+        lead_data["client_name"] = lead.company_name
+    
     # Get assigned employee name if provided
     assigned_to_name = None
     if lead.assigned_to:
@@ -2384,7 +2415,7 @@ async def create_lead(lead: LeadCreate, current_user: dict = Depends(get_current
             assigned_to_name = emp["name"]
     
     lead_obj = Lead(
-        **lead.model_dump(),
+        **lead_data,
         assigned_to_name=assigned_to_name,
         assigned_by=current_user["id"],
         assigned_by_name=current_user["name"]
