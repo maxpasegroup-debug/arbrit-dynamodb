@@ -1958,8 +1958,11 @@ async def record_payment(payment_data: PaymentCreate, current_user: dict = Depen
             )
         
         # Create payment record
+        payment_dict = payment_data.model_dump()
+        payment_dict.pop('amount', None)  # Remove amount to avoid conflict
+        
         payment = Payment(
-            **payment_data.model_dump(),
+            **payment_dict,
             received_by=current_user["id"],
             received_by_name=current_user["name"],
             amount=Decimal(str(payment_data.amount))
