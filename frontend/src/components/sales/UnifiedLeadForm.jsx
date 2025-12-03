@@ -541,10 +541,10 @@ const UnifiedLeadForm = ({
             <div className="col-span-2">
               <Label className="text-slate-300">Website</Label>
               <Input
-                type="url"
+                type="text"
                 value={formData.website}
                 onChange={(e) => setFormData({ ...formData, website: e.target.value })}
-                placeholder="https://www.company.com"
+                placeholder="www.company.com"
                 className="bg-slate-800 border-white/10 text-slate-100"
               />
             </div>
