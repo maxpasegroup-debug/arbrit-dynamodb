@@ -760,8 +760,9 @@ metadata:
 
 test_plan:
   current_focus:
-    - "CRITICAL - TRAINING WORKFLOW END-TO-END TESTING"
-  stuck_tasks: []
+    - "COMPREHENSIVE SALES FLOW TESTING - Complete End-to-End Workflow"
+  stuck_tasks:
+    - "COMPREHENSIVE SALES FLOW TESTING - Complete End-to-End Workflow"
   test_all: false
   test_priority: "high_first"
 
