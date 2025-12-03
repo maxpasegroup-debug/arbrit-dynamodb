@@ -339,7 +339,8 @@ class InvoiceAcademicTester:
         if self.failed_tests:
             print(f"\n❌ FAILED TESTS:")
             for failed in self.failed_tests:
-                print(f"   - {failed['test']}: {failed.get('error', f'Expected {failed.get(\"expected\")}, got {failed.get(\"actual\")}')}")
+                error_msg = failed.get('error', f"Expected {failed.get('expected')}, got {failed.get('actual')}")
+                print(f"   - {failed['test']}: {error_msg}")
         
         # Final Assessment
         overall_success = all_invoice_success and academic_success and sample_data_success
