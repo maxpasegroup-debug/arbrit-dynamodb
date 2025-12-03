@@ -235,6 +235,7 @@ const AcademicHeadDashboard = () => {
           </TabsList>
 
           <div className="mt-6">
+            {/* A. OVERVIEW TAB */}
             <TabsContent value="overview" className="mt-0">
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {modules.map((module) => {
