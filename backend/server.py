@@ -6484,7 +6484,7 @@ async def create_booking_request(request_data: dict, current_user: dict = Depend
     """Create booking request (Sales team to Academic Head)"""
     try:
         booking_request = {
-            "id": str(uuid4()),
+            "id": str(uuid.uuid4()),
             "lead_id": request_data.get("lead_id"),
             "course_id": request_data.get("course_id"),
             "course_name": request_data.get("course_name"),
