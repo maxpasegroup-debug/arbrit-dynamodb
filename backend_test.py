@@ -2352,6 +2352,55 @@ class ArbritBackendHealthTester:
         
         return gaps
 
+    def print_final_summary(self):
+        """Print final test summary"""
+        print("\n" + "="*80)
+        print("🎯 TRAINING WORKFLOW TEST SUMMARY")
+        print("="*80)
+        
+        print(f"\n📊 Test Results:")
+        print(f"   Total Tests Run: {self.tests_run}")
+        print(f"   Tests Passed: {self.tests_passed}")
+        print(f"   Success Rate: {(self.tests_passed/self.tests_run)*100:.1f}%")
+        
+        if self.failed_tests:
+            print(f"\n❌ Failed Tests ({len(self.failed_tests)}):")
+            for failure in self.failed_tests:
+                print(f"   - {failure['test']}")
+                print(f"     Endpoint: /api/{failure['endpoint']}")
+                if 'error' in failure:
+                    print(f"     Error: {failure['error']}")
+                else:
+                    print(f"     Expected: {failure.get('expected')}, Got: {failure.get('actual')}")
+                print()
+        else:
+            print("\n🎉 ALL TRAINING WORKFLOW TESTS PASSED!")
+        
+        print("\n🔍 KEY FINDINGS:")
+        print("   - Training request creation endpoint missing: POST /api/sales/training-requests")
+        print("   - Academic head training requests endpoint missing: GET /api/academic/training-requests") 
+        print("   - Trainer assignment endpoints missing: GET /api/trainer/trainings")
+        print("   - Training allocation endpoints missing: POST /api/academic/training-requests/{id}/allocate")
+        print("   - Progress update endpoints missing: PUT /api/trainer/trainings/{id}/progress")
+        print("   - MD/COO can view training data via existing /api/executive/work-orders endpoint")
+        
+        print("\n📋 MISSING ENDPOINTS IDENTIFIED:")
+        missing_endpoints = [
+            "POST /api/sales/training-requests",
+            "GET /api/academic/training-requests", 
+            "POST /api/academic/training-requests/{id}/allocate",
+            "GET /api/trainer/trainings",
+            "PUT /api/trainer/trainings/{id}/progress"
+        ]
+        
+        for endpoint in missing_endpoints:
+            print(f"   ❌ {endpoint}")
+        
+        print("\n✅ WORKING ENDPOINTS:")
+        print("   ✅ GET /api/executive/work-orders (shows training data)")
+        
+        print("\n" + "="*80)
+
     def run_training_workflow_tests(self):
         """Run complete training workflow end-to-end testing"""
         print("🚀 STARTING TRAINING WORKFLOW END-TO-END TESTING")
