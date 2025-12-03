@@ -1950,7 +1950,7 @@ class ArbritBackendHealthTester:
         success, response = self.run_test(
             "Submit Company Lead (Field Sales)",
             "POST",
-            "sales/leads",
+            "sales/self-lead",
             200,
             data=lead_data
         )
