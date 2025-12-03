@@ -2609,10 +2609,81 @@ def main_training_workflow():
     # Return appropriate exit code
     return 1 if tester.failed_tests else 0
 
+def main_booking_request():
+    """Main function for trainer booking request fix testing"""
+    print("🚀 CRITICAL - TRAINER BOOKING REQUEST FIX VERIFICATION")
+    print("📋 Testing that trainer booking requests work after Decimal conversion fix")
+    print("=" * 80)
+    
+    # Setup
+    tester = ArbritBackendHealthTester()
+    
+    print("\n🔧 BACKGROUND:")
+    print("   Testing the fix for trainer booking request Decimal conversion issue")
+    print("   Should return 200/201 success instead of 500 error")
+    print("   Should save booking to DynamoDB without float conversion errors")
+    
+    print("\n🧪 TESTING SEQUENCE:")
+    print("   1. Login as Sales Head (971545844387/4387)")
+    print("   2. POST to /api/booking-requests with booking data")
+    print("   3. Verify response is SUCCESS (not 500 error)")
+    print("   4. Verify booking saved to DynamoDB")
+    print("   5. GET /api/booking-requests to confirm booking appears in list")
+    
+    # Run the specific test
+    print("\n" + "="*60)
+    print("🔐 TRAINER BOOKING REQUEST FIX TEST")
+    print("="*60)
+    
+    success, response = tester.test_trainer_booking_request_fix()
+    
+    # Final Summary
+    print("\n" + "="*80)
+    print("🎯 TRAINER BOOKING REQUEST TEST SUMMARY")
+    print("="*80)
+    
+    print(f"\n📊 Test Results:")
+    print(f"   Total Tests Run: {tester.tests_run}")
+    print(f"   Tests Passed: {tester.tests_passed}")
+    print(f"   Success Rate: {(tester.tests_passed/tester.tests_run)*100:.1f}%")
+    
+    if tester.failed_tests:
+        print(f"\n❌ Failed Tests ({len(tester.failed_tests)}):")
+        for failure in tester.failed_tests:
+            print(f"   - {failure['test']}")
+            print(f"     Endpoint: /api/{failure['endpoint']}")
+            if 'error' in failure:
+                print(f"     Error: {failure['error']}")
+            else:
+                print(f"     Expected: {failure.get('expected')}, Got: {failure.get('actual')}")
+            print()
+        
+        print("\n🔍 WHAT THIS MEANS:")
+        print("   ❌ The Decimal conversion fix is NOT working")
+        print("   ❌ Booking requests are still failing with 500 errors")
+        print("   ❌ DynamoDB float conversion issue persists")
+        
+    else:
+        print("\n🎉 TRAINER BOOKING REQUEST FIX VERIFIED!")
+        print("✅ POST returns 200/201 with success message")
+        print("✅ NO 'Failed to create booking request' error")
+        print("✅ Booking saved with Decimal conversion")
+        print("✅ Booking appears in GET list")
+        print("✅ The fix is working correctly!")
+    
+    print("\n" + "="*80)
+    
+    # Return appropriate exit code
+    return 1 if tester.failed_tests else 0
+
 
 if __name__ == "__main__":
-    # Check if we should run training workflow tests
-    if len(sys.argv) > 1 and sys.argv[1] == "training":
-        sys.exit(main_training_workflow())
-    else:
-        sys.exit(main())
+    # Check command line arguments for specific test types
+    if len(sys.argv) > 1:
+        if sys.argv[1] == "training":
+            sys.exit(main_training_workflow())
+        elif sys.argv[1] == "booking":
+            sys.exit(main_booking_request())
+    
+    # Default to lead submission tests
+    sys.exit(main())
