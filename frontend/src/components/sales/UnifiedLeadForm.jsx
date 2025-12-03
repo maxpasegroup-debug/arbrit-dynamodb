@@ -30,9 +30,10 @@ const UnifiedLeadForm = ({
   onSuccess, 
   existingLead = null,
   showFieldType = false,
-  mode = 'enhanced' // 'enhanced' or 'self'
+  mode = 'enhanced' // 'enhanced', 'self', or 'online'
 }) => {
   const [courses, setCourses] = useState([]);
+  const [employees, setEmployees] = useState([]);
   const [leadType, setLeadType] = useState('company');
   const [loading, setLoading] = useState(false);
   const [showDialog, setShowDialog] = useState(false);
