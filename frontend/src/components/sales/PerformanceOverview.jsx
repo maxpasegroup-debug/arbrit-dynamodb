@@ -122,7 +122,7 @@ const PerformanceOverview = () => {
                   <SelectValue placeholder="All Areas" />
                 </SelectTrigger>
                 <SelectContent className="bg-slate-800 border-white/10">
-                  <SelectItem value="">All Areas</SelectItem>
+                  <SelectItem value="all">All Areas</SelectItem>
                   <SelectItem value="Dubai">Dubai</SelectItem>
                   <SelectItem value="Abu Dhabi">Abu Dhabi</SelectItem>
                   <SelectItem value="Sharjah">Sharjah</SelectItem>
