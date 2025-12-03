@@ -288,7 +288,7 @@ class Lead(BaseModel):
     model_config = ConfigDict(extra="ignore")
     
     id: str = Field(default_factory=lambda: str(uuid.uuid4()))
-    source: str  # Online, Self
+    source: str = "Self"  # Online, Self
     client_name: str
     requirement: str
     industry: Optional[str] = None
@@ -304,18 +304,34 @@ class Lead(BaseModel):
     
     # CRM Enhancement fields (all optional for backward compatibility)
     lead_type: Optional[str] = "company"  # company or individual
+    lead_owner: Optional[str] = None  # Sales rep name
     company_name: Optional[str] = None
     contact_person: Optional[str] = None  # POC for companies
     contact_designation: Optional[str] = None  # POC designation
     contact_email: Optional[str] = None
     contact_mobile: Optional[str] = None
+    phone: Optional[str] = None
+    website: Optional[str] = None
     employee_count: Optional[str] = None
+    client_mobile: Optional[str] = None  # For individual leads
+    client_email: Optional[str] = None  # For individual leads
     course_id: Optional[str] = None
     course_name: Optional[str] = None
     num_trainees: Optional[int] = 1
     urgency: Optional[str] = "medium"  # low, medium, high
     lead_value: Optional[str] = "0"  # Estimated revenue
     lead_score: Optional[str] = "warm"  # cold, warm, hot
+    training_service_details: Optional[str] = None
+    product_services_required: Optional[str] = None
+    description: Optional[str] = None
+    training_site: Optional[str] = None
+    training_location: Optional[str] = None
+    training_date: Optional[str] = None
+    payment_mode: Optional[str] = None
+    payment_terms: Optional[str] = None
+    branch: Optional[str] = None
+    lead_category: Optional[str] = None
+    field_sales_type: Optional[str] = None
     last_contact_date: Optional[str] = None
     quotation_sent: Optional[bool] = False
     quotation_id: Optional[str] = None
