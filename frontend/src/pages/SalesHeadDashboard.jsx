@@ -220,6 +220,10 @@ const SalesHeadDashboard = () => {
               <LeadTracker />
             </TabsContent>
 
+            <TabsContent value="calendar" className="mt-0">
+              <AcademicCalendar />
+            </TabsContent>
+
             <TabsContent value="targets" className="mt-0">
               <TargetManagement />
             </TabsContent>
