@@ -4,7 +4,7 @@ import { LogOut, TrendingUp, CalendarCheck, Receipt, BarChart3 } from 'lucide-re
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import PerformanceOverview from '@/components/sales/PerformanceOverview';
-import LeadManagement from '@/components/sales/LeadManagement';
+import LeadTracker from '@/components/sales/LeadTracker';
 import LeaveManagement from '@/components/sales/LeaveManagement';
 import ExpenseManagement from '@/components/sales/ExpenseManagement';
 import DuplicateAlertsNotification from '@/components/sales/DuplicateAlertsNotification';
