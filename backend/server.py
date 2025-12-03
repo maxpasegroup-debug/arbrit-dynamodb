@@ -3101,14 +3101,14 @@ async def create_trainer_request_simple(request_data: dict, current_user: dict =
 # Simplified Invoice Request (matching frontend structure)
 @api_router.post("/sales/invoice-requests")
 async def create_invoice_request_simple(request_data: dict, current_user: dict = Depends(get_current_user)):
-    if current_user["role"] not in ["Tele Sales", "Field Sales"]:
+    if current_user["role"] not in ["Tele Sales", "Field Sales", "Sales Head"]:
         raise HTTPException(status_code=403, detail="Access denied")
     
     invoice_req = {
         "id": str(uuid.uuid4()),
         "client_name": request_data["client_name"],
         "quotation_ref": request_data.get("quotation_ref", ""),
-        "amount": float(request_data["amount"]),
+        "amount": Decimal(str(request_data["amount"])),
         "description": request_data.get("description", ""),
         "remarks": request_data.get("remarks", ""),
         "requested_by": current_user["id"],
