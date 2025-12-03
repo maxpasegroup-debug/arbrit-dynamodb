@@ -52,6 +52,7 @@ const SalesHeadDashboard = () => {
         }
 
         setUser(userInfo);
+        fetchDashboardStats();
         setLoading(false);
       } catch (error) {
         console.error('Auth verification failed:', error);
