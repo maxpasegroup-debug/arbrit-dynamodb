@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { LogOut, LayoutDashboard, Users, TrendingUp, FileText, CalendarCheck, ClipboardList, Receipt, CheckSquare, AlertTriangle, Package } from 'lucide-react';
+import { LogOut, LayoutDashboard, Users, TrendingUp, FileText, CalendarCheck, ClipboardList, Receipt, CheckSquare, AlertTriangle, Package, DollarSign } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -18,6 +18,7 @@ import ExpenseApprovals from '@/components/expenses/ExpenseApprovals';
 import DuplicateManagement from '@/components/sales/DuplicateManagement';
 import EnhancedDuplicateManagement from '@/components/sales/EnhancedDuplicateManagement';
 import DuplicateAlertsNotification from '@/components/sales/DuplicateAlertsNotification';
+import InvoiceRequest from '@/components/sales/InvoiceRequest';
 import { toast } from 'sonner';
 import axios from 'axios';
 
