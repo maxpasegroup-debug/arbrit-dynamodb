@@ -257,6 +257,47 @@ const TrainingTrackerMetro = () => {
                           </Badge>
                         </div>
 
+                        {/* PROGRESS MAP - Journey Tracker */}
+                        <div className="mb-3 p-2 bg-slate-900/50 rounded border border-white/5">
+                          <div className="flex items-center justify-between mb-1">
+                            {statuses.map((s, idx) => {
+                              const currentStatusIndex = statuses.indexOf(training.status);
+                              const isCompleted = idx < currentStatusIndex;
+                              const isCurrent = idx === currentStatusIndex;
+                              const StageIcon = getStatusIcon(s);
+                              
+                              return (
+                                <div key={s} className="flex items-center">
+                                  <div
+                                    className={`w-6 h-6 rounded-full flex items-center justify-center ${
+                                      isCompleted
+                                        ? 'bg-green-500'
+                                        : isCurrent
+                                        ? getStatusColor(s)
+                                        : 'bg-slate-700'
+                                    }`}
+                                    title={s}
+                                  >
+                                    <StageIcon className="w-3 h-3 text-white" />
+                                  </div>
+                                  {idx < statuses.length - 1 && (
+                                    <div
+                                      className={`w-4 h-0.5 ${
+                                        isCompleted ? 'bg-green-500' : 'bg-slate-700'
+                                      }`}
+                                    />
+                                  )}
+                                </div>
+                              );
+                            })}
+                          </div>
+                          <div className="flex justify-between text-[9px] text-slate-500">
+                            <span>Start</span>
+                            <span>{Math.round((statuses.indexOf(training.status) / (statuses.length - 1)) * 100)}%</span>
+                            <span>End</span>
+                          </div>
+                        </div>
+
                         {/* Course Name */}
                         <div className="flex items-center gap-2 mb-2">
                           <BookOpen className="w-3 h-3 text-yellow-400" />
