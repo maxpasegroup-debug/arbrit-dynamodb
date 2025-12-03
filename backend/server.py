@@ -108,6 +108,82 @@ class PinStatusResponse(BaseModel):
     pin_change_required: bool = False
 
 
+# Training Request Models
+class TrainingRequestCreate(BaseModel):
+    client_name: str
+    contact_person: str
+    contact_mobile: str
+    contact_email: Optional[str] = None
+    course_name: str
+    number_of_participants: int
+    preferred_dates: List[str]  # ISO date strings
+    location: str  # Dubai, Abu Dhabi, Saudi, UK
+    urgency: str  # High, Medium, Low
+    requirement: Optional[str] = None
+    lead_id: Optional[str] = None
+
+
+class TrainingRequest(BaseModel):
+    model_config = ConfigDict(extra="ignore")
+    
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    client_name: str
+    contact_person: str
+    contact_mobile: str
+    contact_email: Optional[str] = None
+    course_name: str
+    number_of_participants: int
+    preferred_dates: List[str]
+    location: str
+    urgency: str
+    requirement: Optional[str] = None
+    lead_id: Optional[str] = None
+    
+    # Status tracking
+    status: str = "Requested"  # Requested, Allocated, Confirmed, In Progress, Completed, Reviewed
+    progress_stage: str = "Pending Allocation"  # Detailed stage
+    
+    # Assignment
+    trainer_id: Optional[str] = None
+    trainer_name: Optional[str] = None
+    allocated_at: Optional[datetime] = None
+    allocated_by: Optional[str] = None
+    
+    # Scheduling
+    scheduled_dates: Optional[List[str]] = None
+    training_days: Optional[int] = None
+    
+    # Progress tracking
+    progress_percentage: int = 0
+    current_day: int = 0
+    attendance_marked: bool = False
+    notes: Optional[str] = None
+    
+    # Metadata
+    requested_by: str
+    requested_by_name: str
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+    updated_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+    completed_at: Optional[datetime] = None
+
+
+class TrainingAllocation(BaseModel):
+    trainer_id: str
+    trainer_name: str
+    scheduled_dates: List[str]
+    training_days: int
+    notes: Optional[str] = None
+
+
+class TrainingProgressUpdate(BaseModel):
+    progress_stage: str  # Day 1, Day 2, Completed, etc.
+    progress_percentage: int
+    current_day: int
+    attendance_marked: Optional[bool] = None
+    notes: Optional[str] = None
+    status: Optional[str] = None  # In Progress, Completed
+
+
 # HRM Models
 class Employee(BaseModel):
     model_config = ConfigDict(extra="ignore")
