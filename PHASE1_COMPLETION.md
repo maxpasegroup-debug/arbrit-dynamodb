@@ -94,8 +94,8 @@
 
 ## URLs
 
-- **Login Page**: https://arbrit-sales.preview.emergentagent.com/login
-- **COO Dashboard**: https://arbrit-sales.preview.emergentagent.com/dashboard/coo
+- **Login Page**: https://safety-docs-hub.preview.emergentagent.com/login
+- **COO Dashboard**: https://safety-docs-hub.preview.emergentagent.com/dashboard/coo
 
 ## API Endpoints
 
