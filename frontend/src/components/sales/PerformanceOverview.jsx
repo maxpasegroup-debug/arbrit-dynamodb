@@ -138,7 +138,7 @@ const PerformanceOverview = () => {
                   <SelectValue placeholder="All Badges" />
                 </SelectTrigger>
                 <SelectContent className="bg-slate-800 border-white/10">
-                  <SelectItem value="">All Badges</SelectItem>
+                  <SelectItem value="all">All Badges</SelectItem>
                   <SelectItem value="Gold">Gold</SelectItem>
                   <SelectItem value="Silver">Silver</SelectItem>
                   <SelectItem value="Bronze">Bronze</SelectItem>
