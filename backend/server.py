@@ -2700,33 +2700,54 @@ async def submit_leave_request(leave_req: LeaveRequestCreate, current_user: dict
 
 # Sales - Self Lead Submission (All Sales Roles)
 @api_router.post("/sales/self-lead")
-async def submit_self_lead(lead_data: SelfLeadCreate, current_user: dict = Depends(get_current_user)):
-    if current_user["role"] not in ["Sales Head", "Tele Sales", "Field Sales"]:
+async def submit_self_lead(lead: LeadCreate, current_user: dict = Depends(get_current_user)):
+    if current_user["role"] not in ["Sales Head", "Tele Sales", "Field Sales", "Sales Employee"]:
         raise HTTPException(status_code=403, detail="Access denied")
     
     employee = await db.employees.find_one({"mobile": current_user["mobile"]}, {"_id": 0})
     if not employee:
         raise HTTPException(status_code=404, detail="Employee record not found")
     
+    # Validate conditional required fields based on lead_type
+    if lead.lead_type == "company":
+        if not lead.company_name:
+            raise HTTPException(status_code=400, detail="Company name is required for company leads")
+        if not lead.contact_person:
+            raise HTTPException(status_code=400, detail="Point of Contact is required for company leads")
+        if not lead.contact_designation:
+            raise HTTPException(status_code=400, detail="Designation is required for company leads")
+        if not lead.contact_mobile:
+            raise HTTPException(status_code=400, detail="Contact Mobile is required for company leads")
+        if not lead.phone:
+            raise HTTPException(status_code=400, detail="Phone is required for company leads")
+    elif lead.lead_type == "individual":
+        if not lead.client_name:
+            raise HTTPException(status_code=400, detail="Client name is required for individual leads")
+        if not lead.client_mobile:
+            raise HTTPException(status_code=400, detail="Mobile number is required for individual leads")
+    
+    # Auto-populate requirement if not provided
+    if not lead.requirement:
+        lead.requirement = (lead.training_service_details or 
+                          lead.product_services_required or 
+                          lead.description or 
+                          lead.course_name or 
+                          "Training requirement")
+    
+    # Set client_name for company leads
+    lead_data = lead.model_dump()
+    if lead.lead_type == "company" and not lead_data.get("client_name"):
+        lead_data["client_name"] = lead.company_name
+    
     lead_obj = Lead(
-        source="Self",
-        client_name=lead_data.client_name,
-        requirement=lead_data.requirement,
-        industry=lead_data.company_name or "",
+        **lead_data,
         assigned_to=employee["id"],
         assigned_to_name=employee["name"],
         assigned_by=employee["id"],
-        assigned_by_name=employee["name"],
-        status="New",
-        remarks=lead_data.notes or ""
+        assigned_by_name=employee["name"]
     )
     
     doc = lead_obj.model_dump()
-    doc['mobile'] = lead_data.mobile
-    doc['email'] = lead_data.email or ""
-    doc['branch'] = lead_data.branch
-    doc['lead_type'] = lead_data.lead_type or "Individual"
-    doc['company_name'] = lead_data.company_name
     doc['created_by'] = employee["id"]
     doc['created_by_name'] = employee["name"]
     doc['created_at'] = doc['created_at'].isoformat()
