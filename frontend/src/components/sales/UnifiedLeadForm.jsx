@@ -64,7 +64,7 @@ const UnifiedLeadForm = ({
     product_services_required: '',
     course_id: '',
     course_name: '',
-    num_trainees: 1,
+    num_trainees: '',
     training_site: '',
     training_location: '',
     training_date: '',
