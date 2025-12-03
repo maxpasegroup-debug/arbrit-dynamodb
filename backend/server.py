@@ -1517,6 +1517,291 @@ async def get_executive_work_orders(current_user: dict = Depends(get_current_use
         return []
 
 
+# ====== TRAINING REQUEST LIFECYCLE ENDPOINTS ======
+
+@api_router.post("/sales/training-requests")
+async def create_training_request(request_data: TrainingRequestCreate, current_user: dict = Depends(get_current_user)):
+    """
+    Sales team creates training request.
+    """
+    try:
+        # Check if user is from Sales department
+        if "Sales" not in current_user.get("role", "") and current_user.get("department") != "Sales":
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="Access denied. Sales team only."
+            )
+        
+        training_request = TrainingRequest(
+            **request_data.model_dump(),
+            requested_by=current_user["id"],
+            requested_by_name=current_user["name"]
+        )
+        
+        doc = training_request.model_dump()
+        doc['created_at'] = doc['created_at'].isoformat()
+        doc['updated_at'] = doc['updated_at'].isoformat()
+        if doc.get('allocated_at'):
+            doc['allocated_at'] = doc['allocated_at'].isoformat()
+        if doc.get('completed_at'):
+            doc['completed_at'] = doc['completed_at'].isoformat()
+        
+        # Convert floats to Decimals
+        doc = convert_floats_to_decimals(doc)
+        
+        await db.training_requests.insert_one(doc)
+        
+        logger.info(f"Training request created by {current_user['name']}: {training_request.id}")
+        
+        return {"message": "Training request created successfully", "request_id": training_request.id, "request": training_request}
+    
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error creating training request: {e}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Failed to create training request"
+        )
+
+
+@api_router.get("/sales/training-requests")
+async def get_sales_training_requests(current_user: dict = Depends(get_current_user)):
+    """
+    Get training requests created by current sales user.
+    """
+    try:
+        query_result = await db.training_requests.find(
+            {"requested_by": current_user["id"]},
+            {"_id": 0}
+        )
+        requests = await query_result.sort("created_at", -1).to_list(1000)
+        return requests
+    
+    except Exception as e:
+        logger.error(f"Error fetching training requests: {e}")
+        return []
+
+
+@api_router.get("/academic/training-requests")
+async def get_academic_training_requests(current_user: dict = Depends(get_current_user)):
+    """
+    Academic Head views all training requests.
+    """
+    try:
+        # Check permission
+        if current_user["role"] not in ["Academic Head", "MD", "COO", "CEO"]:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="Access denied. Academic Head, MD, or COO role required."
+            )
+        
+        query_result = await db.training_requests.find({}, {"_id": 0})
+        requests = await query_result.sort("created_at", -1).to_list(1000)
+        return requests
+    
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error fetching training requests: {e}")
+        return []
+
+
+@api_router.post("/academic/training-requests/{request_id}/allocate")
+async def allocate_training_request(
+    request_id: str,
+    allocation: TrainingAllocation,
+    current_user: dict = Depends(get_current_user)
+):
+    """
+    Academic Head allocates training request to a trainer.
+    """
+    try:
+        # Check permission
+        if current_user["role"] not in ["Academic Head", "MD", "COO"]:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="Access denied. Academic Head, MD, or COO role required."
+            )
+        
+        # Get the training request
+        training_request = await db.training_requests.find_one({"id": request_id}, {"_id": 0})
+        
+        if not training_request:
+            raise HTTPException(status_code=404, detail="Training request not found")
+        
+        # Update with allocation details
+        update_data = {
+            "$set": {
+                "status": "Allocated",
+                "progress_stage": "Allocated to Trainer",
+                "trainer_id": allocation.trainer_id,
+                "trainer_name": allocation.trainer_name,
+                "allocated_at": datetime.now(timezone.utc).isoformat(),
+                "allocated_by": current_user["id"],
+                "scheduled_dates": allocation.scheduled_dates,
+                "training_days": allocation.training_days,
+                "notes": allocation.notes,
+                "progress_percentage": 20,
+                "updated_at": datetime.now(timezone.utc).isoformat()
+            }
+        }
+        
+        # Convert floats
+        update_data = convert_floats_to_decimals(update_data)
+        
+        await db.training_requests.update_one(
+            {"id": request_id},
+            update_data
+        )
+        
+        logger.info(f"Training {request_id} allocated to {allocation.trainer_name} by {current_user['name']}")
+        
+        return {"message": "Training allocated successfully", "request_id": request_id}
+    
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error allocating training: {e}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Failed to allocate training"
+        )
+
+
+@api_router.get("/trainer/my-trainings")
+async def get_trainer_trainings(current_user: dict = Depends(get_current_user)):
+    """
+    Trainer views assigned trainings.
+    """
+    try:
+        # Check if user is a trainer
+        if "Trainer" not in current_user.get("role", "") and "Trainer" not in current_user.get("designation", ""):
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="Access denied. Trainer role required."
+            )
+        
+        query_result = await db.training_requests.find(
+            {"trainer_id": current_user["id"]},
+            {"_id": 0}
+        )
+        trainings = await query_result.sort("created_at", -1).to_list(1000)
+        return trainings
+    
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error fetching trainer trainings: {e}")
+        return []
+
+
+@api_router.put("/trainer/trainings/{request_id}/progress")
+async def update_training_progress(
+    request_id: str,
+    progress: TrainingProgressUpdate,
+    current_user: dict = Depends(get_current_user)
+):
+    """
+    Trainer updates training progress.
+    """
+    try:
+        # Get the training request
+        training_request = await db.training_requests.find_one({"id": request_id}, {"_id": 0})
+        
+        if not training_request:
+            raise HTTPException(status_code=404, detail="Training not found")
+        
+        # Verify trainer is assigned to this training
+        if training_request.get("trainer_id") != current_user["id"]:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="Access denied. Not assigned to this training."
+            )
+        
+        # Build update data
+        update_data = {
+            "$set": {
+                "progress_stage": progress.progress_stage,
+                "progress_percentage": progress.progress_percentage,
+                "current_day": progress.current_day,
+                "updated_at": datetime.now(timezone.utc).isoformat()
+            }
+        }
+        
+        if progress.attendance_marked is not None:
+            update_data["$set"]["attendance_marked"] = progress.attendance_marked
+        
+        if progress.notes:
+            update_data["$set"]["notes"] = progress.notes
+        
+        if progress.status:
+            update_data["$set"]["status"] = progress.status
+            
+            # If completed, set completion time
+            if progress.status == "Completed":
+                update_data["$set"]["completed_at"] = datetime.now(timezone.utc).isoformat()
+                update_data["$set"]["progress_percentage"] = 100
+        
+        # Convert floats
+        update_data = convert_floats_to_decimals(update_data)
+        
+        await db.training_requests.update_one(
+            {"id": request_id},
+            update_data
+        )
+        
+        logger.info(f"Training {request_id} progress updated by {current_user['name']}: {progress.progress_stage}")
+        
+        return {"message": "Training progress updated successfully", "request_id": request_id}
+    
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error updating training progress: {e}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Failed to update training progress"
+        )
+
+
+@api_router.get("/executive/training-tracker")
+async def get_executive_training_tracker(current_user: dict = Depends(get_current_user)):
+    """
+    MD/COO view all trainings with real-time tracking.
+    """
+    try:
+        # Check permission
+        if current_user["role"] not in ["MD", "COO", "CEO", "Management"]:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="Access denied. Executive role required."
+            )
+        
+        query_result = await db.training_requests.find({}, {"_id": 0})
+        trainings = await query_result.sort("created_at", -1).to_list(1000)
+        
+        # Categorize trainings
+        stats = {
+            "new_requests": len([t for t in trainings if t.get("status") == "Requested"]),
+            "allocated": len([t for t in trainings if t.get("status") == "Allocated"]),
+            "active": len([t for t in trainings if t.get("status") == "In Progress"]),
+            "completed": len([t for t in trainings if t.get("status") == "Completed"]),
+            "total": len(trainings)
+        }
+        
+        return {
+            "trainings": trainings,
+            "stats": stats
+        }
+    
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error fetching executive training tracker: {e}")
+        return {"trainings": [], "stats": {}}
+
+
 @api_router.get("/dashboard/coo")
 async def coo_dashboard(current_user: dict = Depends(get_current_user)):
     if current_user["role"] != "COO":
