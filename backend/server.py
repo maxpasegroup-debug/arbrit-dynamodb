@@ -2012,6 +2012,8 @@ async def create_lead(lead: LeadCreate, current_user: dict = Depends(get_current
     doc = lead_obj.model_dump()
     doc['created_at'] = doc['created_at'].isoformat()
     doc['updated_at'] = doc['updated_at'].isoformat()
+    # Convert floats to Decimals for DynamoDB compatibility
+    doc = convert_floats_to_decimals(doc)
     await db.leads.insert_one(doc)
     
     return lead_obj
