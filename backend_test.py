@@ -1965,91 +1965,87 @@ class ArbritBackendHealthTester:
         return success, response
 
 def main():
-    print("🚀 CRITICAL FIX VERIFICATION - Expense & Quotation Float/Decimal Conversion")
-    print("📋 Testing DynamoDB float-to-Decimal conversion fix")
+    print("🚀 CRITICAL - ACTUAL LEAD SUBMISSION TEST")
+    print("📋 Testing ACTUAL submission of leads to identify exact errors")
     print("=" * 80)
     
     # Setup
     tester = ArbritBackendHealthTester()
     
     print("\n🔧 BACKGROUND:")
-    print("   Fixed TypeError: Float types are not supported by DynamoDB")
-    print("   Added convert_floats_to_decimals() helper function")
-    print("   Updated all financial endpoints to use Decimal conversion")
+    print("   User reports lead submission is failing even though forms appear to work")
+    print("   Need to test actual API submission to find exact error")
     
     print("\n🧪 TESTING SEQUENCE:")
-    print("   Test 1: Expense submission with MD credentials")
-    print("   Test 2: Quotation creation by Sales Head")
-    print("   Test 3: Quotation creation by Sales Employee")
+    print("   Test 1: Submit Individual Lead (Sales Head)")
+    print("   Test 2: Submit Company Lead (Sales Head)")
+    print("   Test 3: Submit Individual Lead (Field Sales)")
+    print("   Test 4: Submit Company Lead (Field Sales)")
     
-    # Test 1: Expense Submission (MD credentials)
-    print("\n" + "=" * 50)
-    success, response = tester.test_login_md_credentials()
-    if not success:
-        print("❌ CRITICAL: Cannot login as MD - stopping tests")
-        return 1
+    # Test 1: Sales Head Individual Lead
+    print("\n" + "="*60)
+    print("🔐 PHASE 1: Sales Head Individual Lead Submission")
+    print("="*60)
     
-    tester.test_expense_submission_float_fix()
+    tester.test_lead_submission_sales_head_individual()
     
-    # Test 2: Sales Head Quotation Creation
-    print("\n" + "=" * 50)
-    tester.test_sales_head_quotation_float_fix()
+    # Test 2: Sales Head Company Lead
+    print("\n" + "="*60)
+    print("🔐 PHASE 2: Sales Head Company Lead Submission")
+    print("="*60)
     
-    # Test 3: Sales Employee Quotation Creation
-    print("\n" + "=" * 50)
-    tester.test_sales_employee_quotation_float_fix()
+    tester.test_lead_submission_sales_head_company()
     
-    # Print results
-    print("\n" + "=" * 80)
-    print(f"🎯 FLOAT/DECIMAL CONVERSION FIX RESULTS")
-    print(f"Tests Run: {tester.tests_run}")
-    print(f"Tests Passed: {tester.tests_passed}")
-    print(f"Tests Failed: {len(tester.failed_tests)}")
+    # Test 3: Field Sales Individual Lead
+    print("\n" + "="*60)
+    print("🔐 PHASE 3: Field Sales Individual Lead Submission")
+    print("="*60)
     
-    # Analyze results specifically for float/decimal issues
-    float_related_failures = []
-    for test in tester.failed_tests:
-        if any(keyword in test.get('test', '').lower() for keyword in ['expense', 'quotation', 'float', 'decimal']):
-            float_related_failures.append(test)
+    tester.test_lead_submission_field_sales_individual()
     
-    if float_related_failures:
-        print("\n❌ FLOAT/DECIMAL CONVERSION ISSUES:")
-        for test in float_related_failures:
-            error_msg = test.get('error', f"Expected {test.get('expected')}, got {test.get('actual')}")
-            print(f"   - {test['test']}: {error_msg}")
-        print("\n🚨 THE FLOAT/DECIMAL FIX IS NOT WORKING CORRECTLY!")
-        return 1
+    # Test 4: Field Sales Company Lead
+    print("\n" + "="*60)
+    print("🔐 PHASE 4: Field Sales Company Lead Submission")
+    print("="*60)
+    
+    tester.test_lead_submission_field_sales_company()
+    
+    # Final Summary
+    print("\n" + "="*80)
+    print("🎯 LEAD SUBMISSION TEST SUMMARY")
+    print("="*80)
+    
+    print(f"\n📊 Test Results:")
+    print(f"   Total Tests Run: {tester.tests_run}")
+    print(f"   Tests Passed: {tester.tests_passed}")
+    print(f"   Success Rate: {(tester.tests_passed/tester.tests_run)*100:.1f}%")
+    
+    if tester.failed_tests:
+        print(f"\n❌ Failed Tests ({len(tester.failed_tests)}):")
+        for failure in tester.failed_tests:
+            print(f"   - {failure['test']}")
+            print(f"     Endpoint: /api/{failure['endpoint']}")
+            if 'error' in failure:
+                print(f"     Error: {failure['error']}")
+            else:
+                print(f"     Expected: {failure.get('expected')}, Got: {failure.get('actual')}")
+            print()
     else:
-        print("\n✅ FLOAT/DECIMAL CONVERSION FIX VERIFIED!")
-        print("   ✅ NO 'TypeError: Float types are not supported' errors")
-        print("   ✅ All endpoints return 200/201 status codes")
-        print("   ✅ Data successfully saved to DynamoDB")
-        print("   ✅ Amounts properly converted to Decimal type")
+        print("\n🎉 ALL LEAD SUBMISSION TESTS PASSED!")
+        print("✅ Lead submission is working correctly!")
+        print("✅ No errors detected in lead creation process!")
     
-    success_rate = (tester.tests_passed / tester.tests_run) * 100 if tester.tests_run > 0 else 0
-    print(f"\n✨ Success Rate: {success_rate:.1f}%")
+    print("\n🔍 WHAT TO CHECK:")
+    print("   - Status codes (200, 400, 500?)")
+    print("   - Error messages in response body")
+    print("   - Float/Decimal conversion errors (number_of_participants)")
+    print("   - Required field validation errors")
+    print("   - DynamoDB insertion errors")
     
-    # Summary of what was tested
-    print(f"\n📋 TESTED ENDPOINTS:")
-    print(f"   ✅ POST /api/expenses/my-claims - Expense submission with float amounts")
-    print(f"   ✅ POST /api/sales-head/quotations - Sales Head quotation with float amounts")
-    print(f"   ✅ POST /api/sales/quotations - Sales Employee quotation with float amounts")
+    print("\n" + "="*80)
     
-    print(f"\n🔧 VERIFIED FIXES:")
-    print(f"   ✅ convert_floats_to_decimals() function working")
-    print(f"   ✅ DynamoDB compatibility for financial data")
-    print(f"   ✅ No TypeError exceptions for float values")
-    
-    # Determine overall result
-    if float_related_failures:
-        print(f"\n🚨 CRITICAL: FLOAT/DECIMAL FIX VERIFICATION FAILED!")
-        return 1
-    elif len(tester.failed_tests) == 0:
-        print(f"\n🎉 SUCCESS: FLOAT/DECIMAL ISSUE RESOLVED!")
-        return 0
-    else:
-        print(f"\n✅ FLOAT/DECIMAL FIX WORKING (some unrelated issues)")
-        return 0
+    # Return appropriate exit code
+    return 1 if tester.failed_tests else 0
 
 if __name__ == "__main__":
     sys.exit(main())
