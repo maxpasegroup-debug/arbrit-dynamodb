@@ -550,9 +550,12 @@ const LeadTracker = () => {
                       <Button
                         size="sm"
                         variant="outline"
-                        onClick={() => toast.info('Quotation feature coming soon!')}
+                        onClick={() => {
+                          setQuotationLead(lead);
+                          setQuotationOpen(true);
+                        }}
                         className="border-white/20 hover:bg-blue-500/20"
-                        title="Send Quote"
+                        title="Create Quotation"
                       >
                         <FileText className="w-3 h-3" />
                       </Button>
