@@ -141,7 +141,7 @@ const AccountsDashboard = () => {
           </TabsContent>
 
           <TabsContent value="payments">
-            <PaymentRecording />
+            <PaymentManagement />
           </TabsContent>
 
           <TabsContent value="vat">
