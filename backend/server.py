@@ -2755,13 +2755,13 @@ async def submit_self_lead(lead: LeadCreate, current_user: dict = Depends(get_cu
     if lead.lead_type == "company" and not lead_data.get("client_name"):
         lead_data["client_name"] = lead.company_name
     
-    lead_obj = Lead(
-        **lead_data,
-        assigned_to=employee["id"],
-        assigned_to_name=employee["name"],
-        assigned_by=employee["id"],
-        assigned_by_name=employee["name"]
-    )
+    # Override assignment fields for self-lead
+    lead_data["assigned_to"] = employee["id"]
+    lead_data["assigned_to_name"] = employee["name"]
+    lead_data["assigned_by"] = employee["id"]
+    lead_data["assigned_by_name"] = employee["name"]
+    
+    lead_obj = Lead(**lead_data)
     
     doc = lead_obj.model_dump()
     doc['created_by'] = employee["id"]
