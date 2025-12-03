@@ -32,16 +32,26 @@ const LeadTracker = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
   const [scoreFilter, setScoreFilter] = useState('all');
+  const [areaFilter, setAreaFilter] = useState('all');
+  const [employeeFilter, setEmployeeFilter] = useState('all');
   const [formOpen, setFormOpen] = useState(false);
   const [selectedLead, setSelectedLead] = useState(null);
   const [calendarOpen, setCalendarOpen] = useState(false);
   const [calendarLead, setCalendarLead] = useState(null);
   const [detailsOpen, setDetailsOpen] = useState(false);
   const [detailsLead, setDetailsLead] = useState(null);
+  const [userRole, setUserRole] = useState('');
   
   // Quotation dialog state
   const [quotationOpen, setQuotationOpen] = useState(false);
   const [quotationLead, setQuotationLead] = useState(null);
+  
+  // Sales Head specific: Quotation & Invoice requests
+  const [quotationRequests, setQuotationRequests] = useState([]);
+  const [invoiceRequests, setInvoiceRequests] = useState([]);
+  const [quotationRequestOpen, setQuotationRequestOpen] = useState(false);
+  const [invoiceRequestOpen, setInvoiceRequestOpen] = useState(false);
+  const [selectedRequest, setSelectedRequest] = useState(null);
   
   // Duplicate management states
   const [duplicateAlerts, setDuplicateAlerts] = useState([]);
@@ -51,6 +61,10 @@ const LeadTracker = () => {
   const [resolutionNotes, setResolutionNotes] = useState('');
 
   const statuses = ['New', 'Contacted', 'Quoted', 'Negotiation', 'Won', 'Lost'];
+  
+  // Get unique areas and employees for filters
+  const areas = [...new Set(leads.map(l => l.training_location || l.branch).filter(Boolean))];
+  const employees = [...new Set(leads.map(l => l.lead_owner || l.assigned_to_name || l.created_by_name).filter(Boolean))];
 
   useEffect(() => {
     fetchLeads();
