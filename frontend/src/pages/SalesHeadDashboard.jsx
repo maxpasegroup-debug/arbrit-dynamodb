@@ -160,7 +160,7 @@ const SalesHeadDashboard = () => {
         </div>
 
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-5 bg-white/5 border border-white/10">
+          <TabsList className="grid w-full grid-cols-6 bg-white/5 border border-white/10">
             <TabsTrigger 
               value="overview" 
               data-testid="tab-overview"
@@ -176,6 +176,14 @@ const SalesHeadDashboard = () => {
             >
               <TrendingUp className="w-4 h-4 mr-2" />
               Lead Management
+            </TabsTrigger>
+            <TabsTrigger 
+              value="calendar"
+              data-testid="tab-calendar"
+              className="data-[state=active]:bg-blue-500/20 data-[state=active]:text-white text-gray-300"
+            >
+              <Calendar className="w-4 h-4 mr-2" />
+              Academic Calendar
             </TabsTrigger>
             <TabsTrigger 
               value="targets"
