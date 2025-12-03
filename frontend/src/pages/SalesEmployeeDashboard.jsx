@@ -221,10 +221,21 @@ const SalesEmployeeDashboard = () => {
                 <Briefcase className="w-4 h-4 mr-2" />
                 My Leads
               </TabsTrigger>
+              <TabsTrigger 
+                value="quotations"
+                className="data-[state=active]:bg-cyan-500/20 data-[state=active]:text-white text-gray-300"
+              >
+                <FileText className="w-4 h-4 mr-2" />
+                Quotations
+              </TabsTrigger>
             </TabsList>
 
             <TabsContent value="leads" className="mt-6">
               <LeadTracker />
+            </TabsContent>
+            
+            <TabsContent value="quotations" className="mt-6">
+              <QuotationManager />
             </TabsContent>
           </Tabs>
         </div>
