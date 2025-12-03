@@ -148,8 +148,8 @@
 
 ## URLs
 
-- **HRM Dashboard**: https://salescrm-6.preview.emergentagent.com/hrm
-- **COO Dashboard**: https://salescrm-6.preview.emergentagent.com/dashboard/coo
+- **HRM Dashboard**: https://arbrit-cert-hub.preview.emergentagent.com/hrm
+- **COO Dashboard**: https://arbrit-cert-hub.preview.emergentagent.com/dashboard/coo
 
 ## Key Features
 

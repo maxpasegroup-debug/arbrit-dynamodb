@@ -4,7 +4,7 @@ import base64
 from datetime import datetime, timedelta
 
 class ArbritBackendHealthTester:
-    def __init__(self, base_url="https://salescrm-6.preview.emergentagent.com"):
+    def __init__(self, base_url="https://arbrit-cert-hub.preview.emergentagent.com"):
         self.base_url = base_url
         self.api_url = f"{base_url}/api"
         self.token = None

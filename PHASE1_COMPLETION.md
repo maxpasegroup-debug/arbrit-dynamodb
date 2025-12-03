@@ -94,8 +94,8 @@
 
 ## URLs
 
-- **Login Page**: https://salescrm-6.preview.emergentagent.com/login
-- **COO Dashboard**: https://salescrm-6.preview.emergentagent.com/dashboard/coo
+- **Login Page**: https://arbrit-cert-hub.preview.emergentagent.com/login
+- **COO Dashboard**: https://arbrit-cert-hub.preview.emergentagent.com/dashboard/coo
 
 ## API Endpoints
 

@@ -396,10 +396,10 @@ Designation: "Sales Head"
 
 ## 📍 URLs
 
-- **Login**: https://salescrm-6.preview.emergentagent.com/login
-- **COO Dashboard**: https://salescrm-6.preview.emergentagent.com/dashboard/coo
-- **HR Dashboard**: https://salescrm-6.preview.emergentagent.com/dashboard/hr
-- **Sales Head Dashboard**: https://salescrm-6.preview.emergentagent.com/dashboard/sales-head
+- **Login**: https://arbrit-cert-hub.preview.emergentagent.com/login
+- **COO Dashboard**: https://arbrit-cert-hub.preview.emergentagent.com/dashboard/coo
+- **HR Dashboard**: https://arbrit-cert-hub.preview.emergentagent.com/dashboard/hr
+- **Sales Head Dashboard**: https://arbrit-cert-hub.preview.emergentagent.com/dashboard/sales-head
 
 ## ⚠️ Important Notes
 
