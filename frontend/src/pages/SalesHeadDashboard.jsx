@@ -250,6 +250,25 @@ const SalesHeadDashboard = () => {
           </div>
         </Tabs>
       </main>
+
+      {/* Online Lead Dialog with Employee Assignment */}
+      <Dialog open={onlineLeadDialogOpen} onOpenChange={setOnlineLeadDialogOpen}>
+        <DialogContent className="bg-[#1a2f4d] border-white/20 text-white max-w-4xl max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle className="text-2xl">📥 Add Online Lead</DialogTitle>
+            <DialogDescription className="text-slate-400">
+              Record online enquiries and assign to your team members
+            </DialogDescription>
+          </DialogHeader>
+          <UnifiedLeadForm 
+            mode="online"
+            onSuccess={() => {
+              setOnlineLeadDialogOpen(false);
+              toast.success('Online lead added and assigned successfully');
+            }}
+          />
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
