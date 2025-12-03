@@ -19,7 +19,12 @@ const SalesHeadDashboard = () => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState('overview');
-  const [duplicateCount, setDuplicateCount] = useState(0);
+  const [stats, setStats] = useState({
+    totalLeads: 0,
+    teamMembers: 0,
+    monthlyRevenue: 0,
+    pendingTasks: 0
+  });
 
   useEffect(() => {
     const checkAuth = async () => {
