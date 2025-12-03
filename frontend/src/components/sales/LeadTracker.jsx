@@ -150,14 +150,33 @@ const LeadTracker = () => {
   const handleUpdateStatus = async (leadId, newStatus) => {
     try {
       const token = localStorage.getItem('token');
-      await axios.put(`${API}/sales-head/leads/${leadId}`, 
-        { status: newStatus, last_contact_date: new Date().toISOString() },
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
+      const user = JSON.parse(localStorage.getItem('user') || '{}');
+      const userRole = user.role || '';
+      
+      let endpoint;
+      let requestData;
+      
+      // Determine endpoint based on user role
+      if (userRole.includes('Sales Head') || userRole.includes('COO') || userRole.includes('MD') || userRole.includes('CEO')) {
+        endpoint = `${API}/sales-head/leads/${leadId}`;
+        requestData = { status: newStatus, last_contact_date: new Date().toISOString() };
+      } else if (userRole.includes('Tele Sales') || userRole.includes('Field Sales') || userRole.includes('Sales Employee')) {
+        endpoint = `${API}/sales/leads/${leadId}`;
+        requestData = { status: newStatus, last_contact_date: new Date().toISOString() };
+      } else {
+        throw new Error('Insufficient permissions to update lead status');
+      }
+      
+      await axios.put(endpoint, requestData, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      
       toast.success('Status updated!');
       fetchLeads();
     } catch (error) {
-      toast.error('Failed to update status');
+      console.error('Error updating status:', error);
+      const errorMsg = error.response?.data?.detail || error.message || 'Failed to update status';
+      toast.error(errorMsg);
     }
   };
 
