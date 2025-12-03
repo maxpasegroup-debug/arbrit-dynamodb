@@ -2823,14 +2823,17 @@ async def get_my_leads(current_user: dict = Depends(get_current_user)):
 # Sales - Update Lead Status
 @api_router.put("/sales/leads/{lead_id}")
 async def update_my_lead(lead_id: str, update_data: dict, current_user: dict = Depends(get_current_user)):
-    if current_user["role"] not in ["Tele Sales", "Field Sales"]:
+    if current_user["role"] not in ["Tele Sales", "Field Sales", "Sales Employee"]:
         raise HTTPException(status_code=403, detail="Access denied")
     
     existing = await db.leads.find_one({"id": lead_id}, {"_id": 0})
     if not existing:
         raise HTTPException(status_code=404, detail="Lead not found")
     
+    # Convert floats to decimals for DynamoDB compatibility
+    update_data = convert_floats_to_decimals(update_data)
     update_data["updated_at"] = datetime.now(timezone.utc).isoformat()
+    
     await db.leads.update_one({"id": lead_id}, {"$set": update_data})
     
     return {"message": "Lead updated successfully"}
