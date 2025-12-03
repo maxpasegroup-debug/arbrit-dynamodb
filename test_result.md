@@ -322,6 +322,18 @@ backend:
         agent: "testing"
         comment: "🎉 CRITICAL TRAINER BOOKING REQUEST FIX SUCCESSFULLY VERIFIED! COMPREHENSIVE TESTING RESULTS: ✅ AUTHENTICATION: Successfully logged in as Sales Head (Mohammad Akbar - 971545844387/4387) ✅. ✅ BOOKING REQUEST CREATION: POST to /api/booking-requests with test data (lead_id: test-lead-123, course_name: Heights Safety Training, company_name: XYZ Construction, contact_person: Ahmed Hassan, num_trainees: 25) returned 200 status code ✅. ✅ NO 500 ERROR: No 'Failed to create booking request' error occurred ✅. ✅ DECIMAL CONVERSION FIX WORKING: Booking request created successfully with ID 46437c32-a7e6-44b5-89f1-c77d2e06ca44 ✅. ✅ DYNAMODB SAVE VERIFIED: Booking successfully saved to DynamoDB without float conversion errors ✅. ✅ BOOKING RETRIEVAL: GET /api/booking-requests returned the created booking in the list (1 booking found) ✅. ✅ DATA INTEGRITY: All booking data preserved correctly (Heights Safety Training for XYZ Construction, 25 trainees, contact Ahmed Hassan) ✅. TECHNICAL FIXES APPLIED: ✅ Fixed uuid import issue (uuid4() → uuid.uuid4()) in booking request endpoint ✅. ✅ convert_floats_to_decimals() function working correctly for DynamoDB compatibility ✅. SUCCESS RATE: 100% (3/3 tests passed). CONCLUSION: The trainer booking request Decimal conversion fix is COMPLETELY WORKING! Sales Head can now successfully create booking requests without 500 errors, and all data is properly saved to DynamoDB with correct Decimal conversion."
 
+  - task: "COMPREHENSIVE SALES FLOW TESTING - Complete End-to-End Workflow"
+    implemented: true
+    working: false
+    file: "/app/backend/server.py"
+    stuck_count: 1
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: false
+        agent: "testing"
+        comment: "🔍 COMPREHENSIVE SALES FLOW TESTING COMPLETED - CRITICAL ISSUES IDENTIFIED! TESTING RESULTS: ✅ PART 1 (LOGIN & LEAD CREATION): All 4 users successfully authenticated - Sales Head (Mohammad Akbar), Field Sales (Afshan Firdose), Tele Sales (Afshaan Syeda), Academic Head (Abdu Sahad) ✅. Successfully created 6 leads total (2 per sales user) - both CORPORATE and INDIVIDUAL lead types working correctly ✅. Lead verification successful for all users ✅. ✅ PART 2 (QUOTATION REQUESTS): All 3 sales users successfully created quotation requests ✅. ❌ PART 2 (INVOICE REQUESTS): CRITICAL FAILURE - All invoice request submissions failed: Sales Head (403 Forbidden - Access denied), Field Sales (500 Internal Server Error), Tele Sales (500 Internal Server Error) ❌. ✅ PART 2 (EXPENSE CLAIMS): Field Sales and Tele Sales successfully submitted expense claims ✅. ❌ PART 3 (ACADEMIC HEAD VERIFICATION): CRITICAL FAILURE - Academic Head cannot access quotation requests (403 - Sales Head or COO role required) or invoice requests (403 - Access denied) ❌. ✅ PART 4 (STATUS UPDATES): Lead tracker status verification working for all users ✅. ROOT CAUSE ANALYSIS: 1) Invoice Request 500 Error: DynamoDB float-to-Decimal conversion error in /api/sales/invoice-requests endpoint (line 3111 uses float() but missing convert_floats_to_decimals() function), 2) Academic Head Access: No dedicated endpoints exist for Academic Head to view sales requests - /api/academic/quotation-requests and /api/academic/invoice-requests return 404 Not Found. SUCCESS RATE: 80.8% (21/26 tests passed). CONCLUSION: Core sales workflow partially functional but CRITICAL GAPS exist in invoice request processing and Academic Head visibility into sales requests."
+
 frontend:
   - task: "CRITICAL LEAD FORM FIXES VERIFICATION - All Sales Dashboards"
     implemented: true
