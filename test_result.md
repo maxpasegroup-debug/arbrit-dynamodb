@@ -337,6 +337,18 @@ backend:
         agent: "testing"
         comment: "🎉 FOCUSED RE-TEST COMPLETED SUCCESSFULLY - ALL CRITICAL ISSUES RESOLVED! COMPREHENSIVE VERIFICATION RESULTS: ✅ TEST 1 (INVOICE REQUEST SUBMISSIONS): All 3 sales roles successfully submitted invoice requests - Sales Head (Mohammad Akbar - 971545844387/4387) ✅, Field Sales (Afshan Firdose - 971545844386/4386) ✅, Tele Sales (Afshaan Syeda - 971557638082/8082) ✅. All returned 200 status codes with proper request IDs. NO 403 Forbidden or 500 Internal Server errors ✅. ✅ TEST 2 (ACADEMIC HEAD ACCESS): Academic Head (Abdu Sahad - 971557213537/3537) successfully accessed both endpoints - GET /api/academic/quotation-requests (200 status, found 5 quotation requests) ✅, GET /api/academic/invoice-requests (200 status, found 5 invoice requests) ✅. NO 403 Access Denied or 404 Not Found errors ✅. ✅ TEST 3 (SAMPLE DATA CREATION): Successfully created complete test dataset - 2 quotation requests (Sales Head + Field Sales) ✅, 2 invoice requests (Field Sales + Tele Sales) ✅. Academic Head verified access to all 4 new requests ✅. TECHNICAL FIXES VERIFIED: ✅ DynamoDB float-to-Decimal conversion fix working correctly in invoice requests, ✅ Academic Head endpoints /api/academic/quotation-requests and /api/academic/invoice-requests now functional, ✅ Sales Head role permissions updated to allow invoice request submissions. SUCCESS RATE: 100% (20/20 tests passed). CONCLUSION: All previously identified critical issues have been COMPLETELY RESOLVED. Invoice request workflow and Academic Head access are now fully operational and production-ready."
 
+  - task: "FOCUSED RE-TEST - Invoice Request and Academic Head Access Fix Verification"
+    implemented: true
+    working: true
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "🎯 FOCUSED RE-TEST SUCCESSFULLY COMPLETED - ALL FIXES VERIFIED! SPECIFIC TEST REQUIREMENTS MET: ✅ TEST 1 (Invoice Request Submissions): All 3 sales roles successfully submitted invoice requests with 200 status codes - Sales Head (Mohammad Akbar): Request ID 1f754dfd-9995-4749-8eae-fb3a5e5056d8 ✅, Field Sales (Afshan Firdose): Request ID 74adcab6-25af-444e-b1ee-91463f82478e ✅, Tele Sales (Afshaan Syeda): Request ID e73b1377-454e-4f5d-bc62-7d45d8667c3e ✅. ✅ TEST 2 (Academic Head Access): Academic Head (Abdu Sahad) successfully accessed both endpoints - GET /api/academic/quotation-requests returned 200 with 5 quotation requests ✅, GET /api/academic/invoice-requests returned 200 with 5 invoice requests ✅. ✅ TEST 3 (Sample Data Creation): Successfully created and verified full flow test data - 2 quotation requests (Sales Head + Field Sales) ✅, 2 invoice requests (Field Sales + Tele Sales) ✅, Academic Head confirmed visibility of all 4 new requests ✅. CRITICAL FIXES CONFIRMED: ✅ DynamoDB float conversion error in invoice requests RESOLVED, ✅ Academic Head endpoints for quotation/invoice access FUNCTIONAL, ✅ Sales Head permissions for invoice submission ENABLED. SUCCESS RATE: 100% (20/20 tests passed). The specific fixes mentioned in the review request have been successfully implemented and verified through comprehensive testing."
+
 frontend:
   - task: "CRITICAL LEAD FORM FIXES VERIFICATION - All Sales Dashboards"
     implemented: true
