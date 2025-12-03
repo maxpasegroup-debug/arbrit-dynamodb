@@ -992,6 +992,187 @@ const LeadTracker = () => {
         lead={quotationLead}
         onSuccess={fetchLeads}
       />
+
+      {/* Sales Head: Quotation Requests Management Dialog */}
+      <Dialog open={quotationRequestOpen} onOpenChange={setQuotationRequestOpen}>
+        <DialogContent className="bg-[#1a2f4d] border-white/20 text-white max-w-4xl max-h-[80vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle className="text-2xl">📋 Quotation Requests - Pending Approval</DialogTitle>
+            <DialogDescription className="text-slate-400">
+              Review and approve/reject quotations submitted by your team
+            </DialogDescription>
+          </DialogHeader>
+          
+          <div className="space-y-4">
+            {quotationRequests.filter(q => q.status === 'pending' || q.status === 'draft').map((quot) => (
+              <div key={quot.id} className="bg-white/5 rounded-lg p-4 border border-purple-400/30">
+                <div className="flex justify-between items-start mb-3">
+                  <div>
+                    <h4 className="font-semibold text-lg text-white">{quot.client_name || quot.company_name}</h4>
+                    <p className="text-sm text-slate-400">By: {quot.created_by_name} • {new Date(quot.created_at).toLocaleDateString()}</p>
+                  </div>
+                  <Badge className="bg-purple-500/30 text-purple-200">{quot.status}</Badge>
+                </div>
+                
+                <div className="grid grid-cols-2 gap-4 mb-3">
+                  <div>
+                    <p className="text-xs text-slate-400">Course</p>
+                    <p className="text-sm text-white">{quot.course_name || 'N/A'}</p>
+                  </div>
+                  <div>
+                    <p className="text-xs text-slate-400">Amount</p>
+                    <p className="text-sm text-white font-semibold">{quot.total_amount} AED</p>
+                  </div>
+                  <div>
+                    <p className="text-xs text-slate-400">Participants</p>
+                    <p className="text-sm text-white">{quot.number_of_participants || 0}</p>
+                  </div>
+                  <div>
+                    <p className="text-xs text-slate-400">Valid Until</p>
+                    <p className="text-sm text-white">{quot.valid_until || 'N/A'}</p>
+                  </div>
+                </div>
+
+                <div className="flex gap-2">
+                  <Button
+                    onClick={() => window.open(`/quotation/${quot.id}`, '_blank')}
+                    variant="outline"
+                    size="sm"
+                    className="border-white/20 text-white"
+                  >
+                    <Eye className="w-4 h-4 mr-2" />
+                    View
+                  </Button>
+                  <Button
+                    onClick={async () => {
+                      try {
+                        const token = localStorage.getItem('token');
+                        await axios.put(`${API}/quotations/${quot.id}`, 
+                          { status: 'approved' },
+                          { headers: { Authorization: `Bearer ${token}` } }
+                        );
+                        toast.success('Quotation approved');
+                        fetchQuotationRequests();
+                      } catch (error) {
+                        toast.error('Failed to approve quotation');
+                      }
+                    }}
+                    className="bg-green-600 hover:bg-green-700"
+                    size="sm"
+                  >
+                    <CheckCircle className="w-4 h-4 mr-2" />
+                    Approve
+                  </Button>
+                  <Button
+                    onClick={async () => {
+                      try {
+                        const token = localStorage.getItem('token');
+                        await axios.put(`${API}/quotations/${quot.id}`, 
+                          { status: 'rejected' },
+                          { headers: { Authorization: `Bearer ${token}` } }
+                        );
+                        toast.success('Quotation rejected');
+                        fetchQuotationRequests();
+                      } catch (error) {
+                        toast.error('Failed to reject quotation');
+                      }
+                    }}
+                    variant="destructive"
+                    size="sm"
+                  >
+                    <XCircle className="w-4 h-4 mr-2" />
+                    Reject
+                  </Button>
+                </div>
+              </div>
+            ))}
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      {/* Sales Head: Invoice Requests Management Dialog */}
+      <Dialog open={invoiceRequestOpen} onOpenChange={setInvoiceRequestOpen}>
+        <DialogContent className="bg-[#1a2f4d] border-white/20 text-white max-w-4xl max-h-[80vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle className="text-2xl">💰 Invoice Requests - Pending Approval</DialogTitle>
+            <DialogDescription className="text-slate-400">
+              Review and approve invoice requests from your sales team
+            </DialogDescription>
+          </DialogHeader>
+          
+          <div className="space-y-4">
+            {invoiceRequests.filter(i => i.status === 'pending').map((inv) => (
+              <div key={inv.id} className="bg-white/5 rounded-lg p-4 border border-green-400/30">
+                <div className="flex justify-between items-start mb-3">
+                  <div>
+                    <h4 className="font-semibold text-lg text-white">{inv.client_name || inv.company_name}</h4>
+                    <p className="text-sm text-slate-400">Requested by: {inv.requested_by_name} • {new Date(inv.created_at).toLocaleDateString()}</p>
+                  </div>
+                  <Badge className="bg-green-500/30 text-green-200">{inv.status}</Badge>
+                </div>
+                
+                <div className="grid grid-cols-2 gap-4 mb-3">
+                  <div>
+                    <p className="text-xs text-slate-400">Lead ID</p>
+                    <p className="text-sm text-white">{inv.lead_id}</p>
+                  </div>
+                  <div>
+                    <p className="text-xs text-slate-400">Amount</p>
+                    <p className="text-sm text-white font-semibold">{inv.amount || inv.invoice_amount} AED</p>
+                  </div>
+                  <div className="col-span-2">
+                    <p className="text-xs text-slate-400">Notes</p>
+                    <p className="text-sm text-white">{inv.notes || inv.description || 'No notes'}</p>
+                  </div>
+                </div>
+
+                <div className="flex gap-2">
+                  <Button
+                    onClick={async () => {
+                      try {
+                        const token = localStorage.getItem('token');
+                        await axios.put(`${API}/sales/invoice-requests/${inv.id}`, 
+                          { status: 'approved' },
+                          { headers: { Authorization: `Bearer ${token}` } }
+                        );
+                        toast.success('Invoice request approved');
+                        fetchInvoiceRequests();
+                      } catch (error) {
+                        toast.error('Failed to approve invoice request');
+                      }
+                    }}
+                    className="bg-green-600 hover:bg-green-700"
+                    size="sm"
+                  >
+                    <CheckCircle className="w-4 h-4 mr-2" />
+                    Approve
+                  </Button>
+                  <Button
+                    onClick={async () => {
+                      try {
+                        const token = localStorage.getItem('token');
+                        await axios.put(`${API}/sales/invoice-requests/${inv.id}`, 
+                          { status: 'rejected' },
+                          { headers: { Authorization: `Bearer ${token}` } }
+                        );
+                        toast.success('Invoice request rejected');
+                        fetchInvoiceRequests();
+                      } catch (error) {
+                        toast.error('Failed to reject invoice request');
+                      }
+                    }}
+                    variant="destructive"
+                    size="sm"
+                  >
+                    <XCircle className="w-4 h-4 mr-2" />
+                    Reject
+                  </Button>
+                </div>
+              </div>
+            ))}
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
