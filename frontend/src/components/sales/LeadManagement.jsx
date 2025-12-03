@@ -155,158 +155,169 @@ const LeadManagement = () => {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h3 className="text-xl font-semibold text-white mb-4">Assigned Leads ({assignedLeads.length})</h3>
-        <div className="bg-white/5 backdrop-blur-sm rounded-xl border border-white/10 overflow-hidden">
-          <Table>
-            <TableHeader>
-              <TableRow className="border-white/10">
-                <TableHead className="text-gray-300">Client</TableHead>
-                <TableHead className="text-gray-300">Contact</TableHead>
-                <TableHead className="text-gray-300">Requirement</TableHead>
-                <TableHead className="text-gray-300">Status</TableHead>
-                <TableHead className="text-gray-300">Actions</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {assignedLeads.length === 0 ? (
-                <TableRow>
-                  <TableCell colSpan={5} className="text-center text-gray-400 py-8">
-                    No assigned leads
-                  </TableCell>
-                </TableRow>
-              ) : (
-                assignedLeads.map((lead) => (
-                  <TableRow key={lead.id} className="border-white/10">
-                    <TableCell className="text-white font-medium">{lead.client_name}</TableCell>
-                    <TableCell className="text-gray-300">
-                      {lead.mobile && (
-                        <div className="text-sm">{lead.mobile}</div>
-                      )}
-                      {lead.email && (
-                        <div className="text-xs text-gray-400">{lead.email}</div>
-                      )}
-                    </TableCell>
-                    <TableCell className="text-gray-300 text-sm">{lead.requirement}</TableCell>
-                    <TableCell>
-                      <Badge className={getStatusColor(lead.status)}>{lead.status}</Badge>
-                    </TableCell>
-                    <TableCell>
-                      <div className="flex gap-2">
-                        {lead.mobile && (
-                          <>
-                            <a href={`tel:${lead.mobile}`}>
-                              <Button variant="ghost" size="sm" className="text-green-400 hover:bg-green-500/10">
-                                <Phone className="w-4 h-4" />
-                              </Button>
-                            </a>
-                            <a href={`https://wa.me/${lead.mobile.replace(/\+/g, '')}`} target="_blank" rel="noopener noreferrer">
-                              <Button variant="ghost" size="sm" className="text-green-400 hover:bg-green-500/10">
-                                <MessageSquare className="w-4 h-4" />
-                              </Button>
-                            </a>
-                          </>
-                        )}
-                        {lead.email && (
-                          <a href={`mailto:${lead.email}`}>
-                            <Button variant="ghost" size="sm" className="text-blue-400 hover:bg-blue-500/10">
-                              <Mail className="w-4 h-4" />
-                            </Button>
-                          </a>
-                        )}
-                        <Button
-                          onClick={() => handleUpdate(lead)}
-                          variant="ghost"
-                          size="sm"
-                          className="text-yellow-400 hover:bg-yellow-500/10"
-                        >
-                          <Edit className="w-4 h-4" />
-                        </Button>
-                      </div>
-                    </TableCell>
-                  </TableRow>
-                ))
-              )}
-            </TableBody>
-          </Table>
+      {/* Statistics Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <div className="bg-gradient-to-br from-blue-500/20 to-blue-600/10 border border-blue-500/30 rounded-xl p-4">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm text-gray-300">Total Leads</p>
+              <p className="text-3xl font-bold text-white">{stats.total}</p>
+            </div>
+            <TrendingUp className="w-8 h-8 text-blue-400" />
+          </div>
+        </div>
+        
+        <div className="bg-gradient-to-br from-yellow-500/20 to-yellow-600/10 border border-yellow-500/30 rounded-xl p-4">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm text-gray-300">New & In Progress</p>
+              <p className="text-3xl font-bold text-white">{stats.new + stats.inProgress}</p>
+            </div>
+            <Target className="w-8 h-8 text-yellow-400" />
+          </div>
+        </div>
+        
+        <div className="bg-gradient-to-br from-green-500/20 to-green-600/10 border border-green-500/30 rounded-xl p-4">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm text-gray-300">Won</p>
+              <p className="text-3xl font-bold text-white">{stats.won}</p>
+            </div>
+            <Users className="w-8 h-8 text-green-400" />
+          </div>
+        </div>
+
+        <div className="bg-gradient-to-br from-red-500/20 to-red-600/10 border border-red-500/30 rounded-xl p-4">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm text-gray-300">Lost</p>
+              <p className="text-3xl font-bold text-white">{stats.lost}</p>
+            </div>
+            <Target className="w-8 h-8 text-red-400" />
+          </div>
         </div>
       </div>
 
-      <div>
-        <h3 className="text-xl font-semibold text-white mb-4">Self Generated Leads ({selfLeads.length})</h3>
-        <div className="bg-white/5 backdrop-blur-sm rounded-xl border border-white/10 overflow-hidden">
-          <Table>
-            <TableHeader>
-              <TableRow className="border-white/10">
-                <TableHead className="text-gray-300">Client</TableHead>
-                <TableHead className="text-gray-300">Contact</TableHead>
-                <TableHead className="text-gray-300">Requirement</TableHead>
-                <TableHead className="text-gray-300">Status</TableHead>
-                <TableHead className="text-gray-300">Actions</TableHead>
+      {/* Search and Filter Bar */}
+      <div className="flex gap-4 items-center bg-white/5 backdrop-blur-sm rounded-xl border border-white/10 p-4">
+        <div className="flex-1">
+          <Input
+            placeholder="Search by client name, company, or mobile..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="bg-white/5 border-white/20 text-white"
+          />
+        </div>
+        <Select value={statusFilter} onValueChange={setStatusFilter}>
+          <SelectTrigger className="w-48 bg-white/5 border-white/20 text-white">
+            <SelectValue placeholder="Filter by status" />
+          </SelectTrigger>
+          <SelectContent className="bg-[#1a2f4d] border-white/20 text-white">
+            <SelectItem value="all">All Status</SelectItem>
+            <SelectItem value="New">New</SelectItem>
+            <SelectItem value="Contacted">Contacted</SelectItem>
+            <SelectItem value="Quoted">Quoted</SelectItem>
+            <SelectItem value="Negotiation">Negotiation</SelectItem>
+            <SelectItem value="Won">Won</SelectItem>
+            <SelectItem value="Lost">Lost</SelectItem>
+          </SelectContent>
+        </Select>
+        <Button
+          onClick={() => setFormOpen(true)}
+          style={{ background: 'linear-gradient(135deg, #d4af37 0%, #c9a02c 100%)' }}
+          className="text-[#0a1e3d]"
+        >
+          <Plus className="w-4 h-4 mr-2" />
+          New Lead
+        </Button>
+      </div>
+
+      {/* All Leads Table */}
+      <div className="bg-white/5 backdrop-blur-sm rounded-xl border border-white/10 overflow-hidden">
+        <div className="p-4 border-b border-white/10">
+          <h3 className="text-lg font-semibold text-white">All Team Leads ({filteredLeads.length})</h3>
+        </div>
+        <Table>
+          <TableHeader>
+            <TableRow className="border-white/10">
+              <TableHead className="text-gray-300">Client</TableHead>
+              <TableHead className="text-gray-300">Contact</TableHead>
+              <TableHead className="text-gray-300">Requirement</TableHead>
+              <TableHead className="text-gray-300">Assigned To</TableHead>
+              <TableHead className="text-gray-300">Status</TableHead>
+              <TableHead className="text-gray-300">Actions</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {loading ? (
+              <TableRow>
+                <TableCell colSpan={6} className="text-center text-gray-400 py-8">
+                  Loading leads...
+                </TableCell>
               </TableRow>
-            </TableHeader>
-            <TableBody>
-              {selfLeads.length === 0 ? (
-                <TableRow>
-                  <TableCell colSpan={5} className="text-center text-gray-400 py-8">
-                    No self-generated leads
+            ) : filteredLeads.length === 0 ? (
+              <TableRow>
+                <TableCell colSpan={6} className="text-center text-gray-400 py-8">
+                  No leads found
+                </TableCell>
+              </TableRow>
+            ) : (
+              filteredLeads.map((lead) => (
+                <TableRow key={lead.id} className="border-white/10 hover:bg-white/5">
+                  <TableCell className="text-white font-medium">
+                    {lead.company_name || lead.client_name}
                   </TableCell>
-                </TableRow>
-              ) : (
-                selfLeads.map((lead) => (
-                  <TableRow key={lead.id} className="border-white/10">
-                    <TableCell className="text-white font-medium">{lead.client_name}</TableCell>
-                    <TableCell className="text-gray-300">
+                  <TableCell className="text-gray-300">
+                    {lead.mobile && <div className="text-sm">{lead.mobile}</div>}
+                    {lead.email && <div className="text-xs text-gray-400">{lead.email}</div>}
+                  </TableCell>
+                  <TableCell className="text-gray-300 text-sm">
+                    {lead.requirement || lead.course_name || '-'}
+                  </TableCell>
+                  <TableCell className="text-gray-300 text-sm">
+                    {lead.assigned_to_name || lead.created_by_name || 'Unassigned'}
+                  </TableCell>
+                  <TableCell>
+                    <Badge className={getStatusColor(lead.status)}>{lead.status}</Badge>
+                  </TableCell>
+                  <TableCell>
+                    <div className="flex gap-2">
                       {lead.mobile && (
-                        <div className="text-sm">{lead.mobile}</div>
-                      )}
-                      {lead.email && (
-                        <div className="text-xs text-gray-400">{lead.email}</div>
-                      )}
-                    </TableCell>
-                    <TableCell className="text-gray-300 text-sm">{lead.requirement}</TableCell>
-                    <TableCell>
-                      <Badge className={getStatusColor(lead.status)}>{lead.status}</Badge>
-                    </TableCell>
-                    <TableCell>
-                      <div className="flex gap-2">
-                        {lead.mobile && (
-                          <>
-                            <a href={`tel:${lead.mobile}`}>
-                              <Button variant="ghost" size="sm" className="text-green-400 hover:bg-green-500/10">
-                                <Phone className="w-4 h-4" />
-                              </Button>
-                            </a>
-                            <a href={`https://wa.me/${lead.mobile.replace(/\+/g, '')}`} target="_blank" rel="noopener noreferrer">
-                              <Button variant="ghost" size="sm" className="text-green-400 hover:bg-green-500/10">
-                                <MessageSquare className="w-4 h-4" />
-                              </Button>
-                            </a>
-                          </>
-                        )}
-                        {lead.email && (
-                          <a href={`mailto:${lead.email}`}>
-                            <Button variant="ghost" size="sm" className="text-blue-400 hover:bg-blue-500/10">
-                              <Mail className="w-4 h-4" />
+                        <>
+                          <a href={`tel:${lead.mobile}`}>
+                            <Button variant="ghost" size="sm" className="text-green-400 hover:bg-green-500/10">
+                              <Phone className="w-4 h-4" />
                             </Button>
                           </a>
-                        )}
-                        <Button
-                          onClick={() => handleUpdate(lead)}
-                          variant="ghost"
-                          size="sm"
-                          className="text-yellow-400 hover:bg-yellow-500/10"
-                        >
-                          <Edit className="w-4 h-4" />
-                        </Button>
-                      </div>
-                    </TableCell>
-                  </TableRow>
-                ))
-              )}
-            </TableBody>
-          </Table>
-        </div>
+                          <a href={`https://wa.me/${lead.mobile.replace(/\+/g, '')}`} target="_blank" rel="noopener noreferrer">
+                            <Button variant="ghost" size="sm" className="text-green-400 hover:bg-green-500/10">
+                              <MessageSquare className="w-4 h-4" />
+                            </Button>
+                          </a>
+                        </>
+                      )}
+                      {lead.email && (
+                        <a href={`mailto:${lead.email}`}>
+                          <Button variant="ghost" size="sm" className="text-blue-400 hover:bg-blue-500/10">
+                            <Mail className="w-4 h-4" />
+                          </Button>
+                        </a>
+                      )}
+                      <Button
+                        onClick={() => handleUpdate(lead)}
+                        variant="ghost"
+                        size="sm"
+                        className="text-yellow-400 hover:bg-yellow-500/10"
+                      >
+                        <Edit className="w-4 h-4" />
+                      </Button>
+                    </div>
+                  </TableCell>
+                </TableRow>
+              ))
+            )}
+          </TableBody>
+        </Table>
       </div>
 
       <Dialog open={showUpdateDialog} onOpenChange={setShowUpdateDialog}>
