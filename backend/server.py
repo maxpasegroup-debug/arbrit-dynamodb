@@ -2754,7 +2754,7 @@ async def submit_self_lead(lead: LeadCreate, current_user: dict = Depends(get_cu
     doc['updated_at'] = doc['updated_at'].isoformat()
     
     # Check for duplicates
-    company_name = lead_data.company_name or lead_data.client_name
+    company_name = lead.company_name or lead.client_name
     if company_name:
         duplicates = await check_duplicate_company(company_name, db)
         if duplicates:
