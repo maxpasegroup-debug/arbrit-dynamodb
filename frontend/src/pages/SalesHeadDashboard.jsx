@@ -272,6 +272,10 @@ const SalesHeadDashboard = () => {
               <QuotationManagementEnhanced />
             </TabsContent>
 
+            <TabsContent value="invoice" className="mt-0">
+              <InvoiceRequest />
+            </TabsContent>
+
             <TabsContent value="requests" className="mt-0">
               <RequestsView />
             </TabsContent>
