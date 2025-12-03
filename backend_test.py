@@ -3210,7 +3210,8 @@ def main_sales_to_payment_workflow():
         if self.failed_tests:
             print(f"\n❌ FAILED TESTS:")
             for test in self.failed_tests:
-                print(f"   - {test['test']}: {test.get('error', f'Expected {test.get(\"expected\")}, got {test.get(\"actual\")}')}")
+                error_msg = test.get('error', f"Expected {test.get('expected')}, got {test.get('actual')}")
+            print(f"   - {test['test']}: {error_msg}")
         else:
             print(f"\n✅ ALL LEAVE APPROVAL TESTS PASSED!")
         
