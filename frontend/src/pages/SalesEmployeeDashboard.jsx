@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { LogOut, Award, User, Briefcase } from 'lucide-react';
+import { LogOut, Award, User, Briefcase, FileText } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import LeadTracker from '@/components/sales/LeadTracker';
+import QuotationManager from '@/components/sales/QuotationManager';
 import { toast } from 'sonner';
 import axios from 'axios';
 
