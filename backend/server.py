@@ -475,7 +475,6 @@ class PaymentCreate(BaseModel):
     payment_method: str  # Cash, Bank Transfer, Cheque, Card
     payment_reference: Optional[str] = None
     payment_date: str
-    received_by: Optional[str] = None
     notes: Optional[str] = None
 
 
