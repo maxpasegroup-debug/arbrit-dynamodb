@@ -775,9 +775,8 @@ metadata:
 
 test_plan:
   current_focus:
-    - "COMPREHENSIVE SALES FLOW TESTING - Complete End-to-End Workflow"
-  stuck_tasks:
-    - "COMPREHENSIVE SALES FLOW TESTING - Complete End-to-End Workflow"
+    - "FOCUSED RE-TEST - Invoice Request and Academic Head Access Fix Verification"
+  stuck_tasks: []
   test_all: false
   test_priority: "high_first"
 
