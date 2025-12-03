@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { LogOut, LayoutDashboard, Users, TrendingUp, FileText, CalendarCheck, Receipt, BarChart3, Eye } from 'lucide-react';
+import { LogOut, LayoutDashboard, Users, TrendingUp, FileText, CalendarCheck, Receipt, BarChart3, Eye, DollarSign, ClipboardList, CheckSquare, Package } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
