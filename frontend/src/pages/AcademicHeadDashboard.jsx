@@ -1,26 +1,37 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { LogOut, GraduationCap, Users, FileText, Calendar, Award, UserCheck, LayoutDashboard, FileCheck, ClipboardCheck, Receipt, Package, FileBarChart, BookOpen } from 'lucide-react';
+import { 
+  LogOut, 
+  LayoutDashboard, 
+  GraduationCap, 
+  Package, 
+  Calendar, 
+  BookOpen, 
+  ClipboardCheck, 
+  Users, 
+  Receipt,
+  TrendingUp,
+  Award,
+  Clock
+} from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Card } from '@/components/ui/card';
+import { toast } from 'sonner';
+import axios from 'axios';
+
+// Import components
+import AcademicTrainingBoard from '@/components/training/AcademicTrainingBoard';
+import CertificateDispatchManagement from '@/components/certificates/CertificateDispatchManagement';
 import TrainingRequests from '@/components/academic/TrainingRequests';
+import TrainingSchedule from '@/components/academic/TrainingSchedule';
 import TrainerAllocation from '@/components/academic/TrainerAllocation';
 import WorkOrderManagement from '@/components/academic/WorkOrderManagement';
-import TrainingSchedule from '@/components/academic/TrainingSchedule';
-import CertificateApproval from '@/components/academic/CertificateApproval';
-import CertificateGeneration from '@/components/academic/CertificateGeneration';
-import TeamMonitoring from '@/components/academic/TeamMonitoring';
+import CourseManagement from '@/components/academic/CourseManagement';
 import AssessmentFormBuilder from '@/components/assessment/AssessmentFormBuilder';
 import AssessmentQRGenerator from '@/components/assessment/AssessmentQRGenerator';
 import AssessmentReports from '@/components/assessment/AssessmentReports';
-import CourseManagement from '@/components/academic/CourseManagement';
-import CertificateManagement from '@/components/certificates/CertificateManagement';
-import CertificateDispatchManagement from '@/components/certificates/CertificateDispatchManagement';
-import AcademicTrainingBoard from '@/components/training/AcademicTrainingBoard';
+import TeamMonitoring from '@/components/academic/TeamMonitoring';
 import ExpenseSubmission from '@/components/expenses/ExpenseSubmission';
-import { toast } from 'sonner';
-import axios from 'axios';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
@@ -30,156 +41,105 @@ const AcademicHeadDashboard = () => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState('overview');
+  const [stats, setStats] = useState({
+    totalTrainings: 0,
+    activeTrainings: 0,
+    completedTrainings: 0,
+    pendingCertificates: 0,
+    totalTrainers: 0,
+    pendingRequests: 0
+  });
 
   useEffect(() => {
-    const storedUser = localStorage.getItem('user');
-    if (!storedUser) {
-      navigate('/login');
-      return;
-    }
+    const userData = JSON.parse(localStorage.getItem('user') || '{}');
+    const token = localStorage.getItem('token');
 
-    try {
-      const parsedUser = JSON.parse(storedUser);
-      if (!['Academic Head', 'COO', 'MD', 'CEO'].includes(parsedUser.role)) {
-        toast.error('Access denied. Academic Head access required.');
-        navigate('/login');
-        return;
-      }
-      setUser(parsedUser);
-    } catch (error) {
-      console.error('Error parsing user:', error);
-      toast.error('Session expired. Please login again.');
+    if (!token || userData.role !== 'Academic Head') {
+      toast.error('Access denied');
       navigate('/login');
-    } finally {
+    } else {
+      setUser(userData);
+      fetchStats();
       setLoading(false);
     }
   }, [navigate]);
 
+  const fetchStats = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      const [trainingsRes, certificatesRes, trainersRes, requestsRes] = await Promise.all([
+        axios.get(`${API}/academic/trainings`, { headers: { Authorization: `Bearer ${token}` } }),
+        axios.get(`${API}/certificates`, { headers: { Authorization: `Bearer ${token}` } }),
+        axios.get(`${API}/academic/trainers`, { headers: { Authorization: `Bearer ${token}` } }),
+        axios.get(`${API}/booking-requests`, { headers: { Authorization: `Bearer ${token}` } })
+      ]);
+
+      const trainings = trainingsRes.data || [];
+      const certificates = certificatesRes.data || [];
+      const requests = requestsRes.data || [];
+
+      setStats({
+        totalTrainings: trainings.length,
+        activeTrainings: trainings.filter(t => t.status === 'Active' || t.status === 'In Progress').length,
+        completedTrainings: trainings.filter(t => t.status === 'Completed').length,
+        pendingCertificates: certificates.filter(c => c.status === 'pending').length,
+        totalTrainers: trainersRes.data?.length || 0,
+        pendingRequests: requests.filter(r => r.status === 'pending').length
+      });
+    } catch (error) {
+      console.error('Error fetching stats:', error);
+    }
+  };
+
   const handleLogout = () => {
-    localStorage.removeItem('token');
-    localStorage.removeItem('user');
-    toast.success('Logged out successfully');
+    localStorage.clear();
     navigate('/login');
+    toast.success('Logged out successfully');
   };
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-[#0a1e3d] via-[#1a2f4d] to-[#0a1e3d] flex items-center justify-center">
-        <p className="text-white">Loading...</p>
+      <div className="min-h-screen bg-gradient-to-br from-[#0a1e3d] via-[#1a2f4d] to-[#2a3f5d] flex items-center justify-center">
+        <div className="text-white text-xl">Loading...</div>
       </div>
     );
   }
 
-  const modules = [
-    {
-      id: 'training-requests',
-      title: 'Training Requests',
-      description: 'Review and approve trainer availability requests',
-      icon: GraduationCap,
-      color: 'from-yellow-500 to-orange-500',
-      bgColor: 'bg-yellow-500/10',
-      iconColor: 'text-yellow-400'
-    },
-    {
-      id: 'trainers',
-      title: 'Trainer Allocation',
-      description: 'Manage trainer pool and assignments',
-      icon: Users,
-      color: 'from-blue-500 to-cyan-500',
-      bgColor: 'bg-blue-500/10',
-      iconColor: 'text-blue-400'
-    },
-    {
-      id: 'work-orders',
-      title: 'Work Orders',
-      description: 'Approve and assign work orders',
-      icon: FileText,
-      color: 'from-green-500 to-emerald-500',
-      bgColor: 'bg-green-500/10',
-      iconColor: 'text-green-400'
-    },
-    {
-      id: 'schedule',
-      title: 'Training Schedule',
-      description: 'View and manage training sessions',
-      icon: Calendar,
-      color: 'from-purple-500 to-pink-500',
-      bgColor: 'bg-purple-500/10',
-      iconColor: 'text-purple-400'
-    },
-    {
-      id: 'certificates',
-      title: 'Certificate Approval',
-      description: 'Approve certificate issuance',
-      icon: Award,
-      color: 'from-indigo-500 to-blue-500',
-      bgColor: 'bg-indigo-500/10',
-      iconColor: 'text-indigo-400'
-    },
-    {
-      id: 'team',
-      title: 'Academic Team',
-      description: 'Monitor team attendance and performance',
-      icon: UserCheck,
-      color: 'from-teal-500 to-cyan-500',
-      bgColor: 'bg-teal-500/10',
-      iconColor: 'text-teal-400'
-    }
-  ];
-
-  const handleModuleClick = (moduleId) => {
-    const moduleToTab = {
-      'training-requests': 'requests',
-      'trainers': 'trainers',
-      'work-orders': 'work-orders',
-      'schedule': 'schedule',
-      'certificates': 'certificates',
-      'team': 'team'
-    };
-    setActiveTab(moduleToTab[moduleId] || 'overview');
-  };
-
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#0a1e3d] via-[#1a2f4d] to-[#0a1e3d]">
+    <div className="min-h-screen bg-gradient-to-br from-[#0a1e3d] via-[#1a2f4d] to-[#2a3f5d]">
       {/* Header */}
-      <div className="bg-white/5 backdrop-blur-sm border-b border-white/10">
-        <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-          <div>
-            <h1 className="text-2xl font-bold text-white">Academic Head Dashboard</h1>
-            <p className="text-sm text-gray-400 mt-1">Arbrit Safety Management</p>
-          </div>
-          <div className="flex items-center gap-4">
-            <div className="text-right">
-              <p className="text-sm font-medium text-white">{user?.name}</p>
-              <p className="text-xs text-gray-400">{user?.role}</p>
+      <header className="bg-white/5 backdrop-blur-sm border-b border-white/10 sticky top-0 z-50">
+        <div className="container mx-auto px-6 py-4">
+          <div className="flex justify-between items-center">
+            <div>
+              <h1 className="text-2xl font-bold text-white">Academic Head Dashboard</h1>
+              <p className="text-sm text-slate-400">Arbrit Safety Management</p>
             </div>
-            <Button
-              onClick={handleLogout}
-              variant="outline"
-              className="border-white/20 text-white hover:bg-white/10"
-            >
-              <LogOut className="w-4 h-4 mr-2" />
-              Logout
-            </Button>
+            
+            <div className="flex items-center gap-4">
+              <div className="text-right">
+                <p className="text-sm font-semibold text-white">{user?.name}</p>
+                <p className="text-xs text-yellow-400">Academic Head</p>
+              </div>
+              <Button
+                onClick={handleLogout}
+                variant="outline"
+                size="sm"
+                className="border-white/20 hover:bg-white/10"
+              >
+                <LogOut className="w-4 h-4 mr-2" />
+                Logout
+              </Button>
+            </div>
           </div>
         </div>
-      </div>
+      </header>
 
-      <main className="max-w-7xl mx-auto px-6 py-8">
-        <div className="mb-8 bg-white/5 backdrop-blur-sm rounded-xl border border-white/10 p-6">
-          <h2 className="text-2xl font-bold text-white mb-2">
-            Welcome, {user?.name?.split(' ')[0]}!
-          </h2>
-          <p className="text-gray-300">
-            Manage training operations, approve work orders, and oversee the academic team.
-          </p>
-        </div>
-
+      <main className="container mx-auto px-6 py-8">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
           <TabsList className="grid w-full grid-cols-8 bg-white/5 border border-white/10">
             <TabsTrigger 
               value="overview"
-              data-testid="tab-overview"
               className="data-[state=active]:bg-yellow-500/20 data-[state=active]:text-white text-gray-300"
             >
               <LayoutDashboard className="w-4 h-4 mr-2" />
@@ -187,7 +147,6 @@ const AcademicHeadDashboard = () => {
             </TabsTrigger>
             <TabsTrigger 
               value="training-tracker"
-              data-testid="tab-training-tracker"
               className="data-[state=active]:bg-yellow-500/20 data-[state=active]:text-white text-gray-300"
             >
               <GraduationCap className="w-4 h-4 mr-2" />
@@ -195,7 +154,6 @@ const AcademicHeadDashboard = () => {
             </TabsTrigger>
             <TabsTrigger 
               value="despatch-delivery"
-              data-testid="tab-despatch-delivery"
               className="data-[state=active]:bg-yellow-500/20 data-[state=active]:text-white text-gray-300"
             >
               <Package className="w-4 h-4 mr-2" />
@@ -203,7 +161,6 @@ const AcademicHeadDashboard = () => {
             </TabsTrigger>
             <TabsTrigger 
               value="training-calendar"
-              data-testid="tab-training-calendar"
               className="data-[state=active]:bg-yellow-500/20 data-[state=active]:text-white text-gray-300"
             >
               <Calendar className="w-4 h-4 mr-2" />
@@ -211,7 +168,6 @@ const AcademicHeadDashboard = () => {
             </TabsTrigger>
             <TabsTrigger 
               value="courses"
-              data-testid="tab-courses"
               className="data-[state=active]:bg-yellow-500/20 data-[state=active]:text-white text-gray-300"
             >
               <BookOpen className="w-4 h-4 mr-2" />
@@ -219,7 +175,6 @@ const AcademicHeadDashboard = () => {
             </TabsTrigger>
             <TabsTrigger 
               value="assessments-feedback"
-              data-testid="tab-assessments-feedback"
               className="data-[state=active]:bg-yellow-500/20 data-[state=active]:text-white text-gray-300"
             >
               <ClipboardCheck className="w-4 h-4 mr-2" />
@@ -227,7 +182,6 @@ const AcademicHeadDashboard = () => {
             </TabsTrigger>
             <TabsTrigger 
               value="my-team"
-              data-testid="tab-my-team"
               className="data-[state=active]:bg-yellow-500/20 data-[state=active]:text-white text-gray-300"
             >
               <Users className="w-4 h-4 mr-2" />
@@ -235,7 +189,6 @@ const AcademicHeadDashboard = () => {
             </TabsTrigger>
             <TabsTrigger 
               value="expenses"
-              data-testid="tab-expenses"
               className="data-[state=active]:bg-yellow-500/20 data-[state=active]:text-white text-gray-300"
             >
               <Receipt className="w-4 h-4 mr-2" />
@@ -244,70 +197,96 @@ const AcademicHeadDashboard = () => {
           </TabsList>
 
           <div className="mt-6">
-            {/* A. OVERVIEW TAB */}
+            {/* 1. OVERVIEW */}
             <TabsContent value="overview" className="mt-0">
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {modules.map((module) => {
-                  const Icon = module.icon;
-                  return (
-                    <Card
-                      key={module.id}
-                      onClick={() => handleModuleClick(module.id)}
-                      className="group relative overflow-hidden cursor-pointer border-white/10 bg-white/5 backdrop-blur-sm hover:bg-white/10 transition-all duration-300 hover:scale-105 hover:shadow-2xl"
-                      style={{ minHeight: '160px' }}
-                    >
-                      <div className={`absolute inset-0 bg-gradient-to-br ${module.color} opacity-0 group-hover:opacity-10 transition-opacity duration-300`} />
-                      
-                      <div className="p-6 relative z-10">
-                        <div className={`${module.bgColor} w-12 h-12 rounded-xl flex items-center justify-center mb-4`}>
-                          <Icon className={`w-6 h-6 ${module.iconColor}`} />
-                        </div>
-                        
-                        <h3 className="text-lg font-bold text-white mb-2">{module.title}</h3>
-                        <p className="text-sm text-gray-400">{module.description}</p>
+              <div className="space-y-6">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                  {/* Total Trainings */}
+                  <div className="bg-gradient-to-br from-blue-500/20 to-blue-600/10 border border-blue-500/30 rounded-xl p-6">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <p className="text-sm text-gray-300">Total Trainings</p>
+                        <p className="text-4xl font-bold text-white mt-2">{stats.totalTrainings}</p>
+                        <p className="text-xs text-gray-400 mt-1">All time</p>
                       </div>
+                      <GraduationCap className="w-12 h-12 text-blue-400 opacity-50" />
+                    </div>
+                  </div>
 
-                      <div className={`absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r ${module.color} transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300`} />
-                    </Card>
-                  );
-                })}
+                  {/* Active Trainings */}
+                  <div className="bg-gradient-to-br from-green-500/20 to-green-600/10 border border-green-500/30 rounded-xl p-6">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <p className="text-sm text-gray-300">Active Trainings</p>
+                        <p className="text-4xl font-bold text-white mt-2">{stats.activeTrainings}</p>
+                        <p className="text-xs text-gray-400 mt-1">In progress</p>
+                      </div>
+                      <TrendingUp className="w-12 h-12 text-green-400 opacity-50" />
+                    </div>
+                  </div>
+
+                  {/* Completed Trainings */}
+                  <div className="bg-gradient-to-br from-purple-500/20 to-purple-600/10 border border-purple-500/30 rounded-xl p-6">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <p className="text-sm text-gray-300">Completed</p>
+                        <p className="text-4xl font-bold text-white mt-2">{stats.completedTrainings}</p>
+                        <p className="text-xs text-gray-400 mt-1">Finished</p>
+                      </div>
+                      <Award className="w-12 h-12 text-purple-400 opacity-50" />
+                    </div>
+                  </div>
+
+                  {/* Pending Certificates */}
+                  <div className="bg-gradient-to-br from-yellow-500/20 to-yellow-600/10 border border-yellow-500/30 rounded-xl p-6">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <p className="text-sm text-gray-300">Pending Certificates</p>
+                        <p className="text-4xl font-bold text-white mt-2">{stats.pendingCertificates}</p>
+                        <p className="text-xs text-gray-400 mt-1">Awaiting approval</p>
+                      </div>
+                      <Package className="w-12 h-12 text-yellow-400 opacity-50" />
+                    </div>
+                  </div>
+
+                  {/* Total Trainers */}
+                  <div className="bg-gradient-to-br from-cyan-500/20 to-cyan-600/10 border border-cyan-500/30 rounded-xl p-6">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <p className="text-sm text-gray-300">Total Trainers</p>
+                        <p className="text-4xl font-bold text-white mt-2">{stats.totalTrainers}</p>
+                        <p className="text-xs text-gray-400 mt-1">Active trainers</p>
+                      </div>
+                      <Users className="w-12 h-12 text-cyan-400 opacity-50" />
+                    </div>
+                  </div>
+
+                  {/* Pending Requests */}
+                  <div className="bg-gradient-to-br from-red-500/20 to-red-600/10 border border-red-500/30 rounded-xl p-6">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <p className="text-sm text-gray-300">Pending Requests</p>
+                        <p className="text-4xl font-bold text-white mt-2">{stats.pendingRequests}</p>
+                        <p className="text-xs text-gray-400 mt-1">Needs review</p>
+                      </div>
+                      <Clock className="w-12 h-12 text-red-400 opacity-50" />
+                    </div>
+                  </div>
+                </div>
               </div>
             </TabsContent>
 
-            {/* 2. TRAINING TRACKER - Metro-style tracking */}
+            {/* 2. TRAINING TRACKER - Metro Style */}
             <TabsContent value="training-tracker" className="mt-0">
               <AcademicTrainingBoard />
             </TabsContent>
 
-            {/* 3. DESPATCH & DELIVERY TRACKER */}
+            {/* 3. DESPATCH & DELIVERY */}
             <TabsContent value="despatch-delivery" className="mt-0">
-              <Tabs defaultValue="approval" className="space-y-6">
-                <TabsList className="bg-white/10 border border-white/20">
-                  <TabsTrigger value="approval">Certificate Approval</TabsTrigger>
-                  <TabsTrigger value="generate">Generate Certificates</TabsTrigger>
-                  <TabsTrigger value="dispatch">Despatch Tracker</TabsTrigger>
-                  <TabsTrigger value="management">Certificate Mgmt</TabsTrigger>
-                </TabsList>
-                
-                <TabsContent value="approval">
-                  <CertificateApproval />
-                </TabsContent>
-                
-                <TabsContent value="generate">
-                  <CertificateGeneration />
-                </TabsContent>
-
-                <TabsContent value="dispatch">
-                  <CertificateDispatchManagement />
-                </TabsContent>
-
-                <TabsContent value="management">
-                  <CertificateManagement />
-                </TabsContent>
-              </Tabs>
+              <CertificateDispatchManagement />
             </TabsContent>
 
-            {/* 4. TRAINING CALENDAR - Receive requests + Allocate trainers */}
+            {/* 4. TRAINING CALENDAR */}
             <TabsContent value="training-calendar" className="mt-0">
               <Tabs defaultValue="requests" className="space-y-6">
                 <TabsList className="bg-white/10 border border-white/20">
@@ -335,12 +314,12 @@ const AcademicHeadDashboard = () => {
               </Tabs>
             </TabsContent>
 
-            {/* 5. COURSES - Add/Edit/Remove + Upload course materials */}
+            {/* 5. COURSES */}
             <TabsContent value="courses" className="mt-0">
               <CourseManagement />
             </TabsContent>
 
-            {/* 6. ASSESSMENTS & FEEDBACK - Custom forms + QR generation */}
+            {/* 6. ASSESSMENTS & FEEDBACK */}
             <TabsContent value="assessments-feedback" className="mt-0">
               <Tabs defaultValue="assessments" className="space-y-6">
                 <TabsList className="bg-white/10 border border-white/20">
@@ -389,12 +368,12 @@ const AcademicHeadDashboard = () => {
               </Tabs>
             </TabsContent>
 
-            {/* 7. MY TEAM - Trainers (FT/PT) + Academic Coordinators */}
+            {/* 7. MY TEAM */}
             <TabsContent value="my-team" className="mt-0">
               <TeamMonitoring />
             </TabsContent>
 
-            {/* 8. EXPENSES - Submit & Review (Self + Team) */}
+            {/* 8. EXPENSES */}
             <TabsContent value="expenses" className="mt-0">
               <Tabs defaultValue="my-expenses" className="space-y-6">
                 <TabsList className="bg-white/10 border border-white/20">
@@ -410,7 +389,6 @@ const AcademicHeadDashboard = () => {
                   <div className="bg-white/5 backdrop-blur-sm rounded-xl border border-white/10 p-6">
                     <h3 className="text-xl font-semibold text-white mb-4">Team Expense Review</h3>
                     <p className="text-slate-400 mb-4">Review and approve expense claims from your team members</p>
-                    {/* TODO: Create ExpenseApproval component */}
                     <div className="text-center py-8 text-slate-400">
                       Team expense review component - Coming soon
                     </div>
