@@ -39,6 +39,10 @@ const LeadTracker = () => {
   const [detailsOpen, setDetailsOpen] = useState(false);
   const [detailsLead, setDetailsLead] = useState(null);
   
+  // Quotation dialog state
+  const [quotationOpen, setQuotationOpen] = useState(false);
+  const [quotationLead, setQuotationLead] = useState(null);
+  
   // Duplicate management states
   const [duplicateAlerts, setDuplicateAlerts] = useState([]);
   const [selectedAlert, setSelectedAlert] = useState(null);
