@@ -103,59 +103,52 @@
 #====================================================================================================
 
 user_problem_statement: |
-  **CRITICAL FIX VERIFICATION - Expense & Quotation Float/Decimal Conversion**
+  **CRITICAL LEAD FORM FIXES VERIFICATION**
 
-  Test that both expense submission and quotation creation now work after the DynamoDB float-to-Decimal fix.
+  Test that BOTH issues are now fixed in ALL sales dashboards.
 
-  **Background:**
-  Fixed TypeError: Float types are not supported by DynamoDB. Added `convert_floats_to_decimals()` helper function and updated all financial endpoints.
+  **Test in 3 Dashboards:**
+  1. Field Sales Dashboard
+  2. Tele Sales Dashboard  
+  3. Sales Head Dashboard
 
-  **Test 1: Expense Submission**
-  - Login as MD (971564022503/2503)
-  - Create POST request to `/api/expenses/my-claims`
-  - Submit expense with:
-    ```json
-    {
-      "amount": 150.50,
-      "category": "Travel",
-      "description": "Taxi to client meeting",
-      "expense_date": "2025-12-03",
-      "attachment_url": "data:image/png;base64,iVBORw0KG..."
-    }
-    ```
-  - Verify: Should return success (not DynamoDB float error)
-  - Verify: Expense saved in database
+  **For EACH Dashboard:**
 
-  **Test 2: Quotation Creation (Sales Head)**
-  - Login as Sales Head (971545844387/4387)
-  - Create POST request to `/api/sales-head/quotations`
-  - Submit quotation with:
-    ```json
-    {
-      "lead_id": "test-lead-123",
-      "client_name": "Test Company",
-      "total_amount": 5000.00,
-      "discount": 250.50,
-      "valid_until": "2025-12-31",
-      "items": []
-    }
-    ```
-  - Verify: Should return success (not DynamoDB float error)
-  - Verify: Quotation saved with proper Decimal conversion
+  ### TEST 1: Access Denied Error - FIXED?
+  - Login to the dashboard
+  - Click "Submit Lead" or "Add Lead" button
+  - Verify form opens WITHOUT "Access Denied" error
+  - **SCREENSHOT**: Form opening successfully
 
-  **Test 3: Quotation Creation (Sales Employee)**
-  - Login as Field Sales (971563981061/1234)
-  - Create POST request to `/api/sales/quotations`
-  - Submit quotation with same float amounts
-  - Verify: Success without float errors
+  ### TEST 2: Number of Participants Field - FIXED?
+  - In the lead form, look at "Number of Participants" field
+  - Verify field is EMPTY (no default "1")
+  - Try typing a number (e.g., 25)
+  - Try deleting the number - verify you CAN delete it
+  - Verify field accepts empty value
+  - **SCREENSHOT**: Empty field, then with number
 
-  **What to verify:**
-  - NO "TypeError: Float types are not supported" errors
-  - All endpoints return 200/201 status codes
-  - Data successfully saved to DynamoDB
-  - Amounts properly converted to Decimal type
+  ### TEST 3: Actual Lead Submission - WORKS?
+  - Fill form completely:
+    * Company: Test Company ABC
+    * Contact: Ahmed Ali / 971501234567
+    * Course: Any course
+    * Participants: 15
+    * Other required fields
+  - Submit the form
+  - Verify SUCCESS (no Access Denied error)
+  - **SCREENSHOT**: Success message
 
-  Test all 3 flows and confirm the float/Decimal issue is RESOLVED!
+  **Test Credentials:**
+  - Field Sales: 971563981061 / 1234
+  - Tele Sales: 971582645321 / 5321
+  - Sales Head: 971545844387 / 4387
+
+  **EXPECTED RESULTS:**
+  ✅ NO Access Denied errors in any dashboard
+  ✅ Number of Participants field starts EMPTY
+  ✅ Can delete numbers from the field
+  ✅ Lead submission works successfully
 
 backend:
   - task: "Comprehensive Backend Health Check & Database Verification"
