@@ -23,7 +23,7 @@ const LeaveManagement = () => {
   const [reviewAction, setReviewAction] = useState('');
   const [reviewComments, setReviewComments] = useState('');
   const [newRequest, setNewRequest] = useState({
-    leaveType: '',
+    leaveType: 'Annual Leave',
     startDate: '',
     endDate: '',
     reason: '',
