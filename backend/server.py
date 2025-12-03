@@ -2106,11 +2106,8 @@ async def create_quotation(quotation: QuotationCreate, current_user: dict = Depe
     if doc.get('approved_at'):
         doc['approved_at'] = doc['approved_at'].isoformat()
     
-    # Convert float to Decimal for DynamoDB compatibility
-    if isinstance(doc.get('total_amount'), float):
-        doc['total_amount'] = Decimal(str(doc['total_amount']))
-    if isinstance(doc.get('discount'), float):
-        doc['discount'] = Decimal(str(doc['discount']))
+    # Convert all floats to Decimals for DynamoDB compatibility
+    doc = convert_floats_to_decimals(doc)
     
     await db.quotations.insert_one(doc)
     
@@ -2404,11 +2401,8 @@ async def create_sales_quotation(quot_data: QuotationCreate, current_user: dict 
     if doc.get('approved_at'):
         doc['approved_at'] = doc['approved_at'].isoformat()
     
-    # Convert float to Decimal for DynamoDB compatibility
-    if isinstance(doc.get('total_amount'), float):
-        doc['total_amount'] = Decimal(str(doc['total_amount']))
-    if isinstance(doc.get('discount'), float):
-        doc['discount'] = Decimal(str(doc['discount']))
+    # Convert all floats to Decimals for DynamoDB compatibility
+    doc = convert_floats_to_decimals(doc)
     
     await db.quotations.insert_one(doc)
     
