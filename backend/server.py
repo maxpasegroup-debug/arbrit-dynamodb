@@ -2093,6 +2093,13 @@ async def create_quotation(quotation: QuotationCreate, current_user: dict = Depe
     doc['created_at'] = doc['created_at'].isoformat()
     if doc.get('approved_at'):
         doc['approved_at'] = doc['approved_at'].isoformat()
+    
+    # Convert float to Decimal for DynamoDB compatibility
+    if isinstance(doc.get('total_amount'), float):
+        doc['total_amount'] = Decimal(str(doc['total_amount']))
+    if isinstance(doc.get('discount'), float):
+        doc['discount'] = Decimal(str(doc['discount']))
+    
     await db.quotations.insert_one(doc)
     
     return quot_obj
