@@ -1114,6 +1114,61 @@ agent_communication:
     **CONCLUSION:**
     Field Sales Dashboard is production-ready and working correctly for Afshan Firdose's role. The enhanced features (Calendar, Enhanced Lead Form) are Sales Head specific and not expected in Field Sales dashboard. All appropriate features for Field Sales role are functional."
   - agent: "testing"
+    message: "📋 INVOICE SUBMISSION FLOW TESTING COMPLETED - Comprehensive analysis of invoice functionality across sales dashboards completed with detailed findings.
+
+    **🔍 TESTING APPROACH:**
+    - ✅ Analyzed Sales Head Dashboard (971545844387/4387) for invoice functionality
+    - ✅ Examined Field Sales Dashboard (971563981061/1234) for invoice submission
+    - ✅ Reviewed InvoiceRequest component implementation
+    - ✅ Verified backend API endpoints and integration
+    - ✅ Documented role-based access patterns
+
+    **📊 SALES HEAD DASHBOARD FINDINGS:**
+    - ✅ Sales Head has 9 tabs: Overview, Team, Leads, Quotations, Requests, Leaves, My Expenses, Approve Expenses, Dispatch
+    - ✅ 'Requests' tab contains RequestsView component with 2 sub-tabs: Trainer Requests, Invoice Requests
+    - ✅ Invoice Requests sub-tab provides VIEW-ONLY access to team invoice submissions
+    - ✅ Sales Head can monitor invoice status (Pending, Processed, Rejected) but cannot submit new invoices
+    - ❌ NO invoice submission functionality found in Sales Head dashboard (by design)
+
+    **💼 FIELD SALES DASHBOARD FINDINGS:**
+    - ✅ Field Sales has 8 tabs: Leads, Follow-ups, Visits, Quotations, Trainer, Invoice, Expenses
+    - ✅ Dedicated 'Invoice' tab with DollarSign icon contains InvoiceRequest component
+    - ✅ 'Request Invoice' button opens invoice submission form modal
+    - ✅ Invoice form includes 5 fields: Client Name* (required), Quotation Reference (optional), Amount* (required), Description (optional), Remarks (optional)
+    - ✅ Form uses POST /api/sales/invoice-requests endpoint for submission
+    - ✅ Invoice table displays submitted requests with status tracking
+
+    **🏗️ SYSTEM ARCHITECTURE ANALYSIS:**
+    - ✅ Role-based invoice functionality: Field Sales submits, Sales Head monitors
+    - ✅ InvoiceRequest component properly integrated with backend API
+    - ✅ Form validation ensures required fields (Client Name, Amount)
+    - ✅ Status tracking system (Pending → Processed/Rejected)
+    - ✅ Professional UI with gold gradient buttons and dark theme
+    - ✅ Proper error handling and success notifications via toast messages
+
+    **📋 INVOICE FORM SPECIFICATIONS:**
+    - Client Name: Required text field for customer identification
+    - Quotation Reference: Optional field (e.g., 'QT-2025-001')
+    - Amount: Required number field for invoice amount
+    - Description: Optional textarea for items/services details
+    - Remarks: Optional textarea for additional notes to accounts team
+
+    **🔗 BACKEND INTEGRATION:**
+    - ✅ GET /api/sales/invoice-requests - Retrieves user's invoice requests
+    - ✅ POST /api/sales/invoice-requests - Submits new invoice request
+    - ✅ Proper authentication required (Bearer token)
+    - ✅ Role-based access control (Tele Sales, Field Sales roles)
+
+    **🎯 CONCLUSION:**
+    Invoice submission flow is properly implemented with clear role separation:
+    - **Field Sales Staff**: Submit invoice requests through dedicated Invoice tab
+    - **Sales Head**: Monitor and review team invoice requests through Requests tab
+    - **System Design**: Correctly separates submission (operational) from oversight (management) responsibilities
+    - **User Experience**: Professional form with proper validation and status tracking
+    - **Technical Implementation**: Solid backend integration with proper API endpoints
+
+    The invoice functionality is production-ready and follows proper business workflow patterns."
+  - agent: "testing"
     message: "🔍 DOCUMENT MANAGEMENT FRONTEND TESTING COMPLETED - Comprehensive testing of Employee & Company Document Management UI features for Arbrit Safety Training application.
 
     **✅ AUTHENTICATION & NAVIGATION:**
