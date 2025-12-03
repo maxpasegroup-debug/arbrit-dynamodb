@@ -1848,17 +1848,20 @@ class ArbritBackendHealthTester:
             print("   ❌ FAILED: No Sales Head token available")
             return False, {}
         
-        # Submit company lead with exact test data from review request
+        # Submit company lead with correct data structure for Sales Head endpoint
         lead_data = {
+            "source": "Online",
+            "client_name": "ABC Construction",
+            "requirement": "Scaffolding training for new project",
+            "industry": "Construction",
             "lead_type": "company",
             "company_name": "ABC Construction",
             "contact_person": "Mohammed Hassan",
-            "mobile": "971507654321",
-            "email": "contact@abc.com",
+            "contact_mobile": "971507654321",
+            "contact_email": "contact@abc.com",
             "course_name": "Scaffolding Safety",
-            "number_of_participants": 20,
-            "urgency": "High",
-            "requirement": "Scaffolding training for new project"
+            "num_trainees": 20,
+            "urgency": "high"
         }
         
         success, response = self.run_test(
