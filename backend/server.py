@@ -466,6 +466,39 @@ class InvoiceRequestUpdate(BaseModel):
     notes: Optional[str] = None
 
 
+
+class PaymentCreate(BaseModel):
+    invoice_id: str
+    invoice_number: Optional[str] = None
+    client_name: str
+    amount: float
+    payment_method: str  # Cash, Bank Transfer, Cheque, Card
+    payment_reference: Optional[str] = None
+    payment_date: str
+    received_by: Optional[str] = None
+    notes: Optional[str] = None
+
+
+class Payment(BaseModel):
+    model_config = ConfigDict(extra="ignore")
+    
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    invoice_id: str
+    invoice_number: Optional[str] = None
+    client_name: str
+    amount: Decimal
+    payment_method: str
+    payment_reference: Optional[str] = None
+    payment_date: str
+    received_by: str
+    received_by_name: str
+    notes: Optional[str] = None
+    status: str = "Received"  # Received, Verified, Deposited
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+    verified_at: Optional[datetime] = None
+    verified_by: Optional[str] = None
+
+
 class DeletionApproval(BaseModel):
     approved: bool
     remarks: Optional[str] = None
