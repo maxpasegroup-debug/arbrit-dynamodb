@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import FinancialDashboard from '@/components/accounts/FinancialDashboard';
 import InvoiceManagementEnhanced from '@/components/accounts/InvoiceManagementEnhanced';
-import PaymentRecording from '@/components/accounts/PaymentRecording';
+import PaymentManagement from '@/components/accounts/PaymentManagement';
 import VATReports from '@/components/accounts/VATReports';
 import ClientManagement from '@/components/accounts/ClientManagement';
 import VendorManagement from '@/components/accounts/VendorManagement';
