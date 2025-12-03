@@ -1903,16 +1903,16 @@ class ArbritBackendHealthTester:
             self.token = response['token']
             print(f"   ✅ Field Sales login successful: {response.get('user', {}).get('name', 'Unknown')}")
         
-        # Submit same individual lead structure
+        # Submit individual lead with correct data structure for self-lead endpoint
         lead_data = {
-            "lead_type": "individual",
-            "contact_person": "Ahmed Ali",
+            "client_name": "Ahmed Ali",
             "mobile": "971501234567",
             "email": "ahmed@example.com",
-            "course_name": "First Aid Training",
-            "number_of_participants": 15,
-            "urgency": "Normal",
-            "requirement": "First aid certification needed"
+            "company_name": None,
+            "branch": "Dubai",
+            "requirement": "First aid certification needed",
+            "lead_type": "Individual",
+            "notes": "Urgent requirement for first aid training"
         }
         
         success, response = self.run_test(
