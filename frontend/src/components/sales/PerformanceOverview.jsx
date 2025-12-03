@@ -21,8 +21,8 @@ const PerformanceOverview = () => {
     monthlyAchieved: 0
   });
   const [filters, setFilters] = useState({
-    area: '',
-    badge: '',
+    area: 'all',
+    badge: 'all',
     individual: '',
     timeRange: 'current_month'
   });
