@@ -278,7 +278,7 @@ const AcademicHeadDashboard = () => {
 
             {/* 2. TRAINING TRACKER - Metro Style */}
             <TabsContent value="training-tracker" className="mt-0">
-              <AcademicTrainingBoard />
+              <TrainingTrackerMetro />
             </TabsContent>
 
             {/* 3. DESPATCH & DELIVERY */}
