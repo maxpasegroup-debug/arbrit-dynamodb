@@ -211,6 +211,10 @@ const SalesHeadDashboard = () => {
               <LeadTracker />
             </TabsContent>
 
+            <TabsContent value="targets" className="mt-0">
+              <TargetManagement />
+            </TabsContent>
+
             <TabsContent value="leaves" className="mt-0">
               <LeaveManagement />
             </TabsContent>
