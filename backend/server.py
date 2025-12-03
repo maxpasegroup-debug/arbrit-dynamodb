@@ -2339,6 +2339,8 @@ async def submit_self_lead(lead_data: SelfLeadCreate, current_user: dict = Depen
                 "status": "pending",
                 "created_at": datetime.now(timezone.utc).isoformat()
             }
+            # Convert floats to Decimals for DynamoDB compatibility
+            alert = convert_floats_to_decimals(alert)
             await db.duplicate_alerts.insert_one(alert)
     
     # Convert floats to Decimals for DynamoDB compatibility
