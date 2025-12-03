@@ -29,6 +29,8 @@ import AssessmentQRGenerator from '@/components/assessment/AssessmentQRGenerator
 import AssessmentReports from '@/components/assessment/AssessmentReports';
 import TeamMonitoring from '@/components/academic/TeamMonitoring';
 import ExpenseSubmission from '@/components/expenses/ExpenseSubmission';
+import QuotationApprovalManagement from '@/components/approvals/QuotationApprovalManagement';
+import InvoiceApprovalManagement from '@/components/approvals/InvoiceApprovalManagement';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
