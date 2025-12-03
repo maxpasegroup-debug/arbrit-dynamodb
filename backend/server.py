@@ -2339,6 +2339,8 @@ async def submit_self_lead(lead_data: SelfLeadCreate, current_user: dict = Depen
             }
             await db.duplicate_alerts.insert_one(alert)
     
+    # Convert floats to Decimals for DynamoDB compatibility
+    doc = convert_floats_to_decimals(doc)
     await db.leads.insert_one(doc)
     
     return {"message": "Self lead submitted successfully", "lead_id": lead_obj.id}
