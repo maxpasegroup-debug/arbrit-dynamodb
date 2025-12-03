@@ -283,6 +283,29 @@ const AcademicHeadDashboard = () => {
               </div>
             </TabsContent>
 
+
+            {/* 2. APPROVALS - Quotations & Invoices */}
+            <TabsContent value="approvals" className="mt-0">
+              <Tabs defaultValue="quotations" className="space-y-6">
+                <TabsList className="bg-white/10 border border-white/20">
+                  <TabsTrigger value="quotations" className="data-[state=active]:bg-yellow-500/20 data-[state=active]:text-white">
+                    Quotations
+                  </TabsTrigger>
+                  <TabsTrigger value="invoices" className="data-[state=active]:bg-yellow-500/20 data-[state=active]:text-white">
+                    Invoices
+                  </TabsTrigger>
+                </TabsList>
+                
+                <TabsContent value="quotations" className="mt-0">
+                  <QuotationApprovalManagement />
+                </TabsContent>
+                
+                <TabsContent value="invoices" className="mt-0">
+                  <InvoiceApprovalManagement />
+                </TabsContent>
+              </Tabs>
+            </TabsContent>
+
             {/* 2. TRAINING TRACKER - Metro Style */}
             <TabsContent value="training-tracker" className="mt-0">
               <TrainingTrackerMetroNew />
