@@ -695,7 +695,7 @@ metadata:
 
 test_plan:
   current_focus:
-    - "PIN Management System - Phase 2 Implementation"
+    - "CRITICAL FIX VERIFICATION - Expense & Quotation Float/Decimal Conversion"
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
