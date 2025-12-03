@@ -21,6 +21,7 @@ const SalesHeadDashboard = () => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState('overview');
+  const [onlineLeadDialogOpen, setOnlineLeadDialogOpen] = useState(false);
   const [stats, setStats] = useState({
     totalLeads: 0,
     teamMembers: 0,
