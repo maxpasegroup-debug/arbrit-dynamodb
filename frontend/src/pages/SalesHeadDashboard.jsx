@@ -6,7 +6,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import PerformanceOverview from '@/components/sales/PerformanceOverview';
 import LeadTracker from '@/components/sales/LeadTracker';
-import LeaveManagement from '@/components/sales/LeaveManagement';
+import LeaveApprovalManagement from '@/components/hr/LeaveApprovalManagement';
 import ExpenseManagement from '@/components/sales/ExpenseManagement';
 import TargetManagement from '@/components/sales/TargetManagement';
 import AcademicCalendar from '@/components/sales/AcademicCalendar';
