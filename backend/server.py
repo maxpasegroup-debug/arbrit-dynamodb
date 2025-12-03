@@ -571,31 +571,7 @@ class InvoiceRequest(BaseModel):
     created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 
 
-# Payment Model
-class Payment(BaseModel):
-    model_config = ConfigDict(extra="ignore")
-    
-    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
-    invoice_id: str
-    invoice_number: str
-    client_name: str
-    amount: float
-    payment_method: str  # Bank Transfer, Cash, Cheque, Card
-    payment_date: str  # YYYY-MM-DD
-    reference_number: Optional[str] = None
-    notes: Optional[str] = None
-    recorded_by: str
-    recorded_by_name: str
-    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
-
-
-class PaymentCreate(BaseModel):
-    invoice_id: str
-    amount: float
-    payment_method: str
-    payment_date: str
-    reference_number: Optional[str] = None
-    notes: Optional[str] = None
+# Duplicate Payment models removed - using the first definition above
 
 
 # Client Account Model
