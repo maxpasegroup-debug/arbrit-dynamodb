@@ -103,52 +103,58 @@
 #====================================================================================================
 
 user_problem_statement: |
-  **CRITICAL LEAD FORM FIXES VERIFICATION**
+  **COMPREHENSIVE SALES FLOW TESTING**
 
-  Test that BOTH issues are now fixed in ALL sales dashboards.
+  Test the complete sales workflow for the Arbrit Safety CRM system. This is CRITICAL functionality testing to verify all buttons work and flows are connected properly.
 
-  **Test in 3 Dashboards:**
-  1. Field Sales Dashboard
-  2. Tele Sales Dashboard  
-  3. Sales Head Dashboard
+  **CONTEXT:**
+  - Application: Sales CRM with React frontend + FastAPI backend + DynamoDB
+  - URL: https://safety-docs-hub.preview.emergentagent.com
+  - 5 courses have been added: Fire Safety Training, First Aid & CPR, Working at Heights, Confined Space Entry, Electrical Safety
 
-  **For EACH Dashboard:**
+  **TEST REQUIREMENTS:**
 
-  ### TEST 1: Access Denied Error - FIXED?
-  - Login to the dashboard
-  - Click "Submit Lead" or "Add Lead" button
-  - Verify form opens WITHOUT "Access Denied" error
-  - **SCREENSHOT**: Form opening successfully
+  **PART 1: LOGIN TO SALES DASHBOARDS & ADD LEADS**
+  Test with these 3 users (representing all sales roles):
+  1. Sales Head: Mohammad Akbar / 971545844387 / PIN: 4387
+  2. Field Sales: Afshan Firdose / 971545844386 / PIN: 4386  
+  3. Tele Sales: Afshaan Syeda / 971557638082 / PIN: 8082
 
-  ### TEST 2: Number of Participants Field - FIXED?
-  - In the lead form, look at "Number of Participants" field
-  - Verify field is EMPTY (no default "1")
-  - Try typing a number (e.g., 25)
-  - Try deleting the number - verify you CAN delete it
-  - Verify field accepts empty value
-  - **SCREENSHOT**: Empty field, then with number
+  For EACH user:
+  - Login successfully
+  - Submit 2 leads:
+    * Lead 1: CORPORATE type (with company name) - select "Fire Safety Training" course
+    * Lead 2: INDIVIDUAL type (person only) - select "First Aid & CPR" course
+  - Verify leads are created and visible
 
-  ### TEST 3: Actual Lead Submission - WORKS?
-  - Fill form completely:
-    * Company: Test Company ABC
-    * Contact: Ahmed Ali / 971501234567
-    * Course: Any course
-    * Participants: 15
-    * Other required fields
-  - Submit the form
-  - Verify SUCCESS (no Access Denied error)
-  - **SCREENSHOT**: Success message
+  **PART 2: LEAD TRACKER - SUBMIT REQUESTS**
+  For each sales dashboard:
+  - Navigate to Lead Tracker section
+  - For one of the leads submitted, perform these actions:
+    * Submit a Request for Quotation
+    * Submit a Request for Invoice  
+    * Submit an Expense claim (if applicable)
+  - Verify the requests are submitted successfully
+  - Check that status buttons update on the Lead Tracker
 
-  **Test Credentials:**
-  - Field Sales: 971563981061 / 1234
-  - Tele Sales: 971582645321 / 5321
-  - Sales Head: 971545844387 / 4387
+  **PART 3: ACADEMIC HEAD VERIFICATION**
+  - Login as Academic Head: Abdu Sahad / 971557213537 / PIN: 3537
+  - Verify that the quotation requests appear in Academic Head dashboard
+  - Verify that invoice requests appear in Academic Head dashboard
+  - Take screenshots showing these requests are visible
 
-  **EXPECTED RESULTS:**
-  ✅ NO Access Denied errors in any dashboard
-  ✅ Number of Participants field starts EMPTY
-  ✅ Can delete numbers from the field
-  ✅ Lead submission works successfully
+  **PART 4: STATUS UPDATES**
+  - Go back to one of the sales dashboards
+  - Check the Lead Tracker to verify status buttons show the submitted requests
+  - Confirm that status reflects: "Quotation Requested", "Invoice Requested", etc.
+
+  **EXPECTED OUTCOMES:**
+  ✅ All 3 sales users can login
+  ✅ Total 6 leads created (2 per user)
+  ✅ Quotation/Invoice requests submitted successfully
+  ✅ Requests visible in Academic Head dashboard
+  ✅ Status buttons update in Lead Tracker
+  ❌ Report any errors, broken flows, or non-functional buttons
 
 backend:
   - task: "Comprehensive Backend Health Check & Database Verification"
