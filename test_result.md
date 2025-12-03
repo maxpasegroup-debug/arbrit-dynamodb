@@ -719,7 +719,7 @@ metadata:
 
 test_plan:
   current_focus:
-    - "CRITICAL FIX VERIFICATION - Expense & Quotation Float/Decimal Conversion"
+    - "CRITICAL - TRAINING WORKFLOW END-TO-END TESTING"
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
