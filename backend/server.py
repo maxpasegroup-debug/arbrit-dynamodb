@@ -289,13 +289,13 @@ class Lead(BaseModel):
     
     id: str = Field(default_factory=lambda: str(uuid.uuid4()))
     source: str = "Self"  # Online, Self
-    client_name: str
-    requirement: str
+    client_name: Optional[str] = None
+    requirement: Optional[str] = None
     industry: Optional[str] = None
     assigned_to: Optional[str] = None  # Employee ID
     assigned_to_name: Optional[str] = None
-    assigned_by: str  # User ID who assigned
-    assigned_by_name: str
+    assigned_by: Optional[str] = None  # User ID who assigned
+    assigned_by_name: Optional[str] = None
     status: str = "New"  # New, Contacted, Quoted, Negotiation, Won, Lost
     remarks: Optional[str] = None
     next_followup_date: Optional[str] = None
