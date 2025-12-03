@@ -18,6 +18,7 @@ import CourseManagement from '@/components/academic/CourseManagement';
 import CertificateManagement from '@/components/certificates/CertificateManagement';
 import CertificateDispatchManagement from '@/components/certificates/CertificateDispatchManagement';
 import AcademicTrainingBoard from '@/components/training/AcademicTrainingBoard';
+import ExpenseSubmission from '@/components/expenses/ExpenseSubmission';
 import { toast } from 'sonner';
 import axios from 'axios';
 
