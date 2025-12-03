@@ -1029,14 +1029,14 @@ const LeadTracker = () => {
       <Dialog open={quotationRequestOpen} onOpenChange={setQuotationRequestOpen}>
         <DialogContent className="bg-[#1a2f4d] border-white/20 text-white max-w-4xl max-h-[80vh] overflow-y-auto">
           <DialogHeader>
-            <DialogTitle className="text-2xl">📋 Quotation Requests - Pending Approval</DialogTitle>
+            <DialogTitle className="text-2xl">📋 Quotation Requests for {selectedRequest?.lead?.company_name || selectedRequest?.lead?.client_name}</DialogTitle>
             <DialogDescription className="text-slate-400">
-              Review and approve/reject quotations submitted by your team
+              Review, edit, approve or reject quotation requests
             </DialogDescription>
           </DialogHeader>
           
           <div className="space-y-4">
-            {quotationRequests.filter(q => q.status === 'pending' || q.status === 'draft').map((quot) => (
+            {(selectedRequest?.requests || []).map((quot) => (
               <div key={quot.id} className="bg-white/5 rounded-lg p-4 border border-purple-400/30">
                 <div className="flex justify-between items-start mb-3">
                   <div>
