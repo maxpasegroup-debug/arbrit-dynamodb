@@ -472,6 +472,7 @@ class DB:
         self.expense_claims = DynamoDBClient('expense_claims')
         self.leads = DynamoDBClient('leads')
         self.trainer_requests = DynamoDBClient('trainer_requests')
+        self.training_requests = DynamoDBClient('training_requests')
         self.visit_logs = DynamoDBClient('visit_logs')
         self.leave_requests = DynamoDBClient('leave_requests')
         
