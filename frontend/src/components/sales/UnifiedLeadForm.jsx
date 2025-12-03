@@ -600,10 +600,11 @@ const UnifiedLeadForm = ({
               value={formData.num_trainees}
               onChange={(e) => {
                 const val = e.target.value;
-                setFormData({ ...formData, num_trainees: parseInt(val) || 1 });
+                setFormData({ ...formData, num_trainees: val === '' ? '' : parseInt(val) });
                 if (formData.course_id) handleCourseChange(formData.course_id);
               }}
               className="bg-slate-800 border-white/10 text-slate-100"
+              placeholder="Enter number of participants"
             />
           </div>
           <div>
