@@ -7,7 +7,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import LeadTracker from '@/components/sales/LeadTracker';
 import MyTrainingTracker from '@/components/sales/MyTrainingTracker';
 import AvailabilityCalendar from '@/components/sales/AvailabilityCalendar';
-import ExpenseManager from '@/components/sales/ExpenseManager';
+import ExpenseSubmission from '@/components/expenses/ExpenseSubmission';
 import FeedbackMessages from '@/components/sales/FeedbackMessages';
 import LeaveRequest from '@/components/sales/LeaveRequest';
 import { toast } from 'sonner';
@@ -197,7 +197,7 @@ const TeleSalesDashboard = () => {
           </TabsContent>
           
           <TabsContent value="expenses" className="mt-6">
-            <ExpenseManager />
+            <ExpenseSubmission />
           </TabsContent>
           
           <TabsContent value="feedback" className="mt-6">
