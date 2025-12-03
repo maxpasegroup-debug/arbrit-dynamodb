@@ -322,29 +322,49 @@ class Lead(BaseModel):
 
 
 class LeadCreate(BaseModel):
-    source: str
-    client_name: str
-    requirement: str
+    # Core required fields matching UI
+    lead_owner: str  # Sales Rep name - Required
+    course_id: str  # Training course - Required
+    lead_type: str = "company"  # company or individual
+    
+    # Conditional required fields (validated in endpoint based on lead_type)
+    # For company: company_name, contact_person, contact_designation, contact_mobile, phone
+    # For individual: client_name, client_mobile
+    company_name: Optional[str] = None
+    contact_person: Optional[str] = None
+    contact_designation: Optional[str] = None
+    contact_mobile: Optional[str] = None
+    phone: Optional[str] = None
+    client_name: Optional[str] = None
+    client_mobile: Optional[str] = None
+    
+    # Optional fields
+    source: str = "Self"
+    requirement: Optional[str] = None
     industry: Optional[str] = None
     assigned_to: Optional[str] = None
     status: str = "New"
     remarks: Optional[str] = None
     next_followup_date: Optional[str] = None
-    
-    # CRM Enhancement fields
-    lead_type: Optional[str] = "company"
-    company_name: Optional[str] = None
-    contact_person: Optional[str] = None
-    contact_designation: Optional[str] = None
     contact_email: Optional[str] = None
-    contact_mobile: Optional[str] = None
     employee_count: Optional[str] = None
-    course_id: Optional[str] = None
     course_name: Optional[str] = None
     num_trainees: Optional[int] = 1
     urgency: Optional[str] = "medium"
     lead_value: Optional[str] = "0"
     lead_score: Optional[str] = "warm"
+    website: Optional[str] = None
+    training_service_details: Optional[str] = None
+    product_services_required: Optional[str] = None
+    description: Optional[str] = None
+    training_site: Optional[str] = None
+    training_location: Optional[str] = None
+    training_date: Optional[str] = None
+    payment_mode: Optional[str] = None
+    payment_terms: Optional[str] = None
+    branch: Optional[str] = None
+    lead_category: Optional[str] = None
+    field_sales_type: Optional[str] = None
 
 
 class LeadUpdate(BaseModel):
