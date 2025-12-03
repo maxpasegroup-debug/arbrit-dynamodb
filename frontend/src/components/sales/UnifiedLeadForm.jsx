@@ -428,9 +428,11 @@ const UnifiedLeadForm = ({
               value={formData.source}
               onChange={(e) => setFormData({ ...formData, source: e.target.value })}
               className="w-full bg-slate-800 border border-white/10 text-slate-100 rounded-md p-2"
+              disabled={mode === 'online'}
             >
               <option value="Self">Self</option>
               <option value="Website">Website</option>
+              <option value="Online">Online</option>
               <option value="Referral">Referral</option>
               <option value="Social Media">Social Media</option>
               <option value="Walk-in">Walk-in</option>
@@ -440,7 +442,35 @@ const UnifiedLeadForm = ({
               <option value="Other">Other</option>
             </select>
           </div>
-          <div className="col-span-2">
+          
+          {/* Online Mode: Employee Assignment */}
+          {mode === 'online' && (
+            <div>
+              <Label className="text-slate-300">Assign To *</Label>
+              <select
+                value={formData.assigned_to}
+                onChange={(e) => {
+                  const selectedEmp = employees.find(emp => emp.id === e.target.value);
+                  setFormData({ 
+                    ...formData, 
+                    assigned_to: e.target.value,
+                    assigned_to_name: selectedEmp?.name || ''
+                  });
+                }}
+                className="w-full bg-slate-800 border border-white/10 text-slate-100 rounded-md p-2"
+                required
+              >
+                <option value="">Select Team Member</option>
+                {employees.map(emp => (
+                  <option key={emp.id} value={emp.id}>
+                    {emp.name} - {emp.designation}
+                  </option>
+                ))}
+              </select>
+            </div>
+          )}
+          
+          <div className={mode === 'online' ? 'col-span-1' : 'col-span-2'}>
             <Label className="text-slate-300">Lead Category</Label>
             <select
               value={formData.lead_category}
