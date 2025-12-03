@@ -16,6 +16,18 @@ from difflib import SequenceMatcher
 import re
 from decimal import Decimal
 
+# Helper function to convert floats to Decimals for DynamoDB
+def convert_floats_to_decimals(obj):
+    """Recursively convert all float values to Decimal for DynamoDB compatibility"""
+    if isinstance(obj, dict):
+        return {k: convert_floats_to_decimals(v) for k, v in obj.items()}
+    elif isinstance(obj, list):
+        return [convert_floats_to_decimals(item) for item in obj]
+    elif isinstance(obj, float):
+        return Decimal(str(obj))
+    else:
+        return obj
+
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
 
