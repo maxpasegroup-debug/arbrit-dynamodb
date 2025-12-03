@@ -196,6 +196,13 @@ const AcademicHeadDashboard = () => {
               My Team
             </TabsTrigger>
             <TabsTrigger 
+              value="leaves"
+              className="data-[state=active]:bg-yellow-500/20 data-[state=active]:text-white text-gray-300"
+            >
+              <Calendar className="w-4 h-4 mr-2" />
+              Leaves
+            </TabsTrigger>
+            <TabsTrigger 
               value="expenses"
               className="data-[state=active]:bg-yellow-500/20 data-[state=active]:text-white text-gray-300"
             >
