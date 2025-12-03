@@ -209,6 +209,14 @@ const SalesHeadDashboard = () => {
               Quotations
             </TabsTrigger>
             <TabsTrigger 
+              value="invoice"
+              data-testid="tab-invoice"
+              className="data-[state=active]:bg-blue-500/20 data-[state=active]:text-white text-gray-300"
+            >
+              <DollarSign className="w-4 h-4 mr-2" />
+              Invoice
+            </TabsTrigger>
+            <TabsTrigger 
               value="requests"
               data-testid="tab-requests"
               className="data-[state=active]:bg-blue-500/20 data-[state=active]:text-white text-gray-300"
