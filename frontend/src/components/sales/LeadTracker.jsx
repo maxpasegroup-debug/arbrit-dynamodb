@@ -85,7 +85,13 @@ const LeadTracker = () => {
     setLoading(true);
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.get(`${API}/sales/leads`, {
+      const user = JSON.parse(localStorage.getItem('user') || '{}');
+      const isSalesHead = ['Sales Head', 'COO', 'MD', 'CEO'].includes(user.role);
+      
+      // Use appropriate endpoint based on role
+      const endpoint = isSalesHead ? `${API}/sales-head/leads` : `${API}/sales/leads`;
+      
+      const response = await axios.get(endpoint, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setLeads(response.data || []);
@@ -94,6 +100,30 @@ const LeadTracker = () => {
       toast.error('Failed to load leads');
     } finally {
       setLoading(false);
+    }
+  };
+
+  const fetchQuotationRequests = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      const response = await axios.get(`${API}/quotations`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      setQuotationRequests(response.data || []);
+    } catch (error) {
+      console.error('Error fetching quotation requests:', error);
+    }
+  };
+
+  const fetchInvoiceRequests = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      const response = await axios.get(`${API}/accounts/invoice-requests`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      setInvoiceRequests(response.data || []);
+    } catch (error) {
+      console.error('Error fetching invoice requests:', error);
     }
   };
 
