@@ -25,6 +25,7 @@ const SalesHeadDashboard = () => {
     monthlyRevenue: 0,
     pendingTasks: 0
   });
+  const [duplicateCount, setDuplicateCount] = useState(0);
 
   useEffect(() => {
     const checkAuth = async () => {
