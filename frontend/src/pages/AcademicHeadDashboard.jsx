@@ -138,7 +138,7 @@ const AcademicHeadDashboard = () => {
 
       <main className="container mx-auto px-6 py-8">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-9 bg-white/5 border border-white/10">
+          <TabsList className="grid w-full grid-cols-10 bg-white/5 border border-white/10">
             <TabsTrigger 
               value="overview"
               className="data-[state=active]:bg-yellow-500/20 data-[state=active]:text-white text-gray-300"
