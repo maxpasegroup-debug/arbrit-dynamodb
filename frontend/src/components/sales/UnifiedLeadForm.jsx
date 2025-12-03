@@ -270,10 +270,20 @@ const UnifiedLeadForm = ({
 
     try {
       const token = localStorage.getItem('token');
+      
+      // Ensure required backend field 'requirement' is populated
+      // Use training_service_details, product_services_required, description, or course_name as fallback
+      const requirement = formData.training_service_details || 
+                         formData.product_services_required || 
+                         formData.description || 
+                         formData.course_name || 
+                         'Training requirement';
+      
       const submitData = {
         ...formData,
         client_name: leadType === 'company' ? formData.company_name : formData.client_name,
-        lead_type: leadType
+        lead_type: leadType,
+        requirement: requirement
       };
 
       if (existingLead) {
