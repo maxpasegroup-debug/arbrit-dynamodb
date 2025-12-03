@@ -175,7 +175,7 @@ const AcademicHeadDashboard = () => {
         </div>
 
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-7 bg-white/5 border border-white/10">
+          <TabsList className="grid w-full grid-cols-8 bg-white/5 border border-white/10">
             <TabsTrigger 
               value="overview"
               data-testid="tab-overview"
@@ -193,12 +193,20 @@ const AcademicHeadDashboard = () => {
               Training Tracker
             </TabsTrigger>
             <TabsTrigger 
-              value="schedule-trainings"
-              data-testid="tab-schedule-trainings"
+              value="despatch-delivery"
+              data-testid="tab-despatch-delivery"
+              className="data-[state=active]:bg-yellow-500/20 data-[state=active]:text-white text-gray-300"
+            >
+              <Package className="w-4 h-4 mr-2" />
+              Despatch & Delivery
+            </TabsTrigger>
+            <TabsTrigger 
+              value="training-calendar"
+              data-testid="tab-training-calendar"
               className="data-[state=active]:bg-yellow-500/20 data-[state=active]:text-white text-gray-300"
             >
               <Calendar className="w-4 h-4 mr-2" />
-              Schedule Trainings
+              Training Calendar
             </TabsTrigger>
             <TabsTrigger 
               value="courses"
@@ -209,6 +217,14 @@ const AcademicHeadDashboard = () => {
               Courses
             </TabsTrigger>
             <TabsTrigger 
+              value="assessments-feedback"
+              data-testid="tab-assessments-feedback"
+              className="data-[state=active]:bg-yellow-500/20 data-[state=active]:text-white text-gray-300"
+            >
+              <ClipboardCheck className="w-4 h-4 mr-2" />
+              Assessments & Feedback
+            </TabsTrigger>
+            <TabsTrigger 
               value="my-team"
               data-testid="tab-my-team"
               className="data-[state=active]:bg-yellow-500/20 data-[state=active]:text-white text-gray-300"
@@ -217,20 +233,12 @@ const AcademicHeadDashboard = () => {
               My Team
             </TabsTrigger>
             <TabsTrigger 
-              value="certifications"
-              data-testid="tab-certifications"
+              value="expenses"
+              data-testid="tab-expenses"
               className="data-[state=active]:bg-yellow-500/20 data-[state=active]:text-white text-gray-300"
             >
-              <Award className="w-4 h-4 mr-2" />
-              Certifications & Despatch
-            </TabsTrigger>
-            <TabsTrigger 
-              value="assessments-feedbacks"
-              data-testid="tab-assessments-feedbacks"
-              className="data-[state=active]:bg-yellow-500/20 data-[state=active]:text-white text-gray-300"
-            >
-              <ClipboardCheck className="w-4 h-4 mr-2" />
-              Assessments & Feedbacks
+              <Receipt className="w-4 h-4 mr-2" />
+              Expenses
             </TabsTrigger>
           </TabsList>
 
