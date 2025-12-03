@@ -1067,13 +1067,17 @@ const LeadTracker = () => {
 
                 <div className="flex gap-2">
                   <Button
-                    onClick={() => window.open(`/quotation/${quot.id}`, '_blank')}
+                    onClick={() => {
+                      setQuotationLead(selectedRequest.lead);
+                      setQuotationOpen(true);
+                      setQuotationRequestOpen(false);
+                    }}
                     variant="outline"
                     size="sm"
-                    className="border-white/20 text-white"
+                    className="border-blue-400/50 text-blue-300 hover:bg-blue-500/20"
                   >
-                    <Eye className="w-4 h-4 mr-2" />
-                    View
+                    <Edit className="w-4 h-4 mr-2" />
+                    Edit
                   </Button>
                   <Button
                     onClick={async () => {
@@ -1084,7 +1088,8 @@ const LeadTracker = () => {
                           { headers: { Authorization: `Bearer ${token}` } }
                         );
                         toast.success('Quotation approved');
-                        fetchQuotationRequests();
+                        setQuotationRequestOpen(false);
+                        fetchLeads();
                       } catch (error) {
                         toast.error('Failed to approve quotation');
                       }
@@ -1104,7 +1109,8 @@ const LeadTracker = () => {
                           { headers: { Authorization: `Bearer ${token}` } }
                         );
                         toast.success('Quotation rejected');
-                        fetchQuotationRequests();
+                        setQuotationRequestOpen(false);
+                        fetchLeads();
                       } catch (error) {
                         toast.error('Failed to reject quotation');
                       }
