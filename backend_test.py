@@ -1861,7 +1861,7 @@ class ArbritBackendHealthTester:
         success, response = self.run_test(
             "Submit Company Lead (Sales Head)",
             "POST",
-            "sales/leads",
+            "sales-head/leads",
             200,
             data=lead_data
         )
