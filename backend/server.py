@@ -1692,6 +1692,175 @@ async def get_academic_invoice_requests(current_user: dict = Depends(get_current
         return []
 
 
+
+@api_router.put("/academic/quotations/{quotation_id}/approve")
+async def approve_quotation_academic(
+    quotation_id: str,
+    approval_data: dict,
+    current_user: dict = Depends(get_current_user)
+):
+    """
+    Academic Head approves a quotation request.
+    """
+    try:
+        if current_user["role"] not in ["Academic Head", "MD", "COO", "CEO"]:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="Access denied. Academic Head role required."
+            )
+        
+        quotation = await db.quotations.find_one({"id": quotation_id}, {"_id": 0})
+        
+        if not quotation:
+            raise HTTPException(status_code=404, detail="Quotation not found")
+        
+        update_data = {
+            "status": "Approved",
+            "approved_by": current_user["id"],
+            "approved_by_name": current_user["name"],
+            "approved_at": datetime.now(timezone.utc).isoformat(),
+            "comments": approval_data.get("comments", "")
+        }
+        
+        await db.quotations.update_one({"id": quotation_id}, {"$set": update_data})
+        
+        return {"message": "Quotation approved successfully", "quotation_id": quotation_id}
+    
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error approving quotation: {e}")
+        raise HTTPException(status_code=500, detail="Failed to approve quotation")
+
+
+@api_router.put("/academic/quotations/{quotation_id}/reject")
+async def reject_quotation_academic(
+    quotation_id: str,
+    rejection_data: dict,
+    current_user: dict = Depends(get_current_user)
+):
+    """
+    Academic Head rejects a quotation request.
+    """
+    try:
+        if current_user["role"] not in ["Academic Head", "MD", "COO", "CEO"]:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="Access denied. Academic Head role required."
+            )
+        
+        quotation = await db.quotations.find_one({"id": quotation_id}, {"_id": 0})
+        
+        if not quotation:
+            raise HTTPException(status_code=404, detail="Quotation not found")
+        
+        if not rejection_data.get("comments"):
+            raise HTTPException(status_code=400, detail="Rejection reason is required")
+        
+        update_data = {
+            "status": "Rejected",
+            "rejected_by": current_user["id"],
+            "rejected_by_name": current_user["name"],
+            "rejected_at": datetime.now(timezone.utc).isoformat(),
+            "comments": rejection_data.get("comments", "")
+        }
+        
+        await db.quotations.update_one({"id": quotation_id}, {"$set": update_data})
+        
+        return {"message": "Quotation rejected", "quotation_id": quotation_id}
+    
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error rejecting quotation: {e}")
+        raise HTTPException(status_code=500, detail="Failed to reject quotation")
+
+
+@api_router.put("/academic/invoice-requests/{invoice_id}/approve")
+async def approve_invoice_academic(
+    invoice_id: str,
+    approval_data: dict,
+    current_user: dict = Depends(get_current_user)
+):
+    """
+    Academic Head approves an invoice request and routes it to Accounts.
+    """
+    try:
+        if current_user["role"] not in ["Academic Head", "MD", "COO", "CEO"]:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="Access denied. Academic Head role required."
+            )
+        
+        invoice = await db.invoice_requests.find_one({"id": invoice_id}, {"_id": 0})
+        
+        if not invoice:
+            raise HTTPException(status_code=404, detail="Invoice request not found")
+        
+        update_data = {
+            "status": "Approved",
+            "approved_by": current_user["id"],
+            "approved_by_name": current_user["name"],
+            "approved_at": datetime.now(timezone.utc).isoformat(),
+            "comments": approval_data.get("comments", ""),
+            "routed_to_accounts": True,
+            "routed_to_accounts_at": datetime.now(timezone.utc).isoformat()
+        }
+        
+        await db.invoice_requests.update_one({"id": invoice_id}, {"$set": update_data})
+        
+        return {"message": "Invoice request approved and routed to Accounts", "invoice_id": invoice_id}
+    
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error approving invoice: {e}")
+        raise HTTPException(status_code=500, detail="Failed to approve invoice")
+
+
+@api_router.put("/academic/invoice-requests/{invoice_id}/reject")
+async def reject_invoice_academic(
+    invoice_id: str,
+    rejection_data: dict,
+    current_user: dict = Depends(get_current_user)
+):
+    """
+    Academic Head rejects an invoice request.
+    """
+    try:
+        if current_user["role"] not in ["Academic Head", "MD", "COO", "CEO"]:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="Access denied. Academic Head role required."
+            )
+        
+        invoice = await db.invoice_requests.find_one({"id": invoice_id}, {"_id": 0})
+        
+        if not invoice:
+            raise HTTPException(status_code=404, detail="Invoice request not found")
+        
+        if not rejection_data.get("comments"):
+            raise HTTPException(status_code=400, detail="Rejection reason is required")
+        
+        update_data = {
+            "status": "Rejected",
+            "rejected_by": current_user["id"],
+            "rejected_by_name": current_user["name"],
+            "rejected_at": datetime.now(timezone.utc).isoformat(),
+            "comments": rejection_data.get("comments", "")
+        }
+        
+        await db.invoice_requests.update_one({"id": invoice_id}, {"$set": update_data})
+        
+        return {"message": "Invoice request rejected", "invoice_id": invoice_id}
+    
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error rejecting invoice: {e}")
+        raise HTTPException(status_code=500, detail="Failed to reject invoice")
+
+
 @api_router.post("/academic/training-requests/{request_id}/allocate")
 async def allocate_training_request(
     request_id: str,
