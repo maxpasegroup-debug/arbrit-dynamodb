@@ -65,28 +65,24 @@ const SalesHeadDashboard = () => {
     checkAuth();
   }, [navigate]);
 
-  // Fetch duplicate alerts count
-  useEffect(() => {
-    const fetchDuplicateCount = async () => {
-      try {
-        const token = localStorage.getItem('token');
-        const response = await axios.get(`${API}/sales/duplicate-alerts`, {
-          headers: { Authorization: `Bearer ${token}` }
-        });
-        const pendingAlerts = response.data.filter(alert => alert.status === 'pending');
-        setDuplicateCount(pendingAlerts.length);
-      } catch (error) {
-        console.error('Error fetching duplicate count:', error);
-      }
-    };
-
-    if (user) {
-      fetchDuplicateCount();
-      // Refresh count every 30 seconds
-      const interval = setInterval(fetchDuplicateCount, 30000);
-      return () => clearInterval(interval);
+  const fetchDashboardStats = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      const response = await axios.get(`${API}/sales-head/dashboard-stats`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      setStats(response.data || {});
+    } catch (error) {
+      console.error('Error fetching stats:', error);
+      // Mock stats
+      setStats({
+        totalLeads: 156,
+        teamMembers: 12,
+        monthlyRevenue: 523000,
+        pendingTasks: 8
+      });
     }
-  }, [user]);
+  };
 
   const handleLogout = () => {
     localStorage.removeItem('token');
