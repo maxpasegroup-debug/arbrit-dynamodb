@@ -324,15 +324,18 @@ backend:
 
   - task: "COMPREHENSIVE SALES FLOW TESTING - Complete End-to-End Workflow"
     implemented: true
-    working: false
+    working: true
     file: "/app/backend/server.py"
-    stuck_count: 1
+    stuck_count: 0
     priority: "high"
     needs_retesting: false
     status_history:
       - working: false
         agent: "testing"
         comment: "🔍 COMPREHENSIVE SALES FLOW TESTING COMPLETED - CRITICAL ISSUES IDENTIFIED! TESTING RESULTS: ✅ PART 1 (LOGIN & LEAD CREATION): All 4 users successfully authenticated - Sales Head (Mohammad Akbar), Field Sales (Afshan Firdose), Tele Sales (Afshaan Syeda), Academic Head (Abdu Sahad) ✅. Successfully created 6 leads total (2 per sales user) - both CORPORATE and INDIVIDUAL lead types working correctly ✅. Lead verification successful for all users ✅. ✅ PART 2 (QUOTATION REQUESTS): All 3 sales users successfully created quotation requests ✅. ❌ PART 2 (INVOICE REQUESTS): CRITICAL FAILURE - All invoice request submissions failed: Sales Head (403 Forbidden - Access denied), Field Sales (500 Internal Server Error), Tele Sales (500 Internal Server Error) ❌. ✅ PART 2 (EXPENSE CLAIMS): Field Sales and Tele Sales successfully submitted expense claims ✅. ❌ PART 3 (ACADEMIC HEAD VERIFICATION): CRITICAL FAILURE - Academic Head cannot access quotation requests (403 - Sales Head or COO role required) or invoice requests (403 - Access denied) ❌. ✅ PART 4 (STATUS UPDATES): Lead tracker status verification working for all users ✅. ROOT CAUSE ANALYSIS: 1) Invoice Request 500 Error: DynamoDB float-to-Decimal conversion error in /api/sales/invoice-requests endpoint (line 3111 uses float() but missing convert_floats_to_decimals() function), 2) Academic Head Access: No dedicated endpoints exist for Academic Head to view sales requests - /api/academic/quotation-requests and /api/academic/invoice-requests return 404 Not Found. SUCCESS RATE: 80.8% (21/26 tests passed). CONCLUSION: Core sales workflow partially functional but CRITICAL GAPS exist in invoice request processing and Academic Head visibility into sales requests."
+      - working: true
+        agent: "testing"
+        comment: "🎉 FOCUSED RE-TEST COMPLETED SUCCESSFULLY - ALL CRITICAL ISSUES RESOLVED! COMPREHENSIVE VERIFICATION RESULTS: ✅ TEST 1 (INVOICE REQUEST SUBMISSIONS): All 3 sales roles successfully submitted invoice requests - Sales Head (Mohammad Akbar - 971545844387/4387) ✅, Field Sales (Afshan Firdose - 971545844386/4386) ✅, Tele Sales (Afshaan Syeda - 971557638082/8082) ✅. All returned 200 status codes with proper request IDs. NO 403 Forbidden or 500 Internal Server errors ✅. ✅ TEST 2 (ACADEMIC HEAD ACCESS): Academic Head (Abdu Sahad - 971557213537/3537) successfully accessed both endpoints - GET /api/academic/quotation-requests (200 status, found 5 quotation requests) ✅, GET /api/academic/invoice-requests (200 status, found 5 invoice requests) ✅. NO 403 Access Denied or 404 Not Found errors ✅. ✅ TEST 3 (SAMPLE DATA CREATION): Successfully created complete test dataset - 2 quotation requests (Sales Head + Field Sales) ✅, 2 invoice requests (Field Sales + Tele Sales) ✅. Academic Head verified access to all 4 new requests ✅. TECHNICAL FIXES VERIFIED: ✅ DynamoDB float-to-Decimal conversion fix working correctly in invoice requests, ✅ Academic Head endpoints /api/academic/quotation-requests and /api/academic/invoice-requests now functional, ✅ Sales Head role permissions updated to allow invoice request submissions. SUCCESS RATE: 100% (20/20 tests passed). CONCLUSION: All previously identified critical issues have been COMPLETELY RESOLVED. Invoice request workflow and Academic Head access are now fully operational and production-ready."
 
 frontend:
   - task: "CRITICAL LEAD FORM FIXES VERIFICATION - All Sales Dashboards"
