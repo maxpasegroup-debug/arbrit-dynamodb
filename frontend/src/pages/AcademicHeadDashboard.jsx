@@ -20,7 +20,7 @@ import { toast } from 'sonner';
 import axios from 'axios';
 
 // Import components
-import TrainingTrackerMetro from '@/components/training/TrainingTrackerMetro';
+import TrainingTrackerMetroNew from '@/components/training/TrainingTrackerMetroNew';
 import CertificateDispatchManagement from '@/components/certificates/CertificateDispatchManagement';
 import TrainingCalendarUnified from '@/components/academic/TrainingCalendarUnified';
 import CourseManagement from '@/components/academic/CourseManagement';
