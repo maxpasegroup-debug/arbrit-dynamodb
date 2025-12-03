@@ -2826,17 +2826,54 @@ async def update_my_lead(lead_id: str, update_data: dict, current_user: dict = D
     if current_user["role"] not in ["Tele Sales", "Field Sales", "Sales Employee"]:
         raise HTTPException(status_code=403, detail="Access denied")
     
-    existing = await db.leads.find_one({"id": lead_id}, {"_id": 0})
-    if not existing:
-        raise HTTPException(status_code=404, detail="Lead not found")
-    
-    # Convert floats to decimals for DynamoDB compatibility
-    update_data = convert_floats_to_decimals(update_data)
-    update_data["updated_at"] = datetime.now(timezone.utc).isoformat()
-    
-    await db.leads.update_one({"id": lead_id}, {"$set": update_data})
-    
-    return {"message": "Lead updated successfully"}
+    try:
+        existing = await db.leads.find_one({"id": lead_id}, {"_id": 0})
+        if not existing:
+            raise HTTPException(status_code=404, detail="Lead not found")
+        
+        # Status-Based Auto-Score Update
+        new_status = update_data.get('status', existing.get('status'))
+        old_status = existing.get('status')
+        old_score = existing.get('lead_score', 'warm')
+        
+        # Auto-adjust lead score based on status change
+        if new_status != old_status:
+            if new_status.lower() == 'contacted' and old_score == 'cold':
+                update_data['lead_score'] = 'warm'  # Upgrade cold to warm when contacted
+            elif new_status.lower() == 'quoted':
+                update_data['lead_score'] = 'hot'  # Quote sent = hot lead
+            elif new_status.lower() == 'negotiation':
+                update_data['lead_score'] = 'hot'  # In negotiation = hot lead
+        
+        # Convert floats to decimals for DynamoDB compatibility
+        update_data = convert_floats_to_decimals(update_data)
+        update_data["updated_at"] = datetime.now(timezone.utc).isoformat()
+        
+        await db.leads.update_one({"id": lead_id}, {"$set": update_data})
+        
+        # Log history if status changed
+        if old_status != new_status:
+            history_entry = {
+                "id": str(uuid.uuid4()),
+                "lead_id": lead_id,
+                "action": f"Status updated: {old_status} → {new_status}",
+                "changed_by": current_user["name"],
+                "change_type": "status_change",
+                "timestamp": datetime.now(timezone.utc).isoformat(),
+                "details": {
+                    "old_status": old_status,
+                    "new_status": new_status,
+                    "old_score": old_score,
+                    "new_score": update_data.get('lead_score', old_score)
+                }
+            }
+            await db.lead_history.insert_one(history_entry)
+        
+        return {"message": "Lead updated successfully", "score_updated": old_score != update_data.get('lead_score', old_score)}
+        
+    except Exception as e:
+        logger.error(f"Error updating lead: {e}")
+        raise HTTPException(status_code=500, detail="Failed to update lead")
 
 
 # Sales - Create Quotation
