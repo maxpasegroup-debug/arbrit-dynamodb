@@ -80,15 +80,23 @@ const UnifiedLeadForm = ({
     lead_value: '0',
     lead_score: 'warm',
     status: 'new',
-    field_sales_type: ''
+    field_sales_type: '',
+    assigned_to: '', // For online lead assignment
+    assigned_to_name: ''
   });
 
   useEffect(() => {
     fetchCourses();
     
+    // Fetch employees for online mode (Sales Head assigning)
+    if (mode === 'online') {
+      fetchEmployees();
+      setFormData(prev => ({ ...prev, source: 'Online' }));
+    }
+    
     // Auto-populate user data
     const user = JSON.parse(localStorage.getItem('user') || '{}');
-    if (user.name) {
+    if (user.name && mode !== 'online') {
       setFormData(prev => ({
         ...prev,
         lead_owner: user.name,
@@ -104,7 +112,24 @@ const UnifiedLeadForm = ({
       }));
       setLeadType(existingLead.lead_type || 'company');
     }
-  }, [existingLead]);
+  }, [existingLead, mode]);
+
+  const fetchEmployees = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      const response = await axios.get(`${API}/hrm/employees`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      const salesEmployees = response.data.filter(emp => 
+        emp.department === 'Sales' || 
+        emp.designation?.includes('SALES') ||
+        emp.role?.includes('Sales')
+      );
+      setEmployees(salesEmployees);
+    } catch (error) {
+      console.error('Error fetching employees:', error);
+    }
+  };
 
   useEffect(() => {
     // Recalculate lead score when relevant fields change
