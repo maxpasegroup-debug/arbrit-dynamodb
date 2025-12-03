@@ -158,8 +158,8 @@ const FieldSalesDashboard = () => {
               value="calendar"
               className="data-[state=active]:bg-green-500/20 data-[state=active]:text-white text-gray-300"
             >
-              <Calendar className="w-4 h-4 mr-2" />
-              Calendar
+              <BookOpen className="w-4 h-4 mr-2" />
+              Academic Calendar
             </TabsTrigger>
             <TabsTrigger 
               value="expenses"
