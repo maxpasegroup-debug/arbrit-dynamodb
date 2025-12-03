@@ -129,6 +129,15 @@ const SalesHeadDashboard = () => {
             </div>
 
             <div className="flex items-center gap-4">
+              <Button
+                onClick={() => setOnlineLeadDialogOpen(true)}
+                style={{ background: 'linear-gradient(135deg, #d4af37 0%, #c9a02c 100%)' }}
+                className="text-[#0a1e3d] font-semibold"
+                size="sm"
+              >
+                <Plus className="w-4 h-4 mr-2" />
+                Add Online Lead
+              </Button>
               <DuplicateAlertsNotification onViewAll={() => setActiveTab('duplicates')} />
               <div className="text-right">
                 <p className="text-sm font-semibold text-white">{user?.name}</p>
