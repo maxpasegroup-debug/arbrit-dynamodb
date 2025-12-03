@@ -215,43 +215,19 @@ const SalesHeadDashboard = () => {
 
           <div className="mt-6">
             <TabsContent value="overview" className="mt-0">
-              <SalesOverview />
+              <PerformanceOverview />
             </TabsContent>
 
-            <TabsContent value="monitoring" className="mt-0">
-              <EmployeeMonitoring />
-            </TabsContent>
-
-            <TabsContent value="leads" className="mt-0">
-              <LeadTracker />
-            </TabsContent>
-
-            <TabsContent value="quotations" className="mt-0">
-              <QuotationManagementEnhanced />
-            </TabsContent>
-
-            <TabsContent value="invoice" className="mt-0">
-              <InvoiceRequest />
-            </TabsContent>
-
-            <TabsContent value="requests" className="mt-0">
-              <RequestsView />
+            <TabsContent value="lead-management" className="mt-0">
+              <LeadManagement />
             </TabsContent>
 
             <TabsContent value="leaves" className="mt-0">
-              <LeaveApprovals />
+              <LeaveManagement />
             </TabsContent>
 
-            <TabsContent value="my-expenses" className="mt-0">
-              <ExpenseSubmission />
-            </TabsContent>
-
-            <TabsContent value="expense-approvals" className="mt-0">
-              <ExpenseApprovals userRole="Sales Head" />
-            </TabsContent>
-
-            <TabsContent value="dispatch" className="mt-0">
-              <CertificateDispatchManagement />
+            <TabsContent value="expenses" className="mt-0">
+              <ExpenseManagement />
             </TabsContent>
           </div>
         </Tabs>
