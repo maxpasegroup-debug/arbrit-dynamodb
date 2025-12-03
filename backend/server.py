@@ -3153,6 +3153,85 @@ async def submit_leave_request(leave_req: LeaveRequestCreate, current_user: dict
     return leave_obj
 
 
+# Academic Head - Leave Requests Management
+@api_router.get("/academic/leave-requests")
+async def get_academic_leave_requests(
+    status: Optional[str] = None,
+    current_user: dict = Depends(get_current_user)
+):
+    """
+    Academic Head views leave requests from academic team (trainers, coordinators).
+    """
+    try:
+        if current_user["role"] not in ["Academic Head", "MD", "COO", "CEO"]:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="Access denied. Academic Head role required."
+            )
+        
+        query = {}
+        if status:
+            query["status"] = status
+        
+        query_result = await db.leave_requests.find(query, {"_id": 0})
+        leave_requests = await query_result.sort("created_at", -1).to_list(1000)
+        
+        for req in leave_requests:
+            if isinstance(req.get('created_at'), str):
+                req['created_at'] = datetime.fromisoformat(req['created_at'])
+            if isinstance(req.get('updated_at'), str):
+                req['updated_at'] = datetime.fromisoformat(req['updated_at'])
+        
+        return leave_requests
+    
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error fetching academic leave requests: {e}")
+        return []
+
+
+@api_router.put("/academic/leave-requests/{request_id}/approve")
+async def approve_academic_leave_request(
+    request_id: str,
+    action: LeaveApprovalAction,
+    current_user: dict = Depends(get_current_user)
+):
+    """
+    Academic Head approves/rejects leave requests from academic team.
+    """
+    try:
+        if current_user["role"] not in ["Academic Head", "MD", "COO"]:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="Access denied. Academic Head role required."
+            )
+        
+        existing = await db.leave_requests.find_one({"id": request_id}, {"_id": 0})
+        if not existing:
+            raise HTTPException(status_code=404, detail="Leave request not found")
+        
+        new_status = "Approved by Academic Head" if action.action == "Approve" else "Rejected"
+        
+        update_data = {
+            "status": new_status,
+            "approved_by_academic_head": current_user["id"],
+            "academic_head_remarks": action.remarks or "",
+            "updated_at": datetime.now(timezone.utc).isoformat()
+        }
+        
+        await db.leave_requests.update_one({"id": request_id}, {"$set": update_data})
+        
+        return {"message": f"Leave request {action.action.lower()}d successfully"}
+    
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error processing academic leave request: {e}")
+        raise HTTPException(status_code=500, detail="Failed to process leave request")
+
+
+
 # Sales - Self Lead Submission (All Sales Roles)
 @api_router.post("/sales/self-lead")
 async def submit_self_lead(lead: LeadCreate, current_user: dict = Depends(get_current_user)):
