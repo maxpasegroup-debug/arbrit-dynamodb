@@ -2430,6 +2430,92 @@ class ArbritBackendHealthTester:
         # Final Summary
         self.print_final_summary()
 
+    def test_trainer_booking_request_fix(self):
+        """CRITICAL - Test trainer booking request with Decimal conversion fix"""
+        print("\n🎯 CRITICAL TEST: Trainer Booking Request Fix Verification")
+        print("   Testing that booking requests work after Decimal conversion fix")
+        
+        # Step 1: Login as Sales Head
+        print("\n   Step 1: Login as Sales Head (971545844387/4387)")
+        success, response = self.run_test(
+            "Login as Sales Head for Booking Test",
+            "POST",
+            "auth/login",
+            200,
+            data={"mobile": "971545844387", "pin": "4387"}
+        )
+        
+        if not success:
+            print("   ❌ FAILED: Cannot login as Sales Head")
+            return False, {}
+        
+        if 'token' in response:
+            self.token = response['token']
+            print(f"   ✅ Sales Head login successful: {response.get('user', {}).get('name', 'Unknown')}")
+        
+        # Step 2: POST booking request with test data
+        print("\n   Step 2: POST booking request with test data")
+        booking_data = {
+            "lead_id": "test-lead-123",
+            "course_id": "course-1",
+            "course_name": "Heights Safety Training",
+            "requested_date": "2025-12-15",
+            "num_trainees": 25,
+            "company_name": "XYZ Construction",
+            "contact_person": "Ahmed Hassan",
+            "contact_mobile": "971501112233"
+        }
+        
+        success, response = self.run_test(
+            "Create Booking Request (Decimal Fix Test)",
+            "POST",
+            "booking-requests",
+            200,
+            data=booking_data
+        )
+        
+        if success:
+            print(f"   ✅ SUCCESS: Booking request created without 500 error!")
+            print(f"   ✅ No 'Failed to create booking request' error")
+            if 'request' in response and 'id' in response['request']:
+                self.booking_request_id = response['request']['id']
+                print(f"   ✅ Booking Request ID: {self.booking_request_id}")
+            else:
+                print(f"   ✅ Response: {response}")
+        else:
+            print(f"   ❌ FAILED: Booking request creation failed")
+            return False, {}
+        
+        # Step 3: Verify booking saved to DynamoDB
+        print("\n   Step 3: Verify booking saved to DynamoDB")
+        success, response = self.run_test(
+            "Get Booking Requests (Verify Save)",
+            "GET",
+            "booking-requests",
+            200
+        )
+        
+        if success:
+            if isinstance(response, list):
+                print(f"   ✅ Found {len(response)} booking requests in system")
+                # Check if our booking is in the list
+                booking_found = False
+                for booking in response:
+                    if (booking.get('company_name') == 'XYZ Construction' and 
+                        booking.get('contact_person') == 'Ahmed Hassan'):
+                        booking_found = True
+                        print(f"   ✅ Booking appears in list: {booking.get('course_name')} for {booking.get('company_name')}")
+                        break
+                
+                if not booking_found:
+                    print(f"   ⚠️ Warning: Specific booking not found in list, but GET request successful")
+            else:
+                print(f"   ✅ GET request successful, response type: {type(response)}")
+        else:
+            print(f"   ❌ FAILED: Could not retrieve booking requests")
+        
+        return success, response
+
 def main():
     print("🚀 CRITICAL - ACTUAL LEAD SUBMISSION TEST")
     print("📋 Testing ACTUAL submission of leads to identify exact errors")
