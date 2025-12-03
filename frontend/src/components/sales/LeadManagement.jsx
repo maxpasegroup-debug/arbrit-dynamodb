@@ -57,7 +57,8 @@ const LeadManagement = () => {
   const submitUpdate = async () => {
     try {
       const token = localStorage.getItem('token');
-      await axios.put(`${API}/sales/leads/${selectedLead.id}`, updateData, {
+      // Sales Head endpoint for updates
+      await axios.put(`${API}/sales-head/leads/${selectedLead.id}`, updateData, {
         headers: { Authorization: `Bearer ${token}` }
       });
       toast.success('Lead updated successfully');
@@ -66,6 +67,42 @@ const LeadManagement = () => {
     } catch (error) {
       console.error('Error updating lead:', error);
       toast.error('Failed to update lead');
+    }
+  };
+
+  const handleCreateQuotation = (lead) => {
+    setQuotationLead(lead);
+    setQuotationOpen(true);
+  };
+
+  const handleQuotationSubmit = async (quotationData) => {
+    try {
+      const token = localStorage.getItem('token');
+      await axios.post(`${API}/quotations`, quotationData, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      toast.success('Quotation created successfully');
+      setQuotationOpen(false);
+      fetchLeads();
+    } catch (error) {
+      console.error('Error creating quotation:', error);
+      toast.error('Failed to create quotation');
+    }
+  };
+
+  const handleAssignLead = async (leadId, assignTo) => {
+    try {
+      const token = localStorage.getItem('token');
+      await axios.put(`${API}/sales-head/leads/${leadId}`, {
+        assigned_to: assignTo
+      }, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      toast.success('Lead assigned successfully');
+      fetchLeads();
+    } catch (error) {
+      console.error('Error assigning lead:', error);
+      toast.error('Failed to assign lead');
     }
   };
 
