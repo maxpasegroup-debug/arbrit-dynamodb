@@ -280,7 +280,28 @@ const UnifiedLeadForm = ({
       if (onSuccess) onSuccess();
     } catch (error) {
       console.error('Error saving lead:', error);
-      toast.error(error.response?.data?.detail || 'Failed to save lead');
+      
+      // Handle different error response formats
+      let errorMessage = 'Failed to save lead';
+      
+      if (error.response?.data) {
+        const errorData = error.response.data;
+        
+        // Handle Pydantic validation errors
+        if (errorData.detail && Array.isArray(errorData.detail)) {
+          errorMessage = errorData.detail.map(err => err.msg || err.message).join(', ');
+        } 
+        // Handle simple string detail
+        else if (typeof errorData.detail === 'string') {
+          errorMessage = errorData.detail;
+        }
+        // Handle error object
+        else if (errorData.message) {
+          errorMessage = errorData.message;
+        }
+      }
+      
+      toast.error(errorMessage);
     } finally {
       setLoading(false);
     }
