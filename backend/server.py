@@ -1643,6 +1643,55 @@ async def get_academic_training_requests(current_user: dict = Depends(get_curren
         return []
 
 
+
+@api_router.get("/academic/quotation-requests")
+async def get_academic_quotation_requests(current_user: dict = Depends(get_current_user)):
+    """
+    Academic Head views all quotation requests from sales team.
+    """
+    try:
+        # Check permission
+        if current_user["role"] not in ["Academic Head", "MD", "COO", "CEO"]:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="Access denied. Academic Head, MD, or COO role required."
+            )
+        
+        query_result = await db.quotations.find({}, {"_id": 0})
+        quotations = await query_result.sort("created_at", -1).to_list(1000)
+        return quotations
+    
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error fetching quotation requests: {e}")
+        return []
+
+
+@api_router.get("/academic/invoice-requests")
+async def get_academic_invoice_requests(current_user: dict = Depends(get_current_user)):
+    """
+    Academic Head views all invoice requests from sales team.
+    """
+    try:
+        # Check permission
+        if current_user["role"] not in ["Academic Head", "MD", "COO", "CEO"]:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="Access denied. Academic Head, MD, or COO role required."
+            )
+        
+        query_result = await db.invoice_requests.find({}, {"_id": 0})
+        invoices = await query_result.sort("created_at", -1).to_list(1000)
+        return invoices
+    
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error fetching invoice requests: {e}")
+        return []
+
+
 @api_router.post("/academic/training-requests/{request_id}/allocate")
 async def allocate_training_request(
     request_id: str,
