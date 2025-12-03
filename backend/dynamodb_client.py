@@ -35,6 +35,7 @@ tables = {
     'expense_claims': dynamodb.Table(f'{TABLE_PREFIX}_expense_claims'),
     'leads': dynamodb.Table(f'{TABLE_PREFIX}_leads'),
     'trainer_requests': dynamodb.Table(f'{TABLE_PREFIX}_trainer_requests'),
+    'training_requests': dynamodb.Table(f'{TABLE_PREFIX}_training_requests'),
     'visit_logs': dynamodb.Table(f'{TABLE_PREFIX}_visit_logs'),
     'leave_requests': dynamodb.Table(f'{TABLE_PREFIX}_leave_requests'),
     # Accounting and additional module tables
