@@ -7,7 +7,7 @@ import requests
 import json
 
 class SalesFlowAnalyzer:
-    def __init__(self, base_url="https://safety-docs-hub.preview.emergentagent.com"):
+    def __init__(self, base_url="https://crm-safety-app.preview.emergentagent.com"):
         self.base_url = base_url
         self.api_url = f"{base_url}/api"
         self.tokens = {}

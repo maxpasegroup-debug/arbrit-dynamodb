@@ -109,7 +109,7 @@ user_problem_statement: |
 
   **CONTEXT:**
   - Application: Sales CRM with React frontend + FastAPI backend + DynamoDB
-  - URL: https://safety-docs-hub.preview.emergentagent.com
+  - URL: https://crm-safety-app.preview.emergentagent.com
   - 5 courses have been added: Fire Safety Training, First Aid & CPR, Working at Heights, Confined Space Entry, Electrical Safety
 
   **TEST REQUIREMENTS:**
