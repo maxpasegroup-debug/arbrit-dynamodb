@@ -859,7 +859,7 @@ const LeadTracker = () => {
       </div>
 
       {/* Leads Grid */}
-      <div className="bg-white/50 backdrop-blur-sm rounded-xl border border-white/10 p-6">
+      <div className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
         {loading ? (
           <p className="text-center py-8 text-gray-500">Loading leads...</p>
         ) : filteredLeads.length === 0 ? (
@@ -867,11 +867,11 @@ const LeadTracker = () => {
             {searchTerm || statusFilter !== 'all' ? 'No leads match your filters' : 'No leads yet'}
           </p>
         ) : (
-          <div className="space-y-3">
+          <div className="space-y-4">
             {filteredLeads.map((lead) => (
               <div
                 key={lead.id}
-                className="bg-white/5 border border-white/10 rounded-lg p-4 hover:bg-white/10 transition-all"
+                className="bg-white border-2 border-gray-300 rounded-xl p-5 hover:border-gray-900 hover:shadow-lg transition-all duration-200 relative"
               >
                 <div className="flex items-start justify-between">
                   <div className="flex-1">
