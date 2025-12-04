@@ -299,97 +299,20 @@ const LeadTracker = () => {
     fetchLeads();
   };
 
-  // Send Quotation to Client Handler
-  const handleSendQuotationToClient = async (lead) => {
-    try {
-      const token = localStorage.getItem('token');
-      const quotation_id = lead.quotation_id;
-      
-      if (!quotation_id) {
-        toast.error('No quotation found for this lead');
-        return;
-      }
-      
-      // Show confirmation dialog with client details
-      const sendMethod = await new Promise((resolve) => {
-        const dialog = document.createElement('div');
-        dialog.innerHTML = `
-          <div class="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-            <div class="bg-slate-800 rounded-xl p-6 max-w-md w-full mx-4 border border-white/10">
-              <h3 class="text-xl font-bold text-white mb-4">📤 Send Quotation to Client</h3>
-              
-              <div class="space-y-3 mb-6">
-                <div class="bg-white/5 p-3 rounded">
-                  <p class="text-slate-400 text-sm">Client</p>
-                  <p class="text-white font-semibold">${lead.company_name || lead.client_name}</p>
-                </div>
-                
-                <div class="bg-white/5 p-3 rounded">
-                  <p class="text-slate-400 text-sm">Contact Person</p>
-                  <p class="text-white">${lead.contact_person || 'N/A'}</p>
-                </div>
-                
-                <div class="bg-white/5 p-3 rounded">
-                  <p class="text-slate-400 text-sm">Email</p>
-                  <input type="email" id="client-email" 
-                    value="${lead.contact_email || ''}" 
-                    class="w-full bg-slate-700 text-white rounded px-3 py-2 mt-1"
-                    placeholder="client@example.com" />
-                </div>
-                
-                <div class="bg-white/5 p-3 rounded">
-                  <p class="text-slate-400 text-sm">Send Via</p>
-                  <select id="send-method" class="w-full bg-slate-700 text-white rounded px-3 py-2 mt-1">
-                    <option value="Email">Email</option>
-                    <option value="WhatsApp">WhatsApp</option>
-                    <option value="Hand Delivered">Hand Delivered</option>
-                  </select>
-                </div>
-              </div>
-              
-              <div class="flex gap-3">
-                <button id="send-btn" class="flex-1 bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg">
-                  📤 Send Quotation
-                </button>
-                <button id="cancel-btn" class="px-4 py-2 bg-slate-700 hover:bg-slate-600 text-white rounded-lg">
-                  Cancel
-                </button>
-              </div>
-            </div>
-          </div>
-        `;
-        document.body.appendChild(dialog);
-        
-        dialog.querySelector('#send-btn').onclick = () => {
-          const email = dialog.querySelector('#client-email').value;
-          const method = dialog.querySelector('#send-method').value;
-          document.body.removeChild(dialog);
-          resolve({ action: 'send', email, method });
-        };
-        
-        dialog.querySelector('#cancel-btn').onclick = () => {
-          document.body.removeChild(dialog);
-          resolve({ action: 'cancel' });
-        };
-      });
-      
-      if (sendMethod.action === 'cancel') return;
-      
-      // Send quotation to client
-      await axios.put(`${API}/sales/quotations/${quotation_id}/send-to-client`, {
-        client_email: sendMethod.email,
-        sent_via: sendMethod.method,
-        remarks: `Sent via ${sendMethod.method}`
-      }, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
-      
-      toast.success(`Quotation sent to client via ${sendMethod.method}!`);
-      fetchLeads();
-    } catch (error) {
-      console.error('Error sending quotation:', error);
-      toast.error('Failed to send quotation to client');
+  // Send Quotation to Client Handler - Opens professional modal
+  const handleSendQuotationToClient = (lead) => {
+    if (!lead.quotation_id) {
+      toast.error('No quotation found for this lead');
+      return;
     }
+    
+    setSelectedLeadForSend(lead);
+    setQuotationSendModalOpen(true);
+  };
+  
+  const handleQuotationSendSuccess = () => {
+    fetchLeads();
+    toast.success('Quotation sent successfully!');
   };
 
   // Quotation Approval Handler
