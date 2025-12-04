@@ -3,9 +3,17 @@
 Cleanup demo data and create fresh test lead
 """
 import asyncio
+import os
+from pathlib import Path
 from datetime import datetime, timezone
-from dynamodb_client import db
 from decimal import Decimal
+from dotenv import load_dotenv
+
+# Load environment variables
+ROOT_DIR = Path(__file__).parent
+load_dotenv(ROOT_DIR / '.env')
+
+from dynamodb_client import db
 
 
 async def cleanup_and_seed():
