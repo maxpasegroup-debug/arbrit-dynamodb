@@ -26,48 +26,8 @@ const MyTrainingTracker = () => {
       setTrainings(response.data || []);
     } catch (error) {
       console.error('Error fetching trainings:', error);
-      // Mock data for demo
-      setTrainings([
-        {
-          id: 1,
-          clientName: 'ABC Corporation',
-          courseName: 'Fire Safety Training',
-          participants: 15,
-          status: 'in_progress',
-          progress: 60,
-          trainer: 'Ahmed Hassan',
-          scheduledDate: '2025-12-10',
-          location: 'Client Site - Dubai',
-          leadValue: 7500,
-          stages: [
-            { name: 'Lead Closed', completed: true, date: '2025-12-01' },
-            { name: 'Training Allocated', completed: true, date: '2025-12-03' },
-            { name: 'Materials Prepared', completed: true, date: '2025-12-05' },
-            { name: 'Training Scheduled', completed: true, date: '2025-12-07' },
-            { name: 'Training Delivered', completed: false, date: null },
-            { name: 'Certificate Issued', completed: false, date: null }
-          ]
-        },
-        {
-          id: 2,
-          clientName: 'Tech Solutions Ltd',
-          courseName: 'First Aid Training',
-          participants: 8,
-          status: 'completed',
-          progress: 100,
-          trainer: 'Sarah Ahmed',
-          scheduledDate: '2025-11-28',
-          location: 'Training Center - Sharjah',
-          leadValue: 4000,
-          stages: [
-            { name: 'Lead Closed', completed: true, date: '2025-11-15' },
-            { name: 'Training Allocated', completed: true, date: '2025-11-16' },
-            { name: 'Materials Prepared', completed: true, date: '2025-11-20' },
-            { name: 'Training Scheduled', completed: true, date: '2025-11-25' },
-            { name: 'Training Delivered', completed: true, date: '2025-11-28' },
-            { name: 'Certificate Issued', completed: true, date: '2025-11-30' }
-          ]
-        },
+      // Show empty state if API fails
+      setTrainings([]);
         {
           id: 3,
           clientName: 'Emirates Construction',
