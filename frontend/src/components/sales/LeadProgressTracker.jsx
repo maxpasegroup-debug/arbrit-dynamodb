@@ -71,7 +71,7 @@ const LeadProgressTracker = ({ currentStatus }) => {
                 
                 {/* Future - Show Empty Circle */}
                 {isFuture && !isWon && (
-                  <div className="w-3 h-3 bg-slate-500 rounded-full" />
+                  <div className="w-3 h-3 bg-gray-400 rounded-full" />
                 )}
               </div>
 

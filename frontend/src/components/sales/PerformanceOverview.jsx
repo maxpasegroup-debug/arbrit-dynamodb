@@ -67,7 +67,7 @@ const PerformanceOverview = () => {
       case 'Gold': return 'bg-yellow-500/20 text-yellow-400 border-yellow-400/30';
       case 'Silver': return 'bg-gray-400/20 text-gray-300 border-gray-400/30';
       case 'Bronze': return 'bg-orange-600/20 text-orange-400 border-orange-500/30';
-      default: return 'bg-slate-500/20 text-slate-400 border-slate-400/30';
+      default: return 'bg-gray-400/20 text-slate-400 border-slate-400/30';
     }
   };
 
