@@ -3,7 +3,7 @@ import axios from 'axios';
 import { Card } from '../ui/card';
 import { Button } from '../ui/button';
 import { Trash2, AlertTriangle, User, RefreshCw, Database } from 'lucide-react';
-import { toast } from 'react-hot-toast';
+import { toast } from 'sonner';
 
 const API = process.env.REACT_APP_BACKEND_URL;
 
