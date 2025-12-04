@@ -23,6 +23,8 @@ import axios from 'axios';
 // Import components
 import TrainingTrackerMetroNew from '@/components/training/TrainingTrackerMetroNew';
 import CertificateDispatchManagement from '@/components/certificates/CertificateDispatchManagement';
+import CertificateGeneration from '@/components/certificates/CertificateGeneration';
+import TrainerPerformance from '@/components/academic/TrainerPerformance';
 import TrainingAllocationManagement from '@/components/academic/TrainingAllocationManagement';
 import CourseManagement from '@/components/academic/CourseManagement';
 import AssessmentFormBuilder from '@/components/assessment/AssessmentFormBuilder';
