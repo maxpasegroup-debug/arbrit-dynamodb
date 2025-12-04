@@ -106,7 +106,11 @@ const LeadTracker = () => {
   const fetchQuotationRequests = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.get(`${API}/quotations`, {
+      const user = JSON.parse(localStorage.getItem('user') || '{}');
+      const isSalesHead = ['Sales Head', 'COO', 'MD', 'CEO'].includes(user.role);
+      
+      const endpoint = isSalesHead ? `${API}/sales-head/quotations` : `${API}/quotations`;
+      const response = await axios.get(endpoint, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setQuotationRequests(response.data || []);
@@ -118,7 +122,11 @@ const LeadTracker = () => {
   const fetchInvoiceRequests = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.get(`${API}/accounts/invoice-requests`, {
+      const user = JSON.parse(localStorage.getItem('user') || '{}');
+      const isSalesHead = ['Sales Head', 'COO', 'MD', 'CEO'].includes(user.role);
+      
+      const endpoint = isSalesHead ? `${API}/sales-head/invoices` : `${API}/accounts/invoice-requests`;
+      const response = await axios.get(endpoint, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setInvoiceRequests(response.data || []);
