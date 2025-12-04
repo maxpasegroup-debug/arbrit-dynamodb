@@ -5033,6 +5033,9 @@ async def update_training_session_status(session_id: str, status_data: dict, cur
     status = status_data.get("status")
     notes = status_data.get("notes", "")
     
+    # Get the session to find lead_id
+    session = await db.training_sessions.find_one({"id": session_id}, {"_id": 0})
+    
     await db.training_sessions.update_one(
         {"id": session_id},
         {"$set": {
@@ -5041,6 +5044,14 @@ async def update_training_session_status(session_id: str, status_data: dict, cur
             "updated_at": datetime.now(timezone.utc).isoformat()
         }}
     )
+    
+    # Auto-update lead status when training session is completed
+    if status == "Completed" and session and session.get("lead_id"):
+        await db.leads.update_one(
+            {"id": session["lead_id"]},
+            {"$set": {"status": "Won - Training Complete"}}
+        )
+        logger.info(f"Lead {session['lead_id']} status updated to 'Won - Training Complete'")
     
     return {"message": "Training session status updated"}
 
