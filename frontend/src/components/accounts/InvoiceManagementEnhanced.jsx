@@ -41,6 +41,7 @@ const InvoiceManagementEnhanced = () => {
       setUser(JSON.parse(userData));
     }
     fetchInvoices();
+    fetchPendingInvoices();
   }, []);
 
   const fetchInvoices = async () => {
@@ -52,6 +53,18 @@ const InvoiceManagementEnhanced = () => {
       setInvoices(response.data || []);
     } catch (error) {
       console.error('Error fetching invoices:', error);
+    }
+  };
+
+  const fetchPendingInvoices = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      const response = await axios.get(`${API}/accounts/approved-invoices`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      setPendingInvoices(response.data || []);
+    } catch (error) {
+      console.error('Error fetching pending invoices:', error);
     }
   };
 
