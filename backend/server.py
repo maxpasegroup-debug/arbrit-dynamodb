@@ -3927,13 +3927,26 @@ async def create_invoice_request_simple(request_data: dict, current_user: dict =
         "amount": Decimal(str(request_data["amount"])),
         "description": request_data.get("description", ""),
         "remarks": request_data.get("remarks", ""),
+        "lead_id": request_data.get("lead_id", ""),
         "requested_by": current_user["id"],
         "requested_by_name": current_user["name"],
-        "status": "Pending",
+        "status": "Pending Sales Head",
         "created_at": datetime.now(timezone.utc).isoformat()
     }
     
     await db.invoice_requests.insert_one(invoice_req)
+    
+    # Update lead with invoice info
+    lead_id = request_data.get("lead_id")
+    if lead_id:
+        await db.leads.update_one(
+            {"id": lead_id},
+            {"$set": {
+                "invoice_sent": True,
+                "invoice_id": invoice_req["id"],
+                "invoice_status": "Pending Sales Head"
+            }}
+        )
     
     return {"message": "Invoice request submitted successfully", "request_id": invoice_req["id"]}
 
