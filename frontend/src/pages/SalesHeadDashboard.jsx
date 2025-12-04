@@ -7,7 +7,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } f
 import PerformanceOverview from '@/components/sales/PerformanceOverview';
 import LeadTracker from '@/components/sales/LeadTracker';
 import LeaveApprovalManagement from '@/components/hr/LeaveApprovalManagement';
-import ExpenseManagement from '@/components/sales/ExpenseManagement';
+import ExpenseApprovalManagement from '@/components/hr/ExpenseApprovalManagement';
 import TargetManagement from '@/components/sales/TargetManagement';
 import AcademicCalendar from '@/components/sales/AcademicCalendar';
 import UnifiedLeadForm from '@/components/sales/UnifiedLeadForm';
