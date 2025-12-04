@@ -3075,6 +3075,7 @@ async def preview_quotation(
 ):
     """
     Get quotation data formatted for preview
+    Available to ALL SALES TEAM (14 Executives + 1 Sales Head)
     """
     try:
         quotation = await db.quotations.find_one({"id": quotation_id}, {"_id": 0})
@@ -3082,10 +3083,10 @@ async def preview_quotation(
         if not quotation:
             raise HTTPException(status_code=404, detail="Quotation not found")
         
-        # Check access
+        # Check access - Sales Executives can only preview their own
         if current_user["role"] in ["Field Sales", "Tele Sales", "Sales Employee"]:
             if quotation.get("created_by") != current_user["id"]:
-                raise HTTPException(status_code=403, detail="Access denied")
+                raise HTTPException(status_code=403, detail="You can only preview your own quotations")
         
         # Get lead details
         lead_id = quotation.get("lead_id")
