@@ -99,7 +99,7 @@ const HRDashboard = () => {
               <div>
                 <div className="flex items-center gap-2">
                   <Users className="w-5 h-5 text-purple-400" />
-                  <h1 className="text-2xl font-bold text-white">HR Dashboard</h1>
+                  <h1 className="text-2xl font-bold text-gray-900">HR Dashboard</h1>
                 </div>
                 <p className="text-sm text-gray-400">Human Resource Management</p>
               </div>
@@ -116,7 +116,7 @@ const HRDashboard = () => {
                 onClick={handleLogout}
                 variant="outline"
                 size="sm"
-                className="border-white/20 text-white hover:bg-white/10"
+                className="border-gray-300 text-gray-700 hover:bg-gray-100"
               >
                 <LogOut className="w-4 h-4 mr-2" />
                 Logout
@@ -133,14 +133,14 @@ const HRDashboard = () => {
           <h2 className="text-2xl font-bold text-white mb-2">
             Welcome back, {user?.name?.split(' ')[0]}!
           </h2>
-          <p className="text-gray-300">
+          <p className="text-gray-700">
             Manage employees, attendance, and documents from your HR dashboard.
           </p>
         </div>
 
         {/* HRM Modules Tabs */}
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-6 bg-white/5 border border-white/10">
+          <TabsList className="grid w-full grid-cols-6 bg-white border border-gray-200 shadow-sm">
             <TabsTrigger 
               value="employees" 
               data-testid="tab-employees"

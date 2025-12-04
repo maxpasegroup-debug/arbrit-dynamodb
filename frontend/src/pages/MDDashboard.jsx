@@ -217,7 +217,7 @@ const MDDashboard = () => {
           {/* Sales Tab */}
           <TabsContent value="sales">
             <Tabs defaultValue="overview" className="w-full">
-              <TabsList className="bg-white/5 border border-white/10">
+              <TabsList className="bg-white border border-gray-200 shadow-sm">
                 <TabsTrigger value="overview">Overview</TabsTrigger>
                 <TabsTrigger value="leads">Leads</TabsTrigger>
                 <TabsTrigger value="quotations">Quotations</TabsTrigger>
@@ -241,7 +241,7 @@ const MDDashboard = () => {
           {/* Academics Tab */}
           <TabsContent value="academics">
             <Tabs defaultValue="courses" className="w-full">
-              <TabsList className="bg-white/5 border border-white/10">
+              <TabsList className="bg-white border border-gray-200 shadow-sm">
                 <TabsTrigger value="courses">Courses</TabsTrigger>
                 <TabsTrigger value="requests">Requests</TabsTrigger>
                 <TabsTrigger value="trainers">Trainers</TabsTrigger>
@@ -307,8 +307,8 @@ const MDDashboard = () => {
                     <TrendingUp className="w-8 h-8 text-blue-400" />
                   </div>
                   <div>
-                    <h3 className="text-xl font-bold text-white">Sales Department</h3>
-                    <p className="text-slate-400 text-sm">Lead Management & CRM</p>
+                    <h3 className="text-xl font-bold text-gray-900">Sales Department</h3>
+                    <p className="text-gray-500 text-sm">Lead Management & CRM</p>
                   </div>
                 </div>
                 <Button className="w-full bg-blue-600 hover:bg-blue-700">
@@ -326,8 +326,8 @@ const MDDashboard = () => {
                     <GraduationCap className="w-8 h-8 text-purple-400" />
                   </div>
                   <div>
-                    <h3 className="text-xl font-bold text-white">Academic Department</h3>
-                    <p className="text-slate-400 text-sm">Training & Course Management</p>
+                    <h3 className="text-xl font-bold text-gray-900">Academic Department</h3>
+                    <p className="text-gray-500 text-sm">Training & Course Management</p>
                   </div>
                 </div>
                 <Button className="w-full bg-purple-600 hover:bg-purple-700">
@@ -345,8 +345,8 @@ const MDDashboard = () => {
                     <DollarSign className="w-8 h-8 text-green-400" />
                   </div>
                   <div>
-                    <h3 className="text-xl font-bold text-white">Finance Department</h3>
-                    <p className="text-slate-400 text-sm">Accounting & Payments</p>
+                    <h3 className="text-xl font-bold text-gray-900">Finance Department</h3>
+                    <p className="text-gray-500 text-sm">Accounting & Payments</p>
                   </div>
                 </div>
                 <Button className="w-full bg-green-600 hover:bg-green-700">
@@ -364,8 +364,8 @@ const MDDashboard = () => {
                     <Users className="w-8 h-8 text-orange-400" />
                   </div>
                   <div>
-                    <h3 className="text-xl font-bold text-white">HR & Operations</h3>
-                    <p className="text-slate-400 text-sm">Team & Resource Management</p>
+                    <h3 className="text-xl font-bold text-gray-900">HR & Operations</h3>
+                    <p className="text-gray-500 text-sm">Team & Resource Management</p>
                   </div>
                 </div>
                 <Button className="w-full bg-orange-600 hover:bg-orange-700">
@@ -386,8 +386,8 @@ const MDDashboard = () => {
                     <Key className="w-8 h-8 text-amber-400" />
                   </div>
                   <div>
-                    <h3 className="text-xl font-bold text-white">PIN Management</h3>
-                    <p className="text-slate-400 text-sm">Reset & Manage User PINs</p>
+                    <h3 className="text-xl font-bold text-gray-900">PIN Management</h3>
+                    <p className="text-gray-500 text-sm">Reset & Manage User PINs</p>
                   </div>
                 </div>
                 <Button className="w-full bg-amber-600 hover:bg-amber-700">

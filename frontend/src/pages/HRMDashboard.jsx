@@ -26,13 +26,13 @@ const HRMDashboard = () => {
                 onClick={() => navigate('/dashboard/coo')}
                 variant="outline"
                 size="sm"
-                className="border-white/20 text-white hover:bg-white/10"
+                className="border-gray-300 text-gray-700 hover:bg-gray-100"
               >
                 <ArrowLeft className="w-4 h-4 mr-2" />
                 Back to Dashboard
               </Button>
               <div>
-                <h1 className="text-2xl font-bold text-white">Human Resource Management</h1>
+                <h1 className="text-2xl font-bold text-gray-900">Human Resource Management</h1>
                 <p className="text-sm text-gray-400">Manage employees, attendance, and documents</p>
               </div>
             </div>
@@ -43,7 +43,7 @@ const HRMDashboard = () => {
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-6 py-8">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-4 bg-white/5 border border-white/10">
+          <TabsList className="grid w-full grid-cols-4 bg-white border border-gray-200 shadow-sm">
             <TabsTrigger 
               value="employees" 
               data-testid="tab-employees"

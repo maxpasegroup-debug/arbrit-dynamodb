@@ -94,7 +94,7 @@ const DispatchAssistantDashboard = () => {
       <div className="bg-white/5 backdrop-blur-sm border-b border-white/10">
         <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
           <div>
-            <h1 className="text-2xl font-bold text-white">Dispatch Assistant Dashboard</h1>
+            <h1 className="text-2xl font-bold text-gray-900">Dispatch Assistant Dashboard</h1>
             <p className="text-sm text-gray-400 mt-1">Arbrit Safety Management</p>
           </div>
           <div className="flex items-center gap-4">
@@ -105,7 +105,7 @@ const DispatchAssistantDashboard = () => {
             <Button
               onClick={handleLogout}
               variant="outline"
-              className="border-white/20 text-white hover:bg-white/10"
+              className="border-gray-300 text-gray-700 hover:bg-gray-100"
             >
               <LogOut className="w-4 h-4 mr-2" />
               Logout
@@ -119,13 +119,13 @@ const DispatchAssistantDashboard = () => {
           <h2 className="text-2xl font-bold text-white mb-2">
             Welcome, {user?.name?.split(' ')[0]}!
           </h2>
-          <p className="text-gray-300">
+          <p className="text-gray-700">
             Manage your delivery tasks, update status, and upload delivery proofs.
           </p>
         </div>
 
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-5 bg-white/5 border border-white/10">
+          <TabsList className="grid w-full grid-cols-5 bg-white border border-gray-200 shadow-sm">
             <TabsTrigger 
               value="overview"
               className="data-[state=active]:bg-yellow-500/20 data-[state=active]:text-white text-gray-300"

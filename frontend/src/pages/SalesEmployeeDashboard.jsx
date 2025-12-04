@@ -55,16 +55,16 @@ const SalesEmployeeDashboard = () => {
 
   if (!userData) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-cyan-900 to-slate-900 flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100 flex items-center justify-center">
         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-cyan-500"></div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-cyan-900 to-slate-900">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100">
       {/* Header */}
-      <header className="bg-black/20 backdrop-blur-sm border-b border-white/10 sticky top-0 z-50">
+      <header className="bg-white border-b border-gray-200 shadow-sm sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center py-4">
             <div className="flex items-center space-x-4">
@@ -72,7 +72,7 @@ const SalesEmployeeDashboard = () => {
                 <User className="h-6 w-6 text-white" />
               </div>
               <div>
-                <h1 className="text-xl font-bold text-white">Sales Employee Dashboard</h1>
+                <h1 className="text-xl font-bold text-gray-900">Sales Employee Dashboard</h1>
                 <p className="text-cyan-300">Welcome back, {userData.name}!</p>
               </div>
             </div>
@@ -85,7 +85,7 @@ const SalesEmployeeDashboard = () => {
                 onClick={handleLogout}
                 variant="outline" 
                 size="sm" 
-                className="border-white/20 text-white hover:bg-white/10"
+                className="border-gray-300 text-gray-700 hover:bg-gray-100"
               >
                 <LogOut className="h-4 w-4 mr-2" />
                 Logout
@@ -98,39 +98,39 @@ const SalesEmployeeDashboard = () => {
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Welcome Section */}
         <div className="mb-8">
-          <h2 className="text-3xl font-bold text-white mb-4">Dashboard Overview</h2>
-          <p className="text-slate-300 text-lg">
+          <h2 className="text-3xl font-bold text-gray-900 mb-4">Dashboard Overview</h2>
+          <p className="text-gray-600 text-lg">
             Manage your sales activities, track progress, and coordinate with the team.
           </p>
         </div>
 
         {/* Quick Stats */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-          <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl p-6">
+          <div className="bg-white border border-gray-200 rounded-xl shadow-sm p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-slate-400 text-sm">My Leads</p>
-                <p className="text-2xl font-bold text-white">{stats.leadsCount}</p>
+                <p className="text-gray-500 text-sm">My Leads</p>
+                <p className="text-2xl font-bold text-gray-900">{stats.leadsCount}</p>
               </div>
               <TrendingUp className="h-8 w-8 text-cyan-400" />
             </div>
           </div>
           
-          <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl p-6">
+          <div className="bg-white border border-gray-200 rounded-xl shadow-sm p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-slate-400 text-sm">Revenue Generated</p>
-                <p className="text-2xl font-bold text-white">{stats.revenue.toLocaleString()} AED</p>
+                <p className="text-gray-500 text-sm">Revenue Generated</p>
+                <p className="text-2xl font-bold text-gray-900">{stats.revenue.toLocaleString()} AED</p>
               </div>
               <span className="text-2xl">💰</span>
             </div>
           </div>
           
-          <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl p-6">
+          <div className="bg-white border border-gray-200 rounded-xl shadow-sm p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-slate-400 text-sm">Trainings Tracked</p>
-                <p className="text-2xl font-bold text-white">{stats.trainingsCount}</p>
+                <p className="text-gray-500 text-sm">Trainings Tracked</p>
+                <p className="text-2xl font-bold text-gray-900">{stats.trainingsCount}</p>
               </div>
               <GraduationCap className="h-8 w-8 text-green-400" />
             </div>
@@ -139,7 +139,7 @@ const SalesEmployeeDashboard = () => {
 
         {/* Main Tabs */}
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-6 bg-white/5 border border-white/10">
+          <TabsList className="grid w-full grid-cols-6 bg-white border border-gray-200 shadow-sm">
             <TabsTrigger 
               value="leads"
               className="data-[state=active]:bg-cyan-500/20 data-[state=active]:text-white text-gray-300"
