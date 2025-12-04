@@ -4170,6 +4170,53 @@ def main_leave_approval_testing():
     return 1 if tester.failed_tests else 0
 
 
+def main_quotation_invoice_workflow():
+    """Main function for quotation and invoice approval workflow testing"""
+    print("🚀 STARTING QUOTATION AND INVOICE APPROVAL WORKFLOW TESTING")
+    print("=" * 80)
+    
+    tester = ArbritBackendHealthTester()
+    
+    # Test the complete workflow
+    workflow_success = tester.test_quotation_invoice_approval_workflow()
+    
+    print(f"\n📊 WORKFLOW TESTING SUMMARY")
+    print(f"   Total Tests: {tester.tests_run}")
+    print(f"   Passed: {tester.tests_passed}")
+    print(f"   Failed: {len(tester.failed_tests)}")
+    print(f"   Success Rate: {(tester.tests_passed / tester.tests_run * 100):.1f}%")
+    
+    if tester.failed_tests:
+        print(f"\n❌ Failed Tests ({len(tester.failed_tests)}):")
+        for failure in tester.failed_tests:
+            print(f"   - {failure['test']}")
+            print(f"     Endpoint: /api/{failure['endpoint']}")
+            if 'error' in failure:
+                print(f"     Error: {failure['error']}")
+            else:
+                print(f"     Expected: {failure.get('expected')}, Got: {failure.get('actual')}")
+            print()
+        
+        print("\n🔍 CRITICAL ISSUES IDENTIFIED:")
+        print("   ❌ Quotation and Invoice Approval Workflow has issues")
+        print("   ❌ Some API endpoints are not working correctly")
+        print("   ❌ Complete Sales → Sales Head → Accounts workflow cannot be verified")
+        
+    else:
+        print("\n🎉 QUOTATION AND INVOICE APPROVAL WORKFLOW FULLY FUNCTIONAL!")
+        print("✅ Sales Exec → Sales Head → Accounts flow working")
+        print("✅ PIN login and token-based authentication working")
+        print("✅ Lead ID format ARBRIT-DEC24-DUBAI-001 supported")
+        print("✅ All approval endpoints functional")
+        print("✅ Status tracking throughout the flow working")
+        print("✅ Proper error handling implemented")
+    
+    print("\n" + "="*80)
+    
+    # Return appropriate exit code
+    return 1 if tester.failed_tests else 0
+
+
 if __name__ == "__main__":
     # Check command line arguments for specific test types
     if len(sys.argv) > 1:
@@ -4181,6 +4228,8 @@ if __name__ == "__main__":
             sys.exit(main_sales_to_payment_workflow())
         elif sys.argv[1] == "leave":
             sys.exit(main_leave_approval_testing())
+        elif sys.argv[1] == "quotation":
+            sys.exit(main_quotation_invoice_workflow())
     
     # Default to lead submission tests
     sys.exit(main())
