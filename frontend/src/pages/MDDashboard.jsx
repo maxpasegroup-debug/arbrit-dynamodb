@@ -193,7 +193,7 @@ const MDDashboard = () => {
 
         {/* Tabs Navigation */}
         <Tabs defaultValue="sales" className="mb-8">
-          <TabsList className="grid w-full grid-cols-5 bg-white/10 border border-white/20">
+          <TabsList className="grid w-full grid-cols-6 bg-white/10 border border-white/20">
             <TabsTrigger value="sales">
               <TrendingUp className="w-4 h-4 mr-2" />
               Sales
@@ -209,6 +209,10 @@ const MDDashboard = () => {
             <TabsTrigger value="feedbacks">
               <MessageSquare className="w-4 h-4 mr-2" />
               Feedbacks
+            </TabsTrigger>
+            <TabsTrigger value="admin">
+              <Trash2 className="w-4 h-4 mr-2" />
+              Admin Cleanup
             </TabsTrigger>
             <TabsTrigger value="arbrits-journey">
               <BookOpen className="w-4 h-4 mr-2" />
