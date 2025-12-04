@@ -9120,6 +9120,190 @@ async def get_library_analytics(current_user: dict = Depends(get_current_user)):
         raise HTTPException(status_code=500, detail="Failed to fetch analytics")
 
 
+# Admin - Get Employee Data Summary
+@api_router.get("/admin/employee-data/{employee_id}")
+async def get_employee_data_summary(employee_id: str, current_user: dict = Depends(get_current_user)):
+    """
+    Get all data associated with a specific employee (MD/CEO only)
+    Returns categorized data counts
+    """
+    if current_user["role"] not in ["MD", "CEO"]:
+        raise HTTPException(status_code=403, detail="Access denied. MD/CEO only.")
+    
+    try:
+        # Get employee info
+        employee = await db.employees.find_one({"id": employee_id}, {"_id": 0})
+        if not employee:
+            raise HTTPException(status_code=404, detail="Employee not found")
+        
+        data_summary = {
+            "employee": {
+                "id": employee_id,
+                "name": employee.get("name"),
+                "mobile": employee.get("mobile"),
+                "department": employee.get("department"),
+                "designation": employee.get("designation")
+            },
+            "data": {}
+        }
+        
+        # Check leads assigned to employee
+        query_result = await db.leads.find({"assigned_to": employee_id}, {"_id": 0})
+        leads = await query_result.to_list(1000)
+        data_summary["data"]["leads_assigned"] = {
+            "count": len(leads),
+            "items": [{"id": l.get("id"), "company": l.get("company_name") or l.get("client_name"), "status": l.get("status")} for l in leads[:10]]
+        }
+        
+        # Check leads created by employee
+        query_result = await db.leads.find({"created_by": employee_id}, {"_id": 0})
+        leads_created = await query_result.to_list(1000)
+        data_summary["data"]["leads_created"] = {
+            "count": len(leads_created),
+            "items": [{"id": l.get("id"), "company": l.get("company_name") or l.get("client_name")} for l in leads_created[:10]]
+        }
+        
+        # Check quotations
+        query_result = await db.quotations.find({"created_by": employee_id}, {"_id": 0})
+        quotations = await query_result.to_list(1000)
+        data_summary["data"]["quotations"] = {
+            "count": len(quotations),
+            "items": [{"id": q.get("id"), "client": q.get("client_name"), "amount": q.get("total_amount")} for q in quotations[:10]]
+        }
+        
+        # Check invoices
+        query_result = await db.invoice_requests.find({"requested_by": employee_id}, {"_id": 0})
+        invoices = await query_result.to_list(1000)
+        data_summary["data"]["invoices"] = {
+            "count": len(invoices),
+            "items": [{"id": i.get("id"), "client": i.get("client_name"), "amount": i.get("amount")} for i in invoices[:10]]
+        }
+        
+        # Check leave requests
+        query_result = await db.leave_requests.find({"employee_id": employee_id}, {"_id": 0})
+        leaves = await query_result.to_list(1000)
+        data_summary["data"]["leave_requests"] = {
+            "count": len(leaves),
+            "items": [{"id": l.get("id"), "type": l.get("leave_type"), "status": l.get("status")} for l in leaves[:10]]
+        }
+        
+        # Check expense claims
+        query_result = await db.expense_claims.find({"employee_id": employee_id}, {"_id": 0})
+        expenses = await query_result.to_list(1000)
+        data_summary["data"]["expense_claims"] = {
+            "count": len(expenses),
+            "items": [{"id": e.get("id"), "amount": e.get("amount"), "status": e.get("status")} for e in expenses[:10]]
+        }
+        
+        # Check visit logs
+        query_result = await db.visit_logs.find({"logged_by": employee_id}, {"_id": 0})
+        visits = await query_result.to_list(1000)
+        data_summary["data"]["visit_logs"] = {
+            "count": len(visits),
+            "items": [{"id": v.get("id"), "client": v.get("client_name"), "date": v.get("visit_date")} for v in visits[:10]]
+        }
+        
+        # Check attendance
+        query_result = await db.attendance.find({"employee_id": employee_id}, {"_id": 0})
+        attendance = await query_result.to_list(1000)
+        data_summary["data"]["attendance"] = {
+            "count": len(attendance),
+            "items": [{"id": a.get("id"), "date": a.get("date"), "status": a.get("status")} for a in attendance[:10]]
+        }
+        
+        return data_summary
+    
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to fetch employee data: {str(e)}")
+
+
+# Admin - Delete Employee Specific Data
+@api_router.delete("/admin/employee-data/{employee_id}/{data_type}")
+async def delete_employee_data(employee_id: str, data_type: str, current_user: dict = Depends(get_current_user)):
+    """
+    Delete specific data type for an employee (MD/CEO only)
+    data_type: leads_assigned, leads_created, quotations, invoices, leave_requests, expense_claims, visit_logs, attendance
+    """
+    if current_user["role"] not in ["MD", "CEO"]:
+        raise HTTPException(status_code=403, detail="Access denied. MD/CEO only.")
+    
+    try:
+        deleted_count = 0
+        
+        if data_type == "leads_assigned":
+            query_result = await db.leads.find({"assigned_to": employee_id}, {"_id": 0})
+            records = await query_result.to_list(1000)
+            for record in records:
+                await db.leads.delete_one({"id": record.get("id")})
+                deleted_count += 1
+        
+        elif data_type == "leads_created":
+            query_result = await db.leads.find({"created_by": employee_id}, {"_id": 0})
+            records = await query_result.to_list(1000)
+            for record in records:
+                await db.leads.delete_one({"id": record.get("id")})
+                deleted_count += 1
+        
+        elif data_type == "quotations":
+            query_result = await db.quotations.find({"created_by": employee_id}, {"_id": 0})
+            records = await query_result.to_list(1000)
+            for record in records:
+                await db.quotations.delete_one({"id": record.get("id")})
+                deleted_count += 1
+        
+        elif data_type == "invoices":
+            query_result = await db.invoice_requests.find({"requested_by": employee_id}, {"_id": 0})
+            records = await query_result.to_list(1000)
+            for record in records:
+                await db.invoice_requests.delete_one({"id": record.get("id")})
+                deleted_count += 1
+        
+        elif data_type == "leave_requests":
+            query_result = await db.leave_requests.find({"employee_id": employee_id}, {"_id": 0})
+            records = await query_result.to_list(1000)
+            for record in records:
+                await db.leave_requests.delete_one({"id": record.get("id")})
+                deleted_count += 1
+        
+        elif data_type == "expense_claims":
+            query_result = await db.expense_claims.find({"employee_id": employee_id}, {"_id": 0})
+            records = await query_result.to_list(1000)
+            for record in records:
+                await db.expense_claims.delete_one({"id": record.get("id")})
+                deleted_count += 1
+        
+        elif data_type == "visit_logs":
+            query_result = await db.visit_logs.find({"logged_by": employee_id}, {"_id": 0})
+            records = await query_result.to_list(1000)
+            for record in records:
+                await db.visit_logs.delete_one({"id": record.get("id")})
+                deleted_count += 1
+        
+        elif data_type == "attendance":
+            query_result = await db.attendance.find({"employee_id": employee_id}, {"_id": 0})
+            records = await query_result.to_list(1000)
+            for record in records:
+                await db.attendance.delete_one({"id": record.get("id")})
+                deleted_count += 1
+        
+        else:
+            raise HTTPException(status_code=400, detail=f"Invalid data type: {data_type}")
+        
+        return {
+            "message": f"Deleted {deleted_count} {data_type} records for employee",
+            "employee_id": employee_id,
+            "data_type": data_type,
+            "deleted_count": deleted_count
+        }
+    
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to delete data: {str(e)}")
+
+
 # Admin Cleanup Endpoint
 @api_router.delete("/admin/cleanup-demo-data")
 async def cleanup_demo_data(current_user: dict = Depends(get_current_user)):
