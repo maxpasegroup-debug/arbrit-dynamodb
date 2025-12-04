@@ -52,7 +52,7 @@ const AccountsDashboard = () => {
   if (!user) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex items-center justify-center">
-        <p className="text-white">Loading...</p>
+        <p className="text-gray-900">Loading...</p>
       </div>
     );
   }
@@ -60,15 +60,15 @@ const AccountsDashboard = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
       {/* Header */}
-      <div className="bg-white/5 backdrop-blur-sm border-b border-white/10">
+      <div className="bg-white/5  border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-6 py-5 flex justify-between items-center">
           <div>
-            <h1 className="text-3xl font-bold text-white">Accounts Dashboard</h1>
+            <h1 className="text-3xl font-bold text-gray-900">Accounts Dashboard</h1>
             <p className="text-sm text-slate-400 mt-1">Complete Financial Management System</p>
           </div>
           <div className="flex items-center gap-4">
             <div className="text-right">
-              <p className="text-sm font-medium text-white">{user?.name}</p>
+              <p className="text-sm font-medium text-gray-900">{user?.name}</p>
               <p className="text-xs text-slate-400">{user?.role}</p>
             </div>
             <Button
@@ -85,7 +85,7 @@ const AccountsDashboard = () => {
 
       <main className="max-w-7xl mx-auto px-6 py-12">
         <Tabs defaultValue="dashboard" className="space-y-6">
-          <TabsList className="bg-white/10 border border-white/20 flex-wrap h-auto">
+          <TabsList className="bg-white border border-gray-300 flex-wrap h-auto">
             <TabsTrigger value="dashboard">
               <TrendingUp className="w-4 h-4 mr-2" />
               Dashboard

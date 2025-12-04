@@ -51,7 +51,7 @@ const AcademicCoordinatorDashboard = () => {
   if (loading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-[#0a1e3d] via-[#1a2f4d] to-[#0a1e3d] flex items-center justify-center">
-        <p className="text-white">Loading...</p>
+        <p className="text-gray-900">Loading...</p>
       </div>
     );
   }
@@ -63,7 +63,7 @@ const AcademicCoordinatorDashboard = () => {
       description: 'Manage training schedules and sessions',
       icon: Calendar,
       color: 'from-blue-500 to-cyan-500',
-      bgColor: 'bg-blue-500/10',
+      bgColor: 'bg-white',
       iconColor: 'text-gray-700'
     },
     {
@@ -72,7 +72,7 @@ const AcademicCoordinatorDashboard = () => {
       description: 'Document training sessions and materials',
       icon: FileText,
       color: 'from-purple-500 to-pink-500',
-      bgColor: 'bg-purple-500/10',
+      bgColor: 'bg-white',
       iconColor: 'text-gray-700'
     },
     {
@@ -81,7 +81,7 @@ const AcademicCoordinatorDashboard = () => {
       description: 'Coordinate certificate delivery and tracking',
       icon: Award,
       color: 'from-yellow-500 to-orange-500',
-      bgColor: 'bg-yellow-500/10',
+      bgColor: 'bg-white',
       iconColor: 'text-yellow-400'
     },
     {
@@ -90,7 +90,7 @@ const AcademicCoordinatorDashboard = () => {
       description: 'Communicate with trainers and clients',
       icon: MessageSquare,
       color: 'from-green-500 to-emerald-500',
-      bgColor: 'bg-green-500/10',
+      bgColor: 'bg-white',
       iconColor: 'text-gray-700'
     }
   ];
@@ -101,7 +101,7 @@ const AcademicCoordinatorDashboard = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#0a1e3d] via-[#1a2f4d] to-[#0a1e3d]">
-      <div className="bg-white/5 backdrop-blur-sm border-b border-white/10">
+      <div className="bg-white/5  border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
           <div>
             <h1 className="text-2xl font-bold text-gray-900">Academic Coordinator Dashboard</h1>
@@ -109,7 +109,7 @@ const AcademicCoordinatorDashboard = () => {
           </div>
           <div className="flex items-center gap-4">
             <div className="text-right">
-              <p className="text-sm font-medium text-white">{user?.name}</p>
+              <p className="text-sm font-medium text-gray-900">{user?.name}</p>
               <p className="text-xs text-gray-400">{user?.role}</p>
             </div>
             <Button
@@ -125,8 +125,8 @@ const AcademicCoordinatorDashboard = () => {
       </div>
 
       <main className="max-w-7xl mx-auto px-6 py-8">
-        <div className="mb-8 bg-white/5 backdrop-blur-sm rounded-xl border border-white/10 p-6">
-          <h2 className="text-2xl font-bold text-white mb-2">
+        <div className="mb-8 bg-white/5  rounded-xl border border-gray-200 p-6">
+          <h2 className="text-2xl font-bold text-gray-900 mb-2">
             Welcome, {user?.name?.split(' ')[0]}!
           </h2>
           <p className="text-gray-700">
@@ -189,7 +189,7 @@ const AcademicCoordinatorDashboard = () => {
                     <Card
                       key={module.id}
                       onClick={() => handleModuleClick(module.id)}
-                      className="group relative overflow-hidden cursor-pointer border-white/10 bg-white/5 backdrop-blur-sm hover:bg-white/10 transition-all duration-300 hover:scale-105 hover:shadow-2xl"
+                      className="group relative overflow-hidden cursor-pointer border-gray-200 bg-white/5  hover:bg-white transition-all duration-300 hover:scale-105 hover:shadow-2xl"
                       style={{ minHeight: '160px' }}
                     >
                       <div className={`absolute inset-0 bg-gradient-to-br ${module.color} opacity-0 group-hover:opacity-10 transition-opacity duration-300`} />
@@ -199,7 +199,7 @@ const AcademicCoordinatorDashboard = () => {
                           <Icon className={`w-6 h-6 ${module.iconColor}`} />
                         </div>
                         
-                        <h3 className="text-lg font-bold text-white mb-2">{module.title}</h3>
+                        <h3 className="text-lg font-bold text-gray-900 mb-2">{module.title}</h3>
                         <p className="text-sm text-gray-400">{module.description}</p>
                       </div>
 

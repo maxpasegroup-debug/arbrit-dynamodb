@@ -69,7 +69,7 @@ const SalesEmployeeDashboard = () => {
           <div className="flex justify-between items-center py-4">
             <div className="flex items-center space-x-4">
               <div className="bg-gray-900 p-2 rounded-lg">
-                <User className="h-6 w-6 text-white" />
+                <User className="h-6 w-6 text-gray-900" />
               </div>
               <div>
                 <h1 className="text-xl font-bold text-gray-900">Sales Employee Dashboard</h1>
@@ -77,7 +77,7 @@ const SalesEmployeeDashboard = () => {
               </div>
             </div>
             <div className="flex items-center space-x-4">
-              <Badge className="bg-gray-900 text-white border-gray-900">
+              <Badge className="bg-gray-900 text-gray-900 border-gray-900">
                 <Award className="w-4 h-4 mr-1" />
                 {userData.role}
               </Badge>

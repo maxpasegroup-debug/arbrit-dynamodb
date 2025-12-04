@@ -130,7 +130,7 @@ const COODashboard = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#0f172a] via-[#1e293b] to-[#0f172a]">
       {/* Royal Header */}
-      <div className="bg-gradient-to-r from-amber-900/20 via-amber-800/10 to-amber-900/20 backdrop-blur-sm border-b border-amber-500/20">
+      <div className="bg-gradient-to-r from-amber-900/20 via-amber-800/10 to-amber-900/20  border-b border-amber-500/20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6">
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
             <div>
@@ -191,7 +191,7 @@ const COODashboard = () => {
 
         {/* Tabs Navigation */}
         <Tabs defaultValue="sales" className="mb-8">
-          <TabsList className="grid w-full grid-cols-5 bg-white/10 border border-white/20">
+          <TabsList className="grid w-full grid-cols-5 bg-white border border-gray-300">
             <TabsTrigger value="sales">
               <TrendingUp className="w-4 h-4 mr-2" />
               Sales
@@ -290,9 +290,9 @@ const COODashboard = () => {
 
       {/* Department Access Panel Dialog */}
       <Dialog open={departmentPanelOpen} onOpenChange={setDepartmentPanelOpen}>
-        <DialogContent className="max-w-5xl bg-slate-900 border-white/10">
+        <DialogContent className="max-w-5xl bg-white border-gray-200">
           <DialogHeader>
-            <DialogTitle className="text-white text-2xl">COO Department Access Panel</DialogTitle>
+            <DialogTitle className="text-gray-900 text-2xl">COO Department Access Panel</DialogTitle>
             <DialogDescription className="text-slate-400">
               Access all department dashboards for operational oversight
             </DialogDescription>
@@ -402,7 +402,7 @@ const COODashboard = () => {
 
       {/* PIN Management Modal */}
       <Dialog open={pinManagementOpen} onOpenChange={setPinManagementOpen}>
-        <DialogContent className="max-w-6xl bg-slate-900 border-white/10 max-h-[90vh] overflow-y-auto">
+        <DialogContent className="max-w-6xl bg-white border-gray-200 max-h-[90vh] overflow-y-auto">
           <PinManagement />
         </DialogContent>
       </Dialog>

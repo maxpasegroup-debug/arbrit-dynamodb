@@ -104,7 +104,7 @@ const AcademicHeadDashboard = () => {
   if (loading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-[#0a1e3d] via-[#1a2f4d] to-[#2a3f5d] flex items-center justify-center">
-        <div className="text-white text-xl">Loading...</div>
+        <div className="text-gray-900 text-xl">Loading...</div>
       </div>
     );
   }
@@ -112,7 +112,7 @@ const AcademicHeadDashboard = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#0a1e3d] via-[#1a2f4d] to-[#2a3f5d]">
       {/* Header */}
-      <header className="bg-white/5 backdrop-blur-sm border-b border-white/10 sticky top-0 z-50">
+      <header className="bg-white/5  border-b border-gray-200 sticky top-0 z-50">
         <div className="container mx-auto px-6 py-4">
           <div className="flex justify-between items-center">
             <div>
@@ -122,14 +122,14 @@ const AcademicHeadDashboard = () => {
             
             <div className="flex items-center gap-4">
               <div className="text-right">
-                <p className="text-sm font-semibold text-white">{user?.name}</p>
+                <p className="text-sm font-semibold text-gray-900">{user?.name}</p>
                 <p className="text-xs text-yellow-400">Academic Head</p>
               </div>
               <Button
                 onClick={handleLogout}
                 variant="outline"
                 size="sm"
-                className="border-white/20 hover:bg-white/10"
+                className="border-gray-300 hover:bg-white"
               >
                 <LogOut className="w-4 h-4 mr-2" />
                 Logout
@@ -224,7 +224,7 @@ const AcademicHeadDashboard = () => {
                     <div className="flex items-center justify-between">
                       <div>
                         <p className="text-sm text-gray-700">Total Trainings</p>
-                        <p className="text-4xl font-bold text-white mt-2">{stats.totalTrainings}</p>
+                        <p className="text-4xl font-bold text-gray-900 mt-2">{stats.totalTrainings}</p>
                         <p className="text-xs text-gray-400 mt-1">All time</p>
                       </div>
                       <GraduationCap className="w-12 h-12 text-gray-700 opacity-50" />
@@ -236,7 +236,7 @@ const AcademicHeadDashboard = () => {
                     <div className="flex items-center justify-between">
                       <div>
                         <p className="text-sm text-gray-700">Active Trainings</p>
-                        <p className="text-4xl font-bold text-white mt-2">{stats.activeTrainings}</p>
+                        <p className="text-4xl font-bold text-gray-900 mt-2">{stats.activeTrainings}</p>
                         <p className="text-xs text-gray-400 mt-1">In progress</p>
                       </div>
                       <TrendingUp className="w-12 h-12 text-gray-700 opacity-50" />
@@ -248,7 +248,7 @@ const AcademicHeadDashboard = () => {
                     <div className="flex items-center justify-between">
                       <div>
                         <p className="text-sm text-gray-700">Completed</p>
-                        <p className="text-4xl font-bold text-white mt-2">{stats.completedTrainings}</p>
+                        <p className="text-4xl font-bold text-gray-900 mt-2">{stats.completedTrainings}</p>
                         <p className="text-xs text-gray-400 mt-1">Finished</p>
                       </div>
                       <Award className="w-12 h-12 text-gray-700 opacity-50" />
@@ -260,7 +260,7 @@ const AcademicHeadDashboard = () => {
                     <div className="flex items-center justify-between">
                       <div>
                         <p className="text-sm text-gray-700">Pending Certificates</p>
-                        <p className="text-4xl font-bold text-white mt-2">{stats.pendingCertificates}</p>
+                        <p className="text-4xl font-bold text-gray-900 mt-2">{stats.pendingCertificates}</p>
                         <p className="text-xs text-gray-400 mt-1">Awaiting approval</p>
                       </div>
                       <Package className="w-12 h-12 text-yellow-400 opacity-50" />
@@ -272,7 +272,7 @@ const AcademicHeadDashboard = () => {
                     <div className="flex items-center justify-between">
                       <div>
                         <p className="text-sm text-gray-700">Total Trainers</p>
-                        <p className="text-4xl font-bold text-white mt-2">{stats.totalTrainers}</p>
+                        <p className="text-4xl font-bold text-gray-900 mt-2">{stats.totalTrainers}</p>
                         <p className="text-xs text-gray-400 mt-1">Active trainers</p>
                       </div>
                       <Users className="w-12 h-12 text-gray-700 opacity-50" />
@@ -284,7 +284,7 @@ const AcademicHeadDashboard = () => {
                     <div className="flex items-center justify-between">
                       <div>
                         <p className="text-sm text-gray-700">Pending Requests</p>
-                        <p className="text-4xl font-bold text-white mt-2">{stats.pendingRequests}</p>
+                        <p className="text-4xl font-bold text-gray-900 mt-2">{stats.pendingRequests}</p>
                         <p className="text-xs text-gray-400 mt-1">Needs review</p>
                       </div>
                       <Clock className="w-12 h-12 text-red-400 opacity-50" />
@@ -298,7 +298,7 @@ const AcademicHeadDashboard = () => {
             {/* 2. APPROVALS - Quotations & Invoices */}
             <TabsContent value="approvals" className="mt-0">
               <Tabs defaultValue="quotations" className="space-y-6">
-                <TabsList className="bg-white/10 border border-white/20">
+                <TabsList className="bg-white border border-gray-300">
                   <TabsTrigger value="quotations" className="data-[state=active]:bg-yellow-500/20 data-[state=active]:text-white">
                     Quotations
                   </TabsTrigger>
@@ -325,7 +325,7 @@ const AcademicHeadDashboard = () => {
             {/* 3. DESPATCH & DELIVERY */}
             <TabsContent value="despatch-delivery" className="mt-0">
               <Tabs defaultValue="generation" className="space-y-6">
-                <TabsList className="bg-white/10 border border-white/20">
+                <TabsList className="bg-white border border-gray-300">
                   <TabsTrigger value="generation" className="data-[state=active]:bg-yellow-500/20 data-[state=active]:text-white">
                     Generate Certificates
                   </TabsTrigger>
@@ -357,7 +357,7 @@ const AcademicHeadDashboard = () => {
             {/* 6. ASSESSMENTS & FEEDBACK */}
             <TabsContent value="assessments-feedback" className="mt-0">
               <Tabs defaultValue="assessments" className="space-y-6">
-                <TabsList className="bg-white/10 border border-white/20">
+                <TabsList className="bg-white border border-gray-300">
                   <TabsTrigger value="assessments">Assessments</TabsTrigger>
                   <TabsTrigger value="feedback">Feedback Forms</TabsTrigger>
                   <TabsTrigger value="reports">Reports & Analysis</TabsTrigger>
@@ -406,7 +406,7 @@ const AcademicHeadDashboard = () => {
             {/* 7. MY TEAM */}
             <TabsContent value="my-team" className="mt-0">
               <Tabs defaultValue="overview" className="space-y-6">
-                <TabsList className="bg-white/10 border border-white/20">
+                <TabsList className="bg-white border border-gray-300">
                   <TabsTrigger value="overview" className="data-[state=active]:bg-yellow-500/20 data-[state=active]:text-white">
                     Team Overview
                   </TabsTrigger>
@@ -434,7 +434,7 @@ const AcademicHeadDashboard = () => {
 
             <TabsContent value="expenses" className="mt-0">
               <Tabs defaultValue="my-expenses" className="space-y-6">
-                <TabsList className="bg-white/10 border border-white/20">
+                <TabsList className="bg-white border border-gray-300">
                   <TabsTrigger value="my-expenses">My Expenses</TabsTrigger>
                   <TabsTrigger value="team-expenses">Team Expenses Review</TabsTrigger>
                 </TabsList>
