@@ -3012,7 +3012,7 @@ async def generate_quotation_pdf_endpoint(
 ):
     """
     Generate PDF for an approved quotation
-    Available to Sales Executives and Sales Head
+    Available to ALL SALES TEAM (14 Executives + 1 Sales Head)
     """
     try:
         # Get quotation
@@ -3025,10 +3025,10 @@ async def generate_quotation_pdf_endpoint(
         if quotation.get("status") != "Approved":
             raise HTTPException(status_code=400, detail="Only approved quotations can generate PDF")
         
-        # Check access rights
+        # Check access rights - Sales Executives can only see their own
         if current_user["role"] in ["Field Sales", "Tele Sales", "Sales Employee"]:
             if quotation.get("created_by") != current_user["id"]:
-                raise HTTPException(status_code=403, detail="Access denied")
+                raise HTTPException(status_code=403, detail="You can only generate PDF for your own quotations")
         
         # Get lead details for additional info
         lead_id = quotation.get("lead_id")
