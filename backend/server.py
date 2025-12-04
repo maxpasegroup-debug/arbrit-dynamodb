@@ -378,6 +378,10 @@ class Lead(BaseModel):
     last_contact_date: Optional[str] = None
     quotation_sent: Optional[bool] = False
     quotation_id: Optional[str] = None
+    quotation_status: Optional[str] = None  # Pending, Approved, Rejected
+    invoice_sent: Optional[bool] = False
+    invoice_id: Optional[str] = None
+    invoice_status: Optional[str] = None  # Pending Sales Head, Pending Accounts, Approved, Paid
 
 
 class LeadCreate(BaseModel):
