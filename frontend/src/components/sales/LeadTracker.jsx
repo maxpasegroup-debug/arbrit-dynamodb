@@ -884,8 +884,17 @@ const LeadTracker = () => {
             {filteredLeads.map((lead) => (
               <div
                 key={lead.id}
-                className={`bg-gradient-to-r from-white via-gray-50 to-white border-2 border-gray-300 ${getLeftBorderColor(lead.status)} border-l-8 rounded-xl p-5 hover:border-gray-900 hover:shadow-xl hover:scale-[1.01] transition-all duration-200 relative`}
+                className={`bg-gradient-to-r from-white via-gray-50 to-white border-2 border-gray-300 ${getLeftBorderColor(lead.status)} border-l-8 rounded-xl p-5 hover:border-gray-900 hover:shadow-xl hover:scale-[1.01] transition-all duration-200 relative overflow-hidden`}
               >
+                {/* Corner ribbon for urgent leads */}
+                {lead.urgency === 'high' && (
+                  <div className="absolute top-0 right-0 w-20 h-20 overflow-hidden">
+                    <div className="absolute top-4 right-[-30px] w-32 bg-red-500 text-white text-xs font-bold text-center py-1 rotate-45 shadow-lg">
+                      URGENT
+                    </div>
+                  </div>
+                )}
+                
                 <div className="flex items-start justify-between">
                   <div className="flex-1">
                     <div className="flex items-center gap-2 mb-2 flex-wrap">
