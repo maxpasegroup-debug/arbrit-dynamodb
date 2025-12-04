@@ -9532,6 +9532,7 @@ async def cleanup_demo_data(current_user: dict = Depends(get_current_user)):
         # Order matters - delete dependencies first
         tables_to_clean = [
             "payments",
+            "vendor_payments",
             "petty_cash",
             "credit_notes",
             "recurring_invoices",
@@ -9544,7 +9545,11 @@ async def cleanup_demo_data(current_user: dict = Depends(get_current_user)):
             "certificate_candidates",
             "assessment_submissions",
             "assessment_forms",
+            "training_library",
+            "training_sessions",
             "training_requests",
+            "trainer_requests",
+            "work_orders",
             "booking_requests",
             "delivery_tasks",
             "visit_logs",
@@ -9556,9 +9561,11 @@ async def cleanup_demo_data(current_user: dict = Depends(get_current_user)):
             "lead_history",
             "leads",
             "client_accounts",
+            "vendors",
             "company_documents",
             "employee_documents",
-            "academic_library_documents"
+            "academic_library_documents",
+            "academic_library_folders"
         ]
         
         for table_name in tables_to_clean:
