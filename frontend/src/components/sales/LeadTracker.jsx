@@ -851,7 +851,7 @@ const LeadTracker = () => {
           variant="outline"
           size="sm"
           onClick={exportToCSV}
-          className="border-white/20 hover:bg-white/10"
+          className="border-gray-300 hover:bg-gray-100 text-gray-700"
         >
           <Download className="w-4 h-4 mr-2" />
           Export
