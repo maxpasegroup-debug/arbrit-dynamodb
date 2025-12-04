@@ -3286,14 +3286,14 @@ class ArbritBackendHealthTester:
         
         # Step 13: Login as Kiron George (Accounts Head)
         print("\n💼 STEP 13: Login as Kiron George (Accounts Head)")
-        print("   Credentials: mobile=971526217577, pin=7577")
+        print("   Credentials: mobile=919061295668, pin=5668")
         
         success, response = self.run_test(
             "Login as Kiron George (Accounts Head)",
             "POST",
             "auth/login",
             200,
-            data={"mobile": "971526217577", "pin": "7577"}
+            data={"mobile": "919061295668", "pin": "5668"}
         )
         
         if not success:
