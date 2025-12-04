@@ -3014,14 +3014,14 @@ class ArbritBackendHealthTester:
         
         # Step 1: Login as Afshaan Syeda (Tele Sales)
         print("\n📱 STEP 1: Login as Afshaan Syeda (Tele Sales)")
-        print("   Credentials: mobile=971556358155, pin=8155")
+        print("   Credentials: mobile=971557638082, pin=8082")
         
         success, response = self.run_test(
             "Login as Afshaan Syeda (Tele Sales)",
             "POST",
             "auth/login",
             200,
-            data={"mobile": "971556358155", "pin": "8155"}
+            data={"mobile": "971557638082", "pin": "8082"}
         )
         
         if not success:
