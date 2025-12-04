@@ -75,12 +75,12 @@ const FieldSalesDashboard = () => {
                 <User className="h-6 w-6 text-white" />
               </div>
               <div>
-                <h1 className="text-xl font-bold text-white">Field Sales Dashboard</h1>
-                <p className="text-green-300">Welcome back, {userData.name}!</p>
+                <h1 className="text-xl font-bold text-gray-900">Field Sales Dashboard</h1>
+                <p className="text-green-600">Welcome back, {userData.name}!</p>
               </div>
             </div>
             <div className="flex items-center space-x-4">
-              <Badge className="bg-green-500/20 text-green-300 border-green-400">
+              <Badge className="bg-green-500 text-white border-green-500">
                 <Award className="w-4 h-4 mr-1" />
                 {userData.role}
               </Badge>
@@ -88,7 +88,7 @@ const FieldSalesDashboard = () => {
                 onClick={handleLogout}
                 variant="outline" 
                 size="sm" 
-                className="border-white/20 text-white hover:bg-white/10"
+                className="border-gray-300 text-gray-700 hover:bg-gray-100"
               >
                 <LogOut className="h-4 w-4 mr-2" />
                 Logout
