@@ -1926,7 +1926,7 @@ async def reject_invoice_academic(
 @api_router.get("/accounts/approved-invoices")
 async def get_approved_invoices_for_accounts(current_user: dict = Depends(get_current_user)):
     """
-    Accounts Head gets all approved invoices ready for processing.
+    Accounts Head gets all invoices approved by Sales Head and ready for processing.
     """
     try:
         if current_user["role"] not in ["Accounts Head", "Accountant", "MD", "COO", "CEO"]:
@@ -1935,12 +1935,12 @@ async def get_approved_invoices_for_accounts(current_user: dict = Depends(get_cu
                 detail="Access denied. Accounts role required."
             )
         
-        # Get all approved and routed invoices
+        # Get all invoices approved by Sales Head (status: "Pending Accounts")
         query_result = await db.invoice_requests.find(
-            {"status": "Approved", "routed_to_accounts": True}, 
+            {"status": "Pending Accounts"}, 
             {"_id": 0}
         )
-        invoices = await query_result.sort("approved_at", -1).to_list(1000)
+        invoices = await query_result.sort("sales_head_approved_at", -1).to_list(1000)
         
         return invoices
     
