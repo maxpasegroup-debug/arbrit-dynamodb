@@ -531,7 +531,7 @@ const EnhancedLeadForm = ({ open, onOpenChange, onSuccess, existingLead = null }
                 />
               </div>
               <div className="col-span-2">
-                <Label className="text-slate-300">Select Training Course *</Label>
+                <Label className="text-slate-300">Select Training Program *</Label>
                 <select
                   value={formData.course_id}
                   onChange={(e) => handleCourseChange(e.target.value)}
