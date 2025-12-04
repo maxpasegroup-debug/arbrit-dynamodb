@@ -303,10 +303,6 @@ const UnifiedLeadForm = ({
         toast.error('Contact Mobile is required');
         return;
       }
-      if (!formData.phone) {
-        toast.error('Phone is required');
-        return;
-      }
     } else if (leadType === 'individual') {
       if (!formData.client_name) {
         toast.error('Client name is required');
