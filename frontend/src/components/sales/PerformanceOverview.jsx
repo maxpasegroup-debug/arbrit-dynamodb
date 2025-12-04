@@ -46,27 +46,17 @@ const PerformanceOverview = () => {
       setAreaPerformance(response.data?.areas || []);
     } catch (error) {
       console.error('Error fetching analytics:', error);
-      // Mock data
+      // Show empty state if API fails
       setAnalytics({
-        totalLeads: 156,
-        totalRevenue: 423000,
-        teamMembers: 12,
-        conversionRate: 68,
-        monthlyTarget: 500000,
-        monthlyAchieved: 423000
+        totalLeads: 0,
+        totalRevenue: 0,
+        teamMembers: 0,
+        conversionRate: 0,
+        monthlyTarget: 0,
+        monthlyAchieved: 0
       });
-      setTeamPerformance([
-        { id: 1, name: 'Ahmed Hassan', role: 'Field Sales', leads: 25, revenue: 85000, conversion: 72, badge: 'Gold' },
-        { id: 2, name: 'Sarah Ali', role: 'Tele Sales', leads: 35, revenue: 92000, conversion: 68, badge: 'Gold' },
-        { id: 3, name: 'Mohammed Ahmed', role: 'Sales Employee', leads: 18, revenue: 54000, conversion: 65, badge: 'Silver' },
-        { id: 4, name: 'Fatima Omar', role: 'Field Sales', leads: 22, revenue: 67000, conversion: 70, badge: 'Silver' },
-        { id: 5, name: 'Ali Hassan', role: 'Tele Sales', leads: 28, revenue: 78000, conversion: 74, badge: 'Gold' }
-      ]);
-      setAreaPerformance([
-        { area: 'Dubai', leads: 78, revenue: 245000, members: 5 },
-        { area: 'Abu Dhabi', leads: 45, revenue: 156000, members: 3 },
-        { area: 'Sharjah', leads: 33, revenue: 98000, members: 4 }
-      ]);
+      setTeamPerformance([]);
+      setAreaPerformance([]);
     } finally {
       setLoading(false);
     }
