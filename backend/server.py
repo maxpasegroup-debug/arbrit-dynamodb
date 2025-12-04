@@ -4001,11 +4001,17 @@ async def get_all_leads(current_user: dict = Depends(get_current_user)):
     if current_user["role"] not in ["COO", "Sales Head", "Field Sales", "Field Sales Executive", "Tele Sales", "Tele Sales Executive", "Sales Employee", "MD", "CEO"]:
         raise HTTPException(status_code=403, detail="Access denied.")
     
-    # Individual sales users see only their own leads, managers see all
+    # Individual sales users see leads assigned to them, managers see all
     if current_user["role"] in ["Field Sales", "Field Sales Executive", "Tele Sales", "Tele Sales Executive", "Sales Employee"]:
-        query_result = await db.leads.find({"created_by": current_user.get("id")})
+        # Find employee record to get employee ID
+        employee = await db.employees.find_one({"mobile": current_user["mobile"]}, {"_id": 0})
+        if not employee:
+            raise HTTPException(status_code=404, detail="Employee record not found")
+        
+        # Get leads assigned to this employee
+        query_result = await db.leads.find({"assigned_to": employee["id"]}, {"_id": 0})
     else:
-        query_result = await db.leads.find({})
+        query_result = await db.leads.find({}, {"_id": 0})
     
     leads = await query_result.sort("created_at", -1).to_list(1000)
     
