@@ -3004,6 +3004,125 @@ async def reject_quotation_sales_head(
         raise HTTPException(status_code=500, detail="Failed to reject quotation")
 
 
+# Generate Quotation PDF (NEW - for approved quotations only)
+@api_router.get("/sales/quotations/{quotation_id}/generate-pdf")
+async def generate_quotation_pdf_endpoint(
+    quotation_id: str,
+    current_user: dict = Depends(get_current_user)
+):
+    """
+    Generate PDF for an approved quotation
+    Available to Sales Executives and Sales Head
+    """
+    try:
+        # Get quotation
+        quotation = await db.quotations.find_one({"id": quotation_id}, {"_id": 0})
+        
+        if not quotation:
+            raise HTTPException(status_code=404, detail="Quotation not found")
+        
+        # Check if quotation is approved
+        if quotation.get("status") != "Approved":
+            raise HTTPException(status_code=400, detail="Only approved quotations can generate PDF")
+        
+        # Check access rights
+        if current_user["role"] in ["Field Sales", "Tele Sales", "Sales Employee"]:
+            if quotation.get("created_by") != current_user["id"]:
+                raise HTTPException(status_code=403, detail="Access denied")
+        
+        # Get lead details for additional info
+        lead_id = quotation.get("lead_id")
+        lead = None
+        if lead_id:
+            lead = await db.leads.find_one({"id": lead_id}, {"_id": 0})
+        
+        # Prepare quotation data for PDF
+        pdf_data = {
+            "quotation_ref": quotation.get("id", "N/A")[:20],
+            "client_name": quotation.get("client_name", "N/A"),
+            "contact_person": lead.get("contact_person") if lead else "N/A",
+            "client_email": lead.get("contact_email") if lead else "",
+            "items": quotation.get("items", "Training Services"),
+            "total_amount": quotation.get("total_amount", 0),
+            "num_trainees": lead.get("num_trainees") if lead else 1,
+            "validity_period": quotation.get("validity_period", "30 days"),
+            "terms": quotation.get("terms", "Standard terms and conditions apply")
+        }
+        
+        # Generate PDF
+        pdf_path = get_quotation_pdf_path(quotation_id)
+        generate_quotation_pdf(pdf_data, pdf_path)
+        
+        # Return file
+        return FileResponse(
+            pdf_path,
+            media_type="application/pdf",
+            filename=f"Quotation_{quotation.get('client_name', 'Document')}_{quotation_id[:8]}.pdf"
+        )
+    
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error generating PDF: {e}")
+        raise HTTPException(status_code=500, detail=f"Failed to generate PDF: {str(e)}")
+
+
+# Preview Quotation Data (for UI preview before PDF generation)
+@api_router.get("/sales/quotations/{quotation_id}/preview")
+async def preview_quotation(
+    quotation_id: str,
+    current_user: dict = Depends(get_current_user)
+):
+    """
+    Get quotation data formatted for preview
+    """
+    try:
+        quotation = await db.quotations.find_one({"id": quotation_id}, {"_id": 0})
+        
+        if not quotation:
+            raise HTTPException(status_code=404, detail="Quotation not found")
+        
+        # Check access
+        if current_user["role"] in ["Field Sales", "Tele Sales", "Sales Employee"]:
+            if quotation.get("created_by") != current_user["id"]:
+                raise HTTPException(status_code=403, detail="Access denied")
+        
+        # Get lead details
+        lead_id = quotation.get("lead_id")
+        lead = None
+        if lead_id:
+            lead = await db.leads.find_one({"id": lead_id}, {"_id": 0})
+        
+        # Format preview data
+        preview_data = {
+            "quotation_id": quotation.get("id"),
+            "quotation_ref": quotation.get("id", "N/A")[:20],
+            "client_name": quotation.get("client_name"),
+            "contact_person": lead.get("contact_person") if lead else "N/A",
+            "contact_email": lead.get("contact_email") if lead else "",
+            "contact_mobile": lead.get("contact_mobile") if lead else "",
+            "items": quotation.get("items"),
+            "total_amount": float(quotation.get("total_amount", 0)),
+            "subtotal": float(quotation.get("total_amount", 0)),
+            "vat": float(quotation.get("total_amount", 0)) * 0.05,
+            "grand_total": float(quotation.get("total_amount", 0)) * 1.05,
+            "num_trainees": lead.get("num_trainees") if lead else 1,
+            "validity_period": quotation.get("validity_period", "30 days"),
+            "terms": quotation.get("terms", "Standard terms and conditions"),
+            "status": quotation.get("status"),
+            "created_at": quotation.get("created_at"),
+            "approved_by": quotation.get("approved_by_name")
+        }
+        
+        return preview_data
+    
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error fetching preview: {e}")
+        raise HTTPException(status_code=500, detail="Failed to fetch preview")
+
+
 # Send Quotation to Client (Sales Executive & Sales Head)
 @api_router.put("/sales/quotations/{quotation_id}/send-to-client")
 async def send_quotation_to_client(
