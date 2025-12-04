@@ -399,7 +399,7 @@ const SelfLeadForm = ({ showFieldType = false, onSuccess }) => {
                   />
                 </div>
                 <div className="col-span-2">
-                  <Label className="text-gray-300">Select Training Course</Label>
+                  <Label className="text-gray-300">Select Training Program</Label>
                   <select
                     value={formData.course_id}
                     onChange={(e) => handleCourseChange(e.target.value)}
