@@ -226,6 +226,56 @@ const InvoiceManagementEnhanced = () => {
         </Button>
       </div>
 
+      {/* Pending Invoices from Sales */}
+      {pendingInvoices.length > 0 && (
+        <div className="bg-orange-500/10 backdrop-blur-sm rounded-xl border border-orange-500/30 p-6">
+          <div className="flex items-center justify-between mb-4">
+            <div>
+              <h4 className="text-xl font-bold text-white flex items-center gap-2">
+                <AlertTriangle className="w-5 h-5 text-orange-400" />
+                Pending Invoice Requests from Sales
+              </h4>
+              <p className="text-sm text-gray-400 mt-1">
+                {pendingInvoices.length} invoice{pendingInvoices.length !== 1 ? 's' : ''} approved by Sales Head waiting for processing
+              </p>
+            </div>
+          </div>
+
+          <div className="bg-white/5 backdrop-blur-sm rounded-lg border border-white/10 overflow-hidden">
+            <Table>
+              <TableHeader>
+                <TableRow className="border-white/10">
+                  <TableHead className="text-gray-300">Client Name</TableHead>
+                  <TableHead className="text-gray-300">Lead ID</TableHead>
+                  <TableHead className="text-gray-300">Description</TableHead>
+                  <TableHead className="text-gray-300">Requested By</TableHead>
+                  <TableHead className="text-gray-300">Approved By</TableHead>
+                  <TableHead className="text-gray-300">Approved At</TableHead>
+                  <TableHead className="text-gray-300">Status</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {pendingInvoices.map((invoice) => (
+                  <TableRow key={invoice.id} className="border-white/10">
+                    <TableCell className="text-white font-medium">{invoice.client_name}</TableCell>
+                    <TableCell className="text-gray-300 font-mono text-sm">{invoice.lead_id?.substring(0, 8)}...</TableCell>
+                    <TableCell className="text-gray-300 max-w-xs truncate">{invoice.description}</TableCell>
+                    <TableCell className="text-gray-300">{invoice.requested_by_name}</TableCell>
+                    <TableCell className="text-gray-300">{invoice.sales_head_approved_by_name}</TableCell>
+                    <TableCell className="text-gray-300">{formatDate(invoice.sales_head_approved_at)}</TableCell>
+                    <TableCell>
+                      <Badge className="bg-orange-500/20 text-orange-300 border-orange-500/30">
+                        {invoice.status}
+                      </Badge>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </div>
+        </div>
+      )}
+
       {/* Invoices Table */}
       <div className="bg-white/5 backdrop-blur-sm rounded-xl border border-white/10 overflow-hidden">
         <Table>
