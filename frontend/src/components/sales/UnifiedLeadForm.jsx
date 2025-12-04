@@ -63,6 +63,9 @@ const UnifiedLeadForm = ({
     // Training details
     training_service_details: '',
     product_services_required: '',
+    service_type: '', // NEW: TRAINING, CONSULTANCY, MANPOWER, INSPECTION
+    service_category: '', // NEW: For TRAINING -> GENERAL or INTERNATIONAL
+    training_type: '', // NEW: Subcategory under service_category
     course_id: '',
     course_name: '',
     num_trainees: '',
