@@ -41,12 +41,12 @@ const SalesHeadDashboard = () => {
       setStats(response.data || {});
     } catch (error) {
       console.error('Error fetching stats:', error);
-      // Mock stats
+      // Show zero stats if API fails
       setStats({
-        totalLeads: 156,
-        teamMembers: 12,
-        monthlyRevenue: 523000,
-        pendingTasks: 8
+        totalLeads: 0,
+        teamMembers: 0,
+        monthlyRevenue: 0,
+        pendingTasks: 0
       });
     }
   };
