@@ -207,10 +207,6 @@ const MDDashboard = () => {
               <MessageSquare className="w-4 h-4 mr-2" />
               Feedbacks
             </TabsTrigger>
-            <TabsTrigger value="admin">
-              <Trash2 className="w-4 h-4 mr-2" />
-              Admin Cleanup
-            </TabsTrigger>
             <TabsTrigger value="arbrits-journey">
               <BookOpen className="w-4 h-4 mr-2" />
               Arbrit&apos;s Journey
