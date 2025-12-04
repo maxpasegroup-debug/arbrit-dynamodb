@@ -91,10 +91,14 @@ const SalesHeadDashboard = () => {
   }, [navigate]);
 
   const handleLogout = () => {
-    localStorage.removeItem('token');
-    localStorage.removeItem('user');
-    toast.success('Logged out successfully');
-    navigate('/login');
+    if (window.confirm('Are you sure you want to logout?')) {
+      localStorage.removeItem('token');
+      localStorage.removeItem('user');
+      toast.success('Logged out successfully');
+      setTimeout(() => {
+        navigate('/login');
+      }, 500);
+    }
   };
 
   if (loading) {
