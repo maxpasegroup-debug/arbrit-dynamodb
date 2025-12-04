@@ -53,57 +53,8 @@ const LeaveManagement = () => {
       setTeamRequests(response.data || []);
     } catch (error) {
       console.error('Error fetching team requests:', error);
-      // Mock data
-      setTeamRequests([
-        {
-          id: 1,
-          employeeName: 'Ahmed Hassan',
-          employeeRole: 'Field Sales',
-          leaveType: 'Annual Leave',
-          startDate: '2025-12-15',
-          endDate: '2025-12-20',
-          days: 5,
-          reason: 'Family vacation in Egypt',
-          emergencyContact: '+971501234567',
-          handoverNotes: 'All client meetings rescheduled. Follow-up calls assigned to Sarah.',
-          status: 'pending',
-          requestDate: '2025-12-01',
-          employeeId: 'emp001'
-        },
-        {
-          id: 2,
-          employeeName: 'Sarah Ali',
-          employeeRole: 'Tele Sales',
-          leaveType: 'Sick Leave',
-          startDate: '2025-12-10',
-          endDate: '2025-12-12',
-          days: 3,
-          reason: 'Medical treatment',
-          emergencyContact: '+971509876543',
-          handoverNotes: 'Lead calls transferred to Mohammed Ahmed.',
-          status: 'pending',
-          requestDate: '2025-12-08',
-          employeeId: 'emp002'
-        },
-        {
-          id: 3,
-          employeeName: 'Mohammed Ahmed',
-          employeeRole: 'Sales Employee',
-          leaveType: 'Personal Leave',
-          startDate: '2025-11-28',
-          endDate: '2025-11-28',
-          days: 1,
-          reason: 'Personal appointment',
-          emergencyContact: '+971555123456',
-          handoverNotes: 'No urgent tasks pending.',
-          status: 'approved',
-          requestDate: '2025-11-25',
-          reviewedBy: 'Mohammad Akbar',
-          reviewDate: '2025-11-26',
-          reviewComments: 'Approved for one day personal leave.',
-          employeeId: 'emp003'
-        }
-      ]);
+      // Show empty state if API fails
+      setTeamRequests([]);
     }
   };
 
