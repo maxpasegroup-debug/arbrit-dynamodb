@@ -70,12 +70,12 @@ const VisitLogger = () => {
 
       <div className="grid gap-4">
         {visits.length === 0 ? (
-          <Card className="bg-white/5 border-white/10 p-8 text-center">
+          <Card className="bg-white/5 border-gray-300 p-8 text-center">
             <p className="text-gray-400">No visits logged yet</p>
           </Card>
         ) : (
           visits.map((visit) => (
-            <Card key={visit.id} className="bg-white/5 border-white/10 p-4">
+            <Card key={visit.id} className="bg-white/5 border-gray-300 p-4">
               <div className="flex items-start gap-3">
                 <MapPin className="w-5 h-5 text-purple-400 mt-1" />
                 <div className="flex-1">

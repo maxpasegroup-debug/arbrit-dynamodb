@@ -271,7 +271,7 @@ const LeaveManagement = () => {
         <div className="space-y-4">
           <h4 className="text-lg font-semibold text-white">Team Leave Requests</h4>
           {teamRequests.map((request) => (
-            <Card key={request.id} className="bg-slate-900/50 border-white/10">
+            <Card key={request.id} className="bg-white/50 border-gray-300">
               <CardContent className="p-4">
                 <div className="flex justify-between items-start mb-4">
                   <div>
@@ -306,7 +306,7 @@ const LeaveManagement = () => {
                 {request.handoverNotes && (
                   <div className="mb-4">
                     <p className="text-slate-400 text-sm">Handover Notes</p>
-                    <p className="text-slate-300 bg-slate-800/50 p-2 rounded">{request.handoverNotes}</p>
+                    <p className="text-gray-700 bg-gray-50/50 p-2 rounded">{request.handoverNotes}</p>
                   </div>
                 )}
 
@@ -356,7 +356,7 @@ const LeaveManagement = () => {
                   <div className="text-sm text-slate-400">
                     {request.status === 'approved' && `Approved by ${request.reviewedBy} on ${request.reviewDate}`}
                     {request.reviewComments && (
-                      <p className="mt-1 text-slate-300">Comments: {request.reviewComments}</p>
+                      <p className="mt-1 text-gray-700">Comments: {request.reviewComments}</p>
                     )}
                   </div>
                 )}
@@ -364,10 +364,10 @@ const LeaveManagement = () => {
             </Card>
           ))}
           {teamRequests.length === 0 && (
-            <Card className="bg-slate-800/30 border-white/10">
+            <Card className="bg-gray-50/30 border-gray-300">
               <CardContent className="text-center py-12">
                 <CheckCircle className="w-16 h-16 text-green-400 mx-auto mb-4" />
-                <h3 className="text-slate-300 text-lg font-semibold mb-2">
+                <h3 className="text-gray-700 text-lg font-semibold mb-2">
                   No Pending Requests
                 </h3>
                 <p className="text-slate-400">
@@ -384,7 +384,7 @@ const LeaveManagement = () => {
         <div className="space-y-4">
           <h4 className="text-lg font-semibold text-white">My Leave Requests</h4>
           {myRequests.map((request) => (
-            <Card key={request.id} className="bg-slate-900/50 border-white/10">
+            <Card key={request.id} className="bg-white/50 border-gray-300">
               <CardContent className="p-4">
                 <div className="flex justify-between items-start mb-4">
                   <div>
@@ -412,10 +412,10 @@ const LeaveManagement = () => {
             </Card>
           ))}
           {myRequests.length === 0 && (
-            <Card className="bg-slate-800/30 border-white/10">
+            <Card className="bg-gray-50/30 border-gray-300">
               <CardContent className="text-center py-12">
                 <Calendar className="w-16 h-16 text-slate-400 mx-auto mb-4" />
-                <h3 className="text-slate-300 text-lg font-semibold mb-2">
+                <h3 className="text-gray-700 text-lg font-semibold mb-2">
                   No Leave Requests
                 </h3>
                 <p className="text-slate-400">
@@ -429,7 +429,7 @@ const LeaveManagement = () => {
 
       {/* Review Dialog */}
       <Dialog open={reviewDialogOpen} onOpenChange={setReviewDialogOpen}>
-        <DialogContent className="max-w-md bg-slate-900 border-white/10">
+        <DialogContent className="max-w-md bg-white border-gray-300">
           <DialogHeader>
             <DialogTitle className="text-white">
               {reviewAction === 'approve' && 'Approve Leave Request'}
@@ -440,12 +440,12 @@ const LeaveManagement = () => {
           
           <div className="space-y-4">
             <div>
-              <Label className="text-slate-300">Comments (Optional)</Label>
+              <Label className="text-gray-700">Comments (Optional)</Label>
               <Textarea
                 value={reviewComments}
                 onChange={(e) => setReviewComments(e.target.value)}
                 placeholder="Add any comments or notes..."
-                className="bg-slate-800 border-white/10 text-slate-100"
+                className="bg-gray-50 border-gray-300 text-gray-900"
               />
             </div>
             
@@ -476,7 +476,7 @@ const LeaveManagement = () => {
 
       {/* Create Request Dialog */}
       <Dialog open={createRequestOpen} onOpenChange={setCreateRequestOpen}>
-        <DialogContent className="max-w-2xl bg-slate-900 border-white/10">
+        <DialogContent className="max-w-2xl bg-white border-gray-300">
           <DialogHeader>
             <DialogTitle className="text-white">Submit Leave Request</DialogTitle>
           </DialogHeader>
@@ -484,15 +484,15 @@ const LeaveManagement = () => {
           <form onSubmit={handleCreateRequest} className="space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <Label className="text-slate-300">Leave Type *</Label>
+                <Label className="text-gray-700">Leave Type *</Label>
                 <Select
                   value={newRequest.leaveType}
                   onValueChange={(value) => setNewRequest({...newRequest, leaveType: value})}
                 >
-                  <SelectTrigger className="bg-slate-800 border-white/10 text-slate-100">
+                  <SelectTrigger className="bg-gray-50 border-gray-300 text-gray-900">
                     <SelectValue placeholder="Select leave type" />
                   </SelectTrigger>
-                  <SelectContent className="bg-slate-800 border-white/10">
+                  <SelectContent className="bg-gray-50 border-gray-300">
                     <SelectItem value="Annual Leave">Annual Leave</SelectItem>
                     <SelectItem value="Sick Leave">Sick Leave</SelectItem>
                     <SelectItem value="Personal Leave">Personal Leave</SelectItem>
@@ -503,7 +503,7 @@ const LeaveManagement = () => {
               </div>
 
               <div>
-                <Label className="text-slate-300">Days</Label>
+                <Label className="text-gray-700">Days</Label>
                 <Input
                   type="text"
                   value={
@@ -512,7 +512,7 @@ const LeaveManagement = () => {
                       : ''
                   }
                   placeholder="Will calculate automatically"
-                  className="bg-slate-800 border-white/10 text-slate-100"
+                  className="bg-gray-50 border-gray-300 text-gray-900"
                   readOnly
                 />
               </div>
@@ -520,55 +520,55 @@ const LeaveManagement = () => {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <Label className="text-slate-300">Start Date *</Label>
+                <Label className="text-gray-700">Start Date *</Label>
                 <Input
                   type="date"
                   value={newRequest.startDate}
                   onChange={(e) => setNewRequest({...newRequest, startDate: e.target.value})}
-                  className="bg-slate-800 border-white/10 text-slate-100"
+                  className="bg-gray-50 border-gray-300 text-gray-900"
                   min={new Date().toISOString().split('T')[0]}
                 />
               </div>
 
               <div>
-                <Label className="text-slate-300">End Date *</Label>
+                <Label className="text-gray-700">End Date *</Label>
                 <Input
                   type="date"
                   value={newRequest.endDate}
                   onChange={(e) => setNewRequest({...newRequest, endDate: e.target.value})}
-                  className="bg-slate-800 border-white/10 text-slate-100"
+                  className="bg-gray-50 border-gray-300 text-gray-900"
                   min={newRequest.startDate || new Date().toISOString().split('T')[0]}
                 />
               </div>
             </div>
 
             <div>
-              <Label className="text-slate-300">Reason *</Label>
+              <Label className="text-gray-700">Reason *</Label>
               <Textarea
                 value={newRequest.reason}
                 onChange={(e) => setNewRequest({...newRequest, reason: e.target.value})}
                 placeholder="Please provide the reason for your leave request..."
-                className="bg-slate-800 border-white/10 text-slate-100"
+                className="bg-gray-50 border-gray-300 text-gray-900"
               />
             </div>
 
             <div>
-              <Label className="text-slate-300">Emergency Contact</Label>
+              <Label className="text-gray-700">Emergency Contact</Label>
               <Input
                 value={newRequest.emergencyContact}
                 onChange={(e) => setNewRequest({...newRequest, emergencyContact: e.target.value})}
                 placeholder="Contact person during your leave"
-                className="bg-slate-800 border-white/10 text-slate-100"
+                className="bg-gray-50 border-gray-300 text-gray-900"
               />
             </div>
 
             <div>
-              <Label className="text-slate-300">Handover Notes</Label>
+              <Label className="text-gray-700">Handover Notes</Label>
               <Textarea
                 value={newRequest.handoverNotes}
                 onChange={(e) => setNewRequest({...newRequest, handoverNotes: e.target.value})}
                 placeholder="Important tasks, client information for handover..."
-                className="bg-slate-800 border-white/10 text-slate-100"
+                className="bg-gray-50 border-gray-300 text-gray-900"
               />
             </div>
 

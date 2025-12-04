@@ -121,7 +121,7 @@ const MyTrainingTracker = () => {
       {/* Training List */}
       <div className="space-y-4">
         {trainings.map((training) => (
-          <Card key={training.id} className="bg-slate-900/50 border-white/10">
+          <Card key={training.id} className="bg-white/50 border-gray-300">
             <CardHeader className="pb-3">
               <div className="flex justify-between items-start">
                 <div className="flex-1">
@@ -155,7 +155,7 @@ const MyTrainingTracker = () => {
               <div className="space-y-2">
                 <div className="flex justify-between text-sm">
                   <span className="text-slate-400">Progress</span>
-                  <span className="text-slate-300">{training.progress}%</span>
+                  <span className="text-gray-700">{training.progress}%</span>
                 </div>
                 <Progress value={training.progress} className="h-2" />
               </div>
@@ -208,10 +208,10 @@ const MyTrainingTracker = () => {
       </div>
 
       {trainings.length === 0 && (
-        <Card className="bg-slate-800/30 border-white/10">
+        <Card className="bg-gray-50/30 border-gray-300">
           <CardContent className="text-center py-12">
             <GraduationCap className="w-16 h-16 text-slate-400 mx-auto mb-4" />
-            <h3 className="text-slate-300 text-lg font-semibold mb-2">
+            <h3 className="text-gray-700 text-lg font-semibold mb-2">
               No Training Records Found
             </h3>
             <p className="text-slate-400">

@@ -64,7 +64,7 @@ const MyLeadsTracker = () => {
 
   if (loading) {
     return (
-      <div className="bg-white/5 backdrop-blur-sm rounded-xl border border-white/10 p-6">
+      <div className="bg-white/5 backdrop-blur-sm rounded-xl border border-gray-300 p-6">
         <p className="text-gray-400">Loading your leads...</p>
       </div>
     );
@@ -116,8 +116,8 @@ const MyLeadsTracker = () => {
       </div>
 
       {/* Recent Leads */}
-      <div className="bg-white/5 backdrop-blur-sm rounded-xl border border-white/10 overflow-hidden">
-        <div className="px-6 py-4 bg-white/5 border-b border-white/10">
+      <div className="bg-white/5 backdrop-blur-sm rounded-xl border border-gray-300 overflow-hidden">
+        <div className="px-6 py-4 bg-white/5 border-b border-gray-300">
           <h3 className="text-lg font-semibold text-white">My Recent Leads</h3>
         </div>
         <div className="p-6">
@@ -126,7 +126,7 @@ const MyLeadsTracker = () => {
           ) : (
             <div className="space-y-3">
               {recentLeads.map((lead) => (
-                <div key={lead.id} className="bg-white/5 border border-white/10 rounded-lg p-4 hover:bg-white/10 transition-all">
+                <div key={lead.id} className="bg-white/5 border border-gray-300 rounded-lg p-4 hover:bg-white/10 transition-all">
                   <div className="flex justify-between items-start">
                     <div className="flex-1">
                       <div className="flex items-center gap-2 mb-1">

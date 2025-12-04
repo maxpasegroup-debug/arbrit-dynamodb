@@ -204,7 +204,7 @@ const LeaveRequest = () => {
       </div>
 
       {/* New Leave Request Form */}
-      <Card className="bg-slate-900/50 border-white/10">
+      <Card className="bg-white/50 border-gray-300">
         <CardHeader>
           <CardTitle className="text-white flex items-center gap-2">
             <FileText className="w-5 h-5" />
@@ -215,15 +215,15 @@ const LeaveRequest = () => {
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <Label className="text-slate-300">Leave Type *</Label>
+                <Label className="text-gray-700">Leave Type *</Label>
                 <Select
                   value={formData.leaveType}
                   onValueChange={(value) => setFormData({...formData, leaveType: value})}
                 >
-                  <SelectTrigger className="bg-slate-800 border-white/10 text-slate-100">
+                  <SelectTrigger className="bg-gray-50 border-gray-300 text-gray-900">
                     <SelectValue placeholder="Select leave type" />
                   </SelectTrigger>
-                  <SelectContent className="bg-slate-800 border-white/10">
+                  <SelectContent className="bg-gray-50 border-gray-300">
                     <SelectItem value="Annual Leave">Annual Leave</SelectItem>
                     <SelectItem value="Sick Leave">Sick Leave</SelectItem>
                     <SelectItem value="Personal Leave">Personal Leave</SelectItem>
@@ -234,12 +234,12 @@ const LeaveRequest = () => {
               </div>
 
               <div>
-                <Label className="text-slate-300">Days Requested</Label>
+                <Label className="text-gray-700">Days Requested</Label>
                 <Input
                   type="text"
                   value={calculateLeaveDays(formData.startDate, formData.endDate) || ''}
                   placeholder="Will calculate automatically"
-                  className="bg-slate-800 border-white/10 text-slate-100"
+                  className="bg-gray-50 border-gray-300 text-gray-900"
                   readOnly
                 />
               </div>
@@ -247,56 +247,56 @@ const LeaveRequest = () => {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <Label className="text-slate-300">Start Date *</Label>
+                <Label className="text-gray-700">Start Date *</Label>
                 <Input
                   type="date"
                   value={formData.startDate}
                   onChange={(e) => setFormData({...formData, startDate: e.target.value})}
-                  className="bg-slate-800 border-white/10 text-slate-100"
+                  className="bg-gray-50 border-gray-300 text-gray-900"
                   min={new Date().toISOString().split('T')[0]}
                 />
               </div>
 
               <div>
-                <Label className="text-slate-300">End Date *</Label>
+                <Label className="text-gray-700">End Date *</Label>
                 <Input
                   type="date"
                   value={formData.endDate}
                   onChange={(e) => setFormData({...formData, endDate: e.target.value})}
-                  className="bg-slate-800 border-white/10 text-slate-100"
+                  className="bg-gray-50 border-gray-300 text-gray-900"
                   min={formData.startDate || new Date().toISOString().split('T')[0]}
                 />
               </div>
             </div>
 
             <div>
-              <Label className="text-slate-300">Reason for Leave *</Label>
+              <Label className="text-gray-700">Reason for Leave *</Label>
               <Textarea
                 value={formData.reason}
                 onChange={(e) => setFormData({...formData, reason: e.target.value})}
                 placeholder="Please provide the reason for your leave request..."
-                className="bg-slate-800 border-white/10 text-slate-100 min-h-[80px]"
+                className="bg-gray-50 border-gray-300 text-gray-900 min-h-[80px]"
               />
             </div>
 
             <div>
-              <Label className="text-slate-300">Emergency Contact (Optional)</Label>
+              <Label className="text-gray-700">Emergency Contact (Optional)</Label>
               <Input
                 type="text"
                 value={formData.emergencyContact}
                 onChange={(e) => setFormData({...formData, emergencyContact: e.target.value})}
                 placeholder="Contact person during your leave"
-                className="bg-slate-800 border-white/10 text-slate-100"
+                className="bg-gray-50 border-gray-300 text-gray-900"
               />
             </div>
 
             <div>
-              <Label className="text-slate-300">Handover Notes (Optional)</Label>
+              <Label className="text-gray-700">Handover Notes (Optional)</Label>
               <Textarea
                 value={formData.handoverNotes}
                 onChange={(e) => setFormData({...formData, handoverNotes: e.target.value})}
                 placeholder="Any important tasks or client information for handover..."
-                className="bg-slate-800 border-white/10 text-slate-100 min-h-[60px]"
+                className="bg-gray-50 border-gray-300 text-gray-900 min-h-[60px]"
               />
             </div>
 
@@ -313,7 +313,7 @@ const LeaveRequest = () => {
       </Card>
 
       {/* Previous Requests */}
-      <Card className="bg-slate-900/50 border-white/10">
+      <Card className="bg-white/50 border-gray-300">
         <CardHeader>
           <CardTitle className="text-white">Leave Request History</CardTitle>
         </CardHeader>
@@ -321,7 +321,7 @@ const LeaveRequest = () => {
           {requests.map((request) => (
             <div 
               key={request.id}
-              className="flex items-center justify-between p-3 bg-slate-800/50 rounded-lg border border-white/10"
+              className="flex items-center justify-between p-3 bg-gray-50/50 rounded-lg border border-gray-300"
             >
               <div className="flex-1">
                 <div className="flex items-center gap-2 mb-1">
@@ -339,7 +339,7 @@ const LeaveRequest = () => {
                     <span>by {request.approvedBy}</span>
                   )}
                 </div>
-                <p className="text-slate-300 text-sm mt-1">{request.reason}</p>
+                <p className="text-gray-700 text-sm mt-1">{request.reason}</p>
                 {request.rejectionReason && (
                   <p className="text-red-400 text-sm mt-1">
                     <AlertCircle className="w-3 h-3 inline mr-1" />

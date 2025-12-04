@@ -72,7 +72,7 @@ const AvailabilityCalendar = () => {
           </p>
         </div>
         <div className="text-right">
-          <p className="text-slate-300 font-medium">
+          <p className="text-gray-700 font-medium">
             {currentDate.toLocaleDateString('en-US', { 
               weekday: 'long', 
               year: 'numeric', 
@@ -127,7 +127,7 @@ const AvailabilityCalendar = () => {
       </div>
 
       {/* Availability Schedule */}
-      <Card className="bg-slate-900/50 border-white/10">
+      <Card className="bg-white/50 border-gray-300">
         <CardHeader>
           <CardTitle className="text-white flex items-center gap-2">
             <Clock className="w-5 h-5" />
@@ -138,17 +138,17 @@ const AvailabilityCalendar = () => {
           {availability.map((slot, index) => (
             <div 
               key={index}
-              className="flex items-center justify-between p-3 bg-slate-800/50 rounded-lg border border-white/10"
+              className="flex items-center justify-between p-3 bg-gray-50/50 rounded-lg border border-gray-300"
             >
               <div className="flex items-center gap-4">
-                <div className="text-slate-300 font-mono text-lg min-w-[60px]">
+                <div className="text-gray-700 font-mono text-lg min-w-[60px]">
                   {slot.time}
                 </div>
                 <Badge className={`${getStatusColor(slot.status)} flex items-center gap-1`}>
                   {getStatusIcon(slot.status)}
                   {slot.status.charAt(0).toUpperCase() + slot.status.slice(1)}
                 </Badge>
-                <span className="text-slate-300">{slot.activity}</span>
+                <span className="text-gray-700">{slot.activity}</span>
               </div>
               
               <div className="flex gap-2">

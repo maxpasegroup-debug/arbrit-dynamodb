@@ -79,10 +79,10 @@ const LeaveApprovals = () => {
           <CalendarCheck className="w-6 h-6 text-blue-400" />
           Pending Leave Requests ({pendingRequests.length})
         </h3>
-        <div className="bg-white/5 backdrop-blur-sm rounded-xl border border-white/10 overflow-hidden">
+        <div className="bg-white/5 backdrop-blur-sm rounded-xl border border-gray-300 overflow-hidden">
           <Table>
             <TableHeader>
-              <TableRow className="border-white/10">
+              <TableRow className="border-gray-300">
                 <TableHead className="text-gray-300">Employee</TableHead>
                 <TableHead className="text-gray-300">Leave Type</TableHead>
                 <TableHead className="text-gray-300">From</TableHead>
@@ -101,7 +101,7 @@ const LeaveApprovals = () => {
                 </TableRow>
               ) : (
                 pendingRequests.map((request) => (
-                  <TableRow key={request.id} className="border-white/10">
+                  <TableRow key={request.id} className="border-gray-300">
                     <TableCell className="text-white font-medium">{request.employee_name || 'Unknown'}</TableCell>
                     <TableCell className="text-gray-300">{request.leave_type || 'N/A'}</TableCell>
                     <TableCell className="text-gray-300 text-sm">
@@ -146,10 +146,10 @@ const LeaveApprovals = () => {
 
       <div>
         <h3 className="text-xl font-semibold text-white mb-4">Processed Requests ({processedRequests.length})</h3>
-        <div className="bg-white/5 backdrop-blur-sm rounded-xl border border-white/10 overflow-hidden">
+        <div className="bg-white/5 backdrop-blur-sm rounded-xl border border-gray-300 overflow-hidden">
           <Table>
             <TableHeader>
-              <TableRow className="border-white/10">
+              <TableRow className="border-gray-300">
                 <TableHead className="text-gray-300">Employee</TableHead>
                 <TableHead className="text-gray-300">Leave Type</TableHead>
                 <TableHead className="text-gray-300">From - To</TableHead>
@@ -166,7 +166,7 @@ const LeaveApprovals = () => {
                 </TableRow>
               ) : (
                 processedRequests.map((request) => (
-                  <TableRow key={request.id} className="border-white/10">
+                  <TableRow key={request.id} className="border-gray-300">
                     <TableCell className="text-white font-medium">{request.employee_name || 'Unknown'}</TableCell>
                     <TableCell className="text-gray-300">{request.leave_type || 'N/A'}</TableCell>
                     <TableCell className="text-gray-300 text-sm">
@@ -208,7 +208,7 @@ const LeaveApprovals = () => {
                   <span className="font-semibold">{selectedRequest.days} days</span>
                 </div>
                 {selectedRequest.reason && (
-                  <div className="mt-3 pt-3 border-t border-white/10">
+                  <div className="mt-3 pt-3 border-t border-gray-300">
                     <span className="text-gray-400 text-sm">Reason:</span>
                     <p className="text-sm mt-1">{selectedRequest.reason}</p>
                   </div>

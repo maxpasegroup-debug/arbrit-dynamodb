@@ -101,12 +101,12 @@ const InvoiceManager = () => {
 
       <div className="grid gap-4">
         {requests.length === 0 ? (
-          <Card className="bg-white/5 border-white/10 p-8 text-center">
+          <Card className="bg-white/5 border-gray-300 p-8 text-center">
             <p className="text-gray-400">No invoice requests yet</p>
           </Card>
         ) : (
           requests.map((req) => (
-            <Card key={req.id} className="bg-white/5 border-white/10 p-4">
+            <Card key={req.id} className="bg-white/5 border-gray-300 p-4">
               <div className="flex justify-between items-start">
                 <div className="flex-1">
                   <div className="flex items-center gap-2 mb-2">

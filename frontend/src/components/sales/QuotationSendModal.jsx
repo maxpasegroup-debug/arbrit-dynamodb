@@ -97,7 +97,7 @@ export default function QuotationSendModal({ lead, onClose, onSuccess }) {
   if (loading) {
     return (
       <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-        <div className="bg-slate-800 rounded-xl p-8 border border-white/10">
+        <div className="bg-gray-50 rounded-xl p-8 border border-gray-300">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mx-auto"></div>
           <p className="text-white mt-4">Loading preview...</p>
         </div>
@@ -111,9 +111,9 @@ export default function QuotationSendModal({ lead, onClose, onSuccess }) {
 
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4 overflow-y-auto">
-      <div className="bg-slate-800 rounded-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto border border-white/10 my-8">
+      <div className="bg-gray-50 rounded-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto border border-gray-300 my-8">
         {/* Header */}
-        <div className="sticky top-0 bg-slate-800 border-b border-white/10 p-6 flex items-center justify-between z-10">
+        <div className="sticky top-0 bg-gray-50 border-b border-gray-300 p-6 flex items-center justify-between z-10">
           <div>
             <h2 className="text-2xl font-bold text-white flex items-center gap-2">
               <FileText className="w-6 h-6" />
@@ -134,7 +134,7 @@ export default function QuotationSendModal({ lead, onClose, onSuccess }) {
         {/* Preview Content */}
         <div className="p-6 space-y-6">
           {/* Company Header */}
-          <div className="text-center pb-4 border-b border-white/10">
+          <div className="text-center pb-4 border-b border-gray-300">
             <h1 className="text-3xl font-bold text-blue-400">ARBRIT SAFETY</h1>
             <p className="text-slate-400 text-sm mt-1">Professional Safety Training & Consulting</p>
           </div>
@@ -146,18 +146,18 @@ export default function QuotationSendModal({ lead, onClose, onSuccess }) {
 
           {/* Quotation Info */}
           <div className="grid grid-cols-2 gap-4">
-            <div className="bg-slate-700/50 p-4 rounded-lg">
+            <div className="bg-gray-100/50 p-4 rounded-lg">
               <p className="text-slate-400 text-sm">Quotation Ref</p>
               <p className="text-white font-semibold">{preview.quotation_ref}</p>
             </div>
-            <div className="bg-slate-700/50 p-4 rounded-lg">
+            <div className="bg-gray-100/50 p-4 rounded-lg">
               <p className="text-slate-400 text-sm">Valid Until</p>
               <p className="text-white font-semibold">{preview.validity_period}</p>
             </div>
           </div>
 
           {/* Client Info */}
-          <div className="bg-slate-700/50 p-4 rounded-lg">
+          <div className="bg-gray-100/50 p-4 rounded-lg">
             <h3 className="text-lg font-semibold text-white mb-3">Client Details</h3>
             <div className="space-y-2 text-sm">
               <p className="text-white">
@@ -182,7 +182,7 @@ export default function QuotationSendModal({ lead, onClose, onSuccess }) {
           {/* Items Table */}
           <div>
             <h3 className="text-lg font-semibold text-white mb-3">Quotation Details</h3>
-            <div className="bg-slate-700/50 rounded-lg overflow-hidden">
+            <div className="bg-gray-100/50 rounded-lg overflow-hidden">
               <table className="w-full">
                 <thead className="bg-blue-600">
                   <tr>
@@ -193,7 +193,7 @@ export default function QuotationSendModal({ lead, onClose, onSuccess }) {
                   </tr>
                 </thead>
                 <tbody>
-                  <tr className="border-t border-white/10">
+                  <tr className="border-t border-gray-300">
                     <td className="px-4 py-3 text-white">1</td>
                     <td className="px-4 py-3 text-white">{preview.items}</td>
                     <td className="px-4 py-3 text-center text-white">{preview.num_trainees}</td>
@@ -207,7 +207,7 @@ export default function QuotationSendModal({ lead, onClose, onSuccess }) {
           </div>
 
           {/* Totals */}
-          <div className="bg-slate-700/50 p-4 rounded-lg">
+          <div className="bg-gray-100/50 p-4 rounded-lg">
             <div className="space-y-2">
               <div className="flex justify-between text-sm">
                 <span className="text-slate-400">Subtotal:</span>
@@ -217,7 +217,7 @@ export default function QuotationSendModal({ lead, onClose, onSuccess }) {
                 <span className="text-slate-400">VAT (5%):</span>
                 <span className="text-white">AED {preview.vat.toFixed(2)}</span>
               </div>
-              <div className="flex justify-between text-lg font-bold border-t border-white/10 pt-2">
+              <div className="flex justify-between text-lg font-bold border-t border-gray-300 pt-2">
                 <span className="text-white">Grand Total:</span>
                 <span className="text-green-400">AED {preview.grand_total.toFixed(2)}</span>
               </div>
@@ -225,7 +225,7 @@ export default function QuotationSendModal({ lead, onClose, onSuccess }) {
           </div>
 
           {/* Send Options */}
-          <div className="bg-slate-700/50 p-6 rounded-lg space-y-4">
+          <div className="bg-gray-100/50 p-6 rounded-lg space-y-4">
             <h3 className="text-lg font-semibold text-white">Send to Client</h3>
 
             {/* Send Method */}
@@ -234,7 +234,7 @@ export default function QuotationSendModal({ lead, onClose, onSuccess }) {
               <select
                 value={sendMethod}
                 onChange={(e) => setSendMethod(e.target.value)}
-                className="w-full bg-slate-600 text-white rounded-lg px-4 py-2 border border-white/10"
+                className="w-full bg-slate-600 text-white rounded-lg px-4 py-2 border border-gray-300"
               >
                 <option value="Email">📧 Email</option>
                 <option value="WhatsApp">📱 WhatsApp</option>
@@ -251,7 +251,7 @@ export default function QuotationSendModal({ lead, onClose, onSuccess }) {
                   value={clientEmail}
                   onChange={(e) => setClientEmail(e.target.value)}
                   placeholder="client@example.com"
-                  className="w-full bg-slate-600 text-white rounded-lg px-4 py-2 border border-white/10"
+                  className="w-full bg-slate-600 text-white rounded-lg px-4 py-2 border border-gray-300"
                 />
               </div>
             )}
@@ -259,7 +259,7 @@ export default function QuotationSendModal({ lead, onClose, onSuccess }) {
         </div>
 
         {/* Footer Actions */}
-        <div className="sticky bottom-0 bg-slate-800 border-t border-white/10 p-6 flex gap-3">
+        <div className="sticky bottom-0 bg-gray-50 border-t border-gray-300 p-6 flex gap-3">
           <Button
             onClick={handleDownloadPDF}
             variant="outline"

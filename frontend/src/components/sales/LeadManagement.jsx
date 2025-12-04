@@ -199,7 +199,7 @@ const LeadManagement = () => {
       </div>
 
       {/* Search and Filter Bar */}
-      <div className="flex gap-4 items-center bg-white/5 backdrop-blur-sm rounded-xl border border-white/10 p-4">
+      <div className="flex gap-4 items-center bg-white/5 backdrop-blur-sm rounded-xl border border-gray-300 p-4">
         <div className="flex-1">
           <Input
             placeholder="Search by client name, company, or mobile..."
@@ -233,13 +233,13 @@ const LeadManagement = () => {
       </div>
 
       {/* All Leads Table */}
-      <div className="bg-white/5 backdrop-blur-sm rounded-xl border border-white/10 overflow-hidden">
-        <div className="p-4 border-b border-white/10">
+      <div className="bg-white/5 backdrop-blur-sm rounded-xl border border-gray-300 overflow-hidden">
+        <div className="p-4 border-b border-gray-300">
           <h3 className="text-lg font-semibold text-white">All Team Leads ({filteredLeads.length})</h3>
         </div>
         <Table>
           <TableHeader>
-            <TableRow className="border-white/10">
+            <TableRow className="border-gray-300">
               <TableHead className="text-gray-300">Client</TableHead>
               <TableHead className="text-gray-300">Contact</TableHead>
               <TableHead className="text-gray-300">Requirement</TableHead>
@@ -263,7 +263,7 @@ const LeadManagement = () => {
               </TableRow>
             ) : (
               filteredLeads.map((lead) => (
-                <TableRow key={lead.id} className="border-white/10 hover:bg-white/5">
+                <TableRow key={lead.id} className="border-gray-300 hover:bg-white/5">
                   <TableCell className="text-white font-medium">
                     {lead.company_name || lead.client_name}
                   </TableCell>

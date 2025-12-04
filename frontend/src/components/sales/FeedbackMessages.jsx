@@ -164,10 +164,10 @@ const FeedbackMessages = () => {
         {messages.map((message) => (
           <Card 
             key={message.id} 
-            className={`border-white/10 transition-all ${
+            className={`border-gray-300 transition-all ${
               message.read 
-                ? 'bg-slate-900/30' 
-                : 'bg-slate-900/70 border-blue-400/30'
+                ? 'bg-white/30' 
+                : 'bg-white/70 border-blue-400/30'
             }`}
           >
             <CardHeader className="pb-3">
@@ -191,7 +191,7 @@ const FeedbackMessages = () => {
                     )}
                   </div>
                   
-                  <CardTitle className={`text-lg mb-2 ${message.read ? 'text-slate-300' : 'text-white'}`}>
+                  <CardTitle className={`text-lg mb-2 ${message.read ? 'text-gray-700' : 'text-white'}`}>
                     {message.title}
                   </CardTitle>
                   
@@ -212,7 +212,7 @@ const FeedbackMessages = () => {
                     size="sm"
                     variant="ghost"
                     onClick={() => toggleStar(message.id)}
-                    className={message.starred ? 'text-yellow-400 hover:text-yellow-300' : 'text-slate-400 hover:text-slate-300'}
+                    className={message.starred ? 'text-yellow-400 hover:text-yellow-300' : 'text-slate-400 hover:text-gray-700'}
                   >
                     <Star className={`w-4 h-4 ${message.starred ? 'fill-current' : ''}`} />
                   </Button>
@@ -231,7 +231,7 @@ const FeedbackMessages = () => {
             </CardHeader>
 
             <CardContent>
-              <p className={`leading-relaxed ${message.read ? 'text-slate-400' : 'text-slate-300'}`}>
+              <p className={`leading-relaxed ${message.read ? 'text-slate-400' : 'text-gray-700'}`}>
                 {message.message}
               </p>
             </CardContent>
@@ -240,10 +240,10 @@ const FeedbackMessages = () => {
       </div>
 
       {messages.length === 0 && (
-        <Card className="bg-slate-800/30 border-white/10">
+        <Card className="bg-gray-50/30 border-gray-300">
           <CardContent className="text-center py-12">
             <MessageCircle className="w-16 h-16 text-slate-400 mx-auto mb-4" />
-            <h3 className="text-slate-300 text-lg font-semibold mb-2">
+            <h3 className="text-gray-700 text-lg font-semibold mb-2">
               No Messages Yet
             </h3>
             <p className="text-slate-400">

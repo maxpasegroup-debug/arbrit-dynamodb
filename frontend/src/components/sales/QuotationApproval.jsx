@@ -80,10 +80,10 @@ const QuotationApproval = () => {
           <FileText className="w-6 h-6 text-yellow-400" />
           Pending Approvals ({pendingQuotations.length})
         </h3>
-        <div className="bg-white/5 backdrop-blur-sm rounded-xl border border-white/10 overflow-hidden">
+        <div className="bg-white/5 backdrop-blur-sm rounded-xl border border-gray-300 overflow-hidden">
           <Table>
             <TableHeader>
-              <TableRow className="border-white/10">
+              <TableRow className="border-gray-300">
                 <TableHead className="text-gray-300">Client Name</TableHead>
                 <TableHead className="text-gray-300">Amount</TableHead>
                 <TableHead className="text-gray-300">Created By</TableHead>
@@ -101,7 +101,7 @@ const QuotationApproval = () => {
                 </TableRow>
               ) : (
                 pendingQuotations.map((quot) => (
-                  <TableRow key={quot.id} className="border-white/10">
+                  <TableRow key={quot.id} className="border-gray-300">
                     <TableCell className="text-white font-medium">{quot.client_name}</TableCell>
                     <TableCell className="text-gray-300">${parseFloat(quot.total_amount || 0).toLocaleString()}</TableCell>
                     <TableCell className="text-gray-300 text-sm">{quot.created_by_name || 'N/A'}</TableCell>
@@ -143,10 +143,10 @@ const QuotationApproval = () => {
 
       <div>
         <h3 className="text-xl font-semibold text-white mb-4">Processed Quotations ({processedQuotations.length})</h3>
-        <div className="bg-white/5 backdrop-blur-sm rounded-xl border border-white/10 overflow-hidden">
+        <div className="bg-white/5 backdrop-blur-sm rounded-xl border border-gray-300 overflow-hidden">
           <Table>
             <TableHeader>
-              <TableRow className="border-white/10">
+              <TableRow className="border-gray-300">
                 <TableHead className="text-gray-300">Client Name</TableHead>
                 <TableHead className="text-gray-300">Amount</TableHead>
                 <TableHead className="text-gray-300">Created By</TableHead>
@@ -163,7 +163,7 @@ const QuotationApproval = () => {
                 </TableRow>
               ) : (
                 processedQuotations.map((quot) => (
-                  <TableRow key={quot.id} className="border-white/10">
+                  <TableRow key={quot.id} className="border-gray-300">
                     <TableCell className="text-white font-medium">{quot.client_name}</TableCell>
                     <TableCell className="text-gray-300">${parseFloat(quot.total_amount || 0).toLocaleString()}</TableCell>
                     <TableCell className="text-gray-300 text-sm">{quot.created_by_name || 'N/A'}</TableCell>
@@ -200,7 +200,7 @@ const QuotationApproval = () => {
                   <span className="font-semibold">${parseFloat(selectedQuotation.total_amount || 0).toLocaleString()}</span>
                 </div>
                 {selectedQuotation.items && (
-                  <div className="mt-3 pt-3 border-t border-white/10">
+                  <div className="mt-3 pt-3 border-t border-gray-300">
                     <span className="text-gray-400 text-sm">Items:</span>
                     <p className="text-sm mt-1 whitespace-pre-wrap">{selectedQuotation.items}</p>
                   </div>

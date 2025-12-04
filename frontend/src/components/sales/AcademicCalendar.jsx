@@ -190,12 +190,12 @@ const AcademicCalendar = () => {
       </div>
 
       {/* Course Filter */}
-      <div className="bg-white/5 backdrop-blur-sm rounded-xl border border-white/10 p-4">
+      <div className="bg-white/5 backdrop-blur-sm rounded-xl border border-gray-300 p-4">
         <div className="flex items-center gap-4">
           <BookOpen className="w-5 h-5 text-blue-400" />
           <label className="text-sm text-gray-300 font-semibold">Filter by Course:</label>
           <Select value={selectedCourse} onValueChange={setSelectedCourse}>
-            <SelectTrigger className="w-80 bg-slate-800 border-white/10 text-white">
+            <SelectTrigger className="w-80 bg-gray-50 border-gray-300 text-white">
               <SelectValue />
             </SelectTrigger>
             <SelectContent className="bg-[#1a2f4d] border-white/20 text-white">
@@ -216,7 +216,7 @@ const AcademicCalendar = () => {
       </div>
 
       {/* Calendar */}
-      <div className="bg-white/5 backdrop-blur-sm rounded-xl border border-white/10 p-6">
+      <div className="bg-white/5 backdrop-blur-sm rounded-xl border border-gray-300 p-6">
         {/* Calendar Header */}
         <div className="flex justify-between items-center mb-6">
           <Button
@@ -263,7 +263,7 @@ const AcademicCalendar = () => {
             const availabilityStatus = getAvailabilityStatus(date);
             
             let bgColor = 'bg-white/5';
-            let borderColor = 'border-white/10';
+            let borderColor = 'border-gray-300';
             let textColor = 'text-slate-400';
             
             if (isAvailable) {
@@ -330,24 +330,24 @@ const AcademicCalendar = () => {
       </div>
 
       {/* Legend */}
-      <div className="bg-white/5 backdrop-blur-sm rounded-xl border border-white/10 p-4">
+      <div className="bg-white/5 backdrop-blur-sm rounded-xl border border-gray-300 p-4">
         <h4 className="text-sm font-semibold text-white mb-3">Legend:</h4>
         <div className="grid grid-cols-4 gap-4">
           <div className="flex items-center gap-2">
             <div className="w-4 h-4 bg-green-500/20 border border-green-500/50 rounded"></div>
-            <span className="text-sm text-slate-300">Available</span>
+            <span className="text-sm text-gray-700">Available</span>
           </div>
           <div className="flex items-center gap-2">
             <div className="w-4 h-4 bg-yellow-500/20 border border-yellow-500/50 rounded"></div>
-            <span className="text-sm text-slate-300">Partially Booked</span>
+            <span className="text-sm text-gray-700">Partially Booked</span>
           </div>
           <div className="flex items-center gap-2">
             <div className="w-4 h-4 bg-red-500/20 border border-red-500/50 rounded"></div>
-            <span className="text-sm text-slate-300">Fully Booked</span>
+            <span className="text-sm text-gray-700">Fully Booked</span>
           </div>
           <div className="flex items-center gap-2">
-            <div className="w-4 h-4 bg-white/5 border border-white/10 rounded"></div>
-            <span className="text-sm text-slate-300">Past Date</span>
+            <div className="w-4 h-4 bg-white/5 border border-gray-300 rounded"></div>
+            <span className="text-sm text-gray-700">Past Date</span>
           </div>
         </div>
       </div>

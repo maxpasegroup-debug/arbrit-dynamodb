@@ -120,7 +120,7 @@ const QuotationDialog = ({ open, onOpenChange, lead, onSuccess }) => {
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto bg-slate-900 border-white/10">
+      <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto bg-white border-gray-300">
         <DialogHeader>
           <DialogTitle className="text-white text-xl flex items-center gap-2">
             <FileText className="w-5 h-5" />
@@ -134,22 +134,22 @@ const QuotationDialog = ({ open, onOpenChange, lead, onSuccess }) => {
             <h4 className="text-sm font-semibold text-slate-200">Client Information</h4>
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <Label className="text-slate-300">Client Name *</Label>
+                <Label className="text-gray-700">Client Name *</Label>
                 <Input
                   value={formData.client_name}
                   onChange={(e) => setFormData({...formData, client_name: e.target.value})}
                   placeholder="Client name"
-                  className="bg-slate-800 border-white/10 text-slate-100"
+                  className="bg-gray-50 border-gray-300 text-gray-900"
                   required
                 />
               </div>
               <div>
-                <Label className="text-slate-300">Lead ID</Label>
+                <Label className="text-gray-700">Lead ID</Label>
                 <Input
                   value={formData.lead_id}
                   onChange={(e) => setFormData({...formData, lead_id: e.target.value})}
                   placeholder="Associated lead ID"
-                  className="bg-slate-800 border-white/10 text-slate-100"
+                  className="bg-gray-50 border-gray-300 text-gray-900"
                   readOnly
                 />
               </div>
@@ -174,14 +174,14 @@ const QuotationDialog = ({ open, onOpenChange, lead, onSuccess }) => {
             
             <div className="space-y-3">
               {items.map((item, index) => (
-                <div key={index} className="grid grid-cols-12 gap-3 items-end p-3 bg-slate-800/50 rounded-lg">
+                <div key={index} className="grid grid-cols-12 gap-3 items-end p-3 bg-gray-50/50 rounded-lg">
                   <div className="col-span-4">
                     <Label className="text-slate-400 text-xs">Description</Label>
                     <Input
                       value={item.description}
                       onChange={(e) => updateItem(index, 'description', e.target.value)}
                       placeholder="Item description"
-                      className="bg-slate-700 border-white/10 text-slate-100 text-sm"
+                      className="bg-gray-100 border-gray-300 text-gray-900 text-sm"
                     />
                   </div>
                   <div className="col-span-2">
@@ -191,7 +191,7 @@ const QuotationDialog = ({ open, onOpenChange, lead, onSuccess }) => {
                       min="1"
                       value={item.quantity}
                       onChange={(e) => updateItem(index, 'quantity', e.target.value)}
-                      className="bg-slate-700 border-white/10 text-slate-100 text-sm"
+                      className="bg-gray-100 border-gray-300 text-gray-900 text-sm"
                     />
                   </div>
                   <div className="col-span-2">
@@ -202,7 +202,7 @@ const QuotationDialog = ({ open, onOpenChange, lead, onSuccess }) => {
                       step="0.01"
                       value={item.unit_price}
                       onChange={(e) => updateItem(index, 'unit_price', e.target.value)}
-                      className="bg-slate-700 border-white/10 text-slate-100 text-sm"
+                      className="bg-gray-100 border-gray-300 text-gray-900 text-sm"
                     />
                   </div>
                   <div className="col-span-2">
@@ -211,7 +211,7 @@ const QuotationDialog = ({ open, onOpenChange, lead, onSuccess }) => {
                       type="number"
                       value={item.amount.toFixed(2)}
                       readOnly
-                      className="bg-slate-700/50 border-white/10 text-slate-100 text-sm"
+                      className="bg-gray-100/50 border-gray-300 text-gray-900 text-sm"
                     />
                   </div>
                   <div className="col-span-2">
@@ -232,7 +232,7 @@ const QuotationDialog = ({ open, onOpenChange, lead, onSuccess }) => {
             </div>
 
             {/* Total Amount */}
-            <div className="border-t border-white/10 pt-4">
+            <div className="border-t border-gray-300 pt-4">
               <div className="flex justify-end">
                 <div className="text-right">
                   <Label className="text-slate-400">Total Amount</Label>
@@ -245,15 +245,15 @@ const QuotationDialog = ({ open, onOpenChange, lead, onSuccess }) => {
           </div>
 
           {/* Additional Information */}
-          <div className="space-y-4 p-4 bg-slate-800/50 border border-white/10 rounded-lg">
+          <div className="space-y-4 p-4 bg-gray-50/50 border border-gray-300 rounded-lg">
             <h4 className="text-sm font-semibold text-slate-200">Additional Information</h4>
             <div>
-              <Label className="text-slate-300">Remarks</Label>
+              <Label className="text-gray-700">Remarks</Label>
               <Textarea
                 value={formData.remarks}
                 onChange={(e) => setFormData({...formData, remarks: e.target.value})}
                 placeholder="Any additional notes or terms..."
-                className="bg-slate-800 border-white/10 text-slate-100 min-h-[80px]"
+                className="bg-gray-50 border-gray-300 text-gray-900 min-h-[80px]"
               />
             </div>
           </div>
@@ -264,7 +264,7 @@ const QuotationDialog = ({ open, onOpenChange, lead, onSuccess }) => {
               type="button"
               variant="outline"
               onClick={() => onOpenChange(false)}
-              className="border-white/10"
+              className="border-gray-300"
             >
               Cancel
             </Button>

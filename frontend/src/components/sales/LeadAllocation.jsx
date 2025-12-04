@@ -102,10 +102,10 @@ const LeadAllocation = () => {
         </div>
       </div>
 
-      <div className="bg-white/5 backdrop-blur-sm rounded-xl border border-white/10 overflow-hidden">
+      <div className="bg-white/5 backdrop-blur-sm rounded-xl border border-gray-300 overflow-hidden">
         <Table>
           <TableHeader>
-            <TableRow className="border-white/10">
+            <TableRow className="border-gray-300">
               <TableHead className="text-gray-300">Client Name</TableHead>
               <TableHead className="text-gray-300">Contact</TableHead>
               <TableHead className="text-gray-300">Type</TableHead>
@@ -123,7 +123,7 @@ const LeadAllocation = () => {
               </TableRow>
             ) : (
               filteredLeads.map((lead) => (
-                <TableRow key={lead.id} className="border-white/10">
+                <TableRow key={lead.id} className="border-gray-300">
                   <TableCell className="text-white font-medium">{lead.client_name}</TableCell>
                   <TableCell className="text-gray-300 text-sm">
                     {lead.mobile && <div>{lead.mobile}</div>}

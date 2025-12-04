@@ -93,10 +93,10 @@ const VisitLogs = () => {
         </Button>
       </div>
 
-      <div className="bg-white/5 backdrop-blur-sm rounded-xl border border-white/10 overflow-hidden">
+      <div className="bg-white/5 backdrop-blur-sm rounded-xl border border-gray-300 overflow-hidden">
         <Table>
           <TableHeader>
-            <TableRow className="border-white/10">
+            <TableRow className="border-gray-300">
               <TableHead className="text-gray-300">Client Name</TableHead>
               <TableHead className="text-gray-300">Location</TableHead>
               <TableHead className="text-gray-300">Date & Time</TableHead>
@@ -113,7 +113,7 @@ const VisitLogs = () => {
               </TableRow>
             ) : (
               visits.map((visit) => (
-                <TableRow key={visit.id} className="border-white/10">
+                <TableRow key={visit.id} className="border-gray-300">
                   <TableCell className="text-white font-medium">{visit.client_name}</TableCell>
                   <TableCell className="text-gray-300">
                     <div className="flex items-center gap-1">

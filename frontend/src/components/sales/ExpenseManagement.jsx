@@ -228,7 +228,7 @@ const ExpenseManagement = () => {
         <div className="space-y-4">
           <h4 className="text-lg font-semibold text-white">Team Expense Claims for Review</h4>
           {teamExpenses.map((expense) => (
-            <Card key={expense.id} className="bg-slate-900/50 border-white/10">
+            <Card key={expense.id} className="bg-white/50 border-gray-300">
               <CardContent className="p-4">
                 <div className="flex justify-between items-start mb-4">
                   <div className="flex items-center gap-4">
@@ -262,7 +262,7 @@ const ExpenseManagement = () => {
 
                 <div className="mb-4">
                   <p className="text-slate-400 text-sm">Description</p>
-                  <p className="text-white bg-slate-800/50 p-2 rounded">{expense.description}</p>
+                  <p className="text-white bg-gray-50/50 p-2 rounded">{expense.description}</p>
                 </div>
 
                 <div className="flex items-center justify-between">
@@ -311,7 +311,7 @@ const ExpenseManagement = () => {
                 </div>
 
                 {expense.status !== 'pending' && (
-                  <div className="mt-4 pt-4 border-t border-white/10 text-sm text-slate-400">
+                  <div className="mt-4 pt-4 border-t border-gray-300 text-sm text-slate-400">
                     {expense.status === 'approved' && (
                       <>
                         <p>✅ Approved by {expense.reviewedBy} on {expense.reviewDate}</p>
@@ -324,7 +324,7 @@ const ExpenseManagement = () => {
                       <p>❌ Rejected by {expense.reviewedBy} on {expense.reviewDate}</p>
                     )}
                     {expense.reviewComments && (
-                      <p className="mt-1 text-slate-300">Comments: {expense.reviewComments}</p>
+                      <p className="mt-1 text-gray-700">Comments: {expense.reviewComments}</p>
                     )}
                   </div>
                 )}
@@ -358,7 +358,7 @@ const ExpenseManagement = () => {
 
       {/* Review Dialog */}
       <Dialog open={reviewDialogOpen} onOpenChange={setReviewDialogOpen}>
-        <DialogContent className="max-w-md bg-slate-900 border-white/10">
+        <DialogContent className="max-w-md bg-white border-gray-300">
           <DialogHeader>
             <DialogTitle className="text-white">
               {reviewAction === 'approve' && 'Approve & Forward Expense'}
@@ -368,15 +368,15 @@ const ExpenseManagement = () => {
           
           <div className="space-y-4">
             {selectedExpense && (
-              <div className="bg-slate-800/50 p-3 rounded-lg">
+              <div className="bg-gray-50/50 p-3 rounded-lg">
                 <p className="text-white font-medium">{selectedExpense.employeeName}</p>
                 <p className="text-slate-400">{selectedExpense.category} - {selectedExpense.amount} AED</p>
-                <p className="text-slate-300 text-sm">{selectedExpense.description}</p>
+                <p className="text-gray-700 text-sm">{selectedExpense.description}</p>
               </div>
             )}
 
             <div>
-              <Label className="text-slate-300">Review Comments</Label>
+              <Label className="text-gray-700">Review Comments</Label>
               <Textarea
                 value={reviewComments}
                 onChange={(e) => setReviewComments(e.target.value)}
@@ -385,7 +385,7 @@ const ExpenseManagement = () => {
                     ? "Optional: Add approval notes..." 
                     : "Please provide reason for rejection..."
                 }
-                className="bg-slate-800 border-white/10 text-slate-100"
+                className="bg-gray-50 border-gray-300 text-gray-900"
               />
             </div>
 
@@ -427,7 +427,7 @@ const ExpenseManagement = () => {
 
       {/* Create Expense Modal */}
       <Dialog open={createExpenseOpen} onOpenChange={setCreateExpenseOpen}>
-        <DialogContent className="max-w-2xl bg-slate-900 border-white/10">
+        <DialogContent className="max-w-2xl bg-white border-gray-300">
           <DialogHeader>
             <DialogTitle className="text-white">Submit Personal Expense Claim</DialogTitle>
           </DialogHeader>

@@ -124,9 +124,9 @@ const DuplicateManagement = () => {
           Loading alerts...
         </div>
       ) : alerts.length === 0 ? (
-        <div className="text-center py-12 bg-white/5 rounded-lg border border-white/10">
+        <div className="text-center py-12 bg-white/5 rounded-lg border border-gray-300">
           <Check className="w-12 h-12 text-green-400 mx-auto mb-3" />
-          <p className="text-slate-300 text-lg">All Clear!</p>
+          <p className="text-gray-700 text-lg">All Clear!</p>
           <p className="text-slate-400 mt-1">No duplicate alerts to review</p>
         </div>
       ) : (
@@ -143,7 +143,7 @@ const DuplicateManagement = () => {
             return (
               <div
                 key={alert.id}
-                className="bg-white/5 rounded-lg p-4 border border-white/10 hover:border-orange-400/50 transition-all"
+                className="bg-white/5 rounded-lg p-4 border border-gray-300 hover:border-orange-400/50 transition-all"
               >
                 <div className="flex items-start justify-between">
                   <div className="flex-1">
@@ -190,7 +190,7 @@ const DuplicateManagement = () => {
 
                     <div className="bg-blue-500/10 rounded p-3 border border-blue-400/30 mb-2">
                       <p className="text-xs text-orange-300 font-semibold">⚠️ Detection Reason:</p>
-                      <p className="text-slate-300 text-sm mt-1">{alert.detection_reason || 'Similar lead detected in system'}</p>
+                      <p className="text-gray-700 text-sm mt-1">{alert.detection_reason || 'Similar lead detected in system'}</p>
                     </div>
 
                     <p className="text-xs text-slate-500">
@@ -233,7 +233,7 @@ const DuplicateManagement = () => {
 
       {/* Comparison Modal */}
       <Dialog open={comparisonOpen} onOpenChange={setComparisonOpen}>
-        <DialogContent className="max-w-6xl max-h-[90vh] overflow-y-auto bg-slate-900 border-white/10">
+        <DialogContent className="max-w-6xl max-h-[90vh] overflow-y-auto bg-white border-gray-300">
           <DialogHeader>
             <DialogTitle className="text-2xl text-white flex items-center gap-2">
               <AlertTriangle className="w-6 h-6 text-orange-400" />
@@ -332,7 +332,7 @@ const DuplicateManagement = () => {
               </div>
 
               {/* Action Buttons */}
-              <div className="grid grid-cols-2 gap-4 pt-4 border-t border-white/10">
+              <div className="grid grid-cols-2 gap-4 pt-4 border-t border-gray-300">
                 <Button
                   onClick={handleMerge}
                   className="bg-green-600 hover:bg-green-700 h-auto py-4"

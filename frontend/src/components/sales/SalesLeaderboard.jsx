@@ -54,15 +54,15 @@ const SalesLeaderboard = () => {
 
   if (loading) {
     return (
-      <div className="bg-white/5 backdrop-blur-sm rounded-xl border border-white/10 p-6">
+      <div className="bg-white/5 backdrop-blur-sm rounded-xl border border-gray-300 p-6">
         <p className="text-gray-400">Loading leaderboard...</p>
       </div>
     );
   }
 
   return (
-    <div className="bg-white/5 backdrop-blur-sm rounded-xl border border-white/10 overflow-hidden">
-      <div className="px-6 py-4 bg-gradient-to-r from-purple-500/20 to-blue-500/20 border-b border-white/10">
+    <div className="bg-white/5 backdrop-blur-sm rounded-xl border border-gray-300 overflow-hidden">
+      <div className="px-6 py-4 bg-gradient-to-r from-purple-500/20 to-blue-500/20 border-b border-gray-300">
         <div className="flex items-center gap-3">
           <TrendingUp className="w-6 h-6 text-purple-400" />
           <h3 className="text-lg font-semibold text-white">🏆 Sales Performance Leaderboard</h3>
@@ -133,7 +133,7 @@ const SalesLeaderboard = () => {
         )}
 
         {leaderboard.length > 0 && (
-          <div className="mt-6 pt-4 border-t border-white/10">
+          <div className="mt-6 pt-4 border-t border-gray-300">
             <p className="text-xs text-center text-gray-500">
               Rankings based on total leads created and conversion rate
             </p>

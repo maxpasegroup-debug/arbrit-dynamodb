@@ -298,10 +298,10 @@ const LeadManagementEnhanced = () => {
       </div>
 
       {/* Leads Table */}
-      <div className="bg-white/5 backdrop-blur-lg rounded-lg border border-white/10 overflow-hidden">
+      <div className="bg-white/5 backdrop-blur-lg rounded-lg border border-gray-300 overflow-hidden">
         <Table>
           <TableHeader>
-            <TableRow className="border-white/10 hover:bg-white/5">
+            <TableRow className="border-gray-300 hover:bg-white/5">
               <TableHead className="text-gray-300">Source</TableHead>
               <TableHead className="text-gray-300">Client Name</TableHead>
               <TableHead className="text-gray-300">Requirement</TableHead>
@@ -321,7 +321,7 @@ const LeadManagementEnhanced = () => {
               </TableRow>
             ) : (
               filteredLeads.map((lead) => (
-                <TableRow key={lead.id} className="border-white/10 hover:bg-white/5">
+                <TableRow key={lead.id} className="border-gray-300 hover:bg-white/5">
                   <TableCell className="text-white">
                     <span className="text-xl mr-2">{getSourceIcon(lead.source)}</span>
                     <span className="text-sm">{lead.source}</span>

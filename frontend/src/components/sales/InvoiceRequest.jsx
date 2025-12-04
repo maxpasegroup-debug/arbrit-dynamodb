@@ -99,10 +99,10 @@ const InvoiceRequest = () => {
         </Button>
       </div>
 
-      <div className="bg-white/5 backdrop-blur-sm rounded-xl border border-white/10 overflow-hidden">
+      <div className="bg-white/5 backdrop-blur-sm rounded-xl border border-gray-300 overflow-hidden">
         <Table>
           <TableHeader>
-            <TableRow className="border-white/10">
+            <TableRow className="border-gray-300">
               <TableHead className="text-gray-300">Client Name</TableHead>
               <TableHead className="text-gray-300">Quotation Ref</TableHead>
               <TableHead className="text-gray-300">Amount</TableHead>
@@ -119,7 +119,7 @@ const InvoiceRequest = () => {
               </TableRow>
             ) : (
               requests.map((req) => (
-                <TableRow key={req.id} className="border-white/10">
+                <TableRow key={req.id} className="border-gray-300">
                   <TableCell className="text-white font-medium">{req.client_name}</TableCell>
                   <TableCell className="text-gray-300">{req.quotation_ref || '-'}</TableCell>
                   <TableCell className="text-gray-300">

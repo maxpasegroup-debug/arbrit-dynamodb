@@ -130,7 +130,7 @@ const EnhancedDuplicateManagement = () => {
           <p className="text-white text-xs">{lead?.requirement || 'No requirements specified'}</p>
         </div>
 
-        <div className="pt-3 border-t border-white/10">
+        <div className="pt-3 border-t border-gray-300">
           <p className="text-slate-400 text-xs">Submitted By</p>
           <p className="text-white font-semibold">{lead?.submitted_by || 'Unknown'}</p>
           <p className="text-slate-400 text-xs">{lead?.submitted_by_role || ''}</p>
@@ -166,9 +166,9 @@ const EnhancedDuplicateManagement = () => {
           Loading alerts...
         </div>
       ) : alerts.length === 0 ? (
-        <div className="text-center py-12 bg-white/5 rounded-lg border border-white/10">
+        <div className="text-center py-12 bg-white/5 rounded-lg border border-gray-300">
           <Check className="w-12 h-12 text-green-400 mx-auto mb-3" />
-          <p className="text-slate-300 text-lg">All Clear!</p>
+          <p className="text-gray-700 text-lg">All Clear!</p>
           <p className="text-slate-400 mt-1">No duplicate alerts to review</p>
         </div>
       ) : (
@@ -183,7 +183,7 @@ const EnhancedDuplicateManagement = () => {
             return (
               <div
                 key={alert.id}
-                className="bg-white/5 rounded-lg p-5 border border-white/10 hover:border-orange-400/50 transition-all"
+                className="bg-white/5 rounded-lg p-5 border border-gray-300 hover:border-orange-400/50 transition-all"
               >
                 <div className="flex items-start justify-between mb-4">
                   <div className="flex items-center gap-3">
@@ -207,13 +207,13 @@ const EnhancedDuplicateManagement = () => {
                   <div className="bg-blue-500/10 rounded p-3 border border-blue-400/30">
                     <p className="text-xs text-blue-300 mb-1">LEAD A (First)</p>
                     <p className="text-white font-semibold">{leadA.company_name || 'N/A'}</p>
-                    <p className="text-sm text-slate-300">By: {leadA.submitted_by || 'Unknown'} ({leadA.submitted_by_role})</p>
+                    <p className="text-sm text-gray-700">By: {leadA.submitted_by || 'Unknown'} ({leadA.submitted_by_role})</p>
                     <p className="text-xs text-slate-400 mt-1">Value: {leadA.lead_value} AED</p>
                   </div>
                   <div className="bg-orange-500/10 rounded p-3 border border-orange-400/30">
                     <p className="text-xs text-orange-300 mb-1">LEAD B (Second)</p>
                     <p className="text-white font-semibold">{leadB.company_name || 'N/A'}</p>
-                    <p className="text-sm text-slate-300">By: {leadB.submitted_by || 'Unknown'} ({leadB.submitted_by_role})</p>
+                    <p className="text-sm text-gray-700">By: {leadB.submitted_by || 'Unknown'} ({leadB.submitted_by_role})</p>
                     <p className="text-xs text-slate-400 mt-1">Value: {leadB.lead_value} AED</p>
                   </div>
                 </div>
@@ -221,7 +221,7 @@ const EnhancedDuplicateManagement = () => {
                 {alert.similarity_factors && (
                   <div className="bg-red-500/10 rounded p-3 border border-red-400/30">
                     <p className="text-xs text-red-300 font-semibold mb-2">🚨 Similarity Factors:</p>
-                    <ul className="text-xs text-slate-300 space-y-1">
+                    <ul className="text-xs text-gray-700 space-y-1">
                       {alert.similarity_factors.map((factor, idx) => (
                         <li key={idx}>• {factor}</li>
                       ))}
@@ -236,7 +236,7 @@ const EnhancedDuplicateManagement = () => {
 
       {/* Enhanced Comparison Modal */}
       <Dialog open={comparisonOpen} onOpenChange={setComparisonOpen}>
-        <DialogContent className="max-w-7xl max-h-[95vh] overflow-y-auto bg-slate-900 border-white/10">
+        <DialogContent className="max-w-7xl max-h-[95vh] overflow-y-auto bg-white border-gray-300">
           <DialogHeader>
             <DialogTitle className="text-2xl text-white flex items-center gap-2">
               <AlertTriangle className="w-6 h-6 text-orange-400" />
@@ -264,7 +264,7 @@ const EnhancedDuplicateManagement = () => {
               </div>
 
               {/* Decision Options */}
-              <div className="bg-white/5 rounded-lg p-6 border border-white/10">
+              <div className="bg-white/5 rounded-lg p-6 border border-gray-300">
                 <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
                   <Award className="w-5 h-5 text-yellow-400" />
                   Sales Head Decision
@@ -325,7 +325,7 @@ const EnhancedDuplicateManagement = () => {
                     value={notes}
                     onChange={(e) => setNotes(e.target.value)}
                     placeholder="Add any notes about your decision..."
-                    className="bg-slate-800 border-white/10 text-white min-h-[80px]"
+                    className="bg-gray-50 border-gray-300 text-white min-h-[80px]"
                   />
                 </div>
 

@@ -20,7 +20,7 @@ const LeadProgressTracker = ({ currentStatus }) => {
       {/* Metro Line Container */}
       <div className="relative flex items-center justify-between">
         {/* Background Line (Track) */}
-        <div className="absolute top-1/2 left-0 w-full h-1 bg-slate-700/50 -translate-y-1/2 z-0" />
+        <div className="absolute top-1/2 left-0 w-full h-1 bg-gray-100/50 -translate-y-1/2 z-0" />
         
         {/* Progress Line (Active Track - Green) */}
         <div 
@@ -47,7 +47,7 @@ const LeadProgressTracker = ({ currentStatus }) => {
                 ${isCurrent && !isLost ? 'bg-blue-500 border-blue-400 shadow-lg shadow-blue-500/50 animate-pulse' : ''}
                 ${isCurrent && isLost ? 'bg-red-500 border-red-400 shadow-lg shadow-red-500/50' : ''}
                 ${isWon ? 'bg-green-500 border-green-400 shadow-lg shadow-green-500/50 scale-110' : ''}
-                ${isFuture ? 'bg-slate-700 border-slate-600' : ''}
+                ${isFuture ? 'bg-gray-100 border-slate-600' : ''}
               `}>
                 {/* Completed - Show Checkmark */}
                 {isCompleted && (
@@ -97,7 +97,7 @@ const LeadProgressTracker = ({ currentStatus }) => {
       </div>
 
       {/* Status Info Bar */}
-      <div className="mt-3 pt-2 border-t border-slate-700/50">
+      <div className="mt-3 pt-2 border-t border-gray-300/50">
         <div className="flex items-center justify-between text-xs">
           <div className="flex items-center gap-2">
             {currentStatus?.toLowerCase() === 'lost' ? (

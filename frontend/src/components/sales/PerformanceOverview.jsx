@@ -96,7 +96,7 @@ const PerformanceOverview = () => {
       </div>
 
       {/* Filters */}
-      <Card className="bg-slate-900/50 border-white/10">
+      <Card className="bg-white/50 border-gray-300">
         <CardHeader>
           <CardTitle className="text-white flex items-center gap-2">
             <Filter className="w-5 h-5" />
@@ -106,12 +106,12 @@ const PerformanceOverview = () => {
         <CardContent className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
             <div>
-              <Label className="text-slate-300">Area</Label>
+              <Label className="text-gray-700">Area</Label>
               <Select value={filters.area} onValueChange={(value) => setFilters({...filters, area: value})}>
-                <SelectTrigger className="bg-slate-800 border-white/10 text-slate-100">
+                <SelectTrigger className="bg-gray-50 border-gray-300 text-gray-900">
                   <SelectValue placeholder="All Areas" />
                 </SelectTrigger>
-                <SelectContent className="bg-slate-800 border-white/10">
+                <SelectContent className="bg-gray-50 border-gray-300">
                   <SelectItem value="all">All Areas</SelectItem>
                   <SelectItem value="Dubai">Dubai</SelectItem>
                   <SelectItem value="Abu Dhabi">Abu Dhabi</SelectItem>
@@ -122,12 +122,12 @@ const PerformanceOverview = () => {
             </div>
 
             <div>
-              <Label className="text-slate-300">Badge Level</Label>
+              <Label className="text-gray-700">Badge Level</Label>
               <Select value={filters.badge} onValueChange={(value) => setFilters({...filters, badge: value})}>
-                <SelectTrigger className="bg-slate-800 border-white/10 text-slate-100">
+                <SelectTrigger className="bg-gray-50 border-gray-300 text-gray-900">
                   <SelectValue placeholder="All Badges" />
                 </SelectTrigger>
-                <SelectContent className="bg-slate-800 border-white/10">
+                <SelectContent className="bg-gray-50 border-gray-300">
                   <SelectItem value="all">All Badges</SelectItem>
                   <SelectItem value="Gold">Gold</SelectItem>
                   <SelectItem value="Silver">Silver</SelectItem>
@@ -137,22 +137,22 @@ const PerformanceOverview = () => {
             </div>
 
             <div>
-              <Label className="text-slate-300">Individual</Label>
+              <Label className="text-gray-700">Individual</Label>
               <Input
                 value={filters.individual}
                 onChange={(e) => setFilters({...filters, individual: e.target.value})}
                 placeholder="Search by name..."
-                className="bg-slate-800 border-white/10 text-slate-100"
+                className="bg-gray-50 border-gray-300 text-gray-900"
               />
             </div>
 
             <div>
-              <Label className="text-slate-300">Time Range</Label>
+              <Label className="text-gray-700">Time Range</Label>
               <Select value={filters.timeRange} onValueChange={(value) => setFilters({...filters, timeRange: value})}>
-                <SelectTrigger className="bg-slate-800 border-white/10 text-slate-100">
+                <SelectTrigger className="bg-gray-50 border-gray-300 text-gray-900">
                   <SelectValue />
                 </SelectTrigger>
-                <SelectContent className="bg-slate-800 border-white/10">
+                <SelectContent className="bg-gray-50 border-gray-300">
                   <SelectItem value="current_month">Current Month</SelectItem>
                   <SelectItem value="last_month">Last Month</SelectItem>
                   <SelectItem value="current_quarter">Current Quarter</SelectItem>
@@ -217,14 +217,14 @@ const PerformanceOverview = () => {
       </div>
 
       {/* Monthly Target Progress */}
-      <Card className="bg-slate-900/50 border-white/10">
+      <Card className="bg-white/50 border-gray-300">
         <CardHeader>
           <CardTitle className="text-white">Monthly Target Progress</CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="flex justify-between text-sm">
             <span className="text-slate-400">Progress</span>
-            <span className="text-slate-300">{achievementPercentage.toFixed(1)}%</span>
+            <span className="text-gray-700">{achievementPercentage.toFixed(1)}%</span>
           </div>
           <Progress value={achievementPercentage} className="h-3" />
           <div className="flex justify-between text-sm">
@@ -235,14 +235,14 @@ const PerformanceOverview = () => {
       </Card>
 
       {/* Team Performance */}
-      <Card className="bg-slate-900/50 border-white/10">
+      <Card className="bg-white/50 border-gray-300">
         <CardHeader>
           <CardTitle className="text-white">Individual Performance</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="space-y-3">
             {teamPerformance.map((member) => (
-              <div key={member.id} className="flex items-center justify-between p-3 bg-slate-800/50 rounded-lg">
+              <div key={member.id} className="flex items-center justify-between p-3 bg-gray-50/50 rounded-lg">
                 <div className="flex items-center gap-4">
                   <div>
                     <p className="text-white font-medium">{member.name}</p>
@@ -274,14 +274,14 @@ const PerformanceOverview = () => {
       </Card>
 
       {/* Area Performance */}
-      <Card className="bg-slate-900/50 border-white/10">
+      <Card className="bg-white/50 border-gray-300">
         <CardHeader>
           <CardTitle className="text-white">Area-wise Performance</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {areaPerformance.map((area, index) => (
-              <div key={index} className="p-4 bg-slate-800/50 rounded-lg border border-white/10">
+              <div key={index} className="p-4 bg-gray-50/50 rounded-lg border border-gray-300">
                 <div className="flex items-center gap-2 mb-3">
                   <MapPin className="w-4 h-4 text-blue-400" />
                   <h4 className="text-white font-semibold">{area.area}</h4>
