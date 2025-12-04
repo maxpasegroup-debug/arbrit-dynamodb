@@ -296,6 +296,194 @@ const LeadTracker = () => {
     fetchLeads();
   };
 
+  // Quotation Approval Handler
+  const handleQuotationApproval = async (lead) => {
+    try {
+      const token = localStorage.getItem('token');
+      const quotation_id = lead.quotation_id;
+      
+      if (!quotation_id) {
+        toast.error('No quotation found for this lead');
+        return;
+      }
+      
+      // Find the quotation details
+      const quotResponse = await axios.get(`${API}/sales-head/quotations`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      const quotation = quotResponse.data.find(q => q.id === quotation_id);
+      
+      if (!quotation) {
+        toast.error('Quotation not found');
+        return;
+      }
+      
+      // Show confirmation dialog
+      const action = await new Promise((resolve) => {
+        const dialog = document.createElement('div');
+        dialog.innerHTML = `
+          <div class="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+            <div class="bg-slate-800 rounded-xl p-6 max-w-md w-full mx-4 border border-white/10">
+              <h3 class="text-xl font-bold text-white mb-4">Review Quotation</h3>
+              <div class="space-y-3 mb-6">
+                <div class="bg-white/5 p-3 rounded">
+                  <p class="text-slate-400 text-sm">Client</p>
+                  <p class="text-white font-semibold">${quotation.client_name}</p>
+                </div>
+                <div class="bg-white/5 p-3 rounded">
+                  <p class="text-slate-400 text-sm">Total Amount</p>
+                  <p class="text-green-400 font-bold text-lg">${quotation.total_amount} AED</p>
+                </div>
+                <div class="bg-white/5 p-3 rounded">
+                  <p class="text-slate-400 text-sm">Created By</p>
+                  <p class="text-white">${quotation.created_by_name}</p>
+                </div>
+              </div>
+              <div class="flex gap-3">
+                <button id="approve-btn" class="flex-1 bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg">
+                  ✅ Approve
+                </button>
+                <button id="reject-btn" class="flex-1 bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg">
+                  ❌ Reject
+                </button>
+                <button id="cancel-btn" class="px-4 py-2 bg-slate-700 hover:bg-slate-600 text-white rounded-lg">
+                  Cancel
+                </button>
+              </div>
+            </div>
+          </div>
+        `;
+        document.body.appendChild(dialog);
+        
+        dialog.querySelector('#approve-btn').onclick = () => {
+          document.body.removeChild(dialog);
+          resolve('approve');
+        };
+        dialog.querySelector('#reject-btn').onclick = () => {
+          document.body.removeChild(dialog);
+          resolve('reject');
+        };
+        dialog.querySelector('#cancel-btn').onclick = () => {
+          document.body.removeChild(dialog);
+          resolve('cancel');
+        };
+      });
+      
+      if (action === 'cancel') return;
+      
+      const endpoint = action === 'approve' 
+        ? `${API}/sales-head/quotations/${quotation_id}/approve`
+        : `${API}/sales-head/quotations/${quotation_id}/reject`;
+      
+      await axios.put(endpoint, {
+        comments: action === 'approve' ? 'Approved by Sales Head' : 'Rejected by Sales Head'
+      }, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      
+      toast.success(`Quotation ${action === 'approve' ? 'approved' : 'rejected'} successfully`);
+      fetchLeads();
+      fetchQuotationRequests();
+    } catch (error) {
+      console.error('Error handling quotation:', error);
+      toast.error('Failed to process quotation');
+    }
+  };
+
+  // Invoice Approval Handler
+  const handleInvoiceApproval = async (lead) => {
+    try {
+      const token = localStorage.getItem('token');
+      const invoice_id = lead.invoice_id;
+      
+      if (!invoice_id) {
+        toast.error('No invoice found for this lead');
+        return;
+      }
+      
+      // Find the invoice details
+      const invResponse = await axios.get(`${API}/sales-head/invoices`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      const invoice = invResponse.data.find(inv => inv.id === invoice_id);
+      
+      if (!invoice) {
+        toast.error('Invoice not found');
+        return;
+      }
+      
+      // Show confirmation dialog
+      const action = await new Promise((resolve) => {
+        const dialog = document.createElement('div');
+        dialog.innerHTML = `
+          <div class="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+            <div class="bg-slate-800 rounded-xl p-6 max-w-md w-full mx-4 border border-white/10">
+              <h3 class="text-xl font-bold text-white mb-4">Review Invoice</h3>
+              <div class="space-y-3 mb-6">
+                <div class="bg-white/5 p-3 rounded">
+                  <p class="text-slate-400 text-sm">Client</p>
+                  <p class="text-white font-semibold">${invoice.client_name}</p>
+                </div>
+                <div class="bg-white/5 p-3 rounded">
+                  <p class="text-slate-400 text-sm">Amount</p>
+                  <p class="text-green-400 font-bold text-lg">${invoice.amount} AED</p>
+                </div>
+                <div class="bg-white/5 p-3 rounded">
+                  <p class="text-slate-400 text-sm">Requested By</p>
+                  <p class="text-white">${invoice.requested_by_name}</p>
+                </div>
+              </div>
+              <div class="flex gap-3">
+                <button id="approve-btn" class="flex-1 bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg">
+                  ✅ Approve → Send to Accounts
+                </button>
+                <button id="reject-btn" class="flex-1 bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg">
+                  ❌ Reject
+                </button>
+                <button id="cancel-btn" class="px-4 py-2 bg-slate-700 hover:bg-slate-600 text-white rounded-lg">
+                  Cancel
+                </button>
+              </div>
+            </div>
+          </div>
+        `;
+        document.body.appendChild(dialog);
+        
+        dialog.querySelector('#approve-btn').onclick = () => {
+          document.body.removeChild(dialog);
+          resolve('approve');
+        };
+        dialog.querySelector('#reject-btn').onclick = () => {
+          document.body.removeChild(dialog);
+          resolve('reject');
+        };
+        dialog.querySelector('#cancel-btn').onclick = () => {
+          document.body.removeChild(dialog);
+          resolve('cancel');
+        };
+      });
+      
+      if (action === 'cancel') return;
+      
+      const endpoint = action === 'approve' 
+        ? `${API}/sales-head/invoices/${invoice_id}/approve`
+        : `${API}/sales-head/invoices/${invoice_id}/reject`;
+      
+      await axios.put(endpoint, {
+        comments: action === 'approve' ? 'Approved by Sales Head - Sent to Accounts' : 'Rejected by Sales Head'
+      }, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      
+      toast.success(action === 'approve' ? 'Invoice approved and sent to Accounts' : 'Invoice rejected');
+      fetchLeads();
+      fetchInvoiceRequests();
+    } catch (error) {
+      console.error('Error handling invoice:', error);
+      toast.error('Failed to process invoice');
+    }
+  };
+
   // Duplicate management handlers
   const openComparison = (alert) => {
     setSelectedAlert(alert);
