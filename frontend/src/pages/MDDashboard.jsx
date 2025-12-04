@@ -280,11 +280,6 @@ const MDDashboard = () => {
             <FeedbackManagement />
           </TabsContent>
 
-          {/* Admin Cleanup Tab */}
-          <TabsContent value="admin">
-            <MasterCleanupPanel />
-          </TabsContent>
-
           {/* Arbrit&apos;s Journey Tab */}
           <TabsContent value="arbrits-journey">
             <CompletedTrainings />
