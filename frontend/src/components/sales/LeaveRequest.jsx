@@ -22,42 +22,7 @@ const LeaveRequest = () => {
     handoverNotes: ''
   });
   const [loading, setLoading] = useState(false);
-  const [requests, setRequests] = useState([
-    {
-      id: 1,
-      type: 'Annual Leave',
-      startDate: '2025-12-15',
-      endDate: '2025-12-20',
-      days: 5,
-      reason: 'Family vacation',
-      status: 'pending',
-      requestDate: '2025-12-01',
-      approvedBy: null
-    },
-    {
-      id: 2,
-      type: 'Sick Leave',
-      startDate: '2025-11-22',
-      endDate: '2025-11-23',
-      days: 2,
-      reason: 'Medical appointment',
-      status: 'approved',
-      requestDate: '2025-11-20',
-      approvedBy: 'HR Department'
-    },
-    {
-      id: 3,
-      type: 'Personal Leave',
-      startDate: '2025-11-10',
-      endDate: '2025-11-10',
-      days: 1,
-      reason: 'Personal matters',
-      status: 'rejected',
-      requestDate: '2025-11-08',
-      approvedBy: 'HR Department',
-      rejectionReason: 'High workload during this period'
-    }
-  ]);
+  const [requests, setRequests] = useState([]);
 
   const calculateLeaveDays = (start, end) => {
     if (!start || !end) return 0;
