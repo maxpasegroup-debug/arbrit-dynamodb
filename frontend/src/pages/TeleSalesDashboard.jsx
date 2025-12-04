@@ -1,47 +1,51 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { LogOut, Award, User, TrendingUp, Calendar, FileText, GraduationCap, Receipt, MessageCircle, UserCheck, BookOpen } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import LeadTracker from '@/components/sales/LeadTracker';
-import MyTrainingTracker from '@/components/sales/MyTrainingTracker';
-import AcademicCalendar from '@/components/sales/AcademicCalendar';
-import ExpenseSubmission from '@/components/expenses/ExpenseSubmission';
-import FeedbackMessages from '@/components/sales/FeedbackMessages';
-import LeaveRequest from '@/components/sales/LeaveRequest';
-import { toast } from 'sonner';
 import axios from 'axios';
+import { Card } from '../components/ui/card';
+import { Button } from '../components/ui/button';
+import { LogOut, TrendingUp, Users, Phone } from 'lucide-react';
+import { toast } from 'sonner';
+import LeadTracker from '../components/sales/LeadTracker';
 
-const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
+const API = process.env.REACT_APP_BACKEND_URL;
 
-const TeleSalesDashboard = () => {
+export default function TeleSalesDashboard() {
   const navigate = useNavigate();
   const [userData, setUserData] = useState(null);
-  const [activeTab, setActiveTab] = useState('leads');
-  const [stats, setStats] = useState({ leadsCount: 0, revenue: 0, trainingsCount: 0 });
+  const [stats, setStats] = useState({ leads: 0, quoted: 0, won: 0 });
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const user = JSON.parse(localStorage.getItem('user'));
-    if (user) {
-      setUserData(user);
-      fetchUserStats();
-    } else {
+    const token = localStorage.getItem('token');
+    const user = JSON.parse(localStorage.getItem('user') || '{}');
+
+    if (!token || user.role !== 'Tele Sales') {
       navigate('/login');
+      return;
     }
+
+    setUserData(user);
+    fetchDashboardData();
   }, [navigate]);
 
-  const fetchUserStats = async () => {
+  const fetchDashboardData = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.get(`${BACKEND_URL}/api/sales/stats`, {
+      const response = await axios.get(`${API}/sales/leads`, {
         headers: { Authorization: `Bearer ${token}` }
       });
-      setStats(response.data || { leadsCount: 0, revenue: 0, trainingsCount: 0 });
+
+      const leads = response.data || [];
+      setStats({
+        leads: leads.length,
+        quoted: leads.filter(l => l.quotation_sent).length,
+        won: leads.filter(l => l.status === 'Won').length
+      });
     } catch (error) {
-      console.error('Error fetching stats:', error);
-      // Mock stats
-      setStats({ leadsCount: 12, revenue: 45000, trainingsCount: 8 });
+      console.error('Error fetching dashboard data:', error);
+      toast.error('Failed to load dashboard data');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -49,168 +53,83 @@ const TeleSalesDashboard = () => {
     if (window.confirm('Are you sure you want to logout?')) {
       localStorage.removeItem('token');
       localStorage.removeItem('user');
-      navigate('/login');
+      toast.success('Logged out successfully');
+      setTimeout(() => {
+        navigate('/login');
+      }, 500);
     }
   };
 
   if (!userData) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 flex items-center justify-center">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
+      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900 flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900">
       {/* Header */}
-      <header className="bg-black/20 backdrop-blur-sm border-b border-white/10 sticky top-0 z-50">
+      <div className="bg-slate-800/50 border-b border-white/10 sticky top-0 z-10 backdrop-blur-lg">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center py-4">
-            <div className="flex items-center space-x-4">
-              <div className="bg-gradient-to-r from-purple-500 to-pink-500 p-2 rounded-lg">
-                <User className="h-6 w-6 text-white" />
-              </div>
-              <div>
-                <h1 className="text-xl font-bold text-white">Tele Sales Dashboard</h1>
-                <p className="text-purple-300">Welcome back, {userData.name}!</p>
-              </div>
+            <div>
+              <h1 className="text-2xl font-bold text-white">Tele Sales Dashboard</h1>
+              <p className="text-slate-400 text-sm mt-1">Welcome, {userData.name}</p>
             </div>
-            <div className="flex items-center space-x-4">
-              <Badge className="bg-purple-500/20 text-purple-300 border-purple-400">
-                <Award className="w-4 h-4 mr-1" />
-                {userData.role}
-              </Badge>
-              <Button 
-                onClick={handleLogout}
-                variant="outline" 
-                size="sm" 
-                className="border-white/20 text-white hover:bg-white/10"
-              >
-                <LogOut className="h-4 w-4 mr-2" />
-                Logout
-              </Button>
-            </div>
+            <Button
+              onClick={handleLogout}
+              variant="outline"
+              className="border-red-400/50 text-red-300 hover:bg-red-500/20"
+            >
+              <LogOut className="w-4 h-4 mr-2" />
+              Logout
+            </Button>
           </div>
         </div>
-      </header>
+      </div>
 
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Welcome Section */}
-        <div className="mb-8">
-          <h2 className="text-3xl font-bold text-white mb-4">Dashboard Overview</h2>
-          <p className="text-slate-300 text-lg">
-            Manage your leads, track training progress, and coordinate your sales activities.
-          </p>
-        </div>
-
-        {/* Quick Stats */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-          <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-slate-400 text-sm">My Leads</p>
-                <p className="text-2xl font-bold text-white">{stats.leadsCount}</p>
+      {/* Main Content */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* Stats */}
+        {!loading && (
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <Card className="bg-slate-800/50 border-white/10 p-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-slate-400 text-sm">Total Leads</p>
+                  <p className="text-3xl font-bold text-white mt-2">{stats.leads}</p>
+                </div>
+                <Users className="w-12 h-12 text-blue-400 opacity-50" />
               </div>
-              <TrendingUp className="h-8 w-8 text-blue-400" />
-            </div>
-          </div>
-          
-          <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-slate-400 text-sm">Revenue Generated</p>
-                <p className="text-2xl font-bold text-white">{stats.revenue.toLocaleString()} AED</p>
-              </div>
-              <span className="text-2xl">💰</span>
-            </div>
-          </div>
-          
-          <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-slate-400 text-sm">Trainings Tracked</p>
-                <p className="text-2xl font-bold text-white">{stats.trainingsCount}</p>
-              </div>
-              <GraduationCap className="h-8 w-8 text-green-400" />
-            </div>
-          </div>
-        </div>
+            </Card>
 
-        {/* Main Tabs */}
-        <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-6 bg-white/5 border border-white/10">
-            <TabsTrigger 
-              value="leads"
-              className="data-[state=active]:bg-blue-500/20 data-[state=active]:text-white text-gray-300"
-            >
-              <TrendingUp className="w-4 h-4 mr-2" />
-              Leads
-            </TabsTrigger>
-            <TabsTrigger 
-              value="trainings"
-              className="data-[state=active]:bg-blue-500/20 data-[state=active]:text-white text-gray-300"
-            >
-              <GraduationCap className="w-4 h-4 mr-2" />
-              Trainings
-            </TabsTrigger>
-            <TabsTrigger 
-              value="calendar"
-              className="data-[state=active]:bg-blue-500/20 data-[state=active]:text-white text-gray-300"
-            >
-              <BookOpen className="w-4 h-4 mr-2" />
-              Academic Calendar
-            </TabsTrigger>
-            <TabsTrigger 
-              value="expenses"
-              className="data-[state=active]:bg-blue-500/20 data-[state=active]:text-white text-gray-300"
-            >
-              <Receipt className="w-4 h-4 mr-2" />
-              Expenses
-            </TabsTrigger>
-            <TabsTrigger 
-              value="feedback"
-              className="data-[state=active]:bg-blue-500/20 data-[state=active]:text-white text-gray-300"
-            >
-              <MessageCircle className="w-4 h-4 mr-2" />
-              Feedback
-            </TabsTrigger>
-            <TabsTrigger 
-              value="leave"
-              className="data-[state=active]:bg-blue-500/20 data-[state=active]:text-white text-gray-300"
-            >
-              <UserCheck className="w-4 h-4 mr-2" />
-              Leave
-            </TabsTrigger>
-          </TabsList>
+            <Card className="bg-slate-800/50 border-white/10 p-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-slate-400 text-sm">Quoted</p>
+                  <p className="text-3xl font-bold text-white mt-2">{stats.quoted}</p>
+                </div>
+                <Phone className="w-12 h-12 text-purple-400 opacity-50" />
+              </div>
+            </Card>
 
-          <TabsContent value="leads" className="mt-6">
-            <LeadTracker />
-          </TabsContent>
-          
-          <TabsContent value="trainings" className="mt-6">
-            <MyTrainingTracker />
-          </TabsContent>
-          
-          <TabsContent value="calendar" className="mt-6">
-            <AcademicCalendar />
-          </TabsContent>
-          
-          <TabsContent value="expenses" className="mt-6">
-            <ExpenseSubmission />
-          </TabsContent>
-          
-          <TabsContent value="feedback" className="mt-6">
-            <FeedbackMessages />
-          </TabsContent>
-          
-          <TabsContent value="leave" className="mt-6">
-            <LeaveRequest />
-          </TabsContent>
-        </Tabs>
-      </main>
+            <Card className="bg-slate-800/50 border-white/10 p-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-slate-400 text-sm">Won Deals</p>
+                  <p className="text-3xl font-bold text-white mt-2">{stats.won}</p>
+                </div>
+                <TrendingUp className="w-12 h-12 text-green-400 opacity-50" />
+              </div>
+            </Card>
+          </div>
+        )}
+
+        {/* Lead Tracker */}
+        <LeadTracker />
+      </div>
     </div>
   );
-};
-
-export default TeleSalesDashboard;
+}
