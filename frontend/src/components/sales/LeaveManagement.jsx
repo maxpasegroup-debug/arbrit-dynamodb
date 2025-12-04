@@ -67,21 +67,8 @@ const LeaveManagement = () => {
       setMyRequests(response.data || []);
     } catch (error) {
       console.error('Error fetching my requests:', error);
-      // Mock data
-      setMyRequests([
-        {
-          id: 1,
-          leaveType: 'Annual Leave',
-          startDate: '2025-12-25',
-          endDate: '2025-12-31',
-          days: 6,
-          reason: 'Year-end vacation with family',
-          status: 'approved',
-          requestDate: '2025-11-15',
-          approvedBy: 'HR Department',
-          approvalDate: '2025-11-18'
-        }
-      ]);
+      // Show empty state if API fails
+      setMyRequests([]);
     }
   };
 
