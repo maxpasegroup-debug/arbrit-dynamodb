@@ -17,6 +17,7 @@ import TrainerCalendar from './TrainerCalendar';
 import LeadDetailsModal from './LeadDetailsModal';
 import LeadProgressTracker from './LeadProgressTracker';
 import QuotationDialog from './QuotationDialog';
+import QuotationSendModal from './QuotationSendModal';
 import { AlertTriangle, Award, Split, XCircle } from 'lucide-react';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
