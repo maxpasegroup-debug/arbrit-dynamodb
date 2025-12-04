@@ -44,68 +44,8 @@ const ExpenseManagement = () => {
       setTeamExpenses(response.data || []);
     } catch (error) {
       console.error('Error fetching team expenses:', error);
-      // Mock data
-      setTeamExpenses([
-        {
-          id: 1,
-          employeeName: 'Ahmed Hassan',
-          employeeRole: 'Field Sales',
-          category: 'Travel',
-          amount: 450,
-          description: 'Client visit to Abu Dhabi - fuel and parking',
-          expenseDate: '2025-12-01',
-          receiptUrl: 'https://example.com/receipt1.jpg',
-          status: 'pending',
-          submittedDate: '2025-12-02',
-          employeeId: 'emp001'
-        },
-        {
-          id: 2,
-          employeeName: 'Sarah Ali',
-          employeeRole: 'Tele Sales',
-          category: 'Food',
-          amount: 120,
-          description: 'Client lunch meeting - Al Habtoor Business Bay',
-          expenseDate: '2025-11-30',
-          receiptUrl: 'https://example.com/receipt2.jpg',
-          status: 'pending',
-          submittedDate: '2025-12-01',
-          employeeId: 'emp002'
-        },
-        {
-          id: 3,
-          employeeName: 'Mohammed Ahmed',
-          employeeRole: 'Sales Employee',
-          category: 'Communication',
-          amount: 85,
-          description: 'Mobile bill reimbursement for business calls',
-          expenseDate: '2025-11-28',
-          receiptUrl: 'https://example.com/receipt3.jpg',
-          status: 'approved',
-          submittedDate: '2025-11-29',
-          reviewedBy: 'Mohammad Akbar',
-          reviewDate: '2025-11-30',
-          reviewComments: 'Approved for business communication expenses',
-          forwardedToAccounts: true,
-          employeeId: 'emp003'
-        },
-        {
-          id: 4,
-          employeeName: 'Fatima Omar',
-          employeeRole: 'Field Sales',
-          category: 'Accommodation',
-          amount: 320,
-          description: 'Hotel stay for client meetings in Sharjah',
-          expenseDate: '2025-11-25',
-          receiptUrl: 'https://example.com/receipt4.jpg',
-          status: 'rejected',
-          submittedDate: '2025-11-26',
-          reviewedBy: 'Mohammad Akbar',
-          reviewDate: '2025-11-27',
-          reviewComments: 'Accommodation not pre-approved as per company policy',
-          employeeId: 'emp004'
-        }
-      ]);
+      // Show empty state if API fails
+      setTeamExpenses([]);
     }
   };
 
