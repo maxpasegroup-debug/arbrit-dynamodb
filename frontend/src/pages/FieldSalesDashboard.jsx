@@ -40,8 +40,8 @@ const FieldSalesDashboard = () => {
       setStats(response.data || { leadsCount: 0, revenue: 0, trainingsCount: 0 });
     } catch (error) {
       console.error('Error fetching stats:', error);
-      // Mock stats
-      setStats({ leadsCount: 15, revenue: 67000, trainingsCount: 12 });
+      // Show zero stats if API fails
+      setStats({ leadsCount: 0, revenue: 0, trainingsCount: 0 });
     }
   };
 
