@@ -411,22 +411,22 @@ const UnifiedLeadForm = ({
         <h4 className="text-sm font-semibold text-slate-200">Lead Details</h4>
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <Label className="text-slate-300">Lead Owner (Sales Rep) *</Label>
+            <Label className="text-gray-700">Lead Owner (Sales Rep) *</Label>
             <Input
               value={formData.lead_owner}
               onChange={(e) => setFormData({...formData, lead_owner: e.target.value})}
               placeholder="Auto-filled with your name"
-              className="bg-slate-800 border-white/10 text-slate-100"
+              className="bg-white border-gray-300 text-gray-900"
               required
               readOnly
             />
           </div>
           <div>
-            <Label className="text-slate-300">Lead Source</Label>
+            <Label className="text-gray-700">Lead Source</Label>
             <select
               value={formData.source}
               onChange={(e) => setFormData({ ...formData, source: e.target.value })}
-              className="w-full bg-slate-800 border border-white/10 text-slate-100 rounded-md p-2"
+              className="w-full bg-white border border-gray-300 text-gray-900 rounded-md p-2"
               disabled={mode === 'online'}
             >
               <option value="Self">Self</option>
@@ -445,7 +445,7 @@ const UnifiedLeadForm = ({
           {/* Online Mode: Employee Assignment */}
           {mode === 'online' && (
             <div>
-              <Label className="text-slate-300">Assign To *</Label>
+              <Label className="text-gray-700">Assign To *</Label>
               <select
                 value={formData.assigned_to}
                 onChange={(e) => {
@@ -456,7 +456,7 @@ const UnifiedLeadForm = ({
                     assigned_to_name: selectedEmp?.name || ''
                   });
                 }}
-                className="w-full bg-slate-800 border border-white/10 text-slate-100 rounded-md p-2"
+                className="w-full bg-white border border-gray-300 text-gray-900 rounded-md p-2"
                 required
               >
                 <option value="">Select Team Member</option>
@@ -470,11 +470,11 @@ const UnifiedLeadForm = ({
           )}
           
           <div className={mode === 'online' ? 'col-span-1' : 'col-span-2'}>
-            <Label className="text-slate-300">Lead Category</Label>
+            <Label className="text-gray-700">Lead Category</Label>
             <select
               value={formData.lead_category}
               onChange={(e) => setFormData({ ...formData, lead_category: e.target.value })}
-              className="w-full bg-slate-800 border border-white/10 text-slate-100 rounded-md p-2"
+              className="w-full bg-white border border-gray-300 text-gray-900 rounded-md p-2"
             >
               <option value="">Select Category</option>
               <option value="Hot">Hot Lead</option>
@@ -488,7 +488,7 @@ const UnifiedLeadForm = ({
       </div>
 
       {/* Lead Type Selector */}
-      <div className="flex gap-2 p-1 bg-slate-800 rounded-lg">
+      <div className="flex gap-2 p-1 bg-white rounded-lg">
         <button
           type="button"
           onClick={() => {
@@ -497,7 +497,7 @@ const UnifiedLeadForm = ({
           }}
           className={`flex-1 flex items-center justify-center gap-2 py-2 px-4 rounded-md transition-all ${
             leadType === 'company'
-              ? 'bg-blue-600 text-white'
+              ? 'bg-blue-600 text-gray-900'
               : 'text-slate-400 hover:text-slate-200'
           }`}
         >
@@ -512,7 +512,7 @@ const UnifiedLeadForm = ({
           }}
           className={`flex-1 flex items-center justify-center gap-2 py-2 px-4 rounded-md transition-all ${
             leadType === 'individual'
-              ? 'bg-blue-600 text-white'
+              ? 'bg-blue-600 text-gray-900'
               : 'text-slate-400 hover:text-slate-200'
           }`}
         >
@@ -524,15 +524,15 @@ const UnifiedLeadForm = ({
       {/* Field Sales Type (Self mode only) */}
       {showFieldType && mode === 'self' && (
         <div>
-          <Label className="text-white">Field Sales Type</Label>
+          <Label className="text-gray-900">Field Sales Type</Label>
           <Select
             value={formData.field_sales_type}
             onValueChange={(val) => setFormData(prev => ({ ...prev, field_sales_type: val }))}
           >
-            <SelectTrigger className="bg-slate-800 border-white/10 text-white">
+            <SelectTrigger className="bg-white border-gray-300 text-gray-900">
               <SelectValue placeholder="Select type" />
             </SelectTrigger>
-            <SelectContent className="bg-slate-800 border-white/10">
+            <SelectContent className="bg-white border-gray-300">
               <SelectItem value="new">New Lead</SelectItem>
               <SelectItem value="followup">Follow-up</SelectItem>
               <SelectItem value="conversion">Conversion</SelectItem>
@@ -547,37 +547,37 @@ const UnifiedLeadForm = ({
           <h4 className="text-sm font-semibold text-slate-200">Company Information</h4>
           <div className="grid grid-cols-2 gap-4">
             <div className="col-span-2">
-              <Label className="text-slate-300">Company Name *</Label>
+              <Label className="text-gray-700">Company Name *</Label>
               <Input
                 value={formData.company_name}
                 onChange={(e) => setFormData({ ...formData, company_name: e.target.value })}
                 placeholder="ABC Corporation"
-                className="bg-slate-800 border-white/10 text-slate-100"
+                className="bg-white border-gray-300 text-gray-900"
                 required
               />
             </div>
             <div>
-              <Label className="text-slate-300">Point of Contact *</Label>
+              <Label className="text-gray-700">Point of Contact *</Label>
               <Input
                 value={formData.contact_person}
                 onChange={(e) => setFormData({ ...formData, contact_person: e.target.value })}
                 placeholder="John Smith"
-                className="bg-slate-800 border-white/10 text-slate-100"
+                className="bg-white border-gray-300 text-gray-900"
                 required
               />
             </div>
             <div>
-              <Label className="text-slate-300">Designation *</Label>
+              <Label className="text-gray-700">Designation *</Label>
               <Input
                 value={formData.contact_designation}
                 onChange={(e) => setFormData({ ...formData, contact_designation: e.target.value })}
                 placeholder="HR Manager"
-                className="bg-slate-800 border-white/10 text-slate-100"
+                className="bg-white border-gray-300 text-gray-900"
                 required
               />
             </div>
             <div>
-              <Label className="text-slate-300">Contact Mobile *</Label>
+              <Label className="text-gray-700">Contact Mobile *</Label>
               <Input
                 value={formData.contact_mobile}
                 onChange={(e) => {
@@ -589,36 +589,36 @@ const UnifiedLeadForm = ({
                   });
                 }}
                 placeholder="971xxxxxxxxx"
-                className="bg-slate-800 border-white/10 text-slate-100"
+                className="bg-white border-gray-300 text-gray-900"
                 required
               />
             </div>
             <div>
-              <Label className="text-slate-300">Contact Email</Label>
+              <Label className="text-gray-700">Contact Email</Label>
               <Input
                 type="email"
                 value={formData.contact_email}
                 onChange={(e) => setFormData({ ...formData, contact_email: e.target.value })}
                 placeholder="john@company.com"
-                className="bg-slate-800 border-white/10 text-slate-100"
+                className="bg-white border-gray-300 text-gray-900"
               />
             </div>
             <div className="col-span-2">
-              <Label className="text-slate-300">Website</Label>
+              <Label className="text-gray-700">Website</Label>
               <Input
                 type="text"
                 value={formData.website}
                 onChange={(e) => setFormData({ ...formData, website: e.target.value })}
                 placeholder="www.company.com"
-                className="bg-slate-800 border-white/10 text-slate-100"
+                className="bg-white border-gray-300 text-gray-900"
               />
             </div>
             <div>
-              <Label className="text-slate-300">Industry</Label>
+              <Label className="text-gray-700">Industry</Label>
               <select
                 value={formData.industry}
                 onChange={(e) => setFormData({ ...formData, industry: e.target.value })}
-                className="w-full bg-slate-800 border border-white/10 text-slate-100 rounded-md p-2"
+                className="w-full bg-white border border-gray-300 text-gray-900 rounded-md p-2"
               >
                 <option value="">Select Industry</option>
                 <option value="Construction">Construction</option>
@@ -631,11 +631,11 @@ const UnifiedLeadForm = ({
               </select>
             </div>
             <div>
-              <Label className="text-slate-300">Employee Count</Label>
+              <Label className="text-gray-700">Employee Count</Label>
               <select
                 value={formData.employee_count}
                 onChange={(e) => setFormData({ ...formData, employee_count: e.target.value })}
-                className="w-full bg-slate-800 border border-white/10 text-slate-100 rounded-md p-2"
+                className="w-full bg-white border border-gray-300 text-gray-900 rounded-md p-2"
               >
                 <option value="">Select Range</option>
                 <option value="1-10">1-10</option>
@@ -655,33 +655,33 @@ const UnifiedLeadForm = ({
           <h4 className="text-sm font-semibold text-slate-200">Client Contact Information</h4>
           <div className="grid grid-cols-2 gap-4">
             <div className="col-span-2">
-              <Label className="text-slate-300">Client Full Name *</Label>
+              <Label className="text-gray-700">Client Full Name *</Label>
               <Input
                 value={formData.client_name}
                 onChange={(e) => setFormData({ ...formData, client_name: e.target.value })}
                 placeholder="John Doe"
-                className="bg-slate-800 border-white/10 text-slate-100"
+                className="bg-white border-gray-300 text-gray-900"
                 required
               />
             </div>
             <div>
-              <Label className="text-slate-300">Mobile Number *</Label>
+              <Label className="text-gray-700">Mobile Number *</Label>
               <Input
                 value={formData.client_mobile}
                 onChange={(e) => setFormData({ ...formData, client_mobile: e.target.value })}
                 placeholder="971xxxxxxxxx"
-                className="bg-slate-800 border-white/10 text-slate-100"
+                className="bg-white border-gray-300 text-gray-900"
                 required
               />
             </div>
             <div>
-              <Label className="text-slate-300">Email Address</Label>
+              <Label className="text-gray-700">Email Address</Label>
               <Input
                 type="email"
                 value={formData.client_email}
                 onChange={(e) => setFormData({ ...formData, client_email: e.target.value })}
                 placeholder="john@email.com"
-                className="bg-slate-800 border-white/10 text-slate-100"
+                className="bg-white border-gray-300 text-gray-900"
               />
             </div>
           </div>
@@ -693,26 +693,26 @@ const UnifiedLeadForm = ({
         <h4 className="text-sm font-semibold text-slate-200">Training Requirements</h4>
         <div className="grid grid-cols-2 gap-4">
           <div className="col-span-2">
-            <Label className="text-slate-300">Training/Service Details</Label>
+            <Label className="text-gray-700">Training/Service Details</Label>
             <Input
               value={formData.training_service_details}
               onChange={(e) => setFormData({ ...formData, training_service_details: e.target.value })}
               placeholder="Brief description of training needs"
-              className="bg-slate-800 border-white/10 text-slate-100"
+              className="bg-white border-gray-300 text-gray-900"
             />
           </div>
           <div className="col-span-2">
-            <Label className="text-slate-300">Product/Services Required</Label>
+            <Label className="text-gray-700">Product/Services Required</Label>
             <Input
               value={formData.product_services_required}
               onChange={(e) => setFormData({ ...formData, product_services_required: e.target.value })}
               placeholder="Specific products or services needed"
-              className="bg-slate-800 border-white/10 text-slate-100"
+              className="bg-white border-gray-300 text-gray-900"
             />
           </div>
           {/* NEW HIERARCHICAL SERVICE SELECTION */}
           <div>
-            <Label className="text-slate-300">Select Service *</Label>
+            <Label className="text-gray-700">Select Service *</Label>
             <select
               value={formData.service_type}
               onChange={(e) => {
@@ -724,7 +724,7 @@ const UnifiedLeadForm = ({
                   course_id: ''
                 });
               }}
-              className="w-full bg-slate-800 border border-white/10 text-slate-100 rounded-md p-2"
+              className="w-full bg-white border border-gray-300 text-gray-900 rounded-md p-2"
               required
             >
               <option value="">Select Service</option>
@@ -738,7 +738,7 @@ const UnifiedLeadForm = ({
           {/* TRAINING CATEGORY (Only for TRAINING service) */}
           {formData.service_type === 'TRAINING' && (
             <div>
-              <Label className="text-slate-300">Training Category *</Label>
+              <Label className="text-gray-700">Training Category *</Label>
               <select
                 value={formData.service_category}
                 onChange={(e) => {
@@ -749,7 +749,7 @@ const UnifiedLeadForm = ({
                     course_id: ''
                   });
                 }}
-                className="w-full bg-slate-800 border border-white/10 text-slate-100 rounded-md p-2"
+                className="w-full bg-white border border-gray-300 text-gray-900 rounded-md p-2"
                 required
               >
                 <option value="">Select Category</option>
@@ -762,11 +762,11 @@ const UnifiedLeadForm = ({
           {/* TRAINING PROGRAMS (Only when category is selected) */}
           {formData.service_type === 'TRAINING' && formData.service_category && (
             <div className="col-span-2">
-              <Label className="text-slate-300">Select Training Program *</Label>
+              <Label className="text-gray-700">Select Training Program *</Label>
               <select
                 value={formData.course_id}
                 onChange={(e) => handleCourseChange(e.target.value)}
-                className="w-full bg-slate-800 border border-white/10 text-slate-100 rounded-md p-2"
+                className="w-full bg-white border border-gray-300 text-gray-900 rounded-md p-2"
                 required
               >
                 <option value="">Select Training Program</option>
@@ -782,61 +782,61 @@ const UnifiedLeadForm = ({
           {/* For NON-TRAINING services, show simple description field */}
           {formData.service_type && formData.service_type !== 'TRAINING' && (
             <div className="col-span-2">
-              <Label className="text-slate-300">Service Description *</Label>
+              <Label className="text-gray-700">Service Description *</Label>
               <Textarea
                 value={formData.product_services_required}
                 onChange={(e) => setFormData({ ...formData, product_services_required: e.target.value })}
                 placeholder={`Describe the ${formData.service_type.toLowerCase()} service required...`}
-                className="bg-slate-800 border-white/10 text-slate-100"
+                className="bg-white border-gray-300 text-gray-900"
                 rows={3}
                 required
               />
             </div>
           )}
           <div>
-            <Label className="text-slate-300">Number of Participants</Label>
+            <Label className="text-gray-700">Number of Participants</Label>
             <Input
               type="number"
               min="1"
               value={formData.num_trainees}
               onChange={(e) => handleTraineesChange(e.target.value)}
-              className="bg-slate-800 border-white/10 text-slate-100"
+              className="bg-white border-gray-300 text-gray-900"
               placeholder="Enter number of participants"
             />
           </div>
           <div>
-            <Label className="text-slate-300">Training Date</Label>
+            <Label className="text-gray-700">Training Date</Label>
             <Input
               type="date"
               value={formData.training_date}
               onChange={(e) => setFormData({ ...formData, training_date: e.target.value })}
-              className="bg-slate-800 border-white/10 text-slate-100"
+              className="bg-white border-gray-300 text-gray-900"
             />
           </div>
           <div>
-            <Label className="text-slate-300">Training Site</Label>
+            <Label className="text-gray-700">Training Site</Label>
             <Input
               value={formData.training_site}
               onChange={(e) => setFormData({ ...formData, training_site: e.target.value })}
               placeholder="On-site / Off-site"
-              className="bg-slate-800 border-white/10 text-slate-100"
+              className="bg-white border-gray-300 text-gray-900"
             />
           </div>
           <div>
-            <Label className="text-slate-300">Training Location</Label>
+            <Label className="text-gray-700">Training Location</Label>
             <Input
               value={formData.training_location}
               onChange={(e) => setFormData({ ...formData, training_location: e.target.value })}
               placeholder="City, Country"
-              className="bg-slate-800 border-white/10 text-slate-100"
+              className="bg-white border-gray-300 text-gray-900"
             />
           </div>
           <div>
-            <Label className="text-slate-300">Urgency</Label>
+            <Label className="text-gray-700">Urgency</Label>
             <select
               value={formData.urgency}
               onChange={(e) => setFormData({ ...formData, urgency: e.target.value })}
-              className="w-full bg-slate-800 border border-white/10 text-slate-100 rounded-md p-2"
+              className="w-full bg-white border border-gray-300 text-gray-900 rounded-md p-2"
             >
               <option value="low">Low</option>
               <option value="medium">Medium</option>
@@ -851,11 +851,11 @@ const UnifiedLeadForm = ({
         <h4 className="text-sm font-semibold text-slate-200">Payment Information</h4>
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <Label className="text-slate-300">Payment Mode</Label>
+            <Label className="text-gray-700">Payment Mode</Label>
             <select
               value={formData.payment_mode}
               onChange={(e) => setFormData({ ...formData, payment_mode: e.target.value })}
-              className="w-full bg-slate-800 border border-white/10 text-slate-100 rounded-md p-2"
+              className="w-full bg-white border border-gray-300 text-gray-900 rounded-md p-2"
             >
               <option value="">Select Payment Mode</option>
               <option value="Cash">Cash</option>
@@ -866,11 +866,11 @@ const UnifiedLeadForm = ({
             </select>
           </div>
           <div>
-            <Label className="text-slate-300">Payment Terms</Label>
+            <Label className="text-gray-700">Payment Terms</Label>
             <select
               value={formData.payment_terms}
               onChange={(e) => setFormData({ ...formData, payment_terms: e.target.value })}
-              className="w-full bg-slate-800 border border-white/10 text-slate-100 rounded-md p-2"
+              className="w-full bg-white border border-gray-300 text-gray-900 rounded-md p-2"
             >
               <option value="">Select Payment Terms</option>
               <option value="Advance">100% Advance</option>
@@ -907,24 +907,24 @@ const UnifiedLeadForm = ({
       )}
 
       {/* Additional Notes */}
-      <div className="space-y-4 p-4 bg-slate-800/50 border border-white/10 rounded-lg">
+      <div className="space-y-4 p-4 bg-white/50 border border-gray-300 rounded-lg">
         <h4 className="text-sm font-semibold text-slate-200">Additional Information</h4>
         <div className="grid grid-cols-1 gap-4">
           <div>
-            <Label className="text-slate-300">Remarks & Description</Label>
+            <Label className="text-gray-700">Remarks & Description</Label>
             <textarea
               value={formData.remarks}
               onChange={(e) => setFormData({ ...formData, remarks: e.target.value })}
-              className="w-full bg-slate-800 border border-white/10 text-slate-100 rounded-md p-2 min-h-[80px]"
+              className="w-full bg-white border border-gray-300 text-gray-900 rounded-md p-2 min-h-[80px]"
               placeholder="Any remarks or special notes..."
             />
           </div>
           <div>
-            <Label className="text-slate-300">Description</Label>
+            <Label className="text-gray-700">Description</Label>
             <textarea
               value={formData.description}
               onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-              className="w-full bg-slate-800 border border-white/10 text-slate-100 rounded-md p-2 min-h-[80px]"
+              className="w-full bg-white border border-gray-300 text-gray-900 rounded-md p-2 min-h-[80px]"
               placeholder="Detailed description of requirements..."
             />
           </div>
@@ -967,7 +967,7 @@ const UnifiedLeadForm = ({
             if (mode === 'enhanced' && onOpenChange) onOpenChange(false);
             else if (mode === 'self') setShowDialog(false);
           }}
-          className="border-white/10"
+          className="border-gray-300"
         >
           Cancel
         </Button>
@@ -986,9 +986,9 @@ const UnifiedLeadForm = ({
   if (mode === 'enhanced') {
     return (
       <Dialog open={open} onOpenChange={onOpenChange}>
-        <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto bg-slate-900 border-white/10">
+        <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto bg-white border-gray-300">
           <DialogHeader>
-            <DialogTitle className="text-white text-xl">
+            <DialogTitle className="text-gray-900 text-xl">
               {existingLead ? 'Edit Lead' : 'Create New Lead'}
             </DialogTitle>
             <DialogDescription className="text-slate-400">
@@ -1014,9 +1014,9 @@ const UnifiedLeadForm = ({
         </Button>
 
         <Dialog open={showDialog} onOpenChange={setShowDialog}>
-          <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto bg-slate-900 border-white/10">
+          <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto bg-white border-gray-300">
             <DialogHeader>
-              <DialogTitle className="text-white text-xl">ARBRIT Lead Submission Form</DialogTitle>
+              <DialogTitle className="text-gray-900 text-xl">ARBRIT Lead Submission Form</DialogTitle>
               <DialogDescription className="text-slate-400">
                 Enhanced lead capture with intelligent scoring
               </DialogDescription>
