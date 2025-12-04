@@ -40,8 +40,8 @@ const SalesEmployeeDashboard = () => {
       setStats(response.data || { leadsCount: 0, revenue: 0, trainingsCount: 0 });
     } catch (error) {
       console.error('Error fetching stats:', error);
-      // Mock stats
-      setStats({ leadsCount: 8, revenue: 32000, trainingsCount: 5 });
+      // Show zero stats if API fails
+      setStats({ leadsCount: 0, revenue: 0, trainingsCount: 0 });
     }
   };
 
