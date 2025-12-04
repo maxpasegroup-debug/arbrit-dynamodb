@@ -710,22 +710,89 @@ const UnifiedLeadForm = ({
               className="bg-slate-800 border-white/10 text-slate-100"
             />
           </div>
-          <div className="col-span-2">
-            <Label className="text-slate-300">Select Training Course *</Label>
+          {/* NEW HIERARCHICAL SERVICE SELECTION */}
+          <div>
+            <Label className="text-slate-300">Select Service *</Label>
             <select
-              value={formData.course_id}
-              onChange={(e) => handleCourseChange(e.target.value)}
+              value={formData.service_type}
+              onChange={(e) => {
+                setFormData({ 
+                  ...formData, 
+                  service_type: e.target.value,
+                  service_category: '',
+                  training_type: '',
+                  course_id: ''
+                });
+              }}
               className="w-full bg-slate-800 border border-white/10 text-slate-100 rounded-md p-2"
               required
             >
-              <option value="">Select Course</option>
-              {courses.map(course => (
-                <option key={course.id} value={course.id}>
-                  {course.name} - {course.base_fee} AED ({course.duration})
-                </option>
-              ))}
+              <option value="">Select Service</option>
+              <option value="TRAINING">Training</option>
+              <option value="CONSULTANCY">Consultancy</option>
+              <option value="MANPOWER">Manpower</option>
+              <option value="INSPECTION">Inspection</option>
             </select>
           </div>
+
+          {/* TRAINING CATEGORY (Only for TRAINING service) */}
+          {formData.service_type === 'TRAINING' && (
+            <div>
+              <Label className="text-slate-300">Training Category *</Label>
+              <select
+                value={formData.service_category}
+                onChange={(e) => {
+                  setFormData({ 
+                    ...formData, 
+                    service_category: e.target.value,
+                    training_type: '',
+                    course_id: ''
+                  });
+                }}
+                className="w-full bg-slate-800 border border-white/10 text-slate-100 rounded-md p-2"
+                required
+              >
+                <option value="">Select Category</option>
+                <option value="GENERAL_TRAINING">General Training</option>
+                <option value="INTERNATIONAL_TRAINING">International Training</option>
+              </select>
+            </div>
+          )}
+
+          {/* TRAINING PROGRAMS (Only when category is selected) */}
+          {formData.service_type === 'TRAINING' && formData.service_category && (
+            <div className="col-span-2">
+              <Label className="text-slate-300">Select Training Program *</Label>
+              <select
+                value={formData.course_id}
+                onChange={(e) => handleCourseChange(e.target.value)}
+                className="w-full bg-slate-800 border border-white/10 text-slate-100 rounded-md p-2"
+                required
+              >
+                <option value="">Select Training Program</option>
+                {courses.map(course => (
+                  <option key={course.id} value={course.id}>
+                    {course.name} - {course.base_fee} AED ({course.duration})
+                  </option>
+                ))}
+              </select>
+            </div>
+          )}
+
+          {/* For NON-TRAINING services, show simple description field */}
+          {formData.service_type && formData.service_type !== 'TRAINING' && (
+            <div className="col-span-2">
+              <Label className="text-slate-300">Service Description *</Label>
+              <Textarea
+                value={formData.product_services_required}
+                onChange={(e) => setFormData({ ...formData, product_services_required: e.target.value })}
+                placeholder={`Describe the ${formData.service_type.toLowerCase()} service required...`}
+                className="bg-slate-800 border-white/10 text-slate-100"
+                rows={3}
+                required
+              />
+            </div>
+          )}
           <div>
             <Label className="text-slate-300">Number of Participants</Label>
             <Input
