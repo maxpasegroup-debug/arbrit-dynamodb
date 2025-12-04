@@ -584,17 +584,14 @@ const UnifiedLeadForm = ({
               <Label className="text-slate-300">Contact Mobile *</Label>
               <Input
                 value={formData.contact_mobile}
-                onChange={(e) => setFormData({ ...formData, contact_mobile: e.target.value })}
-                placeholder="971xxxxxxxxx"
-                className="bg-slate-800 border-white/10 text-slate-100"
-                required
-              />
-            </div>
-            <div>
-              <Label className="text-slate-300">Phone *</Label>
-              <Input
-                value={formData.phone}
-                onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                onChange={(e) => {
+                  // Auto-fill both fields for backend compatibility
+                  setFormData({ 
+                    ...formData, 
+                    contact_mobile: e.target.value,
+                    phone: e.target.value 
+                  });
+                }}
                 placeholder="971xxxxxxxxx"
                 className="bg-slate-800 border-white/10 text-slate-100"
                 required
