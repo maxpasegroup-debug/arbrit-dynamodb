@@ -26,73 +26,8 @@ const FeedbackMessages = () => {
       setMessages(response.data || []);
     } catch (error) {
       console.error('Error fetching feedback:', error);
-      // Mock data for demo
-      setMessages([
-        {
-          id: 1,
-          title: 'Excellent Performance This Month!',
-          message: 'Great work on closing 5 leads this month. Your conversion rate has improved significantly. Keep up the excellent work!',
-          from: 'Mohammad Akbar',
-          fromRole: 'Sales Head',
-          type: 'appreciation',
-          priority: 'medium',
-          date: '2025-12-02',
-          read: false,
-          starred: true
-        },
-        {
-          id: 2,
-          title: 'New Sales Process Update',
-          message: 'Please note the updated lead qualification process. All leads must now include budget verification before moving to quotation stage. Training session scheduled for Dec 5th.',
-          from: 'Brijith Shaji',
-          fromRole: 'MD',
-          type: 'announcement',
-          priority: 'high',
-          date: '2025-12-01',
-          read: false,
-          starred: false
-        },
-        {
-          id: 3,
-          title: 'Client Feedback - ABC Corp Training',
-          message: 'Received excellent feedback from ABC Corp regarding the fire safety training. Client specifically mentioned your professional approach during the sales process. Well done!',
-          from: 'Mohammad Akbar',
-          fromRole: 'Sales Head',
-          type: 'client_feedback',
-          priority: 'medium',
-          date: '2025-11-30',
-          read: true,
-          starred: true
-        },
-        {
-          id: 4,
-          title: 'Q4 Target Achievement',
-          message: 'Congratulations on achieving 110% of your Q4 target! Your dedication and hard work are truly appreciated. Bonus processing will be completed by month-end.',
-          from: 'HR Department',
-          fromRole: 'HR',
-          type: 'achievement',
-          priority: 'high',
-          date: '2025-11-28',
-          read: true,
-          starred: false
-        },
-        {
-          id: 5,
-          title: 'Reminder: Monthly Reports Due',
-          message: 'Please submit your monthly sales report by Dec 5th. Include lead conversion metrics, client feedback, and challenges faced.',
-          from: 'Mohammad Akbar',
-          fromRole: 'Sales Head',
-          type: 'reminder',
-          priority: 'medium',
-          date: '2025-11-27',
-          read: true,
-          starred: false
-        }
-      ]);
-      
-      // Calculate unread count
-      const unread = messages.filter(msg => !msg.read).length;
-      setUnreadCount(unread);
+      // Show empty state if API fails
+      setMessages([]);
     } finally {
       setLoading(false);
     }
