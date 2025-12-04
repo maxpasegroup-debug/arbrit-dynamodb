@@ -119,61 +119,61 @@ const FieldSalesDashboard = () => {
             </div>
           </div>
           
-          <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl p-6">
+          <div className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-slate-400 text-sm">Revenue Generated</p>
-                <p className="text-2xl font-bold text-white">{stats.revenue.toLocaleString()} AED</p>
+                <p className="text-gray-500 text-sm">Revenue Generated</p>
+                <p className="text-2xl font-bold text-gray-900">{stats.revenue.toLocaleString()} AED</p>
               </div>
               <span className="text-2xl">💰</span>
             </div>
           </div>
           
-          <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl p-6">
+          <div className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-slate-400 text-sm">Trainings Tracked</p>
-                <p className="text-2xl font-bold text-white">{stats.trainingsCount}</p>
+                <p className="text-gray-500 text-sm">Trainings Tracked</p>
+                <p className="text-2xl font-bold text-gray-900">{stats.trainingsCount}</p>
               </div>
-              <GraduationCap className="h-8 w-8 text-blue-400" />
+              <GraduationCap className="h-8 w-8 text-blue-500" />
             </div>
           </div>
         </div>
 
         {/* Main Tabs */}
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-6 bg-white/5 border border-white/10">
+          <TabsList className="grid w-full grid-cols-6 bg-white border border-gray-200 shadow-sm">
             <TabsTrigger 
               value="leads"
-              className="data-[state=active]:bg-green-500/20 data-[state=active]:text-white text-gray-300"
+              className="data-[state=active]:bg-green-500 data-[state=active]:text-white text-gray-700"
             >
               <TrendingUp className="w-4 h-4 mr-2" />
               Leads
             </TabsTrigger>
             <TabsTrigger 
               value="trainings"
-              className="data-[state=active]:bg-green-500/20 data-[state=active]:text-white text-gray-300"
+              className="data-[state=active]:bg-green-500 data-[state=active]:text-white text-gray-700"
             >
               <GraduationCap className="w-4 h-4 mr-2" />
               Trainings
             </TabsTrigger>
             <TabsTrigger 
               value="calendar"
-              className="data-[state=active]:bg-green-500/20 data-[state=active]:text-white text-gray-300"
+              className="data-[state=active]:bg-green-500 data-[state=active]:text-white text-gray-700"
             >
               <BookOpen className="w-4 h-4 mr-2" />
               Academic Calendar
             </TabsTrigger>
             <TabsTrigger 
               value="expenses"
-              className="data-[state=active]:bg-green-500/20 data-[state=active]:text-white text-gray-300"
+              className="data-[state=active]:bg-green-500 data-[state=active]:text-white text-gray-700"
             >
               <Receipt className="w-4 h-4 mr-2" />
               Expenses
             </TabsTrigger>
             <TabsTrigger 
               value="feedback"
-              className="data-[state=active]:bg-green-500/20 data-[state=active]:text-white text-gray-300"
+              className="data-[state=active]:bg-green-500 data-[state=active]:text-white text-gray-700"
             >
               <MessageCircle className="w-4 h-4 mr-2" />
               Feedback
