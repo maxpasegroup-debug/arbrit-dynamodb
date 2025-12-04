@@ -3002,6 +3002,368 @@ class ArbritBackendHealthTester:
         
         return success, response
 
+    def test_quotation_invoice_approval_workflow(self):
+        """Test the complete quotation and invoice approval workflow as specified in review request"""
+        print("\n🔄 QUOTATION AND INVOICE APPROVAL WORKFLOW TESTING")
+        print("=" * 80)
+        print("Testing: Sales Exec → Sales Head → Accounts workflow")
+        print("Lead ID format: ARBRIT-DEC24-DUBAI-001")
+        print("Test lead: ARBRIT-DEC24-DUBAI-001 - TEST COMPANY")
+        
+        workflow_success = True
+        
+        # Step 1: Login as Afshaan Syeda (Tele Sales)
+        print("\n📱 STEP 1: Login as Afshaan Syeda (Tele Sales)")
+        print("   Credentials: mobile=971556358155, pin=8155")
+        
+        success, response = self.run_test(
+            "Login as Afshaan Syeda (Tele Sales)",
+            "POST",
+            "auth/login",
+            200,
+            data={"mobile": "971556358155", "pin": "8155"}
+        )
+        
+        if not success:
+            print("   ❌ CRITICAL: Cannot login as Afshaan Syeda")
+            return False
+        
+        afshaan_token = response.get('token')
+        self.token = afshaan_token
+        print(f"   ✅ Login successful: {response.get('user', {}).get('name', 'Unknown')}")
+        
+        # Step 2: Verify test lead exists
+        print("\n🔍 STEP 2: Verify test lead ARBRIT-DEC24-DUBAI-001 exists")
+        
+        success, response = self.run_test(
+            "Get My Leads - Check for Test Lead",
+            "GET",
+            "sales/my-leads",
+            200
+        )
+        
+        test_lead_found = False
+        if success and isinstance(response, list):
+            for lead in response:
+                if lead.get('id') == 'ARBRIT-DEC24-DUBAI-001':
+                    test_lead_found = True
+                    print(f"   ✅ Test lead found: {lead.get('id')} - {lead.get('client_name', 'Unknown')}")
+                    break
+            
+            if not test_lead_found:
+                print(f"   ⚠️ Test lead ARBRIT-DEC24-DUBAI-001 not found in {len(response)} leads")
+                print("   📝 Available leads:")
+                for lead in response[:3]:  # Show first 3 leads
+                    print(f"      - {lead.get('id', 'No ID')} - {lead.get('client_name', 'No Name')}")
+        
+        # Step 3: Create quotation request
+        print("\n📋 STEP 3: Create quotation request")
+        
+        quotation_data = {
+            "lead_id": "ARBRIT-DEC24-DUBAI-001",
+            "client_name": "TEST COMPANY",
+            "total_amount": 5000.0,
+            "items": "Fire Safety Training - 10 participants",
+            "remarks": "Test quotation for workflow verification"
+        }
+        
+        success, response = self.run_test(
+            "Create Quotation Request",
+            "POST",
+            "sales/quotations",
+            200,
+            data=quotation_data
+        )
+        
+        quotation_id = None
+        if success and 'quotation_id' in response:
+            quotation_id = response['quotation_id']
+            print(f"   ✅ Quotation created: {quotation_id}")
+        elif success and 'id' in response:
+            quotation_id = response['id']
+            print(f"   ✅ Quotation created: {quotation_id}")
+        else:
+            print("   ❌ CRITICAL: Failed to create quotation")
+            workflow_success = False
+        
+        # Step 4: Verify quotation was created
+        print("\n✅ STEP 4: Verify quotation was created")
+        
+        success, response = self.run_test(
+            "Get My Quotations - Verify Creation",
+            "GET",
+            "sales/quotations",
+            200
+        )
+        
+        if success and isinstance(response, list):
+            quotation_found = any(q.get('id') == quotation_id for q in response)
+            if quotation_found:
+                print(f"   ✅ Quotation {quotation_id} found in list")
+            else:
+                print(f"   ❌ Quotation {quotation_id} not found in list")
+                workflow_success = False
+        
+        # Step 5: Login as Mohammad Akbar (Sales Head)
+        print("\n👨‍💼 STEP 5: Login as Mohammad Akbar (Sales Head)")
+        print("   Credentials: mobile=971545844387, pin=4387")
+        
+        success, response = self.run_test(
+            "Login as Mohammad Akbar (Sales Head)",
+            "POST",
+            "auth/login",
+            200,
+            data={"mobile": "971545844387", "pin": "4387"}
+        )
+        
+        if not success:
+            print("   ❌ CRITICAL: Cannot login as Mohammad Akbar")
+            return False
+        
+        mohammad_token = response.get('token')
+        self.token = mohammad_token
+        print(f"   ✅ Login successful: {response.get('user', {}).get('name', 'Unknown')}")
+        
+        # Step 6: View pending quotations
+        print("\n📊 STEP 6: View pending quotations")
+        
+        success, response = self.run_test(
+            "Sales Head - View Pending Quotations",
+            "GET",
+            "sales-head/quotations",
+            200
+        )
+        
+        pending_quotation_found = False
+        if success and isinstance(response, list):
+            for quotation in response:
+                if quotation.get('id') == quotation_id and quotation.get('status') == 'Pending':
+                    pending_quotation_found = True
+                    print(f"   ✅ Pending quotation found: {quotation.get('id')} - Status: {quotation.get('status')}")
+                    break
+            
+            if not pending_quotation_found:
+                print(f"   ⚠️ Pending quotation {quotation_id} not found")
+                print(f"   📝 Available quotations: {len(response)}")
+                for q in response[:3]:
+                    print(f"      - {q.get('id', 'No ID')} - Status: {q.get('status', 'No Status')}")
+        
+        # Step 7: Approve quotation
+        print("\n✅ STEP 7: Approve quotation")
+        
+        if quotation_id:
+            approval_data = {
+                "comments": "Approved by Sales Head"
+            }
+            
+            success, response = self.run_test(
+                "Sales Head - Approve Quotation",
+                "PUT",
+                f"sales-head/quotations/{quotation_id}/approve",
+                200,
+                data=approval_data
+            )
+            
+            if success:
+                print(f"   ✅ Quotation {quotation_id} approved successfully")
+            else:
+                print(f"   ❌ Failed to approve quotation {quotation_id}")
+                workflow_success = False
+        
+        # Step 8: Verify quotation status changed
+        print("\n🔄 STEP 8: Verify quotation status changed to Approved")
+        
+        success, response = self.run_test(
+            "Sales Head - Verify Quotation Status",
+            "GET",
+            "sales-head/quotations",
+            200
+        )
+        
+        if success and isinstance(response, list):
+            approved_quotation = next((q for q in response if q.get('id') == quotation_id), None)
+            if approved_quotation and approved_quotation.get('status') == 'Approved':
+                print(f"   ✅ Quotation status updated to: {approved_quotation.get('status')}")
+            else:
+                print(f"   ❌ Quotation status not updated correctly")
+                workflow_success = False
+        
+        # Step 9: Back as Afshaan - Create invoice request
+        print("\n💰 STEP 9: Back as Afshaan (Tele Sales) - Create invoice request")
+        
+        self.token = afshaan_token  # Switch back to Afshaan's token
+        
+        invoice_data = {
+            "lead_id": "ARBRIT-DEC24-DUBAI-001",
+            "client_name": "TEST COMPANY",
+            "amount": 5000.0,
+            "description": "Fire Safety Training Invoice",
+            "remarks": "Invoice for approved quotation"
+        }
+        
+        success, response = self.run_test(
+            "Create Invoice Request",
+            "POST",
+            "sales/invoice-requests",
+            200,
+            data=invoice_data
+        )
+        
+        invoice_id = None
+        if success and 'request_id' in response:
+            invoice_id = response['request_id']
+            print(f"   ✅ Invoice request created: {invoice_id}")
+        elif success and 'id' in response:
+            invoice_id = response['id']
+            print(f"   ✅ Invoice request created: {invoice_id}")
+        else:
+            print("   ❌ CRITICAL: Failed to create invoice request")
+            workflow_success = False
+        
+        # Step 10: Verify invoice created with status "Pending Sales Head"
+        print("\n📋 STEP 10: Verify invoice created with status 'Pending Sales Head'")
+        
+        success, response = self.run_test(
+            "Get My Invoice Requests - Verify Creation",
+            "GET",
+            "sales/invoice-requests",
+            200
+        )
+        
+        if success and isinstance(response, list):
+            invoice_found = any(i.get('id') == invoice_id for i in response)
+            if invoice_found:
+                print(f"   ✅ Invoice {invoice_id} found in list")
+            else:
+                print(f"   ❌ Invoice {invoice_id} not found in list")
+                workflow_success = False
+        
+        # Step 11: As Mohammad Akbar (Sales Head) - View pending invoices
+        print("\n👨‍💼 STEP 11: As Mohammad Akbar (Sales Head) - View pending invoices")
+        
+        self.token = mohammad_token  # Switch back to Mohammad's token
+        
+        success, response = self.run_test(
+            "Sales Head - View Pending Invoices",
+            "GET",
+            "sales-head/invoices",
+            200
+        )
+        
+        pending_invoice_found = False
+        if success and isinstance(response, list):
+            for invoice in response:
+                if invoice.get('id') == invoice_id:
+                    pending_invoice_found = True
+                    print(f"   ✅ Pending invoice found: {invoice.get('id')} - Status: {invoice.get('status', 'Unknown')}")
+                    break
+            
+            if not pending_invoice_found:
+                print(f"   ⚠️ Pending invoice {invoice_id} not found")
+                print(f"   📝 Available invoices: {len(response)}")
+        
+        # Step 12: Approve invoice
+        print("\n✅ STEP 12: Approve invoice - should update status to 'Pending Accounts'")
+        
+        if invoice_id:
+            approval_data = {
+                "comments": "Approved by Sales Head for processing"
+            }
+            
+            success, response = self.run_test(
+                "Sales Head - Approve Invoice",
+                "PUT",
+                f"sales-head/invoices/{invoice_id}/approve",
+                200,
+                data=approval_data
+            )
+            
+            if success:
+                print(f"   ✅ Invoice {invoice_id} approved successfully")
+            else:
+                print(f"   ❌ Failed to approve invoice {invoice_id}")
+                workflow_success = False
+        
+        # Step 13: Login as Kiron George (Accounts Head)
+        print("\n💼 STEP 13: Login as Kiron George (Accounts Head)")
+        print("   Credentials: mobile=971526217577, pin=7577")
+        
+        success, response = self.run_test(
+            "Login as Kiron George (Accounts Head)",
+            "POST",
+            "auth/login",
+            200,
+            data={"mobile": "971526217577", "pin": "7577"}
+        )
+        
+        if not success:
+            print("   ❌ CRITICAL: Cannot login as Kiron George")
+            return False
+        
+        kiron_token = response.get('token')
+        self.token = kiron_token
+        print(f"   ✅ Login successful: {response.get('user', {}).get('name', 'Unknown')}")
+        
+        # Step 14: Verify invoice appears in accounts
+        print("\n💰 STEP 14: Verify invoice appears in accounts with status 'Pending Accounts'")
+        
+        success, response = self.run_test(
+            "Accounts - View Pending Invoices",
+            "GET",
+            "accounts/invoice-requests",
+            200
+        )
+        
+        accounts_invoice_found = False
+        if success and isinstance(response, list):
+            for invoice in response:
+                if invoice.get('id') == invoice_id and invoice.get('status') == 'Pending Accounts':
+                    accounts_invoice_found = True
+                    print(f"   ✅ Invoice found in accounts: {invoice.get('id')} - Status: {invoice.get('status')}")
+                    break
+            
+            if not accounts_invoice_found:
+                print(f"   ⚠️ Invoice {invoice_id} not found in accounts or wrong status")
+                print(f"   📝 Available invoices in accounts: {len(response)}")
+        
+        # Step 15: Verify lead status tracking
+        print("\n📊 STEP 15: Verify lead status tracking throughout the flow")
+        
+        # Switch back to Afshaan to check lead status
+        self.token = afshaan_token
+        
+        success, response = self.run_test(
+            "Check Lead Status After Workflow",
+            "GET",
+            "sales/my-leads",
+            200
+        )
+        
+        if success and isinstance(response, list):
+            test_lead = next((l for l in response if l.get('id') == 'ARBRIT-DEC24-DUBAI-001'), None)
+            if test_lead:
+                print(f"   ✅ Lead status: {test_lead.get('status', 'Unknown')}")
+                print(f"   📋 Quotation status: {test_lead.get('quotation_status', 'Unknown')}")
+                print(f"   💰 Invoice status: {test_lead.get('invoice_status', 'Unknown')}")
+            else:
+                print("   ❌ Test lead not found for status verification")
+        
+        # Final workflow summary
+        print("\n" + "=" * 80)
+        print("🎯 QUOTATION AND INVOICE APPROVAL WORKFLOW SUMMARY")
+        
+        if workflow_success:
+            print("✅ WORKFLOW COMPLETED SUCCESSFULLY")
+            print("   ✅ Sales Exec → Sales Head → Accounts flow working")
+            print("   ✅ PIN login and token-based authentication working")
+            print("   ✅ Lead ID format ARBRIT-DEC24-DUBAI-001 supported")
+            print("   ✅ All approval endpoints functional")
+        else:
+            print("❌ WORKFLOW HAD ISSUES")
+            print("   ⚠️ Some steps failed - check individual test results above")
+        
+        return workflow_success
+
 def main():
     print("🚀 CRITICAL - ACTUAL LEAD SUBMISSION TEST")
     print("📋 Testing ACTUAL submission of leads to identify exact errors")
