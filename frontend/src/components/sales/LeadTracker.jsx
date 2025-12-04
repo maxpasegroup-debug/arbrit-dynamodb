@@ -52,6 +52,8 @@ const LeadTracker = () => {
   const [invoiceRequests, setInvoiceRequests] = useState([]);
   const [quotationRequestOpen, setQuotationRequestOpen] = useState(false);
   const [invoiceRequestOpen, setInvoiceRequestOpen] = useState(false);
+  const [quotationSendModalOpen, setQuotationSendModalOpen] = useState(false);
+  const [selectedLeadForSend, setSelectedLeadForSend] = useState(null);
   const [selectedRequest, setSelectedRequest] = useState(null);
   
   // Duplicate management states
