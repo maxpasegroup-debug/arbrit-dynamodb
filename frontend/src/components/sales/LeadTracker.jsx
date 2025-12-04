@@ -364,29 +364,29 @@ const LeadTracker = () => {
         dialog.innerHTML = `
           <div class="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
             <div class="bg-slate-800 rounded-xl p-6 max-w-md w-full mx-4 border border-white/10">
-              <h3 class="text-xl font-bold text-white mb-4">Review Quotation</h3>
+              <h3 class="text-xl font-bold text-gray-900 mb-4">Review Quotation</h3>
               <div class="space-y-3 mb-6">
                 <div class="bg-white/5 p-3 rounded">
-                  <p class="text-slate-400 text-sm">Client</p>
-                  <p class="text-white font-semibold">${quotation.client_name}</p>
+                  <p class="text-gray-500 text-sm">Client</p>
+                  <p class="text-gray-900 font-semibold">${quotation.client_name}</p>
                 </div>
                 <div class="bg-white/5 p-3 rounded">
-                  <p class="text-slate-400 text-sm">Total Amount</p>
+                  <p class="text-gray-500 text-sm">Total Amount</p>
                   <p class="text-green-400 font-bold text-lg">${quotation.total_amount} AED</p>
                 </div>
                 <div class="bg-white/5 p-3 rounded">
-                  <p class="text-slate-400 text-sm">Created By</p>
-                  <p class="text-white">${quotation.created_by_name}</p>
+                  <p class="text-gray-500 text-sm">Created By</p>
+                  <p class="text-gray-900">${quotation.created_by_name}</p>
                 </div>
               </div>
               <div class="flex gap-3">
-                <button id="approve-btn" class="flex-1 bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg">
+                <button id="approve-btn" class="flex-1 bg-green-600 hover:bg-green-700 text-gray-900 px-4 py-2 rounded-lg">
                   ✅ Approve
                 </button>
-                <button id="reject-btn" class="flex-1 bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg">
+                <button id="reject-btn" class="flex-1 bg-red-600 hover:bg-red-700 text-gray-900 px-4 py-2 rounded-lg">
                   ❌ Reject
                 </button>
-                <button id="cancel-btn" class="px-4 py-2 bg-slate-700 hover:bg-slate-600 text-white rounded-lg">
+                <button id="cancel-btn" class="px-4 py-2 bg-slate-700 hover:bg-slate-600 text-gray-900 rounded-lg">
                   Cancel
                 </button>
               </div>
@@ -458,29 +458,29 @@ const LeadTracker = () => {
         dialog.innerHTML = `
           <div class="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
             <div class="bg-slate-800 rounded-xl p-6 max-w-md w-full mx-4 border border-white/10">
-              <h3 class="text-xl font-bold text-white mb-4">Review Invoice</h3>
+              <h3 class="text-xl font-bold text-gray-900 mb-4">Review Invoice</h3>
               <div class="space-y-3 mb-6">
                 <div class="bg-white/5 p-3 rounded">
-                  <p class="text-slate-400 text-sm">Client</p>
-                  <p class="text-white font-semibold">${invoice.client_name}</p>
+                  <p class="text-gray-500 text-sm">Client</p>
+                  <p class="text-gray-900 font-semibold">${invoice.client_name}</p>
                 </div>
                 <div class="bg-white/5 p-3 rounded">
-                  <p class="text-slate-400 text-sm">Amount</p>
+                  <p class="text-gray-500 text-sm">Amount</p>
                   <p class="text-green-400 font-bold text-lg">${invoice.amount} AED</p>
                 </div>
                 <div class="bg-white/5 p-3 rounded">
-                  <p class="text-slate-400 text-sm">Requested By</p>
-                  <p class="text-white">${invoice.requested_by_name}</p>
+                  <p class="text-gray-500 text-sm">Requested By</p>
+                  <p class="text-gray-900">${invoice.requested_by_name}</p>
                 </div>
               </div>
               <div class="flex gap-3">
-                <button id="approve-btn" class="flex-1 bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg">
+                <button id="approve-btn" class="flex-1 bg-green-600 hover:bg-green-700 text-gray-900 px-4 py-2 rounded-lg">
                   ✅ Approve → Send to Accounts
                 </button>
-                <button id="reject-btn" class="flex-1 bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg">
+                <button id="reject-btn" class="flex-1 bg-red-600 hover:bg-red-700 text-gray-900 px-4 py-2 rounded-lg">
                   ❌ Reject
                 </button>
-                <button id="cancel-btn" class="px-4 py-2 bg-slate-700 hover:bg-slate-600 text-white rounded-lg">
+                <button id="cancel-btn" class="px-4 py-2 bg-slate-700 hover:bg-slate-600 text-gray-900 rounded-lg">
                   Cancel
                 </button>
               </div>
@@ -571,60 +571,60 @@ const LeadTracker = () => {
         <Badge className={`bg-${color}-500/20 text-${color}-300 border-${color}-400/50`}>
           {label}
         </Badge>
-        <Badge className="bg-white/10 text-white">
+        <Badge className="bg-white/10 text-gray-900">
           {lead?.lead_score?.toUpperCase() || 'N/A'}
         </Badge>
       </div>
 
-      <h3 className="text-xl font-bold text-white mb-4">{lead?.company_name || 'Unknown'}</h3>
+      <h3 className="text-xl font-bold text-gray-900 mb-4">{lead?.company_name || 'Unknown'}</h3>
 
       <div className="space-y-3 text-sm">
         <div className="grid grid-cols-2 gap-2">
           <div>
-            <p className="text-slate-400">Contact Person</p>
-            <p className="text-white font-medium">{lead?.contact_person || 'N/A'}</p>
+            <p className="text-gray-500">Contact Person</p>
+            <p className="text-gray-900 font-medium">{lead?.contact_person || 'N/A'}</p>
           </div>
           <div>
-            <p className="text-slate-400">Designation</p>
-            <p className="text-white">{lead?.contact_designation || 'N/A'}</p>
+            <p className="text-gray-500">Designation</p>
+            <p className="text-gray-900">{lead?.contact_designation || 'N/A'}</p>
           </div>
         </div>
 
         <div className="grid grid-cols-2 gap-2">
           <div>
-            <p className="text-slate-400">Mobile</p>
-            <p className="text-white font-medium">{lead?.contact_mobile || 'N/A'}</p>
+            <p className="text-gray-500">Mobile</p>
+            <p className="text-gray-900 font-medium">{lead?.contact_mobile || 'N/A'}</p>
           </div>
           <div>
-            <p className="text-slate-400">Email</p>
-            <p className="text-white text-xs">{lead?.contact_email || 'N/A'}</p>
+            <p className="text-gray-500">Email</p>
+            <p className="text-gray-900 text-xs">{lead?.contact_email || 'N/A'}</p>
           </div>
         </div>
 
         <div>
-          <p className="text-slate-400">Course</p>
-          <p className="text-white font-medium">{lead?.course_name || 'N/A'}</p>
+          <p className="text-gray-500">Course</p>
+          <p className="text-gray-900 font-medium">{lead?.course_name || 'N/A'}</p>
         </div>
 
         <div>
-          <p className="text-slate-400">Lead Value</p>
+          <p className="text-gray-500">Lead Value</p>
           <p className="text-green-400 font-bold text-lg">{lead?.lead_value ? `${lead.lead_value} AED` : 'N/A'}</p>
         </div>
 
         <div>
-          <p className="text-slate-400">Requirements</p>
-          <p className="text-white text-xs">{lead?.requirement || 'No requirements specified'}</p>
+          <p className="text-gray-500">Requirements</p>
+          <p className="text-gray-900 text-xs">{lead?.requirement || 'No requirements specified'}</p>
         </div>
 
         <div className="pt-3 border-t border-white/10">
-          <p className="text-slate-400 text-xs">Submitted By</p>
-          <p className="text-white font-semibold">{lead?.submitted_by || 'Unknown'}</p>
-          <p className="text-slate-400 text-xs">{lead?.submitted_by_role || ''}</p>
+          <p className="text-gray-500 text-xs">Submitted By</p>
+          <p className="text-gray-900 font-semibold">{lead?.submitted_by || 'Unknown'}</p>
+          <p className="text-gray-500 text-xs">{lead?.submitted_by_role || ''}</p>
         </div>
 
         <div>
-          <p className="text-slate-400 text-xs">Submission Time</p>
-          <p className="text-white text-xs">{lead?.created_at ? new Date(lead.created_at).toLocaleString() : 'N/A'}</p>
+          <p className="text-gray-500 text-xs">Submission Time</p>
+          <p className="text-gray-900 text-xs">{lead?.created_at ? new Date(lead.created_at).toLocaleString() : 'N/A'}</p>
         </div>
       </div>
     </div>
@@ -640,7 +640,7 @@ const LeadTracker = () => {
               <AlertTriangle className="w-6 h-6 text-red-400" />
               <div>
                 <h3 className="text-xl font-bold text-red-300">🔴 Duplicate Lead Alerts</h3>
-                <p className="text-sm text-slate-400">Review and resolve potential duplicate submissions</p>
+                <p className="text-sm text-gray-500">Review and resolve potential duplicate submissions</p>
               </div>
             </div>
             <Badge className="bg-red-500/30 text-red-200 text-lg px-4 py-2 border-red-400/50">
@@ -675,22 +675,22 @@ const LeadTracker = () => {
                       <div className="grid grid-cols-2 gap-3 mb-3">
                         <div className="bg-blue-500/10 rounded p-3 border border-blue-400/30">
                           <p className="text-xs text-blue-300 mb-1">LEAD A (First)</p>
-                          <p className="text-white font-semibold">{leadA.company_name || 'N/A'}</p>
-                          <p className="text-sm text-slate-300">By: {leadA.submitted_by || 'Unknown'}</p>
-                          <p className="text-xs text-slate-400">Value: {leadA.lead_value} AED</p>
+                          <p className="text-gray-900 font-semibold">{leadA.company_name || 'N/A'}</p>
+                          <p className="text-sm text-gray-700">By: {leadA.submitted_by || 'Unknown'}</p>
+                          <p className="text-xs text-gray-500">Value: {leadA.lead_value} AED</p>
                         </div>
                         <div className="bg-orange-500/10 rounded p-3 border border-orange-400/30">
                           <p className="text-xs text-orange-300 mb-1">LEAD B (Second)</p>
-                          <p className="text-white font-semibold">{leadB.company_name || 'N/A'}</p>
-                          <p className="text-sm text-slate-300">By: {leadB.submitted_by || 'Unknown'}</p>
-                          <p className="text-xs text-slate-400">Value: {leadB.lead_value} AED</p>
+                          <p className="text-gray-900 font-semibold">{leadB.company_name || 'N/A'}</p>
+                          <p className="text-sm text-gray-700">By: {leadB.submitted_by || 'Unknown'}</p>
+                          <p className="text-xs text-gray-500">Value: {leadB.lead_value} AED</p>
                         </div>
                       </div>
 
                       {alert.similarity_factors && (
                         <div className="bg-red-500/10 rounded p-2 border border-red-400/30 mb-2">
                           <p className="text-xs text-red-300 font-semibold mb-1">Why Flagged:</p>
-                          <ul className="text-xs text-slate-300 space-y-1">
+                          <ul className="text-xs text-gray-700 space-y-1">
                             {alert.similarity_factors.slice(0, 2).map((factor, idx) => (
                               <li key={idx}>• {factor}</li>
                             ))}
@@ -731,7 +731,7 @@ const LeadTracker = () => {
             >
               <div className="text-center">
                 <p className="text-2xl font-bold text-slate-100">{getStatusCount(status)}</p>
-                <p className="text-xs text-slate-400 mt-1">{status}</p>
+                <p className="text-xs text-gray-500 mt-1">{status}</p>
               </div>
             </button>
           ))}
@@ -746,7 +746,7 @@ const LeadTracker = () => {
             <div className="flex items-center justify-between">
               <div>
                 <h3 className="text-lg font-bold text-purple-300">📋 Quotation Requests</h3>
-                <p className="text-sm text-slate-400">Pending review from team</p>
+                <p className="text-sm text-gray-500">Pending review from team</p>
               </div>
               <Badge className="bg-purple-500/30 text-purple-200 text-lg px-3 py-1">
                 {quotationRequests.filter(q => q.status === 'pending').length}
@@ -767,7 +767,7 @@ const LeadTracker = () => {
             <div className="flex items-center justify-between">
               <div>
                 <h3 className="text-lg font-bold text-green-300">💰 Invoice Requests</h3>
-                <p className="text-sm text-slate-400">Awaiting approval</p>
+                <p className="text-sm text-gray-500">Awaiting approval</p>
               </div>
               <Badge className="bg-green-500/30 text-green-200 text-lg px-3 py-1">
                 {invoiceRequests.filter(i => i.status === 'pending').length}
@@ -789,7 +789,7 @@ const LeadTracker = () => {
       <div className="flex gap-4 items-center flex-wrap">
         <div className="flex-1 min-w-[300px]">
           <div className="relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-slate-400" />
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-500" />
             <Input
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
@@ -843,7 +843,7 @@ const LeadTracker = () => {
             setFormOpen(true);
             setSelectedLead(null);
           }}
-          className="bg-orange-500 hover:bg-orange-600 text-white font-semibold shadow-lg border-2 border-orange-600"
+          className="bg-orange-500 hover:bg-orange-600 text-gray-900 font-semibold shadow-lg border-2 border-orange-600"
         >
           + New Lead
         </Button>
@@ -861,9 +861,9 @@ const LeadTracker = () => {
       {/* Leads Grid */}
       <div className="bg-slate-900/50 backdrop-blur-sm rounded-xl border border-white/10 p-6">
         {loading ? (
-          <p className="text-center py-8 text-slate-400">Loading leads...</p>
+          <p className="text-center py-8 text-gray-500">Loading leads...</p>
         ) : filteredLeads.length === 0 ? (
-          <p className="text-center py-8 text-slate-400">
+          <p className="text-center py-8 text-gray-500">
             {searchTerm || statusFilter !== 'all' ? 'No leads match your filters' : 'No leads yet'}
           </p>
         ) : (
@@ -894,21 +894,21 @@ const LeadTracker = () => {
                       )}
                     </div>
 
-                    <div className="grid grid-cols-3 gap-3 text-sm text-slate-300 mb-3">
+                    <div className="grid grid-cols-3 gap-3 text-sm text-gray-700 mb-3">
                       {lead.contact_person && (
                         <div>
-                          <span className="text-slate-400">Contact:</span> {lead.contact_person}
+                          <span className="text-gray-500">Contact:</span> {lead.contact_person}
                           {lead.contact_designation && ` (${lead.contact_designation})`}
                         </div>
                       )}
                       {lead.course_name && (
                         <div>
-                          <span className="text-slate-400">Course:</span> {lead.course_name}
+                          <span className="text-gray-500">Course:</span> {lead.course_name}
                         </div>
                       )}
                       {lead.lead_value && (
                         <div>
-                          <span className="text-slate-400">Value:</span>{' '}
+                          <span className="text-gray-500">Value:</span>{' '}
                           <span className="font-semibold text-green-400">{lead.lead_value} AED</span>
                         </div>
                       )}
@@ -1162,7 +1162,7 @@ const LeadTracker = () => {
                 </div>
 
                 {lead.requirement && (
-                  <div className="mt-3 pt-3 border-t border-white/10 text-sm text-slate-400">
+                  <div className="mt-3 pt-3 border-t border-white/10 text-sm text-gray-500">
                     <strong>Requirements:</strong> {lead.requirement}
                   </div>
                 )}
@@ -1186,7 +1186,7 @@ const LeadTracker = () => {
             <DialogTitle className="text-slate-100">
               Trainer Calendar - Check Availability & Request Booking
             </DialogTitle>
-            <DialogDescription className="text-slate-400">
+            <DialogDescription className="text-gray-500">
               {calendarLead && (
                 <span>
                   Lead: {calendarLead.company_name || calendarLead.client_name} - {calendarLead.course_name}
@@ -1216,11 +1216,11 @@ const LeadTracker = () => {
       <Dialog open={comparisonOpen} onOpenChange={setComparisonOpen}>
         <DialogContent className="max-w-7xl max-h-[95vh] overflow-y-auto bg-slate-900 border-white/10">
           <DialogHeader>
-            <DialogTitle className="text-2xl text-white flex items-center gap-2">
+            <DialogTitle className="text-2xl text-gray-900 flex items-center gap-2">
               <AlertTriangle className="w-6 h-6 text-orange-400" />
               Duplicate Lead Resolution
             </DialogTitle>
-            <DialogDescription className="text-slate-400">
+            <DialogDescription className="text-gray-500">
               Compare both leads side-by-side and decide who gets credit
             </DialogDescription>
           </DialogHeader>
@@ -1243,7 +1243,7 @@ const LeadTracker = () => {
 
               {/* Decision Options */}
               <div className="bg-white/5 rounded-lg p-6 border border-white/10">
-                <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
+                <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
                   <Award className="w-5 h-5 text-yellow-400" />
                   Sales Head Decision
                 </h3>
@@ -1251,59 +1251,59 @@ const LeadTracker = () => {
                 <RadioGroup value={selectedAction} onValueChange={setSelectedAction} className="space-y-3">
                   <div className="flex items-center space-x-3 p-3 bg-blue-500/10 rounded border border-blue-400/30">
                     <RadioGroupItem value="assign_to_a" id="assign_to_a" />
-                    <Label htmlFor="assign_to_a" className="flex-1 cursor-pointer text-white">
+                    <Label htmlFor="assign_to_a" className="flex-1 cursor-pointer text-gray-900">
                       <div className="font-semibold">Assign Credit to Lead A</div>
-                      <div className="text-xs text-slate-400">Give full credit to {selectedAlert.lead_a_data?.submitted_by || 'first submitter'}</div>
+                      <div className="text-xs text-gray-500">Give full credit to {selectedAlert.lead_a_data?.submitted_by || 'first submitter'}</div>
                     </Label>
                   </div>
 
                   <div className="flex items-center space-x-3 p-3 bg-orange-500/10 rounded border border-orange-400/30">
                     <RadioGroupItem value="assign_to_b" id="assign_to_b" />
-                    <Label htmlFor="assign_to_b" className="flex-1 cursor-pointer text-white">
+                    <Label htmlFor="assign_to_b" className="flex-1 cursor-pointer text-gray-900">
                       <div className="font-semibold">Assign Credit to Lead B</div>
-                      <div className="text-xs text-slate-400">Give full credit to {selectedAlert.lead_b_data?.submitted_by || 'second submitter'}</div>
+                      <div className="text-xs text-gray-500">Give full credit to {selectedAlert.lead_b_data?.submitted_by || 'second submitter'}</div>
                     </Label>
                   </div>
 
                   <div className="flex items-center space-x-3 p-3 bg-purple-500/10 rounded border border-purple-400/30">
                     <RadioGroupItem value="split_credit" id="split_credit" />
-                    <Label htmlFor="split_credit" className="flex-1 cursor-pointer text-white">
+                    <Label htmlFor="split_credit" className="flex-1 cursor-pointer text-gray-900">
                       <div className="font-semibold flex items-center gap-2">
                         <Split className="w-4 h-4" />
                         Split Credit (50/50)
                       </div>
-                      <div className="text-xs text-slate-400">Both sales reps share the credit</div>
+                      <div className="text-xs text-gray-500">Both sales reps share the credit</div>
                     </Label>
                   </div>
 
                   <div className="flex items-center space-x-3 p-3 bg-green-500/10 rounded border border-green-400/30">
                     <RadioGroupItem value="different" id="different" />
-                    <Label htmlFor="different" className="flex-1 cursor-pointer text-white">
+                    <Label htmlFor="different" className="flex-1 cursor-pointer text-gray-900">
                       <div className="font-semibold">They Are Different Leads</div>
-                      <div className="text-xs text-slate-400">Both leads are valid and independent</div>
+                      <div className="text-xs text-gray-500">Both leads are valid and independent</div>
                     </Label>
                   </div>
 
                   <div className="flex items-center space-x-3 p-3 bg-red-500/10 rounded border border-red-400/30">
                     <RadioGroupItem value="reject_both" id="reject_both" />
-                    <Label htmlFor="reject_both" className="flex-1 cursor-pointer text-white">
+                    <Label htmlFor="reject_both" className="flex-1 cursor-pointer text-gray-900">
                       <div className="font-semibold flex items-center gap-2">
                         <XCircle className="w-4 h-4" />
                         Reject Both Leads
                       </div>
-                      <div className="text-xs text-slate-400">Invalid or poor quality submissions</div>
+                      <div className="text-xs text-gray-500">Invalid or poor quality submissions</div>
                     </Label>
                   </div>
                 </RadioGroup>
 
                 <div className="mt-4">
-                  <Label htmlFor="notes" className="text-white mb-2 block">Resolution Notes (Optional)</Label>
+                  <Label htmlFor="notes" className="text-gray-900 mb-2 block">Resolution Notes (Optional)</Label>
                   <Textarea
                     id="notes"
                     value={resolutionNotes}
                     onChange={(e) => setResolutionNotes(e.target.value)}
                     placeholder="Add any notes about your decision..."
-                    className="bg-slate-800 border-white/10 text-white min-h-[80px]"
+                    className="bg-slate-800 border-white/10 text-gray-900 min-h-[80px]"
                   />
                 </div>
 
@@ -1351,10 +1351,10 @@ const LeadTracker = () => {
 
       {/* Sales Head: Quotation Requests Management Dialog */}
       <Dialog open={quotationRequestOpen} onOpenChange={setQuotationRequestOpen}>
-        <DialogContent className="bg-[#1a2f4d] border-white/20 text-white max-w-4xl max-h-[80vh] overflow-y-auto">
+        <DialogContent className="bg-[#1a2f4d] border-white/20 text-gray-900 max-w-4xl max-h-[80vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle className="text-2xl">📋 Quotation Requests for {selectedRequest?.lead?.company_name || selectedRequest?.lead?.client_name}</DialogTitle>
-            <DialogDescription className="text-slate-400">
+            <DialogDescription className="text-gray-500">
               Review, edit, approve or reject quotation requests
             </DialogDescription>
           </DialogHeader>
@@ -1364,28 +1364,28 @@ const LeadTracker = () => {
               <div key={quot.id} className="bg-white/5 rounded-lg p-4 border border-purple-400/30">
                 <div className="flex justify-between items-start mb-3">
                   <div>
-                    <h4 className="font-semibold text-lg text-white">{quot.client_name || quot.company_name}</h4>
-                    <p className="text-sm text-slate-400">By: {quot.created_by_name} • {new Date(quot.created_at).toLocaleDateString()}</p>
+                    <h4 className="font-semibold text-lg text-gray-900">{quot.client_name || quot.company_name}</h4>
+                    <p className="text-sm text-gray-500">By: {quot.created_by_name} • {new Date(quot.created_at).toLocaleDateString()}</p>
                   </div>
                   <Badge className="bg-purple-500/30 text-purple-200">{quot.status}</Badge>
                 </div>
                 
                 <div className="grid grid-cols-2 gap-4 mb-3">
                   <div>
-                    <p className="text-xs text-slate-400">Course</p>
-                    <p className="text-sm text-white">{quot.course_name || 'N/A'}</p>
+                    <p className="text-xs text-gray-500">Course</p>
+                    <p className="text-sm text-gray-900">{quot.course_name || 'N/A'}</p>
                   </div>
                   <div>
-                    <p className="text-xs text-slate-400">Amount</p>
-                    <p className="text-sm text-white font-semibold">{quot.total_amount} AED</p>
+                    <p className="text-xs text-gray-500">Amount</p>
+                    <p className="text-sm text-gray-900 font-semibold">{quot.total_amount} AED</p>
                   </div>
                   <div>
-                    <p className="text-xs text-slate-400">Participants</p>
-                    <p className="text-sm text-white">{quot.number_of_participants || 0}</p>
+                    <p className="text-xs text-gray-500">Participants</p>
+                    <p className="text-sm text-gray-900">{quot.number_of_participants || 0}</p>
                   </div>
                   <div>
-                    <p className="text-xs text-slate-400">Valid Until</p>
-                    <p className="text-sm text-white">{quot.valid_until || 'N/A'}</p>
+                    <p className="text-xs text-gray-500">Valid Until</p>
+                    <p className="text-sm text-gray-900">{quot.valid_until || 'N/A'}</p>
                   </div>
                 </div>
 
@@ -1454,10 +1454,10 @@ const LeadTracker = () => {
 
       {/* Sales Head: Invoice Requests Management Dialog */}
       <Dialog open={invoiceRequestOpen} onOpenChange={setInvoiceRequestOpen}>
-        <DialogContent className="bg-[#1a2f4d] border-white/20 text-white max-w-4xl max-h-[80vh] overflow-y-auto">
+        <DialogContent className="bg-[#1a2f4d] border-white/20 text-gray-900 max-w-4xl max-h-[80vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle className="text-2xl">💰 Invoice Requests for {selectedRequest?.lead?.company_name || selectedRequest?.lead?.client_name}</DialogTitle>
-            <DialogDescription className="text-slate-400">
+            <DialogDescription className="text-gray-500">
               Review, edit, approve or reject invoice requests
             </DialogDescription>
           </DialogHeader>
@@ -1467,24 +1467,24 @@ const LeadTracker = () => {
               <div key={inv.id} className="bg-white/5 rounded-lg p-4 border border-green-400/30">
                 <div className="flex justify-between items-start mb-3">
                   <div>
-                    <h4 className="font-semibold text-lg text-white">{inv.client_name || inv.company_name}</h4>
-                    <p className="text-sm text-slate-400">Requested by: {inv.requested_by_name} • {new Date(inv.created_at).toLocaleDateString()}</p>
+                    <h4 className="font-semibold text-lg text-gray-900">{inv.client_name || inv.company_name}</h4>
+                    <p className="text-sm text-gray-500">Requested by: {inv.requested_by_name} • {new Date(inv.created_at).toLocaleDateString()}</p>
                   </div>
                   <Badge className="bg-green-500/30 text-green-200">{inv.status}</Badge>
                 </div>
                 
                 <div className="grid grid-cols-2 gap-4 mb-3">
                   <div>
-                    <p className="text-xs text-slate-400">Lead ID</p>
-                    <p className="text-sm text-white">{inv.lead_id}</p>
+                    <p className="text-xs text-gray-500">Lead ID</p>
+                    <p className="text-sm text-gray-900">{inv.lead_id}</p>
                   </div>
                   <div>
-                    <p className="text-xs text-slate-400">Amount</p>
-                    <p className="text-sm text-white font-semibold">{inv.amount || inv.invoice_amount} AED</p>
+                    <p className="text-xs text-gray-500">Amount</p>
+                    <p className="text-sm text-gray-900 font-semibold">{inv.amount || inv.invoice_amount} AED</p>
                   </div>
                   <div className="col-span-2">
-                    <p className="text-xs text-slate-400">Notes</p>
-                    <p className="text-sm text-white">{inv.notes || inv.description || 'No notes'}</p>
+                    <p className="text-xs text-gray-500">Notes</p>
+                    <p className="text-sm text-gray-900">{inv.notes || inv.description || 'No notes'}</p>
                   </div>
                 </div>
 
