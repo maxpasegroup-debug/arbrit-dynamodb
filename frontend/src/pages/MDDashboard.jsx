@@ -48,9 +48,6 @@ import CompletedTrainings from '@/components/library/CompletedTrainings';
 import ExpenseSubmissionModal from '@/components/coo/ExpenseSubmissionModal';
 import DeletionApprovals from '@/components/executive/DeletionApprovals';
 
-// Admin Components
-import MasterCleanupPanel from '@/components/admin/MasterCleanupPanel';
-
 // Auth Components
 import ResetPinModal from '@/components/auth/ResetPinModal';
 
