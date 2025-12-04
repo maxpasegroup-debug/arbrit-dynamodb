@@ -33,6 +33,7 @@ import ExpenseSubmission from '@/components/expenses/ExpenseSubmission';
 import QuotationApprovalManagement from '@/components/approvals/QuotationApprovalManagement';
 import InvoiceApprovalManagement from '@/components/approvals/InvoiceApprovalManagement';
 import LeaveApprovalManagement from '@/components/hr/LeaveApprovalManagement';
+import ExpenseApprovalManagement from '@/components/hr/ExpenseApprovalManagement';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
