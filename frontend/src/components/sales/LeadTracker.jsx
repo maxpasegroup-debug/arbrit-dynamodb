@@ -913,6 +913,7 @@ const LeadTracker = () => {
                           const statusConfig = {
                             'Pending': { className: 'border-yellow-400/50 text-yellow-300 animate-pulse', label: '⏳ Pending' },
                             'Approved': { className: 'border-green-400/50 text-green-300', label: '✅ Approved' },
+                            'Sent to Client': { className: 'border-blue-400/50 text-blue-300', label: '📤 Sent' },
                             'Rejected': { className: 'border-red-400/50 text-red-300', label: '❌ Rejected' }
                           };
                           const config = statusConfig[lead.quotation_status] || statusConfig['Pending'];
@@ -929,6 +930,20 @@ const LeadTracker = () => {
                               >
                                 <FileText className="w-3 h-3 mr-1" />
                                 {config.label}
+                              </Button>
+                            );
+                          } else if (lead.quotation_status === 'Approved') {
+                            // Approved - show "Send to Client" button
+                            return (
+                              <Button
+                                size="sm"
+                                variant="outline"
+                                className="border-green-400/50 text-green-300 hover:bg-green-500/20"
+                                title="Send Quotation to Client"
+                                onClick={() => handleSendQuotationToClient(lead)}
+                              >
+                                <FileText className="w-3 h-3 mr-1" />
+                                📤 Send to Client
                               </Button>
                             );
                           } else {
