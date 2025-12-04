@@ -791,62 +791,66 @@ const LeadTracker = () => {
                         }
                       })()}
 
-                      {/* Invoice Request Button - Different behavior based on user role */}
+                      {/* Invoice Button - Shows for both Sales Team and Sales Head */}
                       {(() => {
                         const user = JSON.parse(localStorage.getItem('user') || '{}');
                         const isSalesHead = ['Sales Head', 'COO', 'MD', 'CEO'].includes(user.role);
                         
-                        if (isSalesHead) {
-                          // Sales Head: Show invoice requests if pending
-                          const pendingInvoices = (lead.invoice_requests || []).filter(i => i.status === 'pending');
-                          if (pendingInvoices.length > 0) {
+                        // Show invoice status badge if invoice exists
+                        if (lead.invoice_status) {
+                          const statusConfig = {
+                            'Pending Sales Head': { className: 'border-yellow-400/50 text-yellow-300 animate-pulse', label: '⏳ Pending' },
+                            'Pending Accounts': { className: 'border-blue-400/50 text-blue-300', label: '📊 With Accounts' },
+                            'Rejected by Sales Head': { className: 'border-red-400/50 text-red-300', label: '❌ Rejected' },
+                            'Sent - Awaiting Payment': { className: 'border-purple-400/50 text-purple-300', label: '📄 Sent' },
+                            'Paid': { className: 'border-green-400/50 text-green-300', label: '✅ Paid' }
+                          };
+                          const config = statusConfig[lead.invoice_status] || statusConfig['Pending Sales Head'];
+                          
+                          if (isSalesHead && lead.invoice_status === 'Pending Sales Head') {
+                            // Sales Head can approve/reject
                             return (
                               <Button
                                 size="sm"
                                 variant="outline"
-                                className="border-green-400/50 text-green-300 hover:bg-green-500/20 animate-pulse"
-                                title={`${pendingInvoices.length} Invoice Request(s) Pending`}
-                                onClick={() => {
-                                  setSelectedRequest({ type: 'invoice', lead, requests: pendingInvoices });
-                                  setInvoiceRequestOpen(true);
-                                }}
+                                className={`${config.className} hover:bg-green-500/20`}
+                                title="Review Invoice Request"
+                                onClick={() => handleInvoiceApproval(lead)}
                               >
                                 <DollarSign className="w-3 h-3 mr-1" />
-                                {pendingInvoices.length}
+                                {config.label}
                               </Button>
                             );
+                          } else {
+                            // Show status only
+                            return (
+                              <Badge className={`${config.className} text-xs`}>
+                                <DollarSign className="w-3 h-3 mr-1" />
+                                {config.label}
+                              </Badge>
+                            );
                           }
-                          return null;
                         } else {
-                          // Sales Team: Show invoice request button
-                          const hasExistingRequest = (lead.invoice_requests || []).some(
-                            req => req.requested_by === user.id && req.status === 'pending'
-                          );
-                          
-                          return (
-                            <Button
-                              size="sm"
-                              variant="outline"
-                              disabled={hasExistingRequest}
-                              className={
-                                hasExistingRequest 
-                                  ? "border-gray-400/50 text-gray-400" 
-                                  : "border-green-400/50 text-green-300 hover:bg-green-500/20"
-                              }
-                              title={hasExistingRequest ? "Invoice Request Already Submitted" : "Request Invoice for this Lead"}
-                              onClick={async () => {
-                                if (hasExistingRequest) return;
-                                
-                                try {
-                                  const token = localStorage.getItem('token');
-                                  await axios.post(`${API}/sales/invoice-request`, {
-                                    lead_id: lead.id,
-                                    client_name: lead.client_name || lead.company_name,
-                                    invoice_amount: lead.lead_value || '0',
-                                    notes: 'Invoice request for completed lead'
-                                  }, {
-                                    headers: { Authorization: `Bearer ${token}` }
-                                  });
+                          // No invoice yet - Sales team can create
+                          if (!isSalesHead) {
+                            return (
+                              <Button
+                                size="sm"
+                                variant="outline"
+                                className="border-green-400/50 text-green-300 hover:bg-green-500/20"
+                                title="Create Invoice Request"
+                                onClick={async () => {
+                                  try {
+                                    const token = localStorage.getItem('token');
+                                    await axios.post(`${API}/sales/invoice-requests`, {
+                                      lead_id: lead.id,
+                                      client_name: lead.client_name || lead.company_name,
+                                      amount: lead.lead_value || '0',
+                                      description: `Invoice for ${lead.course_name || 'Training Services'}`,
+                                      remarks: 'Invoice request from lead tracker'
+                                    }, {
+                                      headers: { Authorization: `Bearer ${token}` }
+                                    });
                                   
                                   toast.success('Invoice request submitted to Sales Head');
                                   fetchLeads();
