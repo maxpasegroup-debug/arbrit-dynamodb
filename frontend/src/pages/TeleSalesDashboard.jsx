@@ -101,7 +101,7 @@ export default function TeleSalesDashboard() {
                   <p className="text-gray-500 text-sm">Total Leads</p>
                   <p className="text-3xl font-bold text-white mt-2">{stats.leads}</p>
                 </div>
-                <Users className="w-12 h-12 text-blue-500 opacity-50" />
+                <Users className="w-12 h-12 text-gray-700 opacity-50" />
               </div>
             </Card>
 
@@ -111,7 +111,7 @@ export default function TeleSalesDashboard() {
                   <p className="text-gray-500 text-sm">Quoted</p>
                   <p className="text-3xl font-bold text-white mt-2">{stats.quoted}</p>
                 </div>
-                <Phone className="w-12 h-12 text-purple-500 opacity-50" />
+                <Phone className="w-12 h-12 text-gray-700 opacity-50" />
               </div>
             </Card>
 
@@ -121,7 +121,7 @@ export default function TeleSalesDashboard() {
                   <p className="text-gray-500 text-sm">Won Deals</p>
                   <p className="text-3xl font-bold text-white mt-2">{stats.won}</p>
                 </div>
-                <TrendingUp className="w-12 h-12 text-green-500 opacity-50" />
+                <TrendingUp className="w-12 h-12 text-gray-700 opacity-50" />
               </div>
             </Card>
           </div>

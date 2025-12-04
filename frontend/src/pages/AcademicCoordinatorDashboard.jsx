@@ -64,7 +64,7 @@ const AcademicCoordinatorDashboard = () => {
       icon: Calendar,
       color: 'from-blue-500 to-cyan-500',
       bgColor: 'bg-blue-500/10',
-      iconColor: 'text-blue-500'
+      iconColor: 'text-gray-700'
     },
     {
       id: 'documentation',
@@ -73,7 +73,7 @@ const AcademicCoordinatorDashboard = () => {
       icon: FileText,
       color: 'from-purple-500 to-pink-500',
       bgColor: 'bg-purple-500/10',
-      iconColor: 'text-purple-500'
+      iconColor: 'text-gray-700'
     },
     {
       id: 'certificates',
@@ -91,7 +91,7 @@ const AcademicCoordinatorDashboard = () => {
       icon: MessageSquare,
       color: 'from-green-500 to-emerald-500',
       bgColor: 'bg-green-500/10',
-      iconColor: 'text-green-500'
+      iconColor: 'text-gray-700'
     }
   ];
 

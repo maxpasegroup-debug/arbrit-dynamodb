@@ -66,7 +66,7 @@ const TrainerDashboard = () => {
       icon: Calendar,
       color: 'from-blue-500 to-cyan-500',
       bgColor: 'bg-blue-500/10',
-      iconColor: 'text-blue-500'
+      iconColor: 'text-gray-700'
     },
     {
       id: 'attendance',
@@ -75,7 +75,7 @@ const TrainerDashboard = () => {
       icon: ClipboardCheck,
       color: 'from-green-500 to-emerald-500',
       bgColor: 'bg-green-500/10',
-      iconColor: 'text-green-500'
+      iconColor: 'text-gray-700'
     },
     {
       id: 'certificate',
@@ -93,7 +93,7 @@ const TrainerDashboard = () => {
       icon: Upload,
       color: 'from-purple-500 to-pink-500',
       bgColor: 'bg-purple-500/10',
-      iconColor: 'text-purple-500'
+      iconColor: 'text-gray-700'
     }
   ];
 

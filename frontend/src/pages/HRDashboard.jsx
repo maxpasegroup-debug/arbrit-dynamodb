@@ -98,7 +98,7 @@ const HRDashboard = () => {
               />
               <div>
                 <div className="flex items-center gap-2">
-                  <Users className="w-5 h-5 text-purple-500" />
+                  <Users className="w-5 h-5 text-gray-700" />
                   <h1 className="text-2xl font-bold text-gray-900">HR Dashboard</h1>
                 </div>
                 <p className="text-sm text-gray-400">Human Resource Management</p>
@@ -109,7 +109,7 @@ const HRDashboard = () => {
             <div className="flex items-center gap-4">
               <div className="text-right">
                 <p className="text-sm font-semibold text-white">{user?.name}</p>
-                <p className="text-xs text-purple-500">HR Manager</p>
+                <p className="text-xs text-gray-700">HR Manager</p>
               </div>
               <Button
                 data-testid="logout-button"
@@ -144,7 +144,7 @@ const HRDashboard = () => {
             <TabsTrigger 
               value="employees" 
               data-testid="tab-employees"
-              className="data-[state=active]:bg-purple-500 data-[state=active]:text-white text-gray-300"
+              className="data-[state=active]:bg-gray-900 data-[state=active]:text-white text-gray-300"
             >
               <Users className="w-4 h-4 mr-2" />
               Employee Management
@@ -152,34 +152,34 @@ const HRDashboard = () => {
             <TabsTrigger 
               value="attendance"
               data-testid="tab-attendance"
-              className="data-[state=active]:bg-purple-500 data-[state=active]:text-white text-gray-300"
+              className="data-[state=active]:bg-gray-900 data-[state=active]:text-white text-gray-300"
             >
               Attendance
             </TabsTrigger>
             <TabsTrigger 
               value="records"
               data-testid="tab-records"
-              className="data-[state=active]:bg-purple-500 data-[state=active]:text-white text-gray-300"
+              className="data-[state=active]:bg-gray-900 data-[state=active]:text-white text-gray-300"
             >
               Employee Records
             </TabsTrigger>
             <TabsTrigger 
               value="company"
               data-testid="tab-company"
-              className="data-[state=active]:bg-purple-500 data-[state=active]:text-white text-gray-300"
+              className="data-[state=active]:bg-gray-900 data-[state=active]:text-white text-gray-300"
             >
               Company Documents
             </TabsTrigger>
             <TabsTrigger 
               value="my-expenses"
-              className="data-[state=active]:bg-purple-500 data-[state=active]:text-white text-gray-300"
+              className="data-[state=active]:bg-gray-900 data-[state=active]:text-white text-gray-300"
             >
               <Receipt className="w-4 h-4 mr-2" />
               My Expenses
             </TabsTrigger>
             <TabsTrigger 
               value="expense-review"
-              className="data-[state=active]:bg-purple-500 data-[state=active]:text-white text-gray-300"
+              className="data-[state=active]:bg-gray-900 data-[state=active]:text-white text-gray-300"
             >
               <DollarSign className="w-4 h-4 mr-2" />
               Expense Review

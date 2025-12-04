@@ -127,7 +127,7 @@ const SalesHeadDashboard = () => {
               />
               <div>
                 <div className="flex items-center gap-2">
-                  <TrendingUp className="w-5 h-5 text-blue-500" />
+                  <TrendingUp className="w-5 h-5 text-gray-700" />
                   <h1 className="text-2xl font-bold text-gray-900">Sales Head Dashboard</h1>
                 </div>
                 <p className="text-sm text-gray-400">Sales Management & Operations</p>
@@ -147,7 +147,7 @@ const SalesHeadDashboard = () => {
               <DuplicateAlertsNotification onViewAll={() => setActiveTab('duplicates')} />
               <div className="text-right">
                 <p className="text-sm font-semibold text-white">{user?.name}</p>
-                <p className="text-xs text-blue-500">Sales Head</p>
+                <p className="text-xs text-gray-700">Sales Head</p>
               </div>
               <Button
                 data-testid="logout-button"
@@ -180,7 +180,7 @@ const SalesHeadDashboard = () => {
             <TabsTrigger 
               value="overview" 
               data-testid="tab-overview"
-              className="data-[state=active]:bg-blue-500 data-[state=active]:text-white text-gray-300"
+              className="data-[state=active]:bg-gray-900 data-[state=active]:text-white text-gray-300"
             >
               <BarChart3 className="w-4 h-4 mr-2" />
               Overview
@@ -188,7 +188,7 @@ const SalesHeadDashboard = () => {
             <TabsTrigger 
               value="lead-management"
               data-testid="tab-lead-management"
-              className="data-[state=active]:bg-blue-500 data-[state=active]:text-white text-gray-300"
+              className="data-[state=active]:bg-gray-900 data-[state=active]:text-white text-gray-300"
             >
               <TrendingUp className="w-4 h-4 mr-2" />
               Lead Management
@@ -196,7 +196,7 @@ const SalesHeadDashboard = () => {
             <TabsTrigger 
               value="calendar"
               data-testid="tab-calendar"
-              className="data-[state=active]:bg-blue-500 data-[state=active]:text-white text-gray-300"
+              className="data-[state=active]:bg-gray-900 data-[state=active]:text-white text-gray-300"
             >
               <Calendar className="w-4 h-4 mr-2" />
               Academic Calendar
@@ -204,7 +204,7 @@ const SalesHeadDashboard = () => {
             <TabsTrigger 
               value="targets"
               data-testid="tab-targets"
-              className="data-[state=active]:bg-blue-500 data-[state=active]:text-white text-gray-300"
+              className="data-[state=active]:bg-gray-900 data-[state=active]:text-white text-gray-300"
             >
               <Target className="w-4 h-4 mr-2" />
               Targets
@@ -212,7 +212,7 @@ const SalesHeadDashboard = () => {
             <TabsTrigger 
               value="leaves"
               data-testid="tab-leaves"
-              className="data-[state=active]:bg-blue-500 data-[state=active]:text-white text-gray-300"
+              className="data-[state=active]:bg-gray-900 data-[state=active]:text-white text-gray-300"
             >
               <CalendarCheck className="w-4 h-4 mr-2" />
               Leaves
@@ -220,7 +220,7 @@ const SalesHeadDashboard = () => {
             <TabsTrigger 
               value="expenses"
               data-testid="tab-expenses"
-              className="data-[state=active]:bg-blue-500 data-[state=active]:text-white text-gray-300"
+              className="data-[state=active]:bg-gray-900 data-[state=active]:text-white text-gray-300"
             >
               <Receipt className="w-4 h-4 mr-2" />
               Expenses

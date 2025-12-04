@@ -227,7 +227,7 @@ const AcademicHeadDashboard = () => {
                         <p className="text-4xl font-bold text-white mt-2">{stats.totalTrainings}</p>
                         <p className="text-xs text-gray-400 mt-1">All time</p>
                       </div>
-                      <GraduationCap className="w-12 h-12 text-blue-500 opacity-50" />
+                      <GraduationCap className="w-12 h-12 text-gray-700 opacity-50" />
                     </div>
                   </div>
 
@@ -239,7 +239,7 @@ const AcademicHeadDashboard = () => {
                         <p className="text-4xl font-bold text-white mt-2">{stats.activeTrainings}</p>
                         <p className="text-xs text-gray-400 mt-1">In progress</p>
                       </div>
-                      <TrendingUp className="w-12 h-12 text-green-500 opacity-50" />
+                      <TrendingUp className="w-12 h-12 text-gray-700 opacity-50" />
                     </div>
                   </div>
 
@@ -251,7 +251,7 @@ const AcademicHeadDashboard = () => {
                         <p className="text-4xl font-bold text-white mt-2">{stats.completedTrainings}</p>
                         <p className="text-xs text-gray-400 mt-1">Finished</p>
                       </div>
-                      <Award className="w-12 h-12 text-purple-500 opacity-50" />
+                      <Award className="w-12 h-12 text-gray-700 opacity-50" />
                     </div>
                   </div>
 
@@ -275,7 +275,7 @@ const AcademicHeadDashboard = () => {
                         <p className="text-4xl font-bold text-white mt-2">{stats.totalTrainers}</p>
                         <p className="text-xs text-gray-400 mt-1">Active trainers</p>
                       </div>
-                      <Users className="w-12 h-12 text-blue-500 opacity-50" />
+                      <Users className="w-12 h-12 text-gray-700 opacity-50" />
                     </div>
                   </div>
 

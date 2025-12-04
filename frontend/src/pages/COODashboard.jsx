@@ -305,7 +305,7 @@ const COODashboard = () => {
               <CardContent className="p-6">
                 <div className="flex items-center gap-4 mb-4">
                   <div className="p-3 bg-blue-500/20 rounded-lg">
-                    <TrendingUp className="w-8 h-8 text-blue-500" />
+                    <TrendingUp className="w-8 h-8 text-gray-700" />
                   </div>
                   <div>
                     <h3 className="text-xl font-bold text-gray-900">Sales Department</h3>
@@ -324,7 +324,7 @@ const COODashboard = () => {
               <CardContent className="p-6">
                 <div className="flex items-center gap-4 mb-4">
                   <div className="p-3 bg-purple-500/20 rounded-lg">
-                    <GraduationCap className="w-8 h-8 text-purple-500" />
+                    <GraduationCap className="w-8 h-8 text-gray-700" />
                   </div>
                   <div>
                     <h3 className="text-xl font-bold text-gray-900">Academic Department</h3>
@@ -343,7 +343,7 @@ const COODashboard = () => {
               <CardContent className="p-6">
                 <div className="flex items-center gap-4 mb-4">
                   <div className="p-3 bg-green-500/20 rounded-lg">
-                    <DollarSign className="w-8 h-8 text-green-500" />
+                    <DollarSign className="w-8 h-8 text-gray-700" />
                   </div>
                   <div>
                     <h3 className="text-xl font-bold text-gray-900">Finance Department</h3>
@@ -362,7 +362,7 @@ const COODashboard = () => {
               <CardContent className="p-6">
                 <div className="flex items-center gap-4 mb-4">
                   <div className="p-3 bg-orange-500/20 rounded-lg">
-                    <Users className="w-8 h-8 text-orange-500" />
+                    <Users className="w-8 h-8 text-gray-700" />
                   </div>
                   <div>
                     <h3 className="text-xl font-bold text-gray-900">HR & Operations</h3>

@@ -68,16 +68,16 @@ const SalesEmployeeDashboard = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center py-4">
             <div className="flex items-center space-x-4">
-              <div className="bg-gradient-to-r from-cyan-500 to-blue-500 p-2 rounded-lg">
+              <div className="bg-gray-900 p-2 rounded-lg">
                 <User className="h-6 w-6 text-white" />
               </div>
               <div>
                 <h1 className="text-xl font-bold text-gray-900">Sales Employee Dashboard</h1>
-                <p className="text-blue-600">Welcome back, {userData.name}!</p>
+                <p className="text-gray-600">Welcome back, {userData.name}!</p>
               </div>
             </div>
             <div className="flex items-center space-x-4">
-              <Badge className="bg-blue-500 text-white border-blue-500">
+              <Badge className="bg-gray-900 text-white border-gray-900">
                 <Award className="w-4 h-4 mr-1" />
                 {userData.role}
               </Badge>
@@ -112,7 +112,7 @@ const SalesEmployeeDashboard = () => {
                 <p className="text-gray-500 text-sm">My Leads</p>
                 <p className="text-2xl font-bold text-gray-900">{stats.leadsCount}</p>
               </div>
-              <TrendingUp className="h-8 w-8 text-blue-500" />
+              <TrendingUp className="h-8 w-8 text-gray-700" />
             </div>
           </div>
           
@@ -132,7 +132,7 @@ const SalesEmployeeDashboard = () => {
                 <p className="text-gray-500 text-sm">Trainings Tracked</p>
                 <p className="text-2xl font-bold text-gray-900">{stats.trainingsCount}</p>
               </div>
-              <GraduationCap className="h-8 w-8 text-green-500" />
+              <GraduationCap className="h-8 w-8 text-gray-700" />
             </div>
           </div>
         </div>
@@ -142,42 +142,42 @@ const SalesEmployeeDashboard = () => {
           <TabsList className="grid w-full grid-cols-6 bg-white border border-gray-200 shadow-sm">
             <TabsTrigger 
               value="leads"
-              className="data-[state=active]:bg-blue-500 data-[state=active]:text-white text-gray-300"
+              className="data-[state=active]:bg-gray-900 data-[state=active]:text-white text-gray-300"
             >
               <TrendingUp className="w-4 h-4 mr-2" />
               Leads
             </TabsTrigger>
             <TabsTrigger 
               value="trainings"
-              className="data-[state=active]:bg-blue-500 data-[state=active]:text-white text-gray-300"
+              className="data-[state=active]:bg-gray-900 data-[state=active]:text-white text-gray-300"
             >
               <GraduationCap className="w-4 h-4 mr-2" />
               Trainings
             </TabsTrigger>
             <TabsTrigger 
               value="calendar"
-              className="data-[state=active]:bg-blue-500 data-[state=active]:text-white text-gray-300"
+              className="data-[state=active]:bg-gray-900 data-[state=active]:text-white text-gray-300"
             >
               <BookOpen className="w-4 h-4 mr-2" />
               Academic Calendar
             </TabsTrigger>
             <TabsTrigger 
               value="expenses"
-              className="data-[state=active]:bg-blue-500 data-[state=active]:text-white text-gray-300"
+              className="data-[state=active]:bg-gray-900 data-[state=active]:text-white text-gray-300"
             >
               <Receipt className="w-4 h-4 mr-2" />
               Expenses
             </TabsTrigger>
             <TabsTrigger 
               value="feedback"
-              className="data-[state=active]:bg-blue-500 data-[state=active]:text-white text-gray-300"
+              className="data-[state=active]:bg-gray-900 data-[state=active]:text-white text-gray-300"
             >
               <MessageCircle className="w-4 h-4 mr-2" />
               Feedback
             </TabsTrigger>
             <TabsTrigger 
               value="leave"
-              className="data-[state=active]:bg-blue-500 data-[state=active]:text-white text-gray-300"
+              className="data-[state=active]:bg-gray-900 data-[state=active]:text-white text-gray-300"
             >
               <UserCheck className="w-4 h-4 mr-2" />
               Leave
