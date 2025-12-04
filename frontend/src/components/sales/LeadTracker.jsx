@@ -884,7 +884,7 @@ const LeadTracker = () => {
             {filteredLeads.map((lead) => (
               <div
                 key={lead.id}
-                className="bg-white border-2 border-gray-300 rounded-xl p-5 hover:border-gray-900 hover:shadow-lg transition-all duration-200 relative"
+                className={`bg-white border-2 border-gray-300 ${getLeftBorderColor(lead.status)} border-l-8 rounded-xl p-5 hover:border-gray-900 hover:shadow-xl transition-all duration-200 relative`}
               >
                 <div className="flex items-start justify-between">
                   <div className="flex-1">
