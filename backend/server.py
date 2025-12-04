@@ -1983,6 +1983,14 @@ async def mark_invoice_sent(
         
         await db.invoice_requests.update_one({"id": invoice_id}, {"$set": update_data})
         
+        # Update lead status to Sent/Awaiting Payment
+        lead_id = invoice.get("lead_id")
+        if lead_id:
+            await db.leads.update_one(
+                {"id": lead_id},
+                {"$set": {"invoice_status": "Sent - Awaiting Payment"}}
+            )
+        
         return {"message": "Invoice marked as sent", "invoice_id": invoice_id}
     
     except HTTPException:
