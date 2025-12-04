@@ -9120,6 +9120,67 @@ async def get_library_analytics(current_user: dict = Depends(get_current_user)):
         raise HTTPException(status_code=500, detail="Failed to fetch analytics")
 
 
+# Admin Cleanup Endpoint
+@api_router.delete("/admin/cleanup-demo-data")
+async def cleanup_demo_data(current_user: dict = Depends(get_current_user)):
+    """
+    CLEANUP ALL DEMO DATA (MD/CEO only)
+    Deletes all leads, quotations, invoices, payments, etc.
+    PROTECTS the 35 users/employees
+    """
+    if current_user["role"] not in ["MD", "CEO"]:
+        raise HTTPException(status_code=403, detail="Access denied. MD/CEO only.")
+    
+    try:
+        cleanup_results = {}
+        
+        # Order matters - delete dependencies first
+        tables_to_clean = [
+            "payments",
+            "invoice_requests",
+            "quotations",
+            "training_requests",
+            "visit_logs",
+            "leave_requests",
+            "expense_claims",
+            "attendance",
+            "certificates",
+            "certificate_candidates",
+            "leads"  # Last
+        ]
+        
+        for table_name in tables_to_clean:
+            try:
+                table = getattr(db, table_name)
+                query_result = await table.find({}, {'_id': 0})
+                records = await query_result.to_list(10000)
+                
+                deleted_count = 0
+                for record in records:
+                    record_id = record.get('id')
+                    if record_id:
+                        await table.delete_one({"id": record_id})
+                        deleted_count += 1
+                
+                cleanup_results[table_name] = deleted_count
+            except Exception as e:
+                cleanup_results[table_name] = f"Error: {str(e)}"
+        
+        # Verify users still intact
+        query_result = await db.users.find({}, {'_id': 0})
+        users = await query_result.to_list(100)
+        
+        return {
+            "message": "Demo data cleanup completed",
+            "deleted": cleanup_results,
+            "users_protected": len(users),
+            "timestamp": datetime.now(timezone.utc).isoformat()
+        }
+    
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Cleanup failed: {str(e)}")
+
+
 # Include the router in the main app
 app.include_router(api_router)
 
