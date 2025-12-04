@@ -245,7 +245,7 @@ const SalesHeadDashboard = () => {
             </TabsContent>
 
             <TabsContent value="expenses" className="mt-0">
-              <ExpenseManagement />
+              <ExpenseApprovalManagement />
             </TabsContent>
           </div>
         </Tabs>
