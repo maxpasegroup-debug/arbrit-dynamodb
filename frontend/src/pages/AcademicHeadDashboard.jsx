@@ -407,13 +407,7 @@ const AcademicHeadDashboard = () => {
                 </TabsContent>
                 
                 <TabsContent value="team-expenses">
-                  <div className="bg-white/5 backdrop-blur-sm rounded-xl border border-white/10 p-6">
-                    <h3 className="text-xl font-semibold text-white mb-4">Team Expense Review</h3>
-                    <p className="text-slate-400 mb-4">Review and approve expense claims from your team members</p>
-                    <div className="text-center py-8 text-slate-400">
-                      Team expense review component - Coming soon
-                    </div>
-                  </div>
+                  <ExpenseApprovalManagement />
                 </TabsContent>
               </Tabs>
             </TabsContent>
