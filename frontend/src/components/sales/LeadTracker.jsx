@@ -876,7 +876,7 @@ const LeadTracker = () => {
               >
                 <div className="flex items-start justify-between">
                   <div className="flex-1">
-                    <div className="flex items-center gap-2 mb-2">
+                    <div className="flex items-center gap-2 mb-2 flex-wrap">
                       <h3 className="font-semibold text-slate-100">
                         {lead.company_name || lead.client_name}
                       </h3>
@@ -885,6 +885,12 @@ const LeadTracker = () => {
                       {lead.urgency === 'high' && (
                         <Badge className="bg-red-500/20 text-red-300 border-red-400/50 text-xs">
                           URGENT
+                        </Badge>
+                      )}
+                      {/* Lifecycle Status - Auto-updated */}
+                      {getLifecycleStatus(lead) && (
+                        <Badge className={`${getLifecycleStatus(lead).color} text-xs font-semibold animate-pulse`}>
+                          {getLifecycleStatus(lead).text}
                         </Badge>
                       )}
                     </div>
