@@ -3002,6 +3002,76 @@ async def reject_quotation_sales_head(
         raise HTTPException(status_code=500, detail="Failed to reject quotation")
 
 
+# Send Quotation to Client (Sales Executive & Sales Head)
+@api_router.put("/sales/quotations/{quotation_id}/send-to-client")
+async def send_quotation_to_client(
+    quotation_id: str,
+    send_data: dict,
+    current_user: dict = Depends(get_current_user)
+):
+    """
+    Mark quotation as sent to client.
+    Available to Sales Executives (their own quotations) and Sales Head (all quotations)
+    """
+    try:
+        # Check role access
+        if current_user["role"] not in ["Sales Head", "Field Sales", "Tele Sales", "Sales Employee", "MD", "COO", "CEO"]:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="Access denied."
+            )
+        
+        quotation = await db.quotations.find_one({"id": quotation_id}, {"_id": 0})
+        
+        if not quotation:
+            raise HTTPException(status_code=404, detail="Quotation not found")
+        
+        # Check if quotation is approved
+        if quotation.get("status") != "Approved":
+            raise HTTPException(status_code=400, detail="Only approved quotations can be sent to client")
+        
+        # Sales Executive can only send their own quotations
+        if current_user["role"] in ["Field Sales", "Tele Sales", "Sales Employee"]:
+            if quotation.get("created_by") != current_user["id"]:
+                raise HTTPException(status_code=403, detail="You can only send your own quotations")
+        
+        update_data = {
+            "sent_to_client": True,
+            "sent_at": datetime.now(timezone.utc).isoformat(),
+            "sent_by": current_user["id"],
+            "sent_by_name": current_user["name"],
+            "sent_via": send_data.get("sent_via", "Email"),  # Email, WhatsApp, etc.
+            "client_email": send_data.get("client_email", ""),
+            "client_contact": send_data.get("client_contact", ""),
+            "remarks": send_data.get("remarks", "")
+        }
+        
+        await db.quotations.update_one({"id": quotation_id}, {"$set": update_data})
+        
+        # Update lead status
+        lead_id = quotation.get("lead_id")
+        if lead_id:
+            await db.leads.update_one(
+                {"id": lead_id},
+                {"$set": {
+                    "quotation_status": "Sent to Client",
+                    "status": "Quoted"
+                }}
+            )
+        
+        return {
+            "message": "Quotation marked as sent to client successfully",
+            "quotation_id": quotation_id,
+            "sent_via": send_data.get("sent_via", "Email")
+        }
+    
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error sending quotation to client: {e}")
+        raise HTTPException(status_code=500, detail="Failed to send quotation to client")
+
+
 # Sales Head - Invoice Management
 @api_router.get("/sales-head/invoices")
 async def get_sales_head_invoices(current_user: dict = Depends(get_current_user)):
