@@ -538,7 +538,7 @@ const EnhancedLeadForm = ({ open, onOpenChange, onSuccess, existingLead = null }
                   className="w-full bg-slate-800 border border-white/10 text-slate-100 rounded-md p-2"
                   required
                 >
-                  <option value="">Select Course</option>
+                  <option value="">Select Training Program</option>
                   {courses.map(course => (
                     <option key={course.id} value={course.id}>
                       {course.name} - {course.base_fee} AED ({course.duration})
