@@ -304,7 +304,7 @@ const TrainingAllocationManagement = () => {
                   </div>
                   <div>
                     <span className="text-gray-400">Participants:</span>
-                    <span className="text-white ml-2">{selected Request.number_of_participants}</span>
+                    <span className="text-white ml-2">{selectedRequest.number_of_participants}</span>
                   </div>
                   <div>
                     <span className="text-gray-400">Location:</span>
