@@ -267,7 +267,7 @@ const VendorManagement = () => {
 
       {/* Add Vendor Dialog */}
       <Dialog open={showVendorDialog} onOpenChange={setShowVendorDialog}>
-        <DialogContent className="bg-slate-900 border-slate-700 text-white max-w-2xl">
+        <DialogContent className="bg-white border-slate-700 text-white max-w-2xl">
           <DialogHeader>
             <DialogTitle className="text-xl flex items-center gap-2">
               <Truck className="w-6 h-6 text-blue-400" />
@@ -378,7 +378,7 @@ const VendorManagement = () => {
 
       {/* Payment Dialog */}
       <Dialog open={showPaymentDialog} onOpenChange={setShowPaymentDialog}>
-        <DialogContent className="bg-slate-900 border-slate-700 text-white max-w-2xl">
+        <DialogContent className="bg-white border-slate-700 text-white max-w-2xl">
           <DialogHeader>
             <DialogTitle className="text-xl flex items-center gap-2">
               <DollarSign className="w-6 h-6 text-green-400" />

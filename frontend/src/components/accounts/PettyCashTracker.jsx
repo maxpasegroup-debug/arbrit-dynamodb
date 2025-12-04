@@ -160,7 +160,7 @@ const PettyCashTracker = () => {
 
       {/* Add Expense Dialog */}
       <Dialog open={showDialog} onOpenChange={setShowDialog}>
-        <DialogContent className="bg-slate-900 border-slate-700 text-white max-w-xl">
+        <DialogContent className="bg-white border-slate-700 text-white max-w-xl">
           <DialogHeader>
             <DialogTitle className="text-xl flex items-center gap-2">
               <Wallet className="w-6 h-6 text-blue-400" />

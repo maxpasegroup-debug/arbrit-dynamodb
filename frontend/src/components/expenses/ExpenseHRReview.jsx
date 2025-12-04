@@ -152,7 +152,7 @@ const ExpenseHRReview = () => {
 
       {/* Approval Dialog */}
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-        <DialogContent className="bg-slate-900 border-white/10">
+        <DialogContent className="bg-white border-white/10">
           <DialogHeader>
             <DialogTitle className="text-slate-100">
               HR {decision === 'approve' ? 'Approval' : 'Rejection'}

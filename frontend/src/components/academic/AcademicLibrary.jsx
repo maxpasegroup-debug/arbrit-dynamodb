@@ -594,7 +594,7 @@ const AcademicLibrary = () => {
 
       {/* Create/Edit Folder Modal */}
       <Dialog open={folderModalOpen} onOpenChange={setFolderModalOpen}>
-        <DialogContent className="bg-slate-900 border-white/10">
+        <DialogContent className="bg-white border-white/10">
           <DialogHeader>
             <DialogTitle className="text-white">
               {editingFolder ? 'Edit Folder' : 'Create New Folder'}
@@ -653,7 +653,7 @@ const AcademicLibrary = () => {
 
       {/* Add Document Modal */}
       <Dialog open={documentModalOpen} onOpenChange={setDocumentModalOpen}>
-        <DialogContent className="bg-slate-900 border-white/10 max-w-2xl">
+        <DialogContent className="bg-white border-white/10 max-w-2xl">
           <DialogHeader>
             <DialogTitle className="text-white">Add Document</DialogTitle>
           </DialogHeader>

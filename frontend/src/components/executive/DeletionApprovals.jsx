@@ -227,7 +227,7 @@ const DeletionApprovals = () => {
 
       {/* Confirmation Dialog */}
       <Dialog open={showDialog} onOpenChange={setShowDialog}>
-        <DialogContent className="bg-slate-900 border-slate-700 text-white">
+        <DialogContent className="bg-white border-slate-700 text-white">
           <DialogHeader>
             <DialogTitle className="text-xl">
               {actionType === 'approve' ? 'Confirm Deletion' : 'Reject Deletion'}

@@ -88,7 +88,7 @@ const LeadSubmissionModal = ({ open, onOpenChange }) => {
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="bg-slate-900 border-slate-700 text-white max-w-2xl max-h-[90vh] overflow-y-auto">
+      <DialogContent className="bg-white border-slate-700 text-white max-w-2xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="text-2xl font-bold text-white">Submit New Lead</DialogTitle>
         </DialogHeader>

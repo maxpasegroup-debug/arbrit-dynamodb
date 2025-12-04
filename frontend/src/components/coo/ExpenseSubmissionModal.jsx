@@ -63,7 +63,7 @@ const ExpenseSubmissionModal = ({ open, onOpenChange }) => {
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="bg-slate-900 border-slate-700 text-white max-w-xl">
+      <DialogContent className="bg-white border-slate-700 text-white max-w-xl">
         <DialogHeader>
           <DialogTitle className="text-2xl font-bold text-white">Submit Expense Claim</DialogTitle>
         </DialogHeader>

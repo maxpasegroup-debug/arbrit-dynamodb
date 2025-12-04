@@ -228,7 +228,7 @@ const PaymentRecording = () => {
 
       {/* Payment Dialog */}
       <Dialog open={showDialog} onOpenChange={setShowDialog}>
-        <DialogContent className="bg-slate-900 border-slate-700 text-white max-w-2xl">
+        <DialogContent className="bg-white border-slate-700 text-white max-w-2xl">
           <DialogHeader>
             <DialogTitle className="text-xl flex items-center gap-2">
               <Check className="w-6 h-6 text-green-400" />

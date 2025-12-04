@@ -166,7 +166,7 @@ const ExpenseApprovals = ({ userRole }) => {
 
       {/* Approval Dialog */}
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-        <DialogContent className="bg-slate-900 border-slate-700 text-white">
+        <DialogContent className="bg-white border-slate-700 text-white">
           <DialogHeader>
             <DialogTitle className="text-xl text-white">
               {decision === 'approve' ? 'Approve' : 'Reject'} Expense Claim

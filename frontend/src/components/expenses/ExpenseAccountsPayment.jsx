@@ -198,7 +198,7 @@ const ExpenseAccountsPayment = () => {
 
       {/* Payment Dialog */}
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-        <DialogContent className="bg-slate-900 border-slate-700 text-white">
+        <DialogContent className="bg-white border-slate-700 text-white">
           <DialogHeader>
             <DialogTitle className="text-xl">Mark Expense as Paid</DialogTitle>
             <DialogDescription className="text-gray-400">

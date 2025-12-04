@@ -346,7 +346,7 @@ const InvoiceManagementEnhanced = () => {
           setShowEditDialog(false);
         }
       }}>
-        <DialogContent className="bg-slate-900 border-slate-700 text-white max-w-2xl">
+        <DialogContent className="bg-white border-slate-700 text-white max-w-2xl">
           <DialogHeader>
             <DialogTitle className="text-xl">
               {showCreateDialog ? 'Create New Invoice' : 'Edit Invoice'}
@@ -486,7 +486,7 @@ const InvoiceManagementEnhanced = () => {
 
       {/* Delete Confirmation Dialog */}
       <Dialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog}>
-        <DialogContent className="bg-slate-900 border-slate-700 text-white">
+        <DialogContent className="bg-white border-slate-700 text-white">
           <DialogHeader>
             <DialogTitle className="text-xl flex items-center gap-2">
               <AlertTriangle className="w-6 h-6 text-red-500" />
