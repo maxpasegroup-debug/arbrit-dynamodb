@@ -28,27 +28,6 @@ const MyTrainingTracker = () => {
       console.error('Error fetching trainings:', error);
       // Show empty state if API fails
       setTrainings([]);
-        {
-          id: 3,
-          clientName: 'Emirates Construction',
-          courseName: 'Height Safety Training',
-          participants: 25,
-          status: 'scheduled',
-          progress: 75,
-          trainer: 'Mohammed Ali',
-          scheduledDate: '2025-12-15',
-          location: 'Construction Site - Abu Dhabi',
-          leadValue: 12500,
-          stages: [
-            { name: 'Lead Closed', completed: true, date: '2025-12-02' },
-            { name: 'Training Allocated', completed: true, date: '2025-12-04' },
-            { name: 'Materials Prepared', completed: true, date: '2025-12-08' },
-            { name: 'Training Scheduled', completed: true, date: '2025-12-09' },
-            { name: 'Training Delivered', completed: false, date: null },
-            { name: 'Certificate Issued', completed: false, date: null }
-          ]
-        }
-      ]);
     } finally {
       setLoading(false);
     }
