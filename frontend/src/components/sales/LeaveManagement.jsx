@@ -81,12 +81,12 @@ const LeaveManagement = () => {
       setStats(response.data || {});
     } catch (error) {
       console.error('Error fetching stats:', error);
-      // Mock stats
+      // Show zero stats if API fails
       setStats({
-        pendingReviews: 2,
-        approvedThisMonth: 8,
+        pendingReviews: 0,
+        approvedThisMonth: 0,
         myPendingRequests: 0,
-        teamOnLeave: 1
+        teamOnLeave: 0
       });
     }
   };
