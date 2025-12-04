@@ -2279,6 +2279,14 @@ async def update_training_progress(
             update_data
         )
         
+        # Auto-update lead status when training is completed
+        if progress.status == "Completed" and training_request.get("lead_id"):
+            await db.leads.update_one(
+                {"id": training_request["lead_id"]},
+                {"$set": {"status": "Won - Training Complete"}}
+            )
+            logger.info(f"Lead {training_request['lead_id']} status updated to 'Won - Training Complete'")
+        
         logger.info(f"Training {request_id} progress updated by {current_user['name']}: {progress.progress_stage}")
         
         return {"message": "Training progress updated successfully", "request_id": request_id}
