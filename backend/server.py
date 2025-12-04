@@ -2026,6 +2026,7 @@ async def record_payment(payment_data: PaymentCreate, current_user: dict = Depen
         
         # Update invoice status to Paid
         if payment_data.invoice_id:
+            invoice = await db.invoice_requests.find_one({"id": payment_data.invoice_id}, {"_id": 0})
             await db.invoice_requests.update_one(
                 {"id": payment_data.invoice_id},
                 {"$set": {
@@ -2035,6 +2036,16 @@ async def record_payment(payment_data: PaymentCreate, current_user: dict = Depen
                     "payment_id": payment.id
                 }}
             )
+            
+            # Update lead status to Paid
+            if invoice and invoice.get("lead_id"):
+                await db.leads.update_one(
+                    {"id": invoice["lead_id"]},
+                    {"$set": {
+                        "invoice_status": "Paid",
+                        "status": "Won"
+                    }}
+                )
         
         return {
             "message": "Payment recorded successfully", 
