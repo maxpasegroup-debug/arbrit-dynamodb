@@ -405,7 +405,24 @@ const AcademicHeadDashboard = () => {
 
             {/* 7. MY TEAM */}
             <TabsContent value="my-team" className="mt-0">
-              <TeamMonitoring />
+              <Tabs defaultValue="overview" className="space-y-6">
+                <TabsList className="bg-white/10 border border-white/20">
+                  <TabsTrigger value="overview" className="data-[state=active]:bg-yellow-500/20 data-[state=active]:text-white">
+                    Team Overview
+                  </TabsTrigger>
+                  <TabsTrigger value="trainers" className="data-[state=active]:bg-yellow-500/20 data-[state=active]:text-white">
+                    Trainer Performance
+                  </TabsTrigger>
+                </TabsList>
+                
+                <TabsContent value="overview" className="mt-0">
+                  <TeamMonitoring />
+                </TabsContent>
+                
+                <TabsContent value="trainers" className="mt-0">
+                  <TrainerPerformance />
+                </TabsContent>
+              </Tabs>
             </TabsContent>
 
             {/* 8. EXPENSES */}
