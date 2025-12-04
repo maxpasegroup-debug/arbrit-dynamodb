@@ -2904,6 +2904,11 @@ async def create_lead(lead: LeadCreate, current_user: dict = Depends(get_current
     lead_data["assigned_by"] = current_user["id"]
     lead_data["assigned_by_name"] = current_user["name"]
     
+    # Generate new Lead ID format: ARBRIT-DEC24-DUBAI-001
+    area = lead_data.get("training_location") or lead_data.get("branch") or "GENERAL"
+    new_lead_id = await generate_lead_id(area)
+    lead_data["id"] = new_lead_id
+    
     lead_obj = Lead(**lead_data)
     
     doc = lead_obj.model_dump()
