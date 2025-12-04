@@ -231,6 +231,19 @@ const LeadTracker = () => {
     return null;
   };
 
+  // Get left border accent color based on status
+  const getLeftBorderColor = (status) => {
+    const borderColors = {
+      'New': 'border-l-green-500',
+      'Contacted': 'border-l-blue-500',
+      'Quoted': 'border-l-purple-500',
+      'Negotiation': 'border-l-yellow-500',
+      'Won': 'border-l-emerald-500',
+      'Lost': 'border-l-red-500'
+    };
+    return borderColors[status] || 'border-l-gray-400';
+  };
+
   const getStatusCount = (status) => {
     return leads.filter(l => l.status === status).length;
   };
