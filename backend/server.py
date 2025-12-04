@@ -3720,6 +3720,18 @@ async def create_sales_quotation(quot_data: QuotationCreate, current_user: dict 
     
     await db.quotations.insert_one(doc)
     
+    # Update lead with quotation info
+    lead_id = quot_data.lead_id if hasattr(quot_data, 'lead_id') else None
+    if lead_id:
+        await db.leads.update_one(
+            {"id": lead_id},
+            {"$set": {
+                "quotation_sent": True,
+                "quotation_id": quot_obj.id,
+                "quotation_status": "Pending"
+            }}
+        )
+    
     return {"message": "Quotation created successfully", "quotation_id": quot_obj.id}
 
 
