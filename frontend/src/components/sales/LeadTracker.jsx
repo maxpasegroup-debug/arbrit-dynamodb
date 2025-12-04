@@ -838,13 +838,12 @@ const LeadTracker = () => {
         )}
         
         <Button
-          variant="outline"
           size="sm"
           onClick={() => {
             setFormOpen(true);
             setSelectedLead(null);
           }}
-          className="border-white/20 hover:bg-white/10"
+          className="bg-orange-500 hover:bg-orange-600 text-white font-semibold shadow-lg border-2 border-orange-600"
         >
           + New Lead
         </Button>
