@@ -2857,6 +2857,255 @@ async def assign_badge(employee_id: str, badge_data: dict, current_user: dict = 
     return {"message": "Badge assigned successfully", "badge_title": badge_title}
 
 
+# Sales Head - Quotation Management
+@api_router.get("/sales-head/quotations")
+async def get_sales_head_quotations(current_user: dict = Depends(get_current_user)):
+    """
+    Sales Head views all quotation requests from sales team.
+    """
+    try:
+        if current_user["role"] not in ["Sales Head", "MD", "COO", "CEO"]:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="Access denied. Sales Head role required."
+            )
+        
+        query_result = await db.quotations.find({}, {"_id": 0})
+        quotations = await query_result.sort("created_at", -1).to_list(1000)
+        return quotations
+    
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error fetching quotation requests: {e}")
+        return []
+
+
+@api_router.put("/sales-head/quotations/{quotation_id}/approve")
+async def approve_quotation_sales_head(
+    quotation_id: str,
+    approval_data: dict,
+    current_user: dict = Depends(get_current_user)
+):
+    """
+    Sales Head approves a quotation request.
+    """
+    try:
+        if current_user["role"] not in ["Sales Head", "MD", "COO", "CEO"]:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="Access denied. Sales Head role required."
+            )
+        
+        quotation = await db.quotations.find_one({"id": quotation_id}, {"_id": 0})
+        
+        if not quotation:
+            raise HTTPException(status_code=404, detail="Quotation not found")
+        
+        update_data = {
+            "status": "Approved",
+            "approved_by": current_user["id"],
+            "approved_by_name": current_user["name"],
+            "approved_at": datetime.now(timezone.utc).isoformat(),
+            "comments": approval_data.get("comments", "")
+        }
+        
+        await db.quotations.update_one({"id": quotation_id}, {"$set": update_data})
+        
+        # Update lead status
+        lead_id = quotation.get("lead_id")
+        if lead_id:
+            await db.leads.update_one(
+                {"id": lead_id},
+                {"$set": {
+                    "quotation_status": "Approved",
+                    "status": "Quoted"
+                }}
+            )
+        
+        return {"message": "Quotation approved successfully", "quotation_id": quotation_id}
+    
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error approving quotation: {e}")
+        raise HTTPException(status_code=500, detail="Failed to approve quotation")
+
+
+@api_router.put("/sales-head/quotations/{quotation_id}/reject")
+async def reject_quotation_sales_head(
+    quotation_id: str,
+    rejection_data: dict,
+    current_user: dict = Depends(get_current_user)
+):
+    """
+    Sales Head rejects a quotation request.
+    """
+    try:
+        if current_user["role"] not in ["Sales Head", "MD", "COO", "CEO"]:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="Access denied. Sales Head role required."
+            )
+        
+        quotation = await db.quotations.find_one({"id": quotation_id}, {"_id": 0})
+        
+        if not quotation:
+            raise HTTPException(status_code=404, detail="Quotation not found")
+        
+        if not rejection_data.get("comments"):
+            raise HTTPException(status_code=400, detail="Rejection reason is required")
+        
+        update_data = {
+            "status": "Rejected",
+            "rejected_by": current_user["id"],
+            "rejected_by_name": current_user["name"],
+            "rejected_at": datetime.now(timezone.utc).isoformat(),
+            "comments": rejection_data.get("comments", "")
+        }
+        
+        await db.quotations.update_one({"id": quotation_id}, {"$set": update_data})
+        
+        # Update lead status
+        lead_id = quotation.get("lead_id")
+        if lead_id:
+            await db.leads.update_one(
+                {"id": lead_id},
+                {"$set": {"quotation_status": "Rejected"}}
+            )
+        
+        return {"message": "Quotation rejected", "quotation_id": quotation_id}
+    
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error rejecting quotation: {e}")
+        raise HTTPException(status_code=500, detail="Failed to reject quotation")
+
+
+# Sales Head - Invoice Management
+@api_router.get("/sales-head/invoices")
+async def get_sales_head_invoices(current_user: dict = Depends(get_current_user)):
+    """
+    Sales Head views all invoice requests from sales team.
+    """
+    try:
+        if current_user["role"] not in ["Sales Head", "MD", "COO", "CEO"]:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="Access denied. Sales Head role required."
+            )
+        
+        query_result = await db.invoice_requests.find({}, {"_id": 0})
+        invoices = await query_result.sort("created_at", -1).to_list(1000)
+        return invoices
+    
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error fetching invoice requests: {e}")
+        return []
+
+
+@api_router.put("/sales-head/invoices/{invoice_id}/approve")
+async def approve_invoice_sales_head(
+    invoice_id: str,
+    approval_data: dict,
+    current_user: dict = Depends(get_current_user)
+):
+    """
+    Sales Head approves an invoice request and routes it to Accounts.
+    """
+    try:
+        if current_user["role"] not in ["Sales Head", "MD", "COO", "CEO"]:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="Access denied. Sales Head role required."
+            )
+        
+        invoice = await db.invoice_requests.find_one({"id": invoice_id}, {"_id": 0})
+        
+        if not invoice:
+            raise HTTPException(status_code=404, detail="Invoice not found")
+        
+        update_data = {
+            "status": "Pending Accounts",  # Routes to Accounts Head
+            "sales_head_approved_by": current_user["id"],
+            "sales_head_approved_by_name": current_user["name"],
+            "sales_head_approved_at": datetime.now(timezone.utc).isoformat(),
+            "sales_head_comments": approval_data.get("comments", "")
+        }
+        
+        await db.invoice_requests.update_one({"id": invoice_id}, {"$set": update_data})
+        
+        # Update lead status
+        lead_id = invoice.get("lead_id")
+        if lead_id:
+            await db.leads.update_one(
+                {"id": lead_id},
+                {"$set": {"invoice_status": "Pending Accounts"}}
+            )
+        
+        return {"message": "Invoice approved and sent to Accounts", "invoice_id": invoice_id}
+    
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error approving invoice: {e}")
+        raise HTTPException(status_code=500, detail="Failed to approve invoice")
+
+
+@api_router.put("/sales-head/invoices/{invoice_id}/reject")
+async def reject_invoice_sales_head(
+    invoice_id: str,
+    rejection_data: dict,
+    current_user: dict = Depends(get_current_user)
+):
+    """
+    Sales Head rejects an invoice request.
+    """
+    try:
+        if current_user["role"] not in ["Sales Head", "MD", "COO", "CEO"]:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="Access denied. Sales Head role required."
+            )
+        
+        invoice = await db.invoice_requests.find_one({"id": invoice_id}, {"_id": 0})
+        
+        if not invoice:
+            raise HTTPException(status_code=404, detail="Invoice not found")
+        
+        if not rejection_data.get("comments"):
+            raise HTTPException(status_code=400, detail="Rejection reason is required")
+        
+        update_data = {
+            "status": "Rejected by Sales Head",
+            "sales_head_rejected_by": current_user["id"],
+            "sales_head_rejected_by_name": current_user["name"],
+            "sales_head_rejected_at": datetime.now(timezone.utc).isoformat(),
+            "sales_head_comments": rejection_data.get("comments", "")
+        }
+        
+        await db.invoice_requests.update_one({"id": invoice_id}, {"$set": update_data})
+        
+        # Update lead status
+        lead_id = invoice.get("lead_id")
+        if lead_id:
+            await db.leads.update_one(
+                {"id": lead_id},
+                {"$set": {"invoice_status": "Rejected by Sales Head"}}
+            )
+        
+        return {"message": "Invoice rejected", "invoice_id": invoice_id}
+    
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error rejecting invoice: {e}")
+        raise HTTPException(status_code=500, detail="Failed to reject invoice")
+
+
 # Sales Head - Lead Management
 @api_router.post("/sales-head/leads", response_model=Lead)
 async def create_lead(lead: LeadCreate, current_user: dict = Depends(get_current_user)):
