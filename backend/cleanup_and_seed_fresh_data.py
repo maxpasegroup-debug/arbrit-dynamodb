@@ -14,25 +14,29 @@ async def cleanup_and_seed():
     print("🧹 Starting cleanup...")
     
     # Clean quotations
-    quotations = await db.quotations.find({}, {"_id": 0}).to_list(10000)
+    query_result = await db.quotations.find({}, {"_id": 0})
+    quotations = await query_result.to_list(10000)
     for quot in quotations:
         await db.quotations.delete_one({"id": quot["id"]})
     print(f"✅ Deleted {len(quotations)} quotations")
     
     # Clean invoice requests
-    invoices = await db.invoice_requests.find({}, {"_id": 0}).to_list(10000)
+    query_result = await db.invoice_requests.find({}, {"_id": 0})
+    invoices = await query_result.to_list(10000)
     for inv in invoices:
         await db.invoice_requests.delete_one({"id": inv["id"]})
     print(f"✅ Deleted {len(invoices)} invoice requests")
     
     # Clean payments
-    payments = await db.payments.find({}, {"_id": 0}).to_list(10000)
+    query_result = await db.payments.find({}, {"_id": 0})
+    payments = await query_result.to_list(10000)
     for pay in payments:
         await db.payments.delete_one({"id": pay["id"]})
     print(f"✅ Deleted {len(payments)} payments")
     
     # Delete existing test leads (optional - keeps real leads)
-    test_leads = await db.leads.find({"company_name": "TEST COMPANY"}, {"_id": 0}).to_list(1000)
+    query_result = await db.leads.find({"company_name": "TEST COMPANY"}, {"_id": 0})
+    test_leads = await query_result.to_list(1000)
     for lead in test_leads:
         await db.leads.delete_one({"id": lead["id"]})
     print(f"✅ Deleted {len(test_leads)} test leads")
