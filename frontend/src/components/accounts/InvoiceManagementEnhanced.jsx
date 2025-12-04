@@ -16,6 +16,7 @@ const API = `${BACKEND_URL}/api`;
 
 const InvoiceManagementEnhanced = () => {
   const [invoices, setInvoices] = useState([]);
+  const [pendingInvoices, setPendingInvoices] = useState([]);
   const [user, setUser] = useState(null);
   const [showCreateDialog, setShowCreateDialog] = useState(false);
   const [showEditDialog, setShowEditDialog] = useState(false);
