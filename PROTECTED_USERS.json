@@ -1,0 +1,64 @@
+{
+  "WARNING": "CRITICAL - DO NOT DELETE OR MODIFY THESE 35 USERS UNDER ANY CIRCUMSTANCES",
+  "DATABASE": "DynamoDB",
+  "TABLE_PREFIX": "arbrit_workdesk",
+  "TOTAL_USERS": 35,
+  "PROTECTED_USERS": [
+    {"name": "Afshan Firdose", "mobile": "971545844386", "role": "Field Sales", "pin_last_4": "4386"},
+    {"name": "Arun Babu", "mobile": "971563981061", "role": "Field Sales", "pin_last_4": "1061"},
+    {"name": "Biju Prabhakaran", "mobile": "971563981453", "role": "Field Sales", "pin_last_4": "1453"},
+    {"name": "Shahid Yousuf", "mobile": "971545844385", "role": "Field Sales", "pin_last_4": "4385"},
+    {"name": "Sherook Mohammed", "mobile": "971501631280", "role": "Field Sales", "pin_last_4": "1280"},
+    {"name": "Shezin Shaker", "mobile": "971501631387", "role": "Field Sales", "pin_last_4": "1387"},
+    {"name": "Afshaan Syeda", "mobile": "971557638082", "role": "Tele Sales", "pin_last_4": "8082"},
+    {"name": "Akheela Moideen Kpya", "mobile": "971564171124", "role": "Tele Sales", "pin_last_4": "1124"},
+    {"name": "Anjaly Krishnan", "mobile": "971501631924", "role": "Tele Sales", "pin_last_4": "1924"},
+    {"name": "Bretty M Benny", "mobile": "971502425495", "role": "Tele Sales", "pin_last_4": "5495"},
+    {"name": "Prashobha KP", "mobile": "971566838967", "role": "Tele Sales", "pin_last_4": "8967"},
+    {"name": "Punya ET", "mobile": "971564017266", "role": "Tele Sales", "pin_last_4": "7266"},
+    {"name": "Saqib Abdullah", "mobile": "966593341476", "role": "Tele Sales", "pin_last_4": "1476"},
+    {"name": "Sunaina Fathima", "mobile": "971563981429", "role": "Tele Sales", "pin_last_4": "1429"},
+    {"name": "Mohammad Akbar", "mobile": "971545844387", "role": "Sales Head", "pin_last_4": "4387"},
+    {"name": "Anjusha P", "mobile": "971566838977", "role": "Academic Coordinator", "pin_last_4": "8977"},
+    {"name": "Arshad Mohammed", "mobile": "971521528047", "role": "Academic Coordinator", "pin_last_4": "8047"},
+    {"name": "Dhanya M Sathyavrathan", "mobile": "971564169729", "role": "Academic Coordinator", "pin_last_4": "9729"},
+    {"name": "Muhammed Farooq", "mobile": "971505779823", "role": "Academic Coordinator", "pin_last_4": "9823"},
+    {"name": "Abdu Sahad", "mobile": "971557213537", "role": "Academic Head", "pin_last_4": "3537"},
+    {"name": "Sanu K Manoj", "mobile": "971521237806", "role": "Accountant", "pin_last_4": "7806"},
+    {"name": "Kiron George Chenikkal", "mobile": "919061295668", "role": "Accounts Head", "pin_last_4": "5668"},
+    {"name": "Sarada Gopalakrishnan", "mobile": "971566374020", "role": "COO", "pin_last_4": "4020"},
+    {"name": "Himash Dhanuskha", "mobile": "971521237859", "role": "Dispatch Assistant", "pin_last_4": "7859"},
+    {"name": "Thara P Sasikumar", "mobile": "971547560063", "role": "Dispatch Assistant", "pin_last_4": "0063"},
+    {"name": "Sajeev Pillai", "mobile": "971522145962", "role": "Dispatch Head", "pin_last_4": "5962"},
+    {"name": "Melita Dsouza", "mobile": "971547558749", "role": "HR", "pin_last_4": "8749"},
+    {"name": "Brijith Shaji", "mobile": "971564022503", "role": "MD", "pin_last_4": "2503"},
+    {"name": "Anshad Rahim", "mobile": "971547939729", "role": "Trainer", "pin_last_4": "9729"},
+    {"name": "Dharson Dhasan", "mobile": "971523834896", "role": "Trainer", "pin_last_4": "4896"},
+    {"name": "Ishitaq hasham", "mobile": "971562408799", "role": "Trainer", "pin_last_4": "8799"},
+    {"name": "Jaseer Sakariya", "mobile": "971505779753", "role": "Trainer", "pin_last_4": "9753"},
+    {"name": "Nadir Khan", "mobile": "971547560619", "role": "Trainer", "pin_last_4": "0619"},
+    {"name": "Sameer Khan", "mobile": "971564186729", "role": "Trainer", "pin_last_4": "6729"},
+    {"name": "Shazzat Ali", "mobile": "971564170179", "role": "Trainer", "pin_last_4": "0179"}
+  ],
+  "SALES_TEAM": {
+    "TOTAL": 15,
+    "FIELD_SALES": 6,
+    "TELE_SALES": 8,
+    "SALES_HEAD": 1
+  },
+  "INSTRUCTIONS": {
+    "NEVER": [
+      "Delete any of these 35 users",
+      "Modify user credentials without explicit permission",
+      "Run cleanup scripts on users or employees tables",
+      "Alter mobile numbers or PINs",
+      "Remove or reassign user accounts"
+    ],
+    "ALWAYS": [
+      "Verify user count is 35 before any operation",
+      "Check this file before running any database operations",
+      "Ask user before making ANY changes to user/employee data",
+      "Protect login credentials at all costs"
+    ]
+  }
+}
