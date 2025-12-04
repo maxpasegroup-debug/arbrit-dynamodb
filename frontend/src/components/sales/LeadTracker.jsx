@@ -952,17 +952,41 @@ const LeadTracker = () => {
                               </Button>
                             );
                           } else if (lead.quotation_status === 'Approved') {
-                            // Approved - show "Send to Client" button
+                            // Approved - show "Download PDF" button (simplified)
                             return (
                               <Button
                                 size="sm"
                                 variant="outline"
                                 className="border-green-400/50 text-green-300 hover:bg-green-500/20"
-                                title="Send Quotation to Client"
-                                onClick={() => handleSendQuotationToClient(lead)}
+                                title="Download Quotation PDF"
+                                onClick={async () => {
+                                  try {
+                                    const token = localStorage.getItem('token');
+                                    const response = await axios.get(
+                                      `${API}/sales/quotations/${lead.quotation_id}/generate-pdf`,
+                                      {
+                                        headers: { Authorization: `Bearer ${token}` },
+                                        responseType: 'blob'
+                                      }
+                                    );
+                                    
+                                    const url = window.URL.createObjectURL(new Blob([response.data]));
+                                    const link = document.createElement('a');
+                                    link.href = url;
+                                    link.setAttribute('download', `Quotation_${lead.company_name || lead.client_name}_${Date.now()}.pdf`);
+                                    document.body.appendChild(link);
+                                    link.click();
+                                    link.remove();
+                                    
+                                    toast.success('PDF downloaded! You can now send it to the client.');
+                                  } catch (error) {
+                                    console.error('Error downloading PDF:', error);
+                                    toast.error('Failed to download PDF');
+                                  }
+                                }}
                               >
                                 <FileText className="w-3 h-3 mr-1" />
-                                📤 Send to Client
+                                📥 Download PDF
                               </Button>
                             );
                           } else {
