@@ -47,7 +47,7 @@ const HRMDashboard = () => {
             <TabsTrigger 
               value="employees" 
               data-testid="tab-employees"
-              className="data-[state=active]:bg-purple-500/20 data-[state=active]:text-white text-gray-300"
+              className="data-[state=active]:bg-purple-500 data-[state=active]:text-white text-gray-300"
             >
               <Users className="w-4 h-4 mr-2" />
               Employee Management
@@ -55,7 +55,7 @@ const HRMDashboard = () => {
             <TabsTrigger 
               value="attendance"
               data-testid="tab-attendance"
-              className="data-[state=active]:bg-purple-500/20 data-[state=active]:text-white text-gray-300"
+              className="data-[state=active]:bg-purple-500 data-[state=active]:text-white text-gray-300"
             >
               <ClipboardCheck className="w-4 h-4 mr-2" />
               Attendance
@@ -63,7 +63,7 @@ const HRMDashboard = () => {
             <TabsTrigger 
               value="records"
               data-testid="tab-records"
-              className="data-[state=active]:bg-purple-500/20 data-[state=active]:text-white text-gray-300"
+              className="data-[state=active]:bg-purple-500 data-[state=active]:text-white text-gray-300"
             >
               <FileText className="w-4 h-4 mr-2" />
               Employee Records
@@ -71,7 +71,7 @@ const HRMDashboard = () => {
             <TabsTrigger 
               value="company"
               data-testid="tab-company"
-              className="data-[state=active]:bg-purple-500/20 data-[state=active]:text-white text-gray-300"
+              className="data-[state=active]:bg-purple-500 data-[state=active]:text-white text-gray-300"
             >
               <Building2 className="w-4 h-4 mr-2" />
               Company Documents
