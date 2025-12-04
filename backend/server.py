@@ -28,6 +28,49 @@ def convert_floats_to_decimals(obj):
     else:
         return obj
 
+# Helper function to generate Lead IDs in format: ARBRIT-{MONTH}{YY}-{AREA}-{###}
+async def generate_lead_id(area: str = "GENERAL"):
+    """
+    Generate Lead ID in format: ARBRIT-DEC24-DUBAI-001
+    Area options: DUBAI, SAUDI, ABUDHABI, or GENERAL
+    """
+    now = datetime.now(timezone.utc)
+    month_abbr = now.strftime("%b").upper()  # DEC, JAN, etc.
+    year_short = now.strftime("%y")  # 24, 25, etc.
+    
+    # Normalize area name
+    area_upper = area.upper().replace(" ", "").replace("ABU DHABI", "ABUDHABI")
+    
+    # Get the current month-year-area pattern
+    prefix = f"ARBRIT-{month_abbr}{year_short}-{area_upper}"
+    
+    # Find the highest counter for this prefix
+    from dynamodb_client import db
+    query_result = await db.leads.find({}, {"_id": 0, "id": 1})
+    existing_ids = [lead.get("id", "") for lead in await query_result.to_list(10000)]
+    
+    # Filter IDs matching this prefix
+    matching_ids = [lid for lid in existing_ids if lid.startswith(prefix)]
+    
+    if matching_ids:
+        # Extract counters and find max
+        counters = []
+        for lid in matching_ids:
+            parts = lid.split("-")
+            if len(parts) >= 4:
+                try:
+                    counter = int(parts[-1])
+                    counters.append(counter)
+                except ValueError:
+                    pass
+        
+        next_counter = max(counters) + 1 if counters else 1
+    else:
+        next_counter = 1
+    
+    # Format: ARBRIT-DEC24-DUBAI-001
+    return f"{prefix}-{next_counter:03d}"
+
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
 
