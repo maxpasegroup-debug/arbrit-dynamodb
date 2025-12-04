@@ -405,7 +405,7 @@ const SelfLeadForm = ({ showFieldType = false, onSuccess }) => {
                     onChange={(e) => handleCourseChange(e.target.value)}
                     className="w-full bg-white/5 border border-white/20 text-white rounded-md p-2 mt-1"
                   >
-                    <option value="">Select Course</option>
+                    <option value="">Select Training Program</option>
                     {courses.map(course => (
                       <option key={course.id} value={course.id}>
                         {course.name} - {course.base_fee} AED ({course.duration})
