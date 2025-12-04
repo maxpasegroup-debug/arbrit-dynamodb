@@ -58,12 +58,12 @@ const ExpenseManagement = () => {
       setStats(response.data || {});
     } catch (error) {
       console.error('Error fetching stats:', error);
-      // Mock stats
+      // Show zero stats if API fails
       setStats({
-        pendingReview: 2,
-        approvedThisMonth: 12,
-        totalAmount: 3450,
-        myPendingExpenses: 1
+        pendingReview: 0,
+        approvedThisMonth: 0,
+        totalAmount: 0,
+        myPendingExpenses: 0
       });
     }
   };
