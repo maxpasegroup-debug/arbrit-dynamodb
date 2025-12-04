@@ -99,7 +99,7 @@ const InvoiceRequest = () => {
         </Button>
       </div>
 
-      <div className="bg-white/5 backdrop-blur-sm rounded-xl border border-gray-300 overflow-hidden">
+      <div className="bg-white backdrop-blur-sm rounded-xl border border-gray-300 overflow-hidden">
         <Table>
           <TableHeader>
             <TableRow className="border-gray-300">
@@ -142,7 +142,7 @@ const InvoiceRequest = () => {
       </div>
 
       <Dialog open={showDialog} onOpenChange={setShowDialog}>
-        <DialogContent className="bg-[#1a2f4d] border-white/20 text-white max-w-2xl">
+        <DialogContent className="bg-[#1a2f4d] border-gray-300 text-white max-w-2xl">
           <DialogHeader>
             <DialogTitle className="text-xl flex items-center gap-2">
               <FileText className="w-5 h-5 text-green-400" />
@@ -158,7 +158,7 @@ const InvoiceRequest = () => {
                   value={formData.client_name}
                   onChange={(e) => setFormData({ ...formData, client_name: e.target.value })}
                   required
-                  className="bg-white/5 border-white/20 text-white mt-1"
+                  className="bg-white border-gray-300 text-white mt-1"
                 />
               </div>
               <div>
@@ -168,7 +168,7 @@ const InvoiceRequest = () => {
                   value={formData.quotation_ref}
                   onChange={(e) => setFormData({ ...formData, quotation_ref: e.target.value })}
                   placeholder="QT-2025-001"
-                  className="bg-white/5 border-white/20 text-white mt-1"
+                  className="bg-white border-gray-300 text-white mt-1"
                 />
               </div>
             </div>
@@ -182,7 +182,7 @@ const InvoiceRequest = () => {
                 onChange={(e) => setFormData({ ...formData, amount: e.target.value })}
                 required
                 placeholder="0.00"
-                className="bg-white/5 border-white/20 text-white mt-1"
+                className="bg-white border-gray-300 text-white mt-1"
               />
             </div>
 
@@ -194,7 +194,7 @@ const InvoiceRequest = () => {
                 onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                 rows={3}
                 placeholder="Items/Services covered in this invoice..."
-                className="bg-white/5 border-white/20 text-white mt-1"
+                className="bg-white border-gray-300 text-white mt-1"
               />
             </div>
 
@@ -206,7 +206,7 @@ const InvoiceRequest = () => {
                 onChange={(e) => setFormData({ ...formData, remarks: e.target.value })}
                 rows={2}
                 placeholder="Additional notes for accounts team..."
-                className="bg-white/5 border-white/20 text-white mt-1"
+                className="bg-white border-gray-300 text-white mt-1"
               />
             </div>
 
@@ -215,7 +215,7 @@ const InvoiceRequest = () => {
                 type="button"
                 variant="outline"
                 onClick={() => setShowDialog(false)}
-                className="border-white/20 text-white hover:bg-white/10"
+                className="border-gray-300 text-white hover:bg-white"
               >
                 Cancel
               </Button>

@@ -93,7 +93,7 @@ const FileUpload = ({ onFileSelect, onFileRemove, accept = "*", maxSize = 50 }) 
               ? 'border-yellow-400 bg-yellow-500/10'
               : error
               ? 'border-red-400 bg-red-500/10'
-              : 'border-white/20 bg-white/5 hover:border-white/40 hover:bg-white/10'
+              : 'border-gray-300 bg-white hover:border-white/40 hover:bg-white'
           }`}
           onDragEnter={handleDrag}
           onDragLeave={handleDrag}
@@ -114,7 +114,7 @@ const FileUpload = ({ onFileSelect, onFileRemove, accept = "*", maxSize = 50 }) 
             className="flex flex-col items-center justify-center cursor-pointer"
           >
             <div className={`mb-4 p-4 rounded-full ${
-              dragActive ? 'bg-yellow-500/20' : 'bg-white/10'
+              dragActive ? 'bg-yellow-500/20' : 'bg-white'
             }`}>
               <Upload className={`w-8 h-8 ${
                 dragActive ? 'text-yellow-400' : 'text-slate-400'
@@ -142,7 +142,7 @@ const FileUpload = ({ onFileSelect, onFileRemove, accept = "*", maxSize = 50 }) 
           )}
         </div>
       ) : (
-        <div className="bg-white/5 border border-white/10 rounded-lg p-4">
+        <div className="bg-white border border-gray-200 rounded-lg p-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3 flex-1">
               <div className="text-3xl">{getFileIcon(selectedFile.name)}</div>

@@ -183,7 +183,7 @@ const AddPastTraining = ({ onSuccess }) => {
       </div>
 
       <Tabs value={activeTab} onValueChange={setActiveTab}>
-        <TabsList className="grid w-full grid-cols-2 bg-white/5 border border-white/10">
+        <TabsList className="grid w-full grid-cols-2 bg-white border border-gray-200">
           <TabsTrigger value="manual" className="data-[state=active]:bg-blue-500/20">
             <FileText className="w-4 h-4 mr-2" />
             Manual Entry
@@ -197,7 +197,7 @@ const AddPastTraining = ({ onSuccess }) => {
         {/* Manual Entry Tab */}
         <TabsContent value="manual" className="mt-6">
           <form onSubmit={handleManualSubmit} className="space-y-6">
-            <div className="bg-white/5 backdrop-blur-sm rounded-xl border border-white/10 p-6">
+            <div className="bg-white backdrop-blur-sm rounded-xl border border-gray-200 p-6">
               <h3 className="text-lg font-semibold text-white mb-4">Company & Contact Information</h3>
               <div className="grid grid-cols-2 gap-4">
                 <div>
@@ -206,7 +206,7 @@ const AddPastTraining = ({ onSuccess }) => {
                     value={formData.company_name}
                     onChange={(e) => handleInputChange('company_name', e.target.value)}
                     required
-                    className="bg-slate-800 border-white/10 text-white"
+                    className="bg-gray-50 border-gray-200 text-white"
                   />
                 </div>
                 <div>
@@ -215,7 +215,7 @@ const AddPastTraining = ({ onSuccess }) => {
                     value={formData.contact_person}
                     onChange={(e) => handleInputChange('contact_person', e.target.value)}
                     required
-                    className="bg-slate-800 border-white/10 text-white"
+                    className="bg-gray-50 border-gray-200 text-white"
                   />
                 </div>
                 <div>
@@ -224,7 +224,7 @@ const AddPastTraining = ({ onSuccess }) => {
                     value={formData.contact_mobile}
                     onChange={(e) => handleInputChange('contact_mobile', e.target.value)}
                     required
-                    className="bg-slate-800 border-white/10 text-white"
+                    className="bg-gray-50 border-gray-200 text-white"
                   />
                 </div>
                 <div>
@@ -233,13 +233,13 @@ const AddPastTraining = ({ onSuccess }) => {
                     type="email"
                     value={formData.contact_email}
                     onChange={(e) => handleInputChange('contact_email', e.target.value)}
-                    className="bg-slate-800 border-white/10 text-white"
+                    className="bg-gray-50 border-gray-200 text-white"
                   />
                 </div>
               </div>
             </div>
 
-            <div className="bg-white/5 backdrop-blur-sm rounded-xl border border-white/10 p-6">
+            <div className="bg-white backdrop-blur-sm rounded-xl border border-gray-200 p-6">
               <h3 className="text-lg font-semibold text-white mb-4">Training Details</h3>
               <div className="grid grid-cols-2 gap-4">
                 <div>
@@ -248,7 +248,7 @@ const AddPastTraining = ({ onSuccess }) => {
                     value={formData.course_name}
                     onChange={(e) => handleInputChange('course_name', e.target.value)}
                     required
-                    className="bg-slate-800 border-white/10 text-white"
+                    className="bg-gray-50 border-gray-200 text-white"
                   />
                 </div>
                 <div>
@@ -258,7 +258,7 @@ const AddPastTraining = ({ onSuccess }) => {
                     value={formData.training_date}
                     onChange={(e) => handleInputChange('training_date', e.target.value)}
                     required
-                    className="bg-slate-800 border-white/10 text-white"
+                    className="bg-gray-50 border-gray-200 text-white"
                   />
                 </div>
                 <div>
@@ -267,7 +267,7 @@ const AddPastTraining = ({ onSuccess }) => {
                     value={formData.training_location}
                     onChange={(e) => handleInputChange('training_location', e.target.value)}
                     required
-                    className="bg-slate-800 border-white/10 text-white"
+                    className="bg-gray-50 border-gray-200 text-white"
                   />
                 </div>
                 <div>
@@ -276,7 +276,7 @@ const AddPastTraining = ({ onSuccess }) => {
                     value={formData.trainer_name}
                     onChange={(e) => handleInputChange('trainer_name', e.target.value)}
                     required
-                    className="bg-slate-800 border-white/10 text-white"
+                    className="bg-gray-50 border-gray-200 text-white"
                   />
                 </div>
                 <div>
@@ -287,7 +287,7 @@ const AddPastTraining = ({ onSuccess }) => {
                     onChange={(e) => handleInputChange('participants_count', e.target.value)}
                     required
                     min="1"
-                    className="bg-slate-800 border-white/10 text-white"
+                    className="bg-gray-50 border-gray-200 text-white"
                   />
                 </div>
                 <div>
@@ -297,16 +297,16 @@ const AddPastTraining = ({ onSuccess }) => {
                     value={formData.duration_days}
                     onChange={(e) => handleInputChange('duration_days', e.target.value)}
                     min="1"
-                    className="bg-slate-800 border-white/10 text-white"
+                    className="bg-gray-50 border-gray-200 text-white"
                   />
                 </div>
                 <div>
                   <Label className="text-white">Certificate Issued</Label>
                   <Select value={formData.certificate_issued} onValueChange={(val) => handleInputChange('certificate_issued', val)}>
-                    <SelectTrigger className="bg-slate-800 border-white/10 text-white">
+                    <SelectTrigger className="bg-gray-50 border-gray-200 text-white">
                       <SelectValue />
                     </SelectTrigger>
-                    <SelectContent className="bg-slate-800 border-white/10">
+                    <SelectContent className="bg-gray-50 border-gray-200">
                       <SelectItem value="true">Yes</SelectItem>
                       <SelectItem value="false">No</SelectItem>
                     </SelectContent>
@@ -315,10 +315,10 @@ const AddPastTraining = ({ onSuccess }) => {
                 <div>
                   <Label className="text-white">Status</Label>
                   <Select value={formData.status} onValueChange={(val) => handleInputChange('status', val)}>
-                    <SelectTrigger className="bg-slate-800 border-white/10 text-white">
+                    <SelectTrigger className="bg-gray-50 border-gray-200 text-white">
                       <SelectValue />
                     </SelectTrigger>
-                    <SelectContent className="bg-slate-800 border-white/10">
+                    <SelectContent className="bg-gray-50 border-gray-200">
                       <SelectItem value="completed">Completed</SelectItem>
                       <SelectItem value="cancelled">Cancelled</SelectItem>
                     </SelectContent>
@@ -327,7 +327,7 @@ const AddPastTraining = ({ onSuccess }) => {
               </div>
             </div>
 
-            <div className="bg-white/5 backdrop-blur-sm rounded-xl border border-white/10 p-6">
+            <div className="bg-white backdrop-blur-sm rounded-xl border border-gray-200 p-6">
               <h3 className="text-lg font-semibold text-white mb-4">Payment Information (Optional)</h3>
               <div className="grid grid-cols-2 gap-4">
                 <div>
@@ -335,7 +335,7 @@ const AddPastTraining = ({ onSuccess }) => {
                   <Input
                     value={formData.invoice_number}
                     onChange={(e) => handleInputChange('invoice_number', e.target.value)}
-                    className="bg-slate-800 border-white/10 text-white"
+                    className="bg-gray-50 border-gray-200 text-white"
                   />
                 </div>
                 <div>
@@ -344,19 +344,19 @@ const AddPastTraining = ({ onSuccess }) => {
                     type="number"
                     value={formData.invoice_amount}
                     onChange={(e) => handleInputChange('invoice_amount', e.target.value)}
-                    className="bg-slate-800 border-white/10 text-white"
+                    className="bg-gray-50 border-gray-200 text-white"
                   />
                 </div>
               </div>
             </div>
 
-            <div className="bg-white/5 backdrop-blur-sm rounded-xl border border-white/10 p-6">
+            <div className="bg-white backdrop-blur-sm rounded-xl border border-gray-200 p-6">
               <h3 className="text-lg font-semibold text-white mb-4">Additional Notes</h3>
               <Textarea
                 value={formData.notes}
                 onChange={(e) => handleInputChange('notes', e.target.value)}
                 placeholder="Any additional information about this training..."
-                className="bg-slate-800 border-white/10 text-white min-h-[100px]"
+                className="bg-gray-50 border-gray-200 text-white min-h-[100px]"
               />
             </div>
 
@@ -381,28 +381,28 @@ const AddPastTraining = ({ onSuccess }) => {
         {/* Bulk Upload Tab */}
         <TabsContent value="bulk" className="mt-6">
           <div className="space-y-6">
-            <div className="bg-white/5 backdrop-blur-sm rounded-xl border border-white/10 p-6">
+            <div className="bg-white backdrop-blur-sm rounded-xl border border-gray-200 p-6">
               <h3 className="text-lg font-semibold text-white mb-4">CSV Template</h3>
-              <p className="text-slate-400 mb-4">
+              <p className="text-gray-500 mb-4">
                 Download our CSV template to see the required format. Fill in your historical training data and upload it below.
               </p>
               <Button
                 onClick={downloadTemplate}
                 variant="outline"
-                className="border-white/20 hover:bg-white/10"
+                className="border-gray-300 hover:bg-white"
               >
                 <Download className="w-4 h-4 mr-2" />
                 Download CSV Template
               </Button>
             </div>
 
-            <div className="bg-white/5 backdrop-blur-sm rounded-xl border border-white/10 p-6">
+            <div className="bg-white backdrop-blur-sm rounded-xl border border-gray-200 p-6">
               <h3 className="text-lg font-semibold text-white mb-4">Upload CSV File</h3>
               
               {!bulkFile ? (
-                <div className="border-2 border-dashed border-white/20 rounded-lg p-12 text-center">
+                <div className="border-2 border-dashed border-gray-300 rounded-lg p-12 text-center">
                   <Upload className="w-12 h-12 text-slate-400 mx-auto mb-4" />
-                  <p className="text-slate-300 mb-2">Drag and drop your CSV file here, or click to browse</p>
+                  <p className="text-gray-700 mb-2">Drag and drop your CSV file here, or click to browse</p>
                   <p className="text-slate-500 text-sm mb-4">CSV files only, max 10MB</p>
                   <Input
                     type="file"
@@ -412,7 +412,7 @@ const AddPastTraining = ({ onSuccess }) => {
                     id="csv-upload"
                   />
                   <label htmlFor="csv-upload">
-                    <Button asChild variant="outline" className="border-white/20 hover:bg-white/10">
+                    <Button asChild variant="outline" className="border-gray-300 hover:bg-white">
                       <span>
                         <Upload className="w-4 h-4 mr-2" />
                         Choose File
@@ -427,7 +427,7 @@ const AddPastTraining = ({ onSuccess }) => {
                       <FileText className="w-8 h-8 text-green-400" />
                       <div>
                         <p className="text-white font-semibold">{bulkFile.name}</p>
-                        <p className="text-slate-400 text-sm">{bulkData.length} training records loaded</p>
+                        <p className="text-gray-500 text-sm">{bulkData.length} training records loaded</p>
                       </div>
                     </div>
                     <Button
@@ -461,7 +461,7 @@ const AddPastTraining = ({ onSuccess }) => {
 
             <div className="bg-blue-500/10 border border-blue-400/30 rounded-lg p-4">
               <h4 className="text-blue-300 font-semibold mb-2">Tips for Bulk Upload:</h4>
-              <ul className="text-slate-300 text-sm space-y-1">
+              <ul className="text-gray-700 text-sm space-y-1">
                 <li>• Ensure all required fields are filled: company_name, contact_person, contact_mobile, course_name, training_date, training_location, trainer_name</li>
                 <li>• Use date format: YYYY-MM-DD (e.g., 2024-01-15)</li>
                 <li>• Certificate issued: use "yes", "true", or "1" for issued certificates</li>

@@ -93,7 +93,7 @@ const VisitLogs = () => {
         </Button>
       </div>
 
-      <div className="bg-white/5 backdrop-blur-sm rounded-xl border border-gray-300 overflow-hidden">
+      <div className="bg-white backdrop-blur-sm rounded-xl border border-gray-300 overflow-hidden">
         <Table>
           <TableHeader>
             <TableRow className="border-gray-300">
@@ -149,7 +149,7 @@ const VisitLogs = () => {
       </div>
 
       <Dialog open={showDialog} onOpenChange={setShowDialog}>
-        <DialogContent className="bg-[#1a2f4d] border-white/20 text-white max-w-2xl">
+        <DialogContent className="bg-[#1a2f4d] border-gray-300 text-white max-w-2xl">
           <DialogHeader>
             <DialogTitle className="text-xl flex items-center gap-2">
               <MapPin className="w-5 h-5 text-blue-400" />
@@ -165,7 +165,7 @@ const VisitLogs = () => {
                   value={formData.client_name}
                   onChange={(e) => setFormData({ ...formData, client_name: e.target.value })}
                   required
-                  className="bg-white/5 border-white/20 text-white mt-1"
+                  className="bg-white border-gray-300 text-white mt-1"
                 />
               </div>
               <div>
@@ -176,7 +176,7 @@ const VisitLogs = () => {
                   onChange={(e) => setFormData({ ...formData, location: e.target.value })}
                   required
                   placeholder="City, Area"
-                  className="bg-white/5 border-white/20 text-white mt-1"
+                  className="bg-white border-gray-300 text-white mt-1"
                 />
               </div>
             </div>
@@ -190,7 +190,7 @@ const VisitLogs = () => {
                   value={formData.visit_date}
                   onChange={(e) => setFormData({ ...formData, visit_date: e.target.value })}
                   required
-                  className="bg-white/5 border-white/20 text-white mt-1"
+                  className="bg-white border-gray-300 text-white mt-1"
                 />
               </div>
               <div>
@@ -200,7 +200,7 @@ const VisitLogs = () => {
                   type="time"
                   value={formData.visit_time}
                   onChange={(e) => setFormData({ ...formData, visit_time: e.target.value })}
-                  className="bg-white/5 border-white/20 text-white mt-1"
+                  className="bg-white border-gray-300 text-white mt-1"
                 />
               </div>
             </div>
@@ -213,7 +213,7 @@ const VisitLogs = () => {
                 onChange={(e) => setFormData({ ...formData, purpose: e.target.value })}
                 rows={2}
                 placeholder="Meeting objective, demonstration, etc."
-                className="bg-white/5 border-white/20 text-white mt-1"
+                className="bg-white border-gray-300 text-white mt-1"
               />
             </div>
 
@@ -225,7 +225,7 @@ const VisitLogs = () => {
                 onChange={(e) => setFormData({ ...formData, outcome: e.target.value })}
                 rows={2}
                 placeholder="What was discussed and achieved..."
-                className="bg-white/5 border-white/20 text-white mt-1"
+                className="bg-white border-gray-300 text-white mt-1"
               />
             </div>
 
@@ -237,7 +237,7 @@ const VisitLogs = () => {
                 onChange={(e) => setFormData({ ...formData, next_action: e.target.value })}
                 rows={2}
                 placeholder="Follow-up steps, next meeting, etc."
-                className="bg-white/5 border-white/20 text-white mt-1"
+                className="bg-white border-gray-300 text-white mt-1"
               />
             </div>
 
@@ -246,7 +246,7 @@ const VisitLogs = () => {
                 type="button"
                 variant="outline"
                 onClick={() => setShowDialog(false)}
-                className="border-white/20 text-white hover:bg-white/10"
+                className="border-gray-300 text-white hover:bg-white"
               >
                 Cancel
               </Button>

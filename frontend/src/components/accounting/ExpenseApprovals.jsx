@@ -54,22 +54,22 @@ const ExpenseApprovals = ({ onApproval }) => {
     <div className="space-y-6">
       <div>
         <h3 className="text-2xl font-bold text-white">Expense Approvals</h3>
-        <p className="text-slate-400 text-sm mt-1">Review and approve employee expense claims</p>
+        <p className="text-gray-500 text-sm mt-1">Review and approve employee expense claims</p>
       </div>
 
       <div className="space-y-4">
         {loading ? (
           <p className="text-center py-12 text-slate-400">Loading expenses...</p>
         ) : expenses.length === 0 ? (
-          <div className="text-center py-12 bg-white/5 rounded-lg border border-white/10">
+          <div className="text-center py-12 bg-white rounded-lg border border-gray-200">
             <TrendingDown className="w-16 h-16 text-slate-600 mx-auto mb-4" />
-            <p className="text-slate-400 text-lg">No pending expense claims</p>
+            <p className="text-gray-500 text-lg">No pending expense claims</p>
           </div>
         ) : (
           expenses.map((expense, idx) => (
             <div
               key={idx}
-              className="bg-white/5 border border-white/10 rounded-lg p-4 hover:bg-white/10 transition-all"
+              className="bg-white border border-gray-200 rounded-lg p-4 hover:bg-white transition-all"
             >
               <div className="flex items-start justify-between">
                 <div className="flex-1">
@@ -81,13 +81,13 @@ const ExpenseApprovals = ({ onApproval }) => {
                   </div>
                   <div className="grid grid-cols-3 gap-3 text-sm text-slate-300">
                     <div>
-                      <span className="text-slate-400">Amount:</span> AED {expense.amount}
+                      <span className="text-gray-500">Amount:</span> AED {expense.amount}
                     </div>
                     <div>
-                      <span className="text-slate-400">Date:</span> {expense.date}
+                      <span className="text-gray-500">Date:</span> {expense.date}
                     </div>
                     <div>
-                      <span className="text-slate-400">Status:</span> {expense.status}
+                      <span className="text-gray-500">Status:</span> {expense.status}
                     </div>
                   </div>
                   {expense.description && (

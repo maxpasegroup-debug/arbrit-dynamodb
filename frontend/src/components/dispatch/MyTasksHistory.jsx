@@ -47,7 +47,7 @@ const MyTasksHistory = () => {
 
   if (loading) {
     return (
-      <Card className="bg-white/5 border-white/10">
+      <Card className="bg-white border-gray-200">
         <CardContent className="p-6">
           <p className="text-gray-400 text-center">Loading history...</p>
         </CardContent>
@@ -56,7 +56,7 @@ const MyTasksHistory = () => {
   }
 
   return (
-    <Card className="bg-white/5 border-white/10">
+    <Card className="bg-white border-gray-200">
       <CardHeader>
         <CardTitle className="text-white text-xl">Task History</CardTitle>
         <p className="text-sm text-gray-400 mt-1">Your completed delivery tasks</p>
@@ -70,7 +70,7 @@ const MyTasksHistory = () => {
         ) : (
           <div className="space-y-3">
             {tasks.map((task) => (
-              <Card key={task.id} className="bg-white/5 border-white/10">
+              <Card key={task.id} className="bg-white border-gray-200">
                 <CardContent className="p-4">
                   <div className="flex items-center justify-between mb-2">
                     <h4 className="text-white font-semibold">{task.client_name}</h4>
@@ -95,7 +95,7 @@ const MyTasksHistory = () => {
                     </div>
                   </div>
                   {task.remarks && (
-                    <div className="mt-3 p-2 bg-white/5 rounded text-sm">
+                    <div className="mt-3 p-2 bg-white rounded text-sm">
                       <p className="text-xs text-gray-400">Notes:</p>
                       <p className="text-gray-300">{task.remarks}</p>
                     </div>

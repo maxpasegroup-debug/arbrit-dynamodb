@@ -44,7 +44,7 @@ const TeamMonitoring = () => {
 
       {/* Summary Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div className="bg-white/5 border border-white/10 rounded-lg p-4">
+        <div className="bg-white border border-gray-200 rounded-lg p-4">
           <p className="text-sm text-gray-400">Total Team Members</p>
           <p className="text-3xl font-bold text-white mt-2">{teamMembers.length}</p>
         </div>
@@ -59,10 +59,10 @@ const TeamMonitoring = () => {
       </div>
 
       {/* Team Members Table */}
-      <div className="bg-white/5 backdrop-blur-sm rounded-xl border border-white/10 overflow-hidden">
+      <div className="bg-white backdrop-blur-sm rounded-xl border border-gray-200 overflow-hidden">
         <Table>
           <TableHeader>
-            <TableRow className="border-white/10">
+            <TableRow className="border-gray-200">
               <TableHead className="text-gray-300">Name</TableHead>
               <TableHead className="text-gray-300">Designation</TableHead>
               <TableHead className="text-gray-300">Branch</TableHead>
@@ -85,7 +85,7 @@ const TeamMonitoring = () => {
               </TableRow>
             ) : (
               teamMembers.map((member) => (
-                <TableRow key={member.id} className="border-white/10">
+                <TableRow key={member.id} className="border-gray-200">
                   <TableCell className="text-white font-medium">
                     <div className="flex items-center gap-2">
                       <User className="w-4 h-4 text-gray-400" />

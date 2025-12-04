@@ -126,7 +126,7 @@ const PaymentRecording = () => {
       </div>
 
       {/* Search */}
-      <div className="flex items-center gap-2 bg-white/5 p-3 rounded-lg border border-white/10">
+      <div className="flex items-center gap-2 bg-white p-3 rounded-lg border border-gray-200">
         <Search className="w-5 h-5 text-gray-400" />
         <Input
           placeholder="Search by client name or invoice number..."
@@ -137,13 +137,13 @@ const PaymentRecording = () => {
       </div>
 
       {/* Unpaid Invoices */}
-      <div className="bg-white/5 backdrop-blur-sm rounded-xl border border-white/10 overflow-hidden">
-        <div className="px-6 py-4 border-b border-white/10">
+      <div className="bg-white backdrop-blur-sm rounded-xl border border-gray-200 overflow-hidden">
+        <div className="px-6 py-4 border-b border-gray-200">
           <h3 className="text-lg font-semibold text-white">Outstanding Invoices ({filteredInvoices.length})</h3>
         </div>
         <Table>
           <TableHeader>
-            <TableRow className="border-white/10">
+            <TableRow className="border-gray-200">
               <TableHead className="text-gray-300">Invoice #</TableHead>
               <TableHead className="text-gray-300">Client</TableHead>
               <TableHead className="text-gray-300">Total Amount</TableHead>
@@ -166,7 +166,7 @@ const PaymentRecording = () => {
                 const paid = invoice.paid_amount || 0;
                 const outstanding = total - paid;
                 return (
-                  <TableRow key={invoice.id} className="border-white/10">
+                  <TableRow key={invoice.id} className="border-gray-200">
                     <TableCell className="text-white font-medium">{invoice.invoice_number}</TableCell>
                     <TableCell className="text-white">{invoice.client_name}</TableCell>
                     <TableCell className="text-white">AED {total.toLocaleString()}</TableCell>
@@ -194,13 +194,13 @@ const PaymentRecording = () => {
       </div>
 
       {/* Recent Payments */}
-      <div className="bg-white/5 backdrop-blur-sm rounded-xl border border-white/10 overflow-hidden">
-        <div className="px-6 py-4 border-b border-white/10">
+      <div className="bg-white backdrop-blur-sm rounded-xl border border-gray-200 overflow-hidden">
+        <div className="px-6 py-4 border-b border-gray-200">
           <h3 className="text-lg font-semibold text-white">Recent Payments</h3>
         </div>
         <Table>
           <TableHeader>
-            <TableRow className="border-white/10">
+            <TableRow className="border-gray-200">
               <TableHead className="text-gray-300">Date</TableHead>
               <TableHead className="text-gray-300">Invoice #</TableHead>
               <TableHead className="text-gray-300">Client</TableHead>
@@ -211,7 +211,7 @@ const PaymentRecording = () => {
           </TableHeader>
           <TableBody>
             {payments.slice(0, 10).map((payment) => (
-              <TableRow key={payment.id} className="border-white/10">
+              <TableRow key={payment.id} className="border-gray-200">
                 <TableCell className="text-white">
                   {new Date(payment.payment_date || payment.created_at).toLocaleDateString()}
                 </TableCell>
@@ -238,7 +238,7 @@ const PaymentRecording = () => {
 
           {selectedInvoice && (
             <div className="space-y-4 my-4">
-              <div className="p-4 bg-white/5 rounded-lg border border-white/10">
+              <div className="p-4 bg-white rounded-lg border border-gray-200">
                 <p className="text-sm text-gray-400">Invoice: <span className="text-white font-medium">{selectedInvoice.invoice_number}</span></p>
                 <p className="text-sm text-gray-400 mt-1">Client: <span className="text-white font-medium">{selectedInvoice.client_name}</span></p>
                 <p className="text-sm text-gray-400 mt-1">
@@ -260,7 +260,7 @@ const PaymentRecording = () => {
                     step="0.01"
                     value={formData.amount}
                     onChange={(e) => setFormData({...formData, amount: e.target.value})}
-                    className="bg-slate-800 border-slate-600 text-white"
+                    className="bg-gray-50 border-slate-600 text-white"
                   />
                 </div>
 
@@ -271,7 +271,7 @@ const PaymentRecording = () => {
                     type="date"
                     value={formData.payment_date}
                     onChange={(e) => setFormData({...formData, payment_date: e.target.value})}
-                    className="bg-slate-800 border-slate-600 text-white"
+                    className="bg-gray-50 border-slate-600 text-white"
                   />
                 </div>
               </div>
@@ -279,10 +279,10 @@ const PaymentRecording = () => {
               <div className="space-y-2">
                 <Label htmlFor="payment_method">Payment Method *</Label>
                 <Select value={formData.payment_method} onValueChange={(val) => setFormData({...formData, payment_method: val})}>
-                  <SelectTrigger className="bg-slate-800 border-slate-600 text-white">
+                  <SelectTrigger className="bg-gray-50 border-slate-600 text-white">
                     <SelectValue />
                   </SelectTrigger>
-                  <SelectContent className="bg-slate-800 border-slate-600 text-white">
+                  <SelectContent className="bg-gray-50 border-slate-600 text-white">
                     <SelectItem value="Bank Transfer">Bank Transfer</SelectItem>
                     <SelectItem value="Cash">Cash</SelectItem>
                     <SelectItem value="Cheque">Cheque</SelectItem>
@@ -299,7 +299,7 @@ const PaymentRecording = () => {
                   value={formData.reference_number}
                   onChange={(e) => setFormData({...formData, reference_number: e.target.value})}
                   placeholder="Transaction ID, Cheque number, etc."
-                  className="bg-slate-800 border-slate-600 text-white"
+                  className="bg-gray-50 border-slate-600 text-white"
                 />
               </div>
 
@@ -310,7 +310,7 @@ const PaymentRecording = () => {
                   value={formData.notes}
                   onChange={(e) => setFormData({...formData, notes: e.target.value})}
                   placeholder="Any additional notes..."
-                  className="bg-slate-800 border-slate-600 text-white"
+                  className="bg-gray-50 border-slate-600 text-white"
                 />
               </div>
             </div>
@@ -320,7 +320,7 @@ const PaymentRecording = () => {
             <Button
               variant="outline"
               onClick={() => setShowDialog(false)}
-              className="border-slate-600 text-white hover:bg-slate-800"
+              className="border-slate-600 text-white hover:bg-gray-50"
             >
               Cancel
             </Button>

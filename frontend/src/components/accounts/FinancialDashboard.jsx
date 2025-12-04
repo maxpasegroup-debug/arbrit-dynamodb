@@ -113,7 +113,7 @@ const FinancialDashboard = () => {
 
       {/* Additional Stats */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <Card className="bg-white/5 backdrop-blur-sm border-white/10">
+        <Card className="bg-white backdrop-blur-sm border-gray-200">
           <CardHeader>
             <CardTitle className="text-white">Invoice Statistics</CardTitle>
           </CardHeader>
@@ -141,7 +141,7 @@ const FinancialDashboard = () => {
           </CardContent>
         </Card>
 
-        <Card className="bg-white/5 backdrop-blur-sm border-white/10">
+        <Card className="bg-white backdrop-blur-sm border-gray-200">
           <CardHeader>
             <CardTitle className="text-white">VAT Summary</CardTitle>
           </CardHeader>

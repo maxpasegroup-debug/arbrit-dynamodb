@@ -132,10 +132,10 @@ const AttendanceManagement = () => {
       </div>
 
       {/* Attendance Table */}
-      <div className="bg-white/5 backdrop-blur-sm rounded-xl border border-white/10 overflow-hidden">
+      <div className="bg-white backdrop-blur-sm rounded-xl border border-gray-200 overflow-hidden">
         <Table>
           <TableHeader>
-            <TableRow className="border-white/10 hover:bg-white/5">
+            <TableRow className="border-gray-200 hover:bg-white">
               <TableHead className="text-gray-300">Employee Name</TableHead>
               <TableHead className="text-gray-300">Mobile</TableHead>
               <TableHead className="text-gray-300">Date</TableHead>
@@ -158,7 +158,7 @@ const AttendanceManagement = () => {
               </TableRow>
             ) : (
               attendance.map((record) => (
-                <TableRow key={record.id} className="border-white/10 hover:bg-white/5">
+                <TableRow key={record.id} className="border-gray-200 hover:bg-white">
                   <TableCell className="text-white font-medium">{record.employee_name}</TableCell>
                   <TableCell className="text-gray-300">{record.mobile}</TableCell>
                   <TableCell className="text-gray-300">
@@ -199,7 +199,7 @@ const AttendanceManagement = () => {
 
       {/* Mark Attendance Dialog */}
       <Dialog open={showDialog} onOpenChange={setShowDialog}>
-        <DialogContent className="bg-[#1a2f4d] border-white/20 text-white">
+        <DialogContent className="bg-[#1a2f4d] border-gray-300 text-white">
           <DialogHeader>
             <DialogTitle className="text-xl">Mark Attendance</DialogTitle>
           </DialogHeader>
@@ -207,10 +207,10 @@ const AttendanceManagement = () => {
             <div>
               <label className="text-sm text-gray-300 mb-2 block">Select Employee</label>
               <Select value={selectedEmployee} onValueChange={setSelectedEmployee}>
-                <SelectTrigger data-testid="attendance-employee-select" className="bg-white/5 border-white/20 text-white">
+                <SelectTrigger data-testid="attendance-employee-select" className="bg-white border-gray-300 text-white">
                   <SelectValue placeholder="Choose an employee" />
                 </SelectTrigger>
-                <SelectContent className="bg-[#1a2f4d] border-white/20 text-white">
+                <SelectContent className="bg-[#1a2f4d] border-gray-300 text-white">
                   {employees.map((emp) => (
                     <SelectItem key={emp.id} value={emp.id}>
                       {emp.name} - {emp.mobile}
@@ -239,7 +239,7 @@ const AttendanceManagement = () => {
                 setSelectedEmployee('');
                 setGpsLocation(null);
               }}
-              className="border-white/20 text-white hover:bg-white/10"
+              className="border-gray-300 text-white hover:bg-white"
             >
               Cancel
             </Button>

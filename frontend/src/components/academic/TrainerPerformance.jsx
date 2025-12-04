@@ -57,7 +57,7 @@ const TrainerPerformance = () => {
       </div>
 
       <div className="grid grid-cols-3 gap-4">
-        <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl p-6">
+        <div className="bg-white backdrop-blur-sm border border-gray-200 rounded-xl p-6">
           <div className="flex items-center gap-3 mb-2">
             <User className="w-6 h-6 text-blue-400" />
             <p className="text-2xl font-bold text-white">{trainers.length}</p>
@@ -65,7 +65,7 @@ const TrainerPerformance = () => {
           <p className="text-sm text-gray-400">Total Trainers</p>
         </div>
         
-        <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl p-6">
+        <div className="bg-white backdrop-blur-sm border border-gray-200 rounded-xl p-6">
           <div className="flex items-center gap-3 mb-2">
             <Award className="w-6 h-6 text-green-400" />
             <p className="text-2xl font-bold text-white">{trainings.filter(t => t.status === 'Completed').length}</p>
@@ -73,7 +73,7 @@ const TrainerPerformance = () => {
           <p className="text-sm text-gray-400">Completed Trainings</p>
         </div>
         
-        <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl p-6">
+        <div className="bg-white backdrop-blur-sm border border-gray-200 rounded-xl p-6">
           <div className="flex items-center gap-3 mb-2">
             <Clock className="w-6 h-6 text-yellow-400" />
             <p className="text-2xl font-bold text-white">{trainings.filter(t => t.status === 'In Progress').length}</p>
@@ -82,7 +82,7 @@ const TrainerPerformance = () => {
         </div>
       </div>
 
-      <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl p-6">
+      <div className="bg-white backdrop-blur-sm border border-gray-200 rounded-xl p-6">
         <h3 className="text-xl font-semibold text-white mb-4">Trainer List</h3>
         {trainers.length === 0 ? (
           <div className="text-center py-8 text-gray-400">No trainers found</div>

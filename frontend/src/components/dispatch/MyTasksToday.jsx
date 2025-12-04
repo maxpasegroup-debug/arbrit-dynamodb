@@ -108,7 +108,7 @@ const MyTasksToday = () => {
 
   if (loading) {
     return (
-      <Card className="bg-white/5 border-white/10">
+      <Card className="bg-white border-gray-200">
         <CardContent className="p-6">
           <p className="text-gray-400 text-center">Loading tasks...</p>
         </CardContent>
@@ -118,7 +118,7 @@ const MyTasksToday = () => {
 
   return (
     <>
-      <Card className="bg-white/5 border-white/10">
+      <Card className="bg-white border-gray-200">
         <CardHeader>
           <CardTitle className="text-white text-xl">My Tasks Today</CardTitle>
           <p className="text-sm text-gray-400 mt-1">Pending and active delivery tasks</p>
@@ -133,7 +133,7 @@ const MyTasksToday = () => {
           ) : (
             <div className="space-y-4">
               {tasks.map((task) => (
-                <Card key={task.id} className="bg-white/5 border-white/10 hover:bg-white/10 transition-all">
+                <Card key={task.id} className="bg-white border-gray-200 hover:bg-white transition-all">
                   <CardContent className="p-4">
                     <div className="flex items-start justify-between mb-3">
                       <div>
@@ -182,7 +182,7 @@ const MyTasksToday = () => {
                     </div>
 
                     {task.remarks && (
-                      <div className="mb-3 p-2 bg-white/5 rounded text-sm">
+                      <div className="mb-3 p-2 bg-white rounded text-sm">
                         <p className="text-xs text-gray-400">Instructions:</p>
                         <p className="text-gray-300">{task.remarks}</p>
                       </div>
@@ -203,7 +203,7 @@ const MyTasksToday = () => {
       </Card>
 
       <Dialog open={showUpdateModal} onOpenChange={setShowUpdateModal}>
-        <DialogContent className="bg-[#1a2f4d] border-white/20 text-white">
+        <DialogContent className="bg-[#1a2f4d] border-gray-300 text-white">
           <DialogHeader>
             <DialogTitle className="text-white">Update Delivery Status</DialogTitle>
           </DialogHeader>
@@ -215,15 +215,15 @@ const MyTasksToday = () => {
             <div>
               <Label className="text-gray-300">Update Status</Label>
               <Select value={newStatus} onValueChange={setNewStatus}>
-                <SelectTrigger className="bg-white/5 border-white/20 text-white mt-2">
+                <SelectTrigger className="bg-white border-gray-300 text-white mt-2">
                   <SelectValue placeholder="Select status" />
                 </SelectTrigger>
-                <SelectContent className="bg-[#1a2f4d] border-white/20">
-                  <SelectItem value="PICKUP_READY" className="text-white hover:bg-white/10">Pickup Ready</SelectItem>
-                  <SelectItem value="OUT_FOR_DELIVERY" className="text-white hover:bg-white/10">Out for Delivery</SelectItem>
-                  <SelectItem value="DELIVERED" className="text-white hover:bg-white/10">Delivered</SelectItem>
-                  <SelectItem value="FAILED" className="text-white hover:bg-white/10">Failed</SelectItem>
-                  <SelectItem value="RETURNED" className="text-white hover:bg-white/10">Returned</SelectItem>
+                <SelectContent className="bg-[#1a2f4d] border-gray-300">
+                  <SelectItem value="PICKUP_READY" className="text-white hover:bg-white">Pickup Ready</SelectItem>
+                  <SelectItem value="OUT_FOR_DELIVERY" className="text-white hover:bg-white">Out for Delivery</SelectItem>
+                  <SelectItem value="DELIVERED" className="text-white hover:bg-white">Delivered</SelectItem>
+                  <SelectItem value="FAILED" className="text-white hover:bg-white">Failed</SelectItem>
+                  <SelectItem value="RETURNED" className="text-white hover:bg-white">Returned</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -233,7 +233,7 @@ const MyTasksToday = () => {
                 <Input
                   value={deliveredTo}
                   onChange={(e) => setDeliveredTo(e.target.value)}
-                  className="bg-white/5 border-white/20 text-white mt-2"
+                  className="bg-white border-gray-300 text-white mt-2"
                   placeholder="Enter recipient name"
                 />
               </div>
@@ -243,7 +243,7 @@ const MyTasksToday = () => {
               <Textarea
                 value={remarks}
                 onChange={(e) => setRemarks(e.target.value)}
-                className="bg-white/5 border-white/20 text-white mt-2"
+                className="bg-white border-gray-300 text-white mt-2"
                 placeholder="Add any additional notes..."
               />
             </div>
@@ -252,7 +252,7 @@ const MyTasksToday = () => {
             <Button
               variant="outline"
               onClick={() => setShowUpdateModal(false)}
-              className="border-white/20 text-white hover:bg-white/10"
+              className="border-gray-300 text-white hover:bg-white"
             >
               Cancel
             </Button>

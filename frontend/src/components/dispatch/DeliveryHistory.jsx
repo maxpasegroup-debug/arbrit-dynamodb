@@ -35,7 +35,7 @@ const DeliveryHistory = () => {
 
   if (loading) {
     return (
-      <Card className="bg-white/5 border-white/10">
+      <Card className="bg-white border-gray-200">
         <CardContent className="p-6">
           <p className="text-gray-400 text-center">Loading history...</p>
         </CardContent>
@@ -44,7 +44,7 @@ const DeliveryHistory = () => {
   }
 
   return (
-    <Card className="bg-white/5 border-white/10">
+    <Card className="bg-white border-gray-200">
       <CardHeader>
         <CardTitle className="text-white text-xl">Delivery History & Proofs</CardTitle>
         <p className="text-sm text-gray-400 mt-1">Completed deliveries with proof of delivery</p>
@@ -58,7 +58,7 @@ const DeliveryHistory = () => {
         ) : (
           <div className="space-y-3">
             {deliveries.map((delivery) => (
-              <Card key={delivery.id} className="bg-white/5 border-white/10 hover:bg-white/10 transition-all">
+              <Card key={delivery.id} className="bg-white border-gray-200 hover:bg-white transition-all">
                 <CardContent className="p-4">
                   <div className="flex items-center justify-between">
                     <div className="flex-1 grid grid-cols-4 gap-3 text-sm">
@@ -93,7 +93,7 @@ const DeliveryHistory = () => {
                     )}
                   </div>
                   {delivery.remarks && (
-                    <div className="mt-3 p-2 bg-white/5 rounded text-sm">
+                    <div className="mt-3 p-2 bg-white rounded text-sm">
                       <p className="text-xs text-gray-400">Remarks:</p>
                       <p className="text-gray-300">{delivery.remarks}</p>
                     </div>

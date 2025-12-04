@@ -79,7 +79,7 @@ const LeaveApprovals = () => {
           <CalendarCheck className="w-6 h-6 text-blue-400" />
           Pending Leave Requests ({pendingRequests.length})
         </h3>
-        <div className="bg-white/5 backdrop-blur-sm rounded-xl border border-gray-300 overflow-hidden">
+        <div className="bg-white backdrop-blur-sm rounded-xl border border-gray-300 overflow-hidden">
           <Table>
             <TableHeader>
               <TableRow className="border-gray-300">
@@ -146,7 +146,7 @@ const LeaveApprovals = () => {
 
       <div>
         <h3 className="text-xl font-semibold text-white mb-4">Processed Requests ({processedRequests.length})</h3>
-        <div className="bg-white/5 backdrop-blur-sm rounded-xl border border-gray-300 overflow-hidden">
+        <div className="bg-white backdrop-blur-sm rounded-xl border border-gray-300 overflow-hidden">
           <Table>
             <TableHeader>
               <TableRow className="border-gray-300">
@@ -186,7 +186,7 @@ const LeaveApprovals = () => {
       </div>
 
       <Dialog open={showDialog} onOpenChange={setShowDialog}>
-        <DialogContent className="bg-[#1a2f4d] border-white/20 text-white">
+        <DialogContent className="bg-[#1a2f4d] border-gray-300 text-white">
           <DialogHeader>
             <DialogTitle>
               {actionType === 'approve' ? 'Approve Leave Request' : 'Reject Leave Request'}
@@ -194,7 +194,7 @@ const LeaveApprovals = () => {
           </DialogHeader>
           {selectedRequest && (
             <div className="space-y-4">
-              <div className="bg-white/5 rounded-lg p-4 space-y-2">
+              <div className="bg-white rounded-lg p-4 space-y-2">
                 <div className="flex justify-between">
                   <span className="text-gray-400">Employee:</span>
                   <span className="font-semibold">{selectedRequest.employee_name}</span>
@@ -221,13 +221,13 @@ const LeaveApprovals = () => {
                   onChange={(e) => setRemarks(e.target.value)}
                   rows={3}
                   placeholder="Add any comments..."
-                  className="bg-white/5 border-white/20 text-white"
+                  className="bg-white border-gray-300 text-white"
                 />
               </div>
             </div>
           )}
           <DialogFooter>
-            <Button variant="outline" onClick={() => setShowDialog(false)} className="border-white/20 text-white">
+            <Button variant="outline" onClick={() => setShowDialog(false)} className="border-gray-300 text-white">
               Cancel
             </Button>
             <Button

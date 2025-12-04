@@ -89,14 +89,14 @@ const PerformanceOverview = () => {
           <h3 className="text-xl font-semibold text-white mb-2">
             Performance Analytics
           </h3>
-          <p className="text-slate-400">
+          <p className="text-gray-500">
             Comprehensive team performance analysis and insights
           </p>
         </div>
       </div>
 
       {/* Filters */}
-      <Card className="bg-white/50 border-gray-300">
+      <Card className="bg-white0 border-gray-300">
         <CardHeader>
           <CardTitle className="text-white flex items-center gap-2">
             <Filter className="w-5 h-5" />
@@ -217,25 +217,25 @@ const PerformanceOverview = () => {
       </div>
 
       {/* Monthly Target Progress */}
-      <Card className="bg-white/50 border-gray-300">
+      <Card className="bg-white0 border-gray-300">
         <CardHeader>
           <CardTitle className="text-white">Monthly Target Progress</CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="flex justify-between text-sm">
-            <span className="text-slate-400">Progress</span>
+            <span className="text-gray-500">Progress</span>
             <span className="text-gray-700">{achievementPercentage.toFixed(1)}%</span>
           </div>
           <Progress value={achievementPercentage} className="h-3" />
           <div className="flex justify-between text-sm">
-            <span className="text-slate-400">Achieved: {analytics.monthlyAchieved.toLocaleString()} AED</span>
-            <span className="text-slate-400">Target: {analytics.monthlyTarget.toLocaleString()} AED</span>
+            <span className="text-gray-500">Achieved: {analytics.monthlyAchieved.toLocaleString()} AED</span>
+            <span className="text-gray-500">Target: {analytics.monthlyTarget.toLocaleString()} AED</span>
           </div>
         </CardContent>
       </Card>
 
       {/* Team Performance */}
-      <Card className="bg-white/50 border-gray-300">
+      <Card className="bg-white0 border-gray-300">
         <CardHeader>
           <CardTitle className="text-white">Individual Performance</CardTitle>
         </CardHeader>
@@ -246,7 +246,7 @@ const PerformanceOverview = () => {
                 <div className="flex items-center gap-4">
                   <div>
                     <p className="text-white font-medium">{member.name}</p>
-                    <p className="text-slate-400 text-sm">{member.role}</p>
+                    <p className="text-gray-500 text-sm">{member.role}</p>
                   </div>
                   <Badge className={getBadgeColor(member.badge)}>
                     <Award className="w-3 h-3 mr-1" />
@@ -255,15 +255,15 @@ const PerformanceOverview = () => {
                 </div>
                 <div className="flex gap-6 text-sm">
                   <div className="text-center">
-                    <p className="text-slate-400">Leads</p>
+                    <p className="text-gray-500">Leads</p>
                     <p className="text-white font-semibold">{member.leads}</p>
                   </div>
                   <div className="text-center">
-                    <p className="text-slate-400">Revenue</p>
+                    <p className="text-gray-500">Revenue</p>
                     <p className="text-white font-semibold">{member.revenue.toLocaleString()}</p>
                   </div>
                   <div className="text-center">
-                    <p className="text-slate-400">Conversion</p>
+                    <p className="text-gray-500">Conversion</p>
                     <p className="text-white font-semibold">{member.conversion}%</p>
                   </div>
                 </div>
@@ -274,7 +274,7 @@ const PerformanceOverview = () => {
       </Card>
 
       {/* Area Performance */}
-      <Card className="bg-white/50 border-gray-300">
+      <Card className="bg-white0 border-gray-300">
         <CardHeader>
           <CardTitle className="text-white">Area-wise Performance</CardTitle>
         </CardHeader>
@@ -288,15 +288,15 @@ const PerformanceOverview = () => {
                 </div>
                 <div className="space-y-2 text-sm">
                   <div className="flex justify-between">
-                    <span className="text-slate-400">Leads:</span>
+                    <span className="text-gray-500">Leads:</span>
                     <span className="text-white">{area.leads}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-slate-400">Revenue:</span>
+                    <span className="text-gray-500">Revenue:</span>
                     <span className="text-white">{area.revenue.toLocaleString()} AED</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-slate-400">Team Size:</span>
+                    <span className="text-gray-500">Team Size:</span>
                     <span className="text-white">{area.members}</span>
                   </div>
                 </div>

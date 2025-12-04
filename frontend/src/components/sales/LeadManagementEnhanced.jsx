@@ -259,10 +259,10 @@ const LeadManagementEnhanced = () => {
         
         <div className="flex gap-3 flex-wrap">
           <Select value={filter} onValueChange={setFilter}>
-            <SelectTrigger className="w-40 bg-white/5 border-white/20 text-white">
+            <SelectTrigger className="w-40 bg-white border-gray-300 text-white">
               <SelectValue />
             </SelectTrigger>
-            <SelectContent className="bg-[#1a2f4d] border-white/20 text-white">
+            <SelectContent className="bg-[#1a2f4d] border-gray-300 text-white">
               <SelectItem value="all">All Leads</SelectItem>
               <SelectItem value="unassigned">Unassigned</SelectItem>
               <SelectItem value="assigned">Assigned</SelectItem>
@@ -270,10 +270,10 @@ const LeadManagementEnhanced = () => {
           </Select>
 
           <Select value={sourceFilter} onValueChange={setSourceFilter}>
-            <SelectTrigger className="w-40 bg-white/5 border-white/20 text-white">
+            <SelectTrigger className="w-40 bg-white border-gray-300 text-white">
               <SelectValue />
             </SelectTrigger>
-            <SelectContent className="bg-[#1a2f4d] border-white/20 text-white">
+            <SelectContent className="bg-[#1a2f4d] border-gray-300 text-white">
               <SelectItem value="all">All Sources</SelectItem>
               <SelectItem value="Self">Self</SelectItem>
               <SelectItem value="Online">Online</SelectItem>
@@ -290,7 +290,7 @@ const LeadManagementEnhanced = () => {
             Add Self Lead
           </Button>
 
-          <Button onClick={fetchData} variant="outline" className="border-white/20 text-white">
+          <Button onClick={fetchData} variant="outline" className="border-gray-300 text-white">
             <RefreshCw className="w-4 h-4 mr-2" />
             Refresh
           </Button>
@@ -298,10 +298,10 @@ const LeadManagementEnhanced = () => {
       </div>
 
       {/* Leads Table */}
-      <div className="bg-white/5 backdrop-blur-lg rounded-lg border border-gray-300 overflow-hidden">
+      <div className="bg-white backdrop-blur-lg rounded-lg border border-gray-300 overflow-hidden">
         <Table>
           <TableHeader>
-            <TableRow className="border-gray-300 hover:bg-white/5">
+            <TableRow className="border-gray-300 hover:bg-white">
               <TableHead className="text-gray-300">Source</TableHead>
               <TableHead className="text-gray-300">Client Name</TableHead>
               <TableHead className="text-gray-300">Requirement</TableHead>
@@ -321,7 +321,7 @@ const LeadManagementEnhanced = () => {
               </TableRow>
             ) : (
               filteredLeads.map((lead) => (
-                <TableRow key={lead.id} className="border-gray-300 hover:bg-white/5">
+                <TableRow key={lead.id} className="border-gray-300 hover:bg-white">
                   <TableCell className="text-white">
                     <span className="text-xl mr-2">{getSourceIcon(lead.source)}</span>
                     <span className="text-sm">{lead.source}</span>
@@ -369,7 +369,7 @@ const LeadManagementEnhanced = () => {
 
       {/* Edit Dialog */}
       <Dialog open={showEditDialog} onOpenChange={setShowEditDialog}>
-        <DialogContent className="bg-[#0f172a] border-white/20 text-white max-w-2xl">
+        <DialogContent className="bg-[#0f172a] border-gray-300 text-white max-w-2xl">
           <DialogHeader>
             <DialogTitle className="text-xl font-bold">Edit Lead</DialogTitle>
           </DialogHeader>
@@ -379,7 +379,7 @@ const LeadManagementEnhanced = () => {
               <Input
                 value={formData.client_name}
                 onChange={(e) => setFormData({...formData, client_name: e.target.value})}
-                className="bg-white/5 border-white/20 text-white"
+                className="bg-white border-gray-300 text-white"
               />
             </div>
             <div className="grid gap-2">
@@ -387,7 +387,7 @@ const LeadManagementEnhanced = () => {
               <Textarea
                 value={formData.requirement}
                 onChange={(e) => setFormData({...formData, requirement: e.target.value})}
-                className="bg-white/5 border-white/20 text-white"
+                className="bg-white border-gray-300 text-white"
               />
             </div>
             <div className="grid grid-cols-2 gap-4">
@@ -396,16 +396,16 @@ const LeadManagementEnhanced = () => {
                 <Input
                   value={formData.industry}
                   onChange={(e) => setFormData({...formData, industry: e.target.value})}
-                  className="bg-white/5 border-white/20 text-white"
+                  className="bg-white border-gray-300 text-white"
                 />
               </div>
               <div className="grid gap-2">
                 <Label>Status</Label>
                 <Select value={formData.status} onValueChange={(val) => setFormData({...formData, status: val})}>
-                  <SelectTrigger className="bg-white/5 border-white/20 text-white">
+                  <SelectTrigger className="bg-white border-gray-300 text-white">
                     <SelectValue />
                   </SelectTrigger>
-                  <SelectContent className="bg-[#1a2f4d] border-white/20 text-white">
+                  <SelectContent className="bg-[#1a2f4d] border-gray-300 text-white">
                     <SelectItem value="New">New</SelectItem>
                     <SelectItem value="In Progress">In Progress</SelectItem>
                     <SelectItem value="Proposal Sent">Proposal Sent</SelectItem>
@@ -418,10 +418,10 @@ const LeadManagementEnhanced = () => {
             <div className="grid gap-2">
               <Label>Assign To</Label>
               <Select value={formData.assigned_to} onValueChange={(val) => setFormData({...formData, assigned_to: val})}>
-                <SelectTrigger className="bg-white/5 border-white/20 text-white">
+                <SelectTrigger className="bg-white border-gray-300 text-white">
                   <SelectValue placeholder="Select employee" />
                 </SelectTrigger>
-                <SelectContent className="bg-[#1a2f4d] border-white/20 text-white">
+                <SelectContent className="bg-[#1a2f4d] border-gray-300 text-white">
                   {employees.map(emp => (
                     <SelectItem key={emp.id} value={emp.id}>
                       {emp.name} ({emp.designation || emp.department})
@@ -435,7 +435,7 @@ const LeadManagementEnhanced = () => {
               <Textarea
                 value={formData.remarks}
                 onChange={(e) => setFormData({...formData, remarks: e.target.value})}
-                className="bg-white/5 border-white/20 text-white"
+                className="bg-white border-gray-300 text-white"
               />
             </div>
           </div>
@@ -448,7 +448,7 @@ const LeadManagementEnhanced = () => {
 
       {/* Delete Confirmation Dialog */}
       <Dialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog}>
-        <DialogContent className="bg-[#0f172a] border-white/20 text-white">
+        <DialogContent className="bg-[#0f172a] border-gray-300 text-white">
           <DialogHeader>
             <DialogTitle className="text-xl font-bold text-red-400">Confirm Delete</DialogTitle>
           </DialogHeader>
@@ -465,7 +465,7 @@ const LeadManagementEnhanced = () => {
 
       {/* Add Online Lead Dialog */}
       <Dialog open={showAddOnlineDialog} onOpenChange={setShowAddOnlineDialog}>
-        <DialogContent className="bg-[#0f172a] border-white/20 text-white max-w-2xl">
+        <DialogContent className="bg-[#0f172a] border-gray-300 text-white max-w-2xl">
           <DialogHeader>
             <DialogTitle className="text-xl font-bold">Add Online Lead</DialogTitle>
           </DialogHeader>
@@ -476,7 +476,7 @@ const LeadManagementEnhanced = () => {
                 value={formData.industry}
                 onChange={(e) => setFormData({...formData, industry: e.target.value})}
                 placeholder="Facebook, Instagram, Website, etc."
-                className="bg-white/5 border-white/20 text-white"
+                className="bg-white border-gray-300 text-white"
               />
             </div>
             <div className="grid gap-2">
@@ -484,7 +484,7 @@ const LeadManagementEnhanced = () => {
               <Input
                 value={formData.client_name}
                 onChange={(e) => setFormData({...formData, client_name: e.target.value})}
-                className="bg-white/5 border-white/20 text-white"
+                className="bg-white border-gray-300 text-white"
               />
             </div>
             <div className="grid gap-2">
@@ -492,16 +492,16 @@ const LeadManagementEnhanced = () => {
               <Textarea
                 value={formData.requirement}
                 onChange={(e) => setFormData({...formData, requirement: e.target.value})}
-                className="bg-white/5 border-white/20 text-white"
+                className="bg-white border-gray-300 text-white"
               />
             </div>
             <div className="grid gap-2">
               <Label>Assign To (Optional)</Label>
               <Select value={formData.assigned_to} onValueChange={(val) => setFormData({...formData, assigned_to: val})}>
-                <SelectTrigger className="bg-white/5 border-white/20 text-white">
+                <SelectTrigger className="bg-white border-gray-300 text-white">
                   <SelectValue placeholder="Leave unassigned" />
                 </SelectTrigger>
-                <SelectContent className="bg-[#1a2f4d] border-white/20 text-white">
+                <SelectContent className="bg-[#1a2f4d] border-gray-300 text-white">
                   {employees.map(emp => (
                     <SelectItem key={emp.id} value={emp.id}>
                       {emp.name} ({emp.designation || emp.department})
@@ -515,7 +515,7 @@ const LeadManagementEnhanced = () => {
               <Textarea
                 value={formData.remarks}
                 onChange={(e) => setFormData({...formData, remarks: e.target.value})}
-                className="bg-white/5 border-white/20 text-white"
+                className="bg-white border-gray-300 text-white"
                 placeholder="Additional notes..."
               />
             </div>
@@ -529,7 +529,7 @@ const LeadManagementEnhanced = () => {
 
       {/* Add Self Lead Dialog */}
       <Dialog open={showAddSelfDialog} onOpenChange={setShowAddSelfDialog}>
-        <DialogContent className="bg-[#0f172a] border-white/20 text-white max-w-2xl">
+        <DialogContent className="bg-[#0f172a] border-gray-300 text-white max-w-2xl">
           <DialogHeader>
             <DialogTitle className="text-xl font-bold">Add Self Lead</DialogTitle>
           </DialogHeader>
@@ -539,7 +539,7 @@ const LeadManagementEnhanced = () => {
               <Input
                 value={formData.client_name}
                 onChange={(e) => setFormData({...formData, client_name: e.target.value})}
-                className="bg-white/5 border-white/20 text-white"
+                className="bg-white border-gray-300 text-white"
                 placeholder="Enter client name"
               />
             </div>
@@ -548,7 +548,7 @@ const LeadManagementEnhanced = () => {
               <Textarea
                 value={formData.requirement}
                 onChange={(e) => setFormData({...formData, requirement: e.target.value})}
-                className="bg-white/5 border-white/20 text-white"
+                className="bg-white border-gray-300 text-white"
                 placeholder="Describe the requirement"
               />
             </div>
@@ -558,16 +558,16 @@ const LeadManagementEnhanced = () => {
                 value={formData.industry}
                 onChange={(e) => setFormData({...formData, industry: e.target.value})}
                 placeholder="e.g., Construction, Healthcare"
-                className="bg-white/5 border-white/20 text-white"
+                className="bg-white border-gray-300 text-white"
               />
             </div>
             <div className="grid gap-2">
               <Label>Assign To (Optional)</Label>
               <Select value={formData.assigned_to} onValueChange={(val) => setFormData({...formData, assigned_to: val})}>
-                <SelectTrigger className="bg-white/5 border-white/20 text-white">
+                <SelectTrigger className="bg-white border-gray-300 text-white">
                   <SelectValue placeholder="Leave unassigned or select team member" />
                 </SelectTrigger>
-                <SelectContent className="bg-[#1a2f4d] border-white/20 text-white">
+                <SelectContent className="bg-[#1a2f4d] border-gray-300 text-white">
                   {employees.map(emp => (
                     <SelectItem key={emp.id} value={emp.id}>
                       {emp.name} ({emp.designation || emp.department})
@@ -581,7 +581,7 @@ const LeadManagementEnhanced = () => {
               <Textarea
                 value={formData.remarks}
                 onChange={(e) => setFormData({...formData, remarks: e.target.value})}
-                className="bg-white/5 border-white/20 text-white"
+                className="bg-white border-gray-300 text-white"
                 placeholder="Additional notes..."
               />
             </div>

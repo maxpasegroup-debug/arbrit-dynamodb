@@ -106,10 +106,10 @@ const WorkOrderManagement = () => {
       {/* Pending Work Orders */}
       <div>
         <h4 className="text-lg font-semibold text-white mb-3">Pending Approvals ({pendingOrders.length})</h4>
-        <div className="bg-white/5 backdrop-blur-sm rounded-xl border border-white/10 overflow-hidden">
+        <div className="bg-white backdrop-blur-sm rounded-xl border border-gray-200 overflow-hidden">
           <Table>
             <TableHeader>
-              <TableRow className="border-white/10">
+              <TableRow className="border-gray-200">
                 <TableHead className="text-gray-300">WO Reference</TableHead>
                 <TableHead className="text-gray-300">Client</TableHead>
                 <TableHead className="text-gray-300">Course</TableHead>
@@ -125,7 +125,7 @@ const WorkOrderManagement = () => {
                 </TableRow>
               ) : (
                 pendingOrders.map((wo) => (
-                  <TableRow key={wo.id} className="border-white/10">
+                  <TableRow key={wo.id} className="border-gray-200">
                     <TableCell className="text-white font-medium">{wo.reference_number}</TableCell>
                     <TableCell className="text-gray-300">{wo.client_name}</TableCell>
                     <TableCell className="text-gray-300">{wo.course}</TableCell>
@@ -153,10 +153,10 @@ const WorkOrderManagement = () => {
       {/* Approved Work Orders */}
       <div>
         <h4 className="text-lg font-semibold text-white mb-3">Approved Work Orders ({approvedOrders.length})</h4>
-        <div className="bg-white/5 backdrop-blur-sm rounded-xl border border-white/10 overflow-hidden">
+        <div className="bg-white backdrop-blur-sm rounded-xl border border-gray-200 overflow-hidden">
           <Table>
             <TableHeader>
-              <TableRow className="border-white/10">
+              <TableRow className="border-gray-200">
                 <TableHead className="text-gray-300">WO Reference</TableHead>
                 <TableHead className="text-gray-300">Client</TableHead>
                 <TableHead className="text-gray-300">Course</TableHead>
@@ -171,7 +171,7 @@ const WorkOrderManagement = () => {
                 </TableRow>
               ) : (
                 approvedOrders.map((wo) => (
-                  <TableRow key={wo.id} className="border-white/10">
+                  <TableRow key={wo.id} className="border-gray-200">
                     <TableCell className="text-white font-medium">{wo.reference_number}</TableCell>
                     <TableCell className="text-gray-300">{wo.client_name}</TableCell>
                     <TableCell className="text-gray-300">{wo.course}</TableCell>
@@ -187,13 +187,13 @@ const WorkOrderManagement = () => {
 
       {/* Approval Dialog */}
       <Dialog open={showDialog} onOpenChange={setShowDialog}>
-        <DialogContent className="bg-[#1a2f4d] border-white/20 text-white max-w-2xl">
+        <DialogContent className="bg-[#1a2f4d] border-gray-300 text-white max-w-2xl">
           <DialogHeader>
             <DialogTitle>Approve Work Order</DialogTitle>
           </DialogHeader>
           {selectedWorkOrder && (
             <div className="space-y-4">
-              <div className="bg-white/5 rounded-lg p-4">
+              <div className="bg-white rounded-lg p-4">
                 <p><span className="text-gray-400">WO Reference:</span> <span className="font-semibold">{selectedWorkOrder.reference_number}</span></p>
                 <p><span className="text-gray-400">Client:</span> {selectedWorkOrder.client_name}</p>
                 <p><span className="text-gray-400">Course:</span> {selectedWorkOrder.course}</p>
@@ -202,7 +202,7 @@ const WorkOrderManagement = () => {
               <div>
                 <Label className="text-gray-300">Assign Trainer *</Label>
                 <select 
-                  className="w-full mt-1 bg-white/5 border border-white/20 rounded-md p-2 text-white"
+                  className="w-full mt-1 bg-white border border-gray-300 rounded-md p-2 text-white"
                   value={formData.trainer_id}
                   onChange={(e) => {
                     const trainer = trainers.find(t => t.id === e.target.value);
@@ -219,7 +219,7 @@ const WorkOrderManagement = () => {
               <div>
                 <Label className="text-gray-300">Assign Coordinator (Optional)</Label>
                 <select 
-                  className="w-full mt-1 bg-white/5 border border-white/20 rounded-md p-2 text-white"
+                  className="w-full mt-1 bg-white border border-gray-300 rounded-md p-2 text-white"
                   value={formData.coordinator_id}
                   onChange={(e) => {
                     const coord = coordinators.find(c => c.id === e.target.value);
@@ -239,13 +239,13 @@ const WorkOrderManagement = () => {
                   value={formData.remarks}
                   onChange={(e) => setFormData({...formData, remarks: e.target.value})}
                   rows={3}
-                  className="bg-white/5 border-white/20 text-white mt-1"
+                  className="bg-white border-gray-300 text-white mt-1"
                 />
               </div>
             </div>
           )}
           <DialogFooter>
-            <Button variant="outline" onClick={() => setShowDialog(false)} className="border-white/20 text-white">Cancel</Button>
+            <Button variant="outline" onClick={() => setShowDialog(false)} className="border-gray-300 text-white">Cancel</Button>
             <Button onClick={submitApproval} style={{ background: 'linear-gradient(135deg, #d4af37 0%, #c9a02c 100%)' }} className="text-[#0a1e3d]">Approve & Assign</Button>
           </DialogFooter>
         </DialogContent>

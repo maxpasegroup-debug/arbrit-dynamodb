@@ -78,7 +78,7 @@ const QuotationManager = () => {
         </Button>
       </div>
 
-      <div className="bg-white/5 backdrop-blur-sm rounded-xl border border-gray-300 overflow-hidden">
+      <div className="bg-white backdrop-blur-sm rounded-xl border border-gray-300 overflow-hidden">
         <Table>
           <TableHeader>
             <TableRow className="border-gray-300">
@@ -116,7 +116,7 @@ const QuotationManager = () => {
       </div>
 
       <Dialog open={showDialog} onOpenChange={setShowDialog}>
-        <DialogContent className="bg-[#1a2f4d] border-white/20 text-white max-w-2xl">
+        <DialogContent className="bg-[#1a2f4d] border-gray-300 text-white max-w-2xl">
           <DialogHeader>
             <DialogTitle className="text-xl flex items-center gap-2">
               <FileText className="w-5 h-5 text-yellow-400" />
@@ -130,7 +130,7 @@ const QuotationManager = () => {
                 value={formData.client_name}
                 onChange={(e) => setFormData({ ...formData, client_name: e.target.value })}
                 required
-                className="bg-white/5 border-white/20 text-white mt-1"
+                className="bg-white border-gray-300 text-white mt-1"
               />
             </div>
             <div>
@@ -140,7 +140,7 @@ const QuotationManager = () => {
                 onChange={(e) => setFormData({ ...formData, items: e.target.value })}
                 rows={4}
                 placeholder="List items, courses, or services..."
-                className="bg-white/5 border-white/20 text-white mt-1"
+                className="bg-white border-gray-300 text-white mt-1"
               />
             </div>
             <div>
@@ -150,7 +150,7 @@ const QuotationManager = () => {
                 value={formData.total_amount}
                 onChange={(e) => setFormData({ ...formData, total_amount: e.target.value })}
                 required
-                className="bg-white/5 border-white/20 text-white mt-1"
+                className="bg-white border-gray-300 text-white mt-1"
               />
             </div>
             <div>
@@ -159,7 +159,7 @@ const QuotationManager = () => {
                 value={formData.remarks}
                 onChange={(e) => setFormData({ ...formData, remarks: e.target.value })}
                 rows={2}
-                className="bg-white/5 border-white/20 text-white mt-1"
+                className="bg-white border-gray-300 text-white mt-1"
               />
             </div>
             <DialogFooter>
@@ -167,7 +167,7 @@ const QuotationManager = () => {
                 type="button"
                 variant="outline"
                 onClick={() => setShowDialog(false)}
-                className="border-white/20 text-white hover:bg-white/10"
+                className="border-gray-300 text-white hover:bg-white"
               >
                 Cancel
               </Button>

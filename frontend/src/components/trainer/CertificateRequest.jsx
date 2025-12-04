@@ -77,7 +77,7 @@ const CertificateRequest = () => {
 
   if (loading) {
     return (
-      <Card className="bg-white/5 border-white/10">
+      <Card className="bg-white border-gray-200">
         <CardContent className="p-6">
           <p className="text-gray-400 text-center">Loading...</p>
         </CardContent>
@@ -88,7 +88,7 @@ const CertificateRequest = () => {
   return (
     <div className="space-y-6">
       {/* Request New Certificate */}
-      <Card className="bg-white/5 border-white/10">
+      <Card className="bg-white border-gray-200">
         <CardHeader>
           <CardTitle className="text-white text-xl">Request Certificate</CardTitle>
           <p className="text-sm text-gray-400 mt-1">Request certificates for completed training sessions</p>
@@ -99,10 +99,10 @@ const CertificateRequest = () => {
               Select Completed Session
             </label>
             <Select value={selectedSession} onValueChange={setSelectedSession}>
-              <SelectTrigger className="bg-white/5 border-white/20 text-white">
+              <SelectTrigger className="bg-white border-gray-300 text-white">
                 <SelectValue placeholder="Choose a session" />
               </SelectTrigger>
-              <SelectContent className="bg-[#1a2f4d] border-white/20">
+              <SelectContent className="bg-[#1a2f4d] border-gray-300">
                 {completedSessions.length === 0 ? (
                   <SelectItem value="no-sessions" disabled>
                     No completed sessions available
@@ -112,7 +112,7 @@ const CertificateRequest = () => {
                     <SelectItem 
                       key={session.id} 
                       value={session.id}
-                      className="text-white hover:bg-white/10"
+                      className="text-white hover:bg-white"
                     >
                       {session.course_name} - {session.client_name} ({new Date(session.date).toLocaleDateString()})
                     </SelectItem>
@@ -134,7 +134,7 @@ const CertificateRequest = () => {
       </Card>
 
       {/* Certificate Requests History */}
-      <Card className="bg-white/5 border-white/10">
+      <Card className="bg-white border-gray-200">
         <CardHeader>
           <CardTitle className="text-white text-xl">Certificate Requests History</CardTitle>
           <p className="text-sm text-gray-400 mt-1">Track your certificate requests</p>
@@ -148,7 +148,7 @@ const CertificateRequest = () => {
           ) : (
             <div className="space-y-3">
               {certificateRequests.map((req) => (
-                <Card key={req.id} className="bg-white/5 border-white/10 hover:bg-white/10 transition-all">
+                <Card key={req.id} className="bg-white border-gray-200 hover:bg-white transition-all">
                   <CardContent className="p-4">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-3">

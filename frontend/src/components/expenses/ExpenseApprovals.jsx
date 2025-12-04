@@ -82,8 +82,8 @@ const ExpenseApprovals = ({ userRole }) => {
         </Badge>
       </div>
 
-      <div className="bg-white/5 backdrop-blur-sm rounded-xl border border-white/10 overflow-hidden">
-        <div className="px-6 py-4 bg-white/5 border-b border-white/10">
+      <div className="bg-white backdrop-blur-sm rounded-xl border border-gray-200 overflow-hidden">
+        <div className="px-6 py-4 bg-white border-b border-gray-200">
           <h3 className="text-lg font-semibold text-white">Pending Expense Claims</h3>
         </div>
         <div className="p-6">
@@ -97,7 +97,7 @@ const ExpenseApprovals = ({ userRole }) => {
           ) : (
             <div className="space-y-4">
               {claims.map((claim) => (
-                <div key={claim.id} className="bg-white/5 border border-white/10 rounded-lg p-5 hover:bg-white/10 transition-all">
+                <div key={claim.id} className="bg-white border border-gray-200 rounded-lg p-5 hover:bg-white transition-all">
                   <div className="flex justify-between items-start">
                     <div className="flex-1">
                       <div className="flex items-center gap-2 mb-3">
@@ -124,7 +124,7 @@ const ExpenseApprovals = ({ userRole }) => {
                         </div>
                       </div>
                       
-                      <div className="mt-3 p-3 bg-white/5 rounded border border-white/10">
+                      <div className="mt-3 p-3 bg-white rounded border border-gray-200">
                         <p className="text-sm text-gray-400">Description:</p>
                         <p className="text-white mt-1">{claim.description}</p>
                       </div>
@@ -173,7 +173,7 @@ const ExpenseApprovals = ({ userRole }) => {
             </DialogTitle>
             <DialogDescription className="text-gray-400">
               {selectedClaim && (
-                <div className="mt-3 p-4 bg-white/5 rounded-lg border border-white/10">
+                <div className="mt-3 p-4 bg-white rounded-lg border border-gray-200">
                   <p className="font-semibold text-white text-lg">
                     {selectedClaim.employee_name} - AED {selectedClaim.amount.toFixed(2)}
                   </p>
@@ -189,7 +189,7 @@ const ExpenseApprovals = ({ userRole }) => {
               <textarea
                 value={remarks}
                 onChange={(e) => setRemarks(e.target.value)}
-                className="w-full bg-slate-800 border border-slate-600 rounded-md p-3 mt-2 min-h-[80px] text-white placeholder:text-gray-500"
+                className="w-full bg-gray-50 border border-slate-600 rounded-md p-3 mt-2 min-h-[80px] text-white placeholder:text-gray-500"
                 placeholder="Add any notes or comments..."
               />
             </div>
@@ -198,7 +198,7 @@ const ExpenseApprovals = ({ userRole }) => {
               <Button 
                 variant="outline" 
                 onClick={() => setDialogOpen(false)} 
-                className="flex-1 border-slate-600 text-white hover:bg-slate-800"
+                className="flex-1 border-slate-600 text-white hover:bg-gray-50"
               >
                 Cancel
               </Button>

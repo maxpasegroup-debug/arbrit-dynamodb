@@ -107,13 +107,13 @@ const TrainerMaterials = () => {
             <BookOpen className="w-8 h-8 text-blue-400" />
             Training Materials
           </h1>
-          <p className="text-slate-400">Access your training documents, videos, and resources</p>
+          <p className="text-gray-500">Access your training documents, videos, and resources</p>
         </div>
       </div>
 
       {/* Stats Cards */}
       <div className="grid grid-cols-3 gap-4">
-        <Card className="bg-white/5 border-white/10">
+        <Card className="bg-white border-gray-200">
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
@@ -124,7 +124,7 @@ const TrainerMaterials = () => {
             </div>
           </CardContent>
         </Card>
-        <Card className="bg-white/5 border-white/10">
+        <Card className="bg-white border-gray-200">
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
@@ -135,7 +135,7 @@ const TrainerMaterials = () => {
             </div>
           </CardContent>
         </Card>
-        <Card className="bg-white/5 border-white/10">
+        <Card className="bg-white border-gray-200">
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
@@ -154,7 +154,7 @@ const TrainerMaterials = () => {
       <div className="grid grid-cols-12 gap-6">
         {/* Folders Sidebar */}
         <div className="col-span-3">
-          <Card className="bg-white/5 border-white/10">
+          <Card className="bg-white border-gray-200">
             <CardHeader>
               <CardTitle className="text-white flex items-center gap-2">
                 <Folder className="w-5 h-5 text-blue-400" />
@@ -163,11 +163,11 @@ const TrainerMaterials = () => {
             </CardHeader>
             <CardContent className="space-y-2">
               {loading ? (
-                <p className="text-slate-400 text-sm text-center py-4">Loading...</p>
+                <p className="text-gray-500 text-sm text-center py-4">Loading...</p>
               ) : folders.length === 0 ? (
                 <div className="text-center py-8">
                   <Folder className="w-12 h-12 text-slate-600 mx-auto mb-3" />
-                  <p className="text-slate-400 text-sm">No materials available yet</p>
+                  <p className="text-gray-500 text-sm">No materials available yet</p>
                 </div>
               ) : (
                 folders.map((folder) => (
@@ -177,8 +177,8 @@ const TrainerMaterials = () => {
                     className={`${
                       selectedFolder?.id === folder.id
                         ? `bg-gradient-to-r ${getFolderColor(folder.color)} text-white`
-                        : 'bg-white/5 border border-white/10 text-slate-300'
-                    } rounded-lg p-3 cursor-pointer hover:bg-white/10 transition-all`}
+                        : 'bg-white border border-gray-200 text-slate-300'
+                    } rounded-lg p-3 cursor-pointer hover:bg-white transition-all`}
                   >
                     <div className="flex items-center gap-2 mb-1">
                       <Folder className="w-4 h-4" />
@@ -195,14 +195,14 @@ const TrainerMaterials = () => {
         {/* Documents Area */}
         <div className="col-span-9">
           {selectedFolder ? (
-            <Card className="bg-white/5 border-white/10">
+            <Card className="bg-white border-gray-200">
               <CardHeader>
                 <div className="flex items-center justify-between">
                   <div>
                     <CardTitle className="text-white flex items-center gap-2">
                       <Folder className="w-5 h-5 text-blue-400" />
                       {selectedFolder.folder_name}
-                      <Badge className="bg-white/10 text-white border-white/20">
+                      <Badge className="bg-white text-white border-gray-300">
                         {filteredDocuments.length} documents
                       </Badge>
                     </CardTitle>
@@ -214,7 +214,7 @@ const TrainerMaterials = () => {
                       placeholder="Search documents..."
                       value={searchTerm}
                       onChange={(e) => setSearchTerm(e.target.value)}
-                      className="pl-10 bg-slate-800 border-white/10 text-white w-64"
+                      className="pl-10 bg-gray-50 border-gray-200 text-white w-64"
                     />
                   </div>
                 </div>
@@ -223,7 +223,7 @@ const TrainerMaterials = () => {
                 {filteredDocuments.length === 0 ? (
                   <div className="text-center py-12">
                     <FileText className="w-16 h-16 text-slate-600 mx-auto mb-4" />
-                    <p className="text-slate-400">
+                    <p className="text-gray-500">
                       {searchTerm ? 'No documents match your search' : 'No documents in this folder'}
                     </p>
                   </div>
@@ -235,7 +235,7 @@ const TrainerMaterials = () => {
                       return (
                         <div
                           key={doc.id}
-                          className="bg-white/5 border border-white/10 rounded-lg p-4 hover:bg-white/10 transition-all"
+                          className="bg-white border border-gray-200 rounded-lg p-4 hover:bg-white transition-all"
                         >
                           <div className="flex items-start gap-4">
                             <div className={`${
@@ -251,7 +251,7 @@ const TrainerMaterials = () => {
                             <div className="flex-1">
                               <div className="flex items-center gap-2 mb-2">
                                 <h4 className="font-semibold text-white text-base">{doc.document_name}</h4>
-                                <Badge className="bg-white/10 text-white border-white/20 text-xs">
+                                <Badge className="bg-white text-white border-gray-300 text-xs">
                                   {doc.document_type}
                                 </Badge>
                               </div>
@@ -278,7 +278,7 @@ const TrainerMaterials = () => {
                                 {doc.tags && doc.tags.length > 0 && (
                                   <div className="flex gap-1">
                                     {doc.tags.slice(0, 3).map((tag, idx) => (
-                                      <span key={idx} className="px-2 py-0.5 bg-white/5 rounded text-slate-400">
+                                      <span key={idx} className="px-2 py-0.5 bg-white rounded text-slate-400">
                                         {tag}
                                       </span>
                                     ))}
@@ -298,7 +298,7 @@ const TrainerMaterials = () => {
                               <Button
                                 onClick={() => handleDownload(doc)}
                                 variant="outline"
-                                className="border-white/10"
+                                className="border-gray-200"
                               >
                                 <Download className="w-4 h-4 mr-2" />
                                 Download
@@ -313,11 +313,11 @@ const TrainerMaterials = () => {
               </CardContent>
             </Card>
           ) : (
-            <Card className="bg-white/5 border-white/10">
+            <Card className="bg-white border-gray-200">
               <CardContent className="py-24 text-center">
                 <Folder className="w-24 h-24 text-slate-600 mx-auto mb-4" />
                 <h3 className="text-xl font-semibold text-white mb-2">Select a category to view materials</h3>
-                <p className="text-slate-400">Choose a folder from the left sidebar to access training documents</p>
+                <p className="text-gray-500">Choose a folder from the left sidebar to access training documents</p>
               </CardContent>
             </Card>
           )}

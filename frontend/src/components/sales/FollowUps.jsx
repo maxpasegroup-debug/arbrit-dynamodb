@@ -51,7 +51,7 @@ const FollowUps = () => {
         </h3>
       </div>
 
-      <div className="bg-white/5 backdrop-blur-sm rounded-xl border border-gray-300 overflow-hidden">
+      <div className="bg-white backdrop-blur-sm rounded-xl border border-gray-300 overflow-hidden">
         <Table>
           <TableHeader>
             <TableRow className="border-gray-300">

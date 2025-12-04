@@ -60,7 +60,7 @@ const CertificateCoordination = () => {
 
   if (loading) {
     return (
-      <Card className="bg-white/5 border-white/10">
+      <Card className="bg-white border-gray-200">
         <CardContent className="p-6">
           <p className="text-gray-400 text-center">Loading certificates...</p>
         </CardContent>
@@ -70,7 +70,7 @@ const CertificateCoordination = () => {
 
   return (
     <div className="space-y-6">
-      <Card className="bg-white/5 border-white/10">
+      <Card className="bg-white border-gray-200">
         <CardHeader>
           <CardTitle className="text-white text-xl">Certificate Coordination</CardTitle>
           <p className="text-sm text-gray-400 mt-1">Coordinate certificate delivery and tracking</p>
@@ -85,7 +85,7 @@ const CertificateCoordination = () => {
           ) : (
             <div className="space-y-3">
               {certificates.map((cert) => (
-                <Card key={cert.id} className="bg-white/5 border-white/10 hover:bg-white/10 transition-all">
+                <Card key={cert.id} className="bg-white border-gray-200 hover:bg-white transition-all">
                   <CardContent className="p-4">
                     <div className="flex items-center justify-between">
                       <div className="flex-1">

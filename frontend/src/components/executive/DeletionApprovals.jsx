@@ -100,7 +100,7 @@ const DeletionApprovals = () => {
       </div>
 
       {pendingDeletions.total_pending === 0 ? (
-        <div className="bg-white/5 backdrop-blur-sm rounded-xl border border-white/10 p-12 text-center">
+        <div className="bg-white backdrop-blur-sm rounded-xl border border-gray-200 p-12 text-center">
           <div className="flex flex-col items-center gap-3">
             <div className="p-4 bg-green-500/20 rounded-full">
               <Check className="w-8 h-8 text-green-400" />
@@ -113,8 +113,8 @@ const DeletionApprovals = () => {
         <>
           {/* Quotations Pending Deletion */}
           {pendingDeletions.quotations.length > 0 && (
-            <div className="bg-white/5 backdrop-blur-sm rounded-xl border border-white/10 overflow-hidden">
-              <div className="px-6 py-4 bg-white/5 border-b border-white/10">
+            <div className="bg-white backdrop-blur-sm rounded-xl border border-gray-200 overflow-hidden">
+              <div className="px-6 py-4 bg-white border-b border-gray-200">
                 <h4 className="text-lg font-semibold text-white flex items-center gap-2">
                   <AlertTriangle className="w-5 h-5 text-yellow-400" />
                   Quotations Pending Deletion ({pendingDeletions.quotations.length})
@@ -122,7 +122,7 @@ const DeletionApprovals = () => {
               </div>
               <Table>
                 <TableHeader>
-                  <TableRow className="border-white/10">
+                  <TableRow className="border-gray-200">
                     <TableHead className="text-gray-300">Client Name</TableHead>
                     <TableHead className="text-gray-300">Amount</TableHead>
                     <TableHead className="text-gray-300">Created By</TableHead>
@@ -133,7 +133,7 @@ const DeletionApprovals = () => {
                 </TableHeader>
                 <TableBody>
                   {pendingDeletions.quotations.map((quot) => (
-                    <TableRow key={quot.id} className="border-white/10">
+                    <TableRow key={quot.id} className="border-gray-200">
                       <TableCell className="text-white font-medium">{quot.client_name}</TableCell>
                       <TableCell className="text-white">AED {quot.total_amount?.toLocaleString()}</TableCell>
                       <TableCell className="text-gray-300">{quot.created_by_name}</TableCell>
@@ -169,8 +169,8 @@ const DeletionApprovals = () => {
 
           {/* Invoices Pending Deletion */}
           {pendingDeletions.invoices.length > 0 && (
-            <div className="bg-white/5 backdrop-blur-sm rounded-xl border border-white/10 overflow-hidden">
-              <div className="px-6 py-4 bg-white/5 border-b border-white/10">
+            <div className="bg-white backdrop-blur-sm rounded-xl border border-gray-200 overflow-hidden">
+              <div className="px-6 py-4 bg-white border-b border-gray-200">
                 <h4 className="text-lg font-semibold text-white flex items-center gap-2">
                   <AlertTriangle className="w-5 h-5 text-yellow-400" />
                   Invoices Pending Deletion ({pendingDeletions.invoices.length})
@@ -178,7 +178,7 @@ const DeletionApprovals = () => {
               </div>
               <Table>
                 <TableHeader>
-                  <TableRow className="border-white/10">
+                  <TableRow className="border-gray-200">
                     <TableHead className="text-gray-300">Invoice Number</TableHead>
                     <TableHead className="text-gray-300">Client Name</TableHead>
                     <TableHead className="text-gray-300">Amount</TableHead>
@@ -189,7 +189,7 @@ const DeletionApprovals = () => {
                 </TableHeader>
                 <TableBody>
                   {pendingDeletions.invoices.map((invoice) => (
-                    <TableRow key={invoice.id} className="border-white/10">
+                    <TableRow key={invoice.id} className="border-gray-200">
                       <TableCell className="text-white font-medium">{invoice.invoice_number}</TableCell>
                       <TableCell className="text-white">{invoice.client_name}</TableCell>
                       <TableCell className="text-white">AED {invoice.amount?.toLocaleString()}</TableCell>
@@ -241,7 +241,7 @@ const DeletionApprovals = () => {
           </DialogHeader>
 
           <div className="space-y-4 my-4">
-            <div className="p-4 bg-white/5 rounded-lg border border-white/10">
+            <div className="p-4 bg-white rounded-lg border border-gray-200">
               <p className="text-sm text-gray-400">
                 {selectedItem?.type === 'quotation' ? 'Client' : 'Invoice'}: 
                 <span className="text-white font-medium ml-2">
@@ -260,7 +260,7 @@ const DeletionApprovals = () => {
                 value={remarks}
                 onChange={(e) => setRemarks(e.target.value)}
                 placeholder="Add any comments..."
-                className="bg-slate-800 border-slate-600 text-white"
+                className="bg-gray-50 border-slate-600 text-white"
               />
             </div>
           </div>
@@ -269,7 +269,7 @@ const DeletionApprovals = () => {
             <Button
               variant="outline"
               onClick={() => setShowDialog(false)}
-              className="border-slate-600 text-white hover:bg-slate-800"
+              className="border-slate-600 text-white hover:bg-gray-50"
             >
               Cancel
             </Button>

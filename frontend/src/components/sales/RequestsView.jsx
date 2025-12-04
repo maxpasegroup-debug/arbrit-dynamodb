@@ -49,7 +49,7 @@ const RequestsView = () => {
   return (
     <div className="space-y-6">
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-        <TabsList className="grid w-full grid-cols-2 bg-white/5 border border-gray-300">
+        <TabsList className="grid w-full grid-cols-2 bg-white border border-gray-300">
           <TabsTrigger 
             value="trainer"
             className="data-[state=active]:bg-blue-500/20 data-[state=active]:text-white text-gray-300"
@@ -67,7 +67,7 @@ const RequestsView = () => {
         </TabsList>
 
         <TabsContent value="trainer" className="mt-6">
-          <div className="bg-white/5 backdrop-blur-sm rounded-xl border border-gray-300 overflow-hidden">
+          <div className="bg-white backdrop-blur-sm rounded-xl border border-gray-300 overflow-hidden">
             <Table>
               <TableHeader>
                 <TableRow className="border-gray-300">
@@ -108,7 +108,7 @@ const RequestsView = () => {
         </TabsContent>
 
         <TabsContent value="invoice" className="mt-6">
-          <div className="bg-white/5 backdrop-blur-sm rounded-xl border border-gray-300 overflow-hidden">
+          <div className="bg-white backdrop-blur-sm rounded-xl border border-gray-300 overflow-hidden">
             <Table>
               <TableHeader>
                 <TableRow className="border-gray-300">

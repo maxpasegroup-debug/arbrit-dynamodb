@@ -8,7 +8,7 @@ const ModuleCard = ({ module, onClick }) => {
     <Card
       data-testid={`module-card-${module.id}`}
       onClick={onClick}
-      className="group relative overflow-hidden cursor-pointer border-white/10 bg-white/5 backdrop-blur-sm hover:bg-white/10 transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:border-white/20"
+      className="group relative overflow-hidden cursor-pointer border-gray-200 bg-white backdrop-blur-sm hover:bg-white transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:border-gray-300"
       style={{
         minHeight: '180px'
       }}
@@ -36,7 +36,7 @@ const ModuleCard = ({ module, onClick }) => {
 
         {/* Arrow Icon */}
         <div className="absolute bottom-6 right-6 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-x-2 group-hover:translate-x-0">
-          <div className="bg-white/10 p-2 rounded-full">
+          <div className="bg-white p-2 rounded-full">
             <ArrowRight className="w-5 h-5 text-white" />
           </div>
         </div>

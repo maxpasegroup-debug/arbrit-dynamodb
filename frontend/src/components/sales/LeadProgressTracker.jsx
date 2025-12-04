@@ -107,14 +107,14 @@ const LeadProgressTracker = ({ currentStatus }) => {
               </span>
             ) : (
               <>
-                <span className="text-slate-400">Progress:</span>
+                <span className="text-gray-500">Progress:</span>
                 <span className="text-white font-semibold">
                   {actualIndex + 1} / {stages.length}
                 </span>
               </>
             )}
           </div>
-          <div className="text-slate-400">
+          <div className="text-gray-500">
             {actualIndex === 0 && 'Just Started'}
             {actualIndex === 1 && 'Initial Contact Made'}
             {actualIndex === 2 && 'Quote Provided'}

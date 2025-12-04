@@ -67,7 +67,7 @@ const ExpenseReadOnlyView = () => {
           <select
             value={filter}
             onChange={(e) => setFilter(e.target.value)}
-            className="bg-slate-800 border border-slate-600 text-white rounded-md p-2 text-sm"
+            className="bg-gray-50 border border-slate-600 text-white rounded-md p-2 text-sm"
           >
             <option value="all">All Status</option>
             <option value="PENDING_DEPT_HEAD">Pending Dept Head</option>
@@ -79,8 +79,8 @@ const ExpenseReadOnlyView = () => {
         </div>
       </div>
 
-      <div className="bg-white/5 backdrop-blur-sm rounded-xl border border-white/10 overflow-hidden">
-        <div className="px-6 py-4 bg-white/5 border-b border-white/10">
+      <div className="bg-white backdrop-blur-sm rounded-xl border border-gray-200 overflow-hidden">
+        <div className="px-6 py-4 bg-white border-b border-gray-200">
           <h3 className="text-lg font-semibold text-white flex items-center gap-2">
             <Eye className="w-5 h-5" />
             Expense Overview ({filteredClaims.length})
@@ -94,7 +94,7 @@ const ExpenseReadOnlyView = () => {
           ) : (
             <div className="space-y-4">
               {filteredClaims.map((claim) => (
-                <div key={claim.id} className="bg-white/5 border border-white/10 rounded-lg p-5 hover:bg-white/10 transition-all">
+                <div key={claim.id} className="bg-white border border-gray-200 rounded-lg p-5 hover:bg-white transition-all">
                   <div className="flex justify-between items-start">
                     <div className="flex-1">
                       <div className="flex items-center gap-2 mb-3">
@@ -115,7 +115,7 @@ const ExpenseReadOnlyView = () => {
                           <span className="text-white ml-2">{claim.department}</span>
                         </div>
                       </div>
-                      <div className="mt-3 p-3 bg-white/5 rounded border border-white/10">
+                      <div className="mt-3 p-3 bg-white rounded border border-gray-200">
                         <p className="text-sm text-gray-400">Description:</p>
                         <p className="text-white mt-1">{claim.description}</p>
                       </div>

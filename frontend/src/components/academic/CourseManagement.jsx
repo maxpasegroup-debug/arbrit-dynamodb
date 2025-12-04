@@ -160,7 +160,7 @@ const CourseManagement = () => {
       <div className="flex justify-between items-center">
         <div>
           <h2 className="text-2xl font-bold text-slate-100">Course Management</h2>
-          <p className="text-slate-400 text-sm mt-1">Manage training courses and pricing</p>
+          <p className="text-gray-500 text-sm mt-1">Manage training courses and pricing</p>
         </div>
         <Button onClick={() => handleOpenDialog()} className="bg-green-600 hover:bg-green-700">
           <Plus className="w-4 h-4 mr-2" />
@@ -169,7 +169,7 @@ const CourseManagement = () => {
       </div>
 
       {/* Courses Grid */}
-      <div className="bg-slate-900/50 backdrop-blur-sm rounded-xl border border-white/10 p-6">
+      <div className="bg-white0 backdrop-blur-sm rounded-xl border border-gray-200 p-6">
         {loading ? (
           <p className="text-center py-8 text-slate-400">Loading courses...</p>
         ) : courses.length === 0 ? (
@@ -179,7 +179,7 @@ const CourseManagement = () => {
             {courses.map((course) => (
               <div
                 key={course.id}
-                className="bg-white/5 border border-white/10 rounded-lg p-4 hover:bg-white/10 transition-all"
+                className="bg-white border border-gray-200 rounded-lg p-4 hover:bg-white transition-all"
               >
                 <div className="flex justify-between items-start mb-3">
                   <div className="flex-1">
@@ -225,7 +225,7 @@ const CourseManagement = () => {
                     <span>{course.base_fee} AED</span>
                   </div>
                   {course.pricing_tiers && (
-                    <div className="pt-2 border-t border-white/10 text-xs text-slate-400">
+                    <div className="pt-2 border-t border-gray-200 text-xs text-slate-400">
                       <div>Group (5-10): {course.pricing_tiers.group_5_10} AED</div>
                       <div>Group (10+): {course.pricing_tiers.group_10_plus} AED</div>
                     </div>
@@ -239,12 +239,12 @@ const CourseManagement = () => {
 
       {/* Add/Edit Dialog */}
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-        <DialogContent className="max-w-2xl bg-slate-900 border-white/10 max-h-[90vh] overflow-y-auto">
+        <DialogContent className="max-w-2xl bg-white border-gray-200 max-h-[90vh] overflow-y-auto">
           <DialogHeader>
-            <DialogTitle className="text-slate-100">
+            <DialogTitle className="text-gray-900">
               {editMode ? 'Edit Course' : 'Add New Course'}
             </DialogTitle>
-            <DialogDescription className="text-slate-400">
+            <DialogDescription className="text-gray-500">
               {editMode ? 'Update course details and pricing' : 'Create a new training course'}
             </DialogDescription>
           </DialogHeader>
@@ -252,24 +252,24 @@ const CourseManagement = () => {
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="grid grid-cols-2 gap-4">
               <div className="col-span-2">
-                <Label htmlFor="name" className="text-slate-300">Course Name *</Label>
+                <Label htmlFor="name" className="text-gray-700">Course Name *</Label>
                 <Input
                   id="name"
                   value={formData.name}
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                   placeholder="e.g., Fire Safety Training"
-                  className="bg-slate-800 border-white/10 text-slate-100"
+                  className="bg-gray-50 border-gray-200 text-slate-100"
                   required
                 />
               </div>
 
               <div>
-                <Label htmlFor="category" className="text-slate-300">Category</Label>
+                <Label htmlFor="category" className="text-gray-700">Category</Label>
                 <select
                   id="category"
                   value={formData.category}
                   onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-                  className="w-full bg-slate-800 border border-white/10 text-slate-100 rounded-md p-2"
+                  className="w-full bg-gray-50 border border-gray-200 text-slate-100 rounded-md p-2"
                 >
                   <option value="Safety Training">Safety Training</option>
                   <option value="First Aid">First Aid</option>
@@ -281,12 +281,12 @@ const CourseManagement = () => {
               </div>
 
               <div>
-                <Label htmlFor="duration" className="text-slate-300">Duration</Label>
+                <Label htmlFor="duration" className="text-gray-700">Duration</Label>
                 <select
                   id="duration"
                   value={formData.duration}
                   onChange={(e) => setFormData({ ...formData, duration: e.target.value })}
-                  className="w-full bg-slate-800 border border-white/10 text-slate-100 rounded-md p-2"
+                  className="w-full bg-gray-50 border border-gray-200 text-slate-100 rounded-md p-2"
                 >
                   <option value="Half Day">Half Day</option>
                   <option value="1 Day">1 Day</option>
@@ -298,25 +298,25 @@ const CourseManagement = () => {
               </div>
 
               <div className="col-span-2">
-                <Label htmlFor="description" className="text-slate-300">Description</Label>
+                <Label htmlFor="description" className="text-gray-700">Description</Label>
                 <textarea
                   id="description"
                   value={formData.description}
                   onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                  className="w-full bg-slate-800 border border-white/10 text-slate-100 rounded-md p-2 min-h-[80px]"
+                  className="w-full bg-gray-50 border border-gray-200 text-slate-100 rounded-md p-2 min-h-[80px]"
                   placeholder="Course description..."
                 />
               </div>
 
               <div className="col-span-2">
-                <Label htmlFor="base_fee" className="text-slate-300">Base Fee (AED) *</Label>
+                <Label htmlFor="base_fee" className="text-gray-700">Base Fee (AED) *</Label>
                 <Input
                   id="base_fee"
                   type="number"
                   value={formData.base_fee}
                   onChange={(e) => handleBaseFeeChange(e.target.value)}
                   placeholder="500"
-                  className="bg-slate-800 border-white/10 text-slate-100"
+                  className="bg-gray-50 border-gray-200 text-slate-100"
                   required
                 />
               </div>
@@ -344,13 +344,13 @@ const CourseManagement = () => {
               </div>
 
               <div className="col-span-2">
-                <Label htmlFor="prerequisites" className="text-slate-300">Prerequisites (Optional)</Label>
+                <Label htmlFor="prerequisites" className="text-gray-700">Prerequisites (Optional)</Label>
                 <Input
                   id="prerequisites"
                   value={formData.prerequisites}
                   onChange={(e) => setFormData({ ...formData, prerequisites: e.target.value })}
                   placeholder="e.g., Basic safety awareness"
-                  className="bg-slate-800 border-white/10 text-slate-100"
+                  className="bg-gray-50 border-gray-200 text-slate-100"
                 />
               </div>
             </div>
@@ -360,7 +360,7 @@ const CourseManagement = () => {
                 type="button"
                 variant="outline"
                 onClick={() => setDialogOpen(false)}
-                className="flex-1 border-white/20 hover:bg-white/10"
+                className="flex-1 border-gray-300 hover:bg-white"
               >
                 Cancel
               </Button>

@@ -55,7 +55,7 @@ const LiveDeliveries = () => {
 
   if (loading) {
     return (
-      <Card className="bg-white/5 border-white/10">
+      <Card className="bg-white border-gray-200">
         <CardContent className="p-6">
           <p className="text-gray-400 text-center">Loading live deliveries...</p>
         </CardContent>
@@ -64,22 +64,22 @@ const LiveDeliveries = () => {
   }
 
   return (
-    <Card className="bg-white/5 border-white/10">
+    <Card className="bg-white border-gray-200">
       <CardHeader className="flex flex-row items-center justify-between">
         <div>
           <CardTitle className="text-white text-xl">Live Deliveries</CardTitle>
           <p className="text-sm text-gray-400 mt-1">Track ongoing and pending deliveries</p>
         </div>
         <Select value={filterStatus} onValueChange={setFilterStatus}>
-          <SelectTrigger className="bg-white/5 border-white/20 text-white w-48">
+          <SelectTrigger className="bg-white border-gray-300 text-white w-48">
             <SelectValue />
           </SelectTrigger>
-          <SelectContent className="bg-[#1a2f4d] border-white/20">
-            <SelectItem value="all" className="text-white hover:bg-white/10">All Status</SelectItem>
-            <SelectItem value="OUT_FOR_DELIVERY" className="text-white hover:bg-white/10">Out for Delivery</SelectItem>
-            <SelectItem value="PICKUP_READY" className="text-white hover:bg-white/10">Pickup Ready</SelectItem>
-            <SelectItem value="FAILED" className="text-white hover:bg-white/10">Failed</SelectItem>
-            <SelectItem value="RETURNED" className="text-white hover:bg-white/10">Returned</SelectItem>
+          <SelectContent className="bg-[#1a2f4d] border-gray-300">
+            <SelectItem value="all" className="text-white hover:bg-white">All Status</SelectItem>
+            <SelectItem value="OUT_FOR_DELIVERY" className="text-white hover:bg-white">Out for Delivery</SelectItem>
+            <SelectItem value="PICKUP_READY" className="text-white hover:bg-white">Pickup Ready</SelectItem>
+            <SelectItem value="FAILED" className="text-white hover:bg-white">Failed</SelectItem>
+            <SelectItem value="RETURNED" className="text-white hover:bg-white">Returned</SelectItem>
           </SelectContent>
         </Select>
       </CardHeader>
@@ -92,7 +92,7 @@ const LiveDeliveries = () => {
         ) : (
           <div className="space-y-3">
             {filteredTasks.map((task) => (
-              <Card key={task.id} className="bg-white/5 border-white/10 hover:bg-white/10 transition-all">
+              <Card key={task.id} className="bg-white border-gray-200 hover:bg-white transition-all">
                 <CardContent className="p-4">
                   <div className="flex items-start justify-between mb-3">
                     <div className="flex-1">
@@ -114,7 +114,7 @@ const LiveDeliveries = () => {
                     </div>
                   </div>
                   {task.remarks && (
-                    <div className="mt-3 p-2 bg-white/5 rounded text-sm text-gray-300">
+                    <div className="mt-3 p-2 bg-white rounded text-sm text-gray-300">
                       <p className="text-xs text-gray-400">Remarks:</p>
                       <p>{task.remarks}</p>
                     </div>

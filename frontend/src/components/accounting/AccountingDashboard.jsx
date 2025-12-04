@@ -67,7 +67,7 @@ const AccountingDashboard = () => {
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
-        <p className="text-slate-400">Loading accounting data...</p>
+        <p className="text-gray-500">Loading accounting data...</p>
       </div>
     );
   }
@@ -95,7 +95,7 @@ const AccountingDashboard = () => {
 
         {/* Stats Cards */}
         <div className="grid grid-cols-4 gap-4 mt-6">
-          <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4">
+          <div className="bg-white backdrop-blur-sm rounded-lg p-4">
             <div className="flex items-center gap-2 mb-2">
               <TrendingUp className="w-5 h-5" />
               <p className="text-sm text-emerald-100">Total Revenue</p>
@@ -128,7 +128,7 @@ const AccountingDashboard = () => {
 
       {/* Main Content Tabs */}
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-        <TabsList className="grid w-full grid-cols-5 bg-white/5 border border-white/10">
+        <TabsList className="grid w-full grid-cols-5 bg-white border border-gray-200">
           <TabsTrigger 
             value="overview"
             className="data-[state=active]:bg-emerald-500/20 data-[state=active]:text-white text-gray-300"
@@ -169,7 +169,7 @@ const AccountingDashboard = () => {
         <div className="mt-6">
           <TabsContent value="overview" className="mt-0">
             <div className="grid grid-cols-2 gap-6">
-              <Card className="bg-white/5 border-white/10">
+              <Card className="bg-white border-gray-200">
                 <CardHeader>
                   <CardTitle className="text-white flex items-center gap-2">
                     <TrendingUp className="w-5 h-5 text-green-400" />
@@ -177,7 +177,7 @@ const AccountingDashboard = () => {
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-slate-400 text-sm">
+                  <p className="text-gray-500 text-sm">
                     View recent payments, invoices, and financial transactions
                   </p>
                   <Button className="mt-4 w-full bg-emerald-600 hover:bg-emerald-700">
@@ -186,7 +186,7 @@ const AccountingDashboard = () => {
                 </CardContent>
               </Card>
 
-              <Card className="bg-white/5 border-white/10">
+              <Card className="bg-white border-gray-200">
                 <CardHeader>
                   <CardTitle className="text-white flex items-center gap-2">
                     <FileText className="w-5 h-5 text-blue-400" />

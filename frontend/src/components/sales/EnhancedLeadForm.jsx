@@ -273,7 +273,7 @@ const EnhancedLeadForm = ({ open, onOpenChange, onSuccess, existingLead = null }
           <DialogTitle className="text-gray-900">
             {existingLead ? 'Edit Lead' : 'Create New Lead'}
           </DialogTitle>
-          <DialogDescription className="text-slate-400">
+          <DialogDescription className="text-gray-500">
             Enhanced lead capture with intelligent scoring
           </DialogDescription>
         </DialogHeader>
@@ -659,7 +659,7 @@ const EnhancedLeadForm = ({ open, onOpenChange, onSuccess, existingLead = null }
           )}
 
           {/* Additional Notes */}
-          <div className="space-y-4 p-4 bg-white/50 border border-gray-300 rounded-lg">
+          <div className="space-y-4 p-4 bg-white0 border border-gray-300 rounded-lg">
             <h4 className="text-sm font-semibold text-slate-200">Additional Information</h4>
             <div className="grid grid-cols-1 gap-4">
               <div>
@@ -715,7 +715,7 @@ const EnhancedLeadForm = ({ open, onOpenChange, onSuccess, existingLead = null }
               type="button"
               variant="outline"
               onClick={() => onOpenChange(false)}
-              className="flex-1 border-gray-300 hover:bg-white/10"
+              className="flex-1 border-gray-300 hover:bg-white"
             >
               Cancel
             </Button>

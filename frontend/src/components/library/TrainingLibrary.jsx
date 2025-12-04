@@ -159,35 +159,35 @@ const TrainingLibrary = () => {
 
         {stats && (
           <div className="grid grid-cols-5 gap-4 mt-6">
-            <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4">
+            <div className="bg-white backdrop-blur-sm rounded-lg p-4">
               <div className="flex items-center gap-2 mb-2">
                 <Award className="w-5 h-5" />
                 <p className="text-sm text-blue-100">Total Trainings</p>
               </div>
               <p className="text-3xl font-bold">{stats.total_trainings}</p>
             </div>
-            <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4">
+            <div className="bg-white backdrop-blur-sm rounded-lg p-4">
               <div className="flex items-center gap-2 mb-2">
                 <Users className="w-5 h-5" />
                 <p className="text-sm text-blue-100">Participants</p>
               </div>
               <p className="text-3xl font-bold">{stats.total_participants}</p>
             </div>
-            <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4">
+            <div className="bg-white backdrop-blur-sm rounded-lg p-4">
               <div className="flex items-center gap-2 mb-2">
                 <TrendingUp className="w-5 h-5" />
                 <p className="text-sm text-blue-100">Companies</p>
               </div>
               <p className="text-3xl font-bold">{stats.unique_companies}</p>
             </div>
-            <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4">
+            <div className="bg-white backdrop-blur-sm rounded-lg p-4">
               <div className="flex items-center gap-2 mb-2">
                 <FileText className="w-5 h-5" />
                 <p className="text-sm text-blue-100">Courses</p>
               </div>
               <p className="text-3xl font-bold">{stats.unique_courses}</p>
             </div>
-            <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4">
+            <div className="bg-white backdrop-blur-sm rounded-lg p-4">
               <div className="flex items-center gap-2 mb-2">
                 <Award className="w-5 h-5" />
                 <p className="text-sm text-blue-100">Certificates</p>
@@ -199,7 +199,7 @@ const TrainingLibrary = () => {
       </div>
 
       {/* Search and Filters */}
-      <div className="bg-white/5 backdrop-blur-sm rounded-xl border border-white/10 p-4">
+      <div className="bg-white backdrop-blur-sm rounded-xl border border-gray-200 p-4">
         <div className="flex gap-4 items-center">
           <div className="flex-1">
             <div className="relative">
@@ -208,16 +208,16 @@ const TrainingLibrary = () => {
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 placeholder="Search by company, contact person, mobile, course, or trainer..."
-                className="pl-10 bg-slate-800 border-white/10 text-slate-100"
+                className="pl-10 bg-gray-50 border-gray-200 text-slate-100"
               />
             </div>
           </div>
 
           <Select value={courseFilter} onValueChange={setCourseFilter}>
-            <SelectTrigger className="w-[200px] bg-slate-800 border-white/10 text-slate-100">
+            <SelectTrigger className="w-[200px] bg-gray-50 border-gray-200 text-slate-100">
               <SelectValue placeholder="All Courses" />
             </SelectTrigger>
-            <SelectContent className="bg-slate-800 border-white/10">
+            <SelectContent className="bg-gray-50 border-gray-200">
               <SelectItem value="all">All Courses</SelectItem>
               {getUniqueCourses().map(course => (
                 <SelectItem key={course} value={course}>{course}</SelectItem>
@@ -226,10 +226,10 @@ const TrainingLibrary = () => {
           </Select>
 
           <Select value={statusFilter} onValueChange={setStatusFilter}>
-            <SelectTrigger className="w-[150px] bg-slate-800 border-white/10 text-slate-100">
+            <SelectTrigger className="w-[150px] bg-gray-50 border-gray-200 text-slate-100">
               <SelectValue placeholder="All Status" />
             </SelectTrigger>
-            <SelectContent className="bg-slate-800 border-white/10">
+            <SelectContent className="bg-gray-50 border-gray-200">
               <SelectItem value="all">All Status</SelectItem>
               <SelectItem value="completed">Completed</SelectItem>
               <SelectItem value="cancelled">Cancelled</SelectItem>
@@ -241,7 +241,7 @@ const TrainingLibrary = () => {
               variant={viewMode === 'grid' ? 'default' : 'outline'}
               size="icon"
               onClick={() => setViewMode('grid')}
-              className="border-white/20"
+              className="border-gray-300"
             >
               <Grid3x3 className="w-4 h-4" />
             </Button>
@@ -249,7 +249,7 @@ const TrainingLibrary = () => {
               variant={viewMode === 'list' ? 'default' : 'outline'}
               size="icon"
               onClick={() => setViewMode('list')}
-              className="border-white/20"
+              className="border-gray-300"
             >
               <List className="w-4 h-4" />
             </Button>
@@ -258,7 +258,7 @@ const TrainingLibrary = () => {
           <Button
             variant="outline"
             onClick={exportToCSV}
-            className="border-white/20 hover:bg-white/10"
+            className="border-gray-300 hover:bg-white"
           >
             <Download className="w-4 h-4 mr-2" />
             Export
@@ -272,13 +272,13 @@ const TrainingLibrary = () => {
       </div>
 
       {/* Training Records Grid/List */}
-      <div className="bg-slate-900/50 backdrop-blur-sm rounded-xl border border-white/10 p-6">
+      <div className="bg-white0 backdrop-blur-sm rounded-xl border border-gray-200 p-6">
         {loading ? (
           <p className="text-center py-12 text-slate-400">Loading training library...</p>
         ) : filteredRecords.length === 0 ? (
           <div className="text-center py-12">
             <FileText className="w-16 h-16 text-slate-600 mx-auto mb-4" />
-            <p className="text-slate-400 text-lg">
+            <p className="text-gray-500 text-lg">
               {searchTerm || courseFilter !== 'all' || statusFilter !== 'all' 
                 ? 'No training records match your filters' 
                 : 'No training records yet'}
@@ -289,7 +289,7 @@ const TrainingLibrary = () => {
             {filteredRecords.map((record) => (
               <div
                 key={record.id}
-                className="bg-white/5 border border-white/10 rounded-lg p-4 hover:bg-white/10 transition-all cursor-pointer"
+                className="bg-white border border-gray-200 rounded-lg p-4 hover:bg-white transition-all cursor-pointer"
                 onClick={() => handleViewDetails(record)}
               >
                 <div className="flex items-start justify-between mb-3">
@@ -347,7 +347,7 @@ const TrainingLibrary = () => {
             {filteredRecords.map((record) => (
               <div
                 key={record.id}
-                className="bg-white/5 border border-white/10 rounded-lg p-4 hover:bg-white/10 transition-all cursor-pointer flex items-center justify-between"
+                className="bg-white border border-gray-200 rounded-lg p-4 hover:bg-white transition-all cursor-pointer flex items-center justify-between"
                 onClick={() => handleViewDetails(record)}
               >
                 <div className="flex-1 grid grid-cols-5 gap-4 items-center">
@@ -392,7 +392,7 @@ const TrainingLibrary = () => {
 
       {/* Add Training Modal */}
       <Dialog open={addTrainingOpen} onOpenChange={setAddTrainingOpen}>
-        <DialogContent className="max-w-6xl max-h-[95vh] overflow-y-auto bg-slate-900 border-white/10">
+        <DialogContent className="max-w-6xl max-h-[95vh] overflow-y-auto bg-white border-gray-200">
           <AddPastTraining onSuccess={() => {
             toast.success('Training record added successfully!');
             setAddTrainingOpen(false);
@@ -404,13 +404,13 @@ const TrainingLibrary = () => {
 
       {/* Details Modal */}
       <Dialog open={detailsOpen} onOpenChange={setDetailsOpen}>
-        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto bg-slate-900 border-white/10">
+        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto bg-white border-gray-200">
           <DialogHeader>
             <DialogTitle className="text-2xl text-white flex items-center gap-2">
               <FileText className="w-6 h-6 text-blue-400" />
               Training Record Details
             </DialogTitle>
-            <DialogDescription className="text-slate-400">
+            <DialogDescription className="text-gray-500">
               Complete information about this training session
             </DialogDescription>
           </DialogHeader>
@@ -418,70 +418,70 @@ const TrainingLibrary = () => {
           {selectedRecord && (
             <div className="space-y-6 mt-4">
               {/* Company Information */}
-              <div className="bg-white/5 rounded-lg p-4 border border-white/10">
+              <div className="bg-white rounded-lg p-4 border border-gray-200">
                 <h3 className="text-lg font-semibold text-white mb-3 flex items-center gap-2">
                   <TrendingUp className="w-5 h-5 text-blue-400" />
                   Company Information
                 </h3>
                 <div className="grid grid-cols-2 gap-4 text-sm">
                   <div>
-                    <p className="text-slate-400">Company Name</p>
+                    <p className="text-gray-500">Company Name</p>
                     <p className="text-white font-medium">{selectedRecord.company_name}</p>
                   </div>
                   <div>
-                    <p className="text-slate-400">Contact Person</p>
+                    <p className="text-gray-500">Contact Person</p>
                     <p className="text-white">{selectedRecord.contact_person}</p>
                   </div>
                   <div>
-                    <p className="text-slate-400">Mobile</p>
+                    <p className="text-gray-500">Mobile</p>
                     <p className="text-white">{selectedRecord.contact_mobile}</p>
                   </div>
                   <div>
-                    <p className="text-slate-400">Email</p>
+                    <p className="text-gray-500">Email</p>
                     <p className="text-white">{selectedRecord.contact_email || 'N/A'}</p>
                   </div>
                 </div>
               </div>
 
               {/* Training Details */}
-              <div className="bg-white/5 rounded-lg p-4 border border-white/10">
+              <div className="bg-white rounded-lg p-4 border border-gray-200">
                 <h3 className="text-lg font-semibold text-white mb-3 flex items-center gap-2">
                   <FileText className="w-5 h-5 text-purple-400" />
                   Training Details
                 </h3>
                 <div className="grid grid-cols-2 gap-4 text-sm">
                   <div>
-                    <p className="text-slate-400">Course Name</p>
+                    <p className="text-gray-500">Course Name</p>
                     <p className="text-white font-medium">{selectedRecord.course_name}</p>
                   </div>
                   <div>
-                    <p className="text-slate-400">Training Date</p>
+                    <p className="text-gray-500">Training Date</p>
                     <p className="text-white">{new Date(selectedRecord.training_date).toLocaleDateString()}</p>
                   </div>
                   <div>
-                    <p className="text-slate-400">Location</p>
+                    <p className="text-gray-500">Location</p>
                     <p className="text-white">{selectedRecord.training_location}</p>
                   </div>
                   <div>
-                    <p className="text-slate-400">Duration</p>
+                    <p className="text-gray-500">Duration</p>
                     <p className="text-white">{selectedRecord.duration_days} day(s)</p>
                   </div>
                   <div>
-                    <p className="text-slate-400">Trainer</p>
+                    <p className="text-gray-500">Trainer</p>
                     <p className="text-white">{selectedRecord.trainer_name}</p>
                   </div>
                   <div>
-                    <p className="text-slate-400">Participants</p>
+                    <p className="text-gray-500">Participants</p>
                     <p className="text-white font-semibold">{selectedRecord.participants_count} persons</p>
                   </div>
                   <div>
-                    <p className="text-slate-400">Certificate Issued</p>
+                    <p className="text-gray-500">Certificate Issued</p>
                     <Badge className={selectedRecord.certificate_issued ? 'bg-green-500/20 text-green-300' : 'bg-red-500/20 text-red-300'}>
                       {selectedRecord.certificate_issued ? 'Yes' : 'No'}
                     </Badge>
                   </div>
                   <div>
-                    <p className="text-slate-400">Status</p>
+                    <p className="text-gray-500">Status</p>
                     <Badge className={`${
                       selectedRecord.status === 'completed' 
                         ? 'bg-green-500/20 text-green-300' 
@@ -495,22 +495,22 @@ const TrainingLibrary = () => {
 
               {/* Payment Information */}
               {selectedRecord.invoice_number && (
-                <div className="bg-white/5 rounded-lg p-4 border border-white/10">
+                <div className="bg-white rounded-lg p-4 border border-gray-200">
                   <h3 className="text-lg font-semibold text-white mb-3 flex items-center gap-2">
                     <FileText className="w-5 h-5 text-green-400" />
                     Payment Information
                   </h3>
                   <div className="grid grid-cols-2 gap-4 text-sm">
                     <div>
-                      <p className="text-slate-400">Invoice Number</p>
+                      <p className="text-gray-500">Invoice Number</p>
                       <p className="text-white font-medium">{selectedRecord.invoice_number}</p>
                     </div>
                     <div>
-                      <p className="text-slate-400">Amount</p>
+                      <p className="text-gray-500">Amount</p>
                       <p className="text-green-400 font-semibold text-lg">{selectedRecord.invoice_amount} AED</p>
                     </div>
                     <div>
-                      <p className="text-slate-400">Payment Status</p>
+                      <p className="text-gray-500">Payment Status</p>
                       <Badge className="bg-green-500/20 text-green-300">{selectedRecord.payment_status}</Badge>
                     </div>
                   </div>
@@ -519,9 +519,9 @@ const TrainingLibrary = () => {
 
               {/* Notes */}
               {selectedRecord.notes && (
-                <div className="bg-white/5 rounded-lg p-4 border border-white/10">
+                <div className="bg-white rounded-lg p-4 border border-gray-200">
                   <h3 className="text-lg font-semibold text-white mb-2">Notes</h3>
-                  <p className="text-slate-300 text-sm">{selectedRecord.notes}</p>
+                  <p className="text-gray-700 text-sm">{selectedRecord.notes}</p>
                 </div>
               )}
             </div>

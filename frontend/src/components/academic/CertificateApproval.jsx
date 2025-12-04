@@ -84,10 +84,10 @@ const CertificateApproval = () => {
       {/* Pending Approvals */}
       <div>
         <h4 className="text-lg font-semibold text-white mb-3">Pending Certificate Requests ({pendingCertificates.length})</h4>
-        <div className="bg-white/5 backdrop-blur-sm rounded-xl border border-white/10 overflow-hidden">
+        <div className="bg-white backdrop-blur-sm rounded-xl border border-gray-200 overflow-hidden">
           <Table>
             <TableHeader>
-              <TableRow className="border-white/10">
+              <TableRow className="border-gray-200">
                 <TableHead className="text-gray-300">WO Reference</TableHead>
                 <TableHead className="text-gray-300">Client</TableHead>
                 <TableHead className="text-gray-300">Course</TableHead>
@@ -106,7 +106,7 @@ const CertificateApproval = () => {
                 </TableRow>
               ) : (
                 pendingCertificates.map((cert) => (
-                  <TableRow key={cert.id} className="border-white/10">
+                  <TableRow key={cert.id} className="border-gray-200">
                     <TableCell className="text-white font-medium">{cert.work_order_reference}</TableCell>
                     <TableCell className="text-gray-300">{cert.client_name}</TableCell>
                     <TableCell className="text-gray-300">{cert.course}</TableCell>
@@ -139,10 +139,10 @@ const CertificateApproval = () => {
       {/* Approved Certificates */}
       <div>
         <h4 className="text-lg font-semibold text-white mb-3">Approved Certificates ({approvedCertificates.length})</h4>
-        <div className="bg-white/5 backdrop-blur-sm rounded-xl border border-white/10 overflow-hidden">
+        <div className="bg-white backdrop-blur-sm rounded-xl border border-gray-200 overflow-hidden">
           <Table>
             <TableHeader>
-              <TableRow className="border-white/10">
+              <TableRow className="border-gray-200">
                 <TableHead className="text-gray-300">WO Reference</TableHead>
                 <TableHead className="text-gray-300">Client</TableHead>
                 <TableHead className="text-gray-300">Course</TableHead>
@@ -160,7 +160,7 @@ const CertificateApproval = () => {
                 </TableRow>
               ) : (
                 approvedCertificates.map((cert) => (
-                  <TableRow key={cert.id} className="border-white/10">
+                  <TableRow key={cert.id} className="border-gray-200">
                     <TableCell className="text-white font-medium">{cert.work_order_reference}</TableCell>
                     <TableCell className="text-gray-300">{cert.client_name}</TableCell>
                     <TableCell className="text-gray-300">{cert.course}</TableCell>
@@ -183,13 +183,13 @@ const CertificateApproval = () => {
 
       {/* Approval Dialog */}
       <Dialog open={showDialog} onOpenChange={setShowDialog}>
-        <DialogContent className="bg-[#1a2f4d] border-white/20 text-white">
+        <DialogContent className="bg-[#1a2f4d] border-gray-300 text-white">
           <DialogHeader>
             <DialogTitle>Approve Certificate Generation</DialogTitle>
           </DialogHeader>
           {selectedCertificate && (
             <div className="space-y-4">
-              <div className="bg-white/5 rounded-lg p-4">
+              <div className="bg-white rounded-lg p-4">
                 <div className="grid grid-cols-2 gap-2">
                   <div>
                     <p className="text-xs text-gray-400">WO Reference</p>
@@ -216,10 +216,10 @@ const CertificateApproval = () => {
                   value={approvalData.certificate_type} 
                   onValueChange={(value) => setApprovalData({...approvalData, certificate_type: value})}
                 >
-                  <SelectTrigger className="bg-white/5 border-white/20 text-white">
+                  <SelectTrigger className="bg-white border-gray-300 text-white">
                     <SelectValue />
                   </SelectTrigger>
-                  <SelectContent className="bg-[#1a2f4d] border-white/20 text-white">
+                  <SelectContent className="bg-[#1a2f4d] border-gray-300 text-white">
                     <SelectItem value="In-House">In-House Certificate</SelectItem>
                     <SelectItem value="International">International Certificate</SelectItem>
                   </SelectContent>
@@ -232,7 +232,7 @@ const CertificateApproval = () => {
                   value={approvalData.remarks}
                   onChange={(e) => setApprovalData({...approvalData, remarks: e.target.value})}
                   rows={3}
-                  className="bg-white/5 border-white/20 text-white"
+                  className="bg-white border-gray-300 text-white"
                   placeholder="Any special instructions for certificate generation..."
                 />
               </div>
@@ -246,7 +246,7 @@ const CertificateApproval = () => {
             </div>
           )}
           <DialogFooter>
-            <Button variant="outline" onClick={() => setShowDialog(false)} className="border-white/20 text-white">
+            <Button variant="outline" onClick={() => setShowDialog(false)} className="border-gray-300 text-white">
               Cancel
             </Button>
             <Button onClick={submitApproval} style={{ background: 'linear-gradient(135deg, #d4af37 0%, #c9a02c 100%)' }} className="text-[#0a1e3d]">

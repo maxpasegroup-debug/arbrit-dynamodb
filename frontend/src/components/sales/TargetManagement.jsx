@@ -131,7 +131,7 @@ const TargetManagement = () => {
 
       {/* Current Month Overview */}
       <div className="grid grid-cols-3 gap-4">
-        <div className="bg-white/5 backdrop-blur-sm border border-gray-300 rounded-xl p-6">
+        <div className="bg-white backdrop-blur-sm border border-gray-300 rounded-xl p-6">
           <div className="flex items-center gap-3 mb-3">
             <div className="p-3 bg-green-500/20 rounded-lg">
               <DollarSign className="w-6 h-6 text-green-400" />
@@ -145,7 +145,7 @@ const TargetManagement = () => {
           <p className="text-xs text-gray-400 mt-2">65% achieved</p>
         </div>
 
-        <div className="bg-white/5 backdrop-blur-sm border border-gray-300 rounded-xl p-6">
+        <div className="bg-white backdrop-blur-sm border border-gray-300 rounded-xl p-6">
           <div className="flex items-center gap-3 mb-3">
             <div className="p-3 bg-blue-500/20 rounded-lg">
               <Users className="w-6 h-6 text-blue-400" />
@@ -159,7 +159,7 @@ const TargetManagement = () => {
           <p className="text-xs text-gray-400 mt-2">78% achieved</p>
         </div>
 
-        <div className="bg-white/5 backdrop-blur-sm border border-gray-300 rounded-xl p-6">
+        <div className="bg-white backdrop-blur-sm border border-gray-300 rounded-xl p-6">
           <div className="flex items-center gap-3 mb-3">
             <div className="p-3 bg-purple-500/20 rounded-lg">
               <TrendingUp className="w-6 h-6 text-purple-400" />
@@ -175,7 +175,7 @@ const TargetManagement = () => {
       </div>
 
       {/* Team Targets */}
-      <div className="bg-white/5 backdrop-blur-sm border border-gray-300 rounded-xl p-6">
+      <div className="bg-white backdrop-blur-sm border border-gray-300 rounded-xl p-6">
         <h3 className="text-xl font-semibold text-white mb-4 flex items-center gap-2">
           <Target className="w-5 h-5 text-indigo-400" />
           Team Targets - {new Date().toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}
@@ -268,7 +268,7 @@ const TargetManagement = () => {
             <div>
               <Label className="text-gray-400">Team Member *</Label>
               <Select value={newTarget.employee_id} onValueChange={(val) => setNewTarget({...newTarget, employee_id: val})}>
-                <SelectTrigger className="bg-white/5 border-gray-300 text-white mt-1">
+                <SelectTrigger className="bg-white border-gray-300 text-white mt-1">
                   <SelectValue placeholder="Select team member" />
                 </SelectTrigger>
                 <SelectContent className="bg-[#1a2f4d] border-gray-300">
@@ -287,7 +287,7 @@ const TargetManagement = () => {
                 type="month"
                 value={newTarget.month}
                 onChange={(e) => setNewTarget({...newTarget, month: e.target.value})}
-                className="bg-white/5 border-gray-300 text-white mt-1"
+                className="bg-white border-gray-300 text-white mt-1"
               />
             </div>
 
@@ -299,7 +299,7 @@ const TargetManagement = () => {
                   value={newTarget.revenue_target}
                   onChange={(e) => setNewTarget({...newTarget, revenue_target: e.target.value})}
                   placeholder="50000"
-                  className="bg-white/5 border-gray-300 text-white mt-1"
+                  className="bg-white border-gray-300 text-white mt-1"
                 />
               </div>
               <div>
@@ -309,7 +309,7 @@ const TargetManagement = () => {
                   value={newTarget.leads_target}
                   onChange={(e) => setNewTarget({...newTarget, leads_target: e.target.value})}
                   placeholder="50"
-                  className="bg-white/5 border-gray-300 text-white mt-1"
+                  className="bg-white border-gray-300 text-white mt-1"
                 />
               </div>
             </div>
@@ -323,7 +323,7 @@ const TargetManagement = () => {
                 placeholder="25"
                 min="0"
                 max="100"
-                className="bg-white/5 border-gray-300 text-white mt-1"
+                className="bg-white border-gray-300 text-white mt-1"
               />
             </div>
 
@@ -331,7 +331,7 @@ const TargetManagement = () => {
               <Button
                 variant="outline"
                 onClick={() => setDialogOpen(false)}
-                className="border-white/20 text-white"
+                className="border-gray-300 text-white"
               >
                 Cancel
               </Button>

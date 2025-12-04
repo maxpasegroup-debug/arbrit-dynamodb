@@ -98,24 +98,24 @@ const EmployeeMonitoring = () => {
           onClick={fetchLiveAttendance}
           variant="outline"
           size="sm"
-          className="border-white/20 text-white hover:bg-white/10"
+          className="border-gray-300 text-white hover:bg-white"
         >
           <RefreshCw className="w-4 h-4 mr-2" />
           Refresh
         </Button>
       </div>
 
-      <div className="bg-white/5 backdrop-blur-sm rounded-xl border border-gray-300 p-4">
+      <div className="bg-white backdrop-blur-sm rounded-xl border border-gray-300 p-4">
         <div className="flex items-center gap-4">
           <Filter className="w-5 h-5 text-gray-400" />
           <div className="flex-1 grid grid-cols-2 gap-4">
             <div>
               <label className="text-sm text-gray-300 mb-2 block">Branch</label>
               <Select value={filterBranch} onValueChange={setFilterBranch}>
-                <SelectTrigger data-testid="filter-branch" className="bg-white/5 border-white/20 text-white">
+                <SelectTrigger data-testid="filter-branch" className="bg-white border-gray-300 text-white">
                   <SelectValue placeholder="All Branches" />
                 </SelectTrigger>
-                <SelectContent className="bg-[#1a2f4d] border-white/20 text-white">
+                <SelectContent className="bg-[#1a2f4d] border-gray-300 text-white">
                   <SelectItem value="all">All Branches</SelectItem>
                   <SelectItem value="Dubai">Dubai</SelectItem>
                   <SelectItem value="Saudi">Saudi</SelectItem>
@@ -126,10 +126,10 @@ const EmployeeMonitoring = () => {
             <div>
               <label className="text-sm text-gray-300 mb-2 block">Badge Title</label>
               <Select value={filterBadge} onValueChange={setFilterBadge}>
-                <SelectTrigger data-testid="filter-badge" className="bg-white/5 border-white/20 text-white">
+                <SelectTrigger data-testid="filter-badge" className="bg-white border-gray-300 text-white">
                   <SelectValue placeholder="All Titles" />
                 </SelectTrigger>
-                <SelectContent className="bg-[#1a2f4d] border-white/20 text-white">
+                <SelectContent className="bg-[#1a2f4d] border-gray-300 text-white">
                   <SelectItem value="all">All Titles</SelectItem>
                   <SelectItem value="Sales Manager">Sales Manager</SelectItem>
                   <SelectItem value="Assistant Sales Manager">Assistant Sales Manager</SelectItem>
@@ -157,10 +157,10 @@ const EmployeeMonitoring = () => {
         </div>
       </div>
 
-      <div className="bg-white/5 backdrop-blur-sm rounded-xl border border-gray-300 overflow-hidden">
+      <div className="bg-white backdrop-blur-sm rounded-xl border border-gray-300 overflow-hidden">
         <Table>
           <TableHeader>
-            <TableRow className="border-gray-300 hover:bg-white/5">
+            <TableRow className="border-gray-300 hover:bg-white">
               <TableHead className="text-gray-300">Name</TableHead>
               <TableHead className="text-gray-300">Mobile</TableHead>
               <TableHead className="text-gray-300">Branch</TableHead>
@@ -185,7 +185,7 @@ const EmployeeMonitoring = () => {
               </TableRow>
             ) : (
               filteredAttendance.map((emp) => (
-                <TableRow key={emp.id} className="border-gray-300 hover:bg-white/5">
+                <TableRow key={emp.id} className="border-gray-300 hover:bg-white">
                   <TableCell className="text-white font-medium">{emp.name}</TableCell>
                   <TableCell className="text-gray-300">{emp.mobile}</TableCell>
                   <TableCell className="text-gray-300">
@@ -238,7 +238,7 @@ const EmployeeMonitoring = () => {
 
       {/* Badge Assignment Dialog */}
       <Dialog open={showBadgeDialog} onOpenChange={setShowBadgeDialog}>
-        <DialogContent className="bg-[#1a2f4d] border-white/20 text-white">
+        <DialogContent className="bg-[#1a2f4d] border-gray-300 text-white">
           <DialogHeader>
             <DialogTitle className="text-xl flex items-center gap-2">
               <Award className="w-5 h-5 text-yellow-400" />
@@ -247,7 +247,7 @@ const EmployeeMonitoring = () => {
           </DialogHeader>
           <div className="space-y-4">
             {selectedEmployee && (
-              <div className="bg-white/5 rounded-lg p-3 border border-gray-300">
+              <div className="bg-white rounded-lg p-3 border border-gray-300">
                 <p className="text-sm text-gray-400">Employee</p>
                 <p className="text-lg font-semibold text-white">{selectedEmployee.name}</p>
                 <p className="text-sm text-gray-400">{selectedEmployee.mobile}</p>
@@ -256,10 +256,10 @@ const EmployeeMonitoring = () => {
             <div>
               <label className="text-sm text-gray-300 mb-2 block">Select Badge Title</label>
               <Select value={selectedBadgeTitle} onValueChange={setSelectedBadgeTitle}>
-                <SelectTrigger data-testid="badge-select" className="bg-white/5 border-white/20 text-white">
+                <SelectTrigger data-testid="badge-select" className="bg-white border-gray-300 text-white">
                   <SelectValue placeholder="Choose a badge title" />
                 </SelectTrigger>
-                <SelectContent className="bg-[#1a2f4d] border-white/20 text-white">
+                <SelectContent className="bg-[#1a2f4d] border-gray-300 text-white">
                   <SelectItem value="Sales Manager">Sales Manager</SelectItem>
                   <SelectItem value="Assistant Sales Manager">Assistant Sales Manager</SelectItem>
                   <SelectItem value="Team Leader">Team Leader</SelectItem>
@@ -283,7 +283,7 @@ const EmployeeMonitoring = () => {
                 setSelectedEmployee(null);
                 setSelectedBadgeTitle('');
               }}
-              className="border-white/20 text-white hover:bg-white/10"
+              className="border-gray-300 text-white hover:bg-white"
             >
               Cancel
             </Button>

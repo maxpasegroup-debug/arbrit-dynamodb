@@ -233,15 +233,15 @@ const EmployeeManagement = () => {
   return (
     <div className="space-y-6">
       {/* Filters */}
-      <div className="bg-white/5 backdrop-blur-sm rounded-xl border border-white/10 p-4 mb-4">
+      <div className="bg-white backdrop-blur-sm rounded-xl border border-gray-200 p-4 mb-4">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div>
             <Label className="text-gray-300 text-sm mb-2 block">Branch</Label>
             <Select value={filterBranch} onValueChange={setFilterBranch}>
-              <SelectTrigger data-testid="filter-branch" className="bg-white/5 border-white/20 text-white">
+              <SelectTrigger data-testid="filter-branch" className="bg-white border-gray-300 text-white">
                 <SelectValue placeholder="All Branches" />
               </SelectTrigger>
-              <SelectContent className="bg-[#1a2f4d] border-white/20 text-white">
+              <SelectContent className="bg-[#1a2f4d] border-gray-300 text-white">
                 <SelectItem value="all">All Branches</SelectItem>
                 <SelectItem value="Dubai">Dubai</SelectItem>
                 <SelectItem value="Abu Dhabi">Abu Dhabi</SelectItem>
@@ -252,10 +252,10 @@ const EmployeeManagement = () => {
           <div>
             <Label className="text-gray-300 text-sm mb-2 block">Department</Label>
             <Select value={filterDepartment} onValueChange={setFilterDepartment}>
-              <SelectTrigger data-testid="filter-department" className="bg-white/5 border-white/20 text-white">
+              <SelectTrigger data-testid="filter-department" className="bg-white border-gray-300 text-white">
                 <SelectValue placeholder="All Departments" />
               </SelectTrigger>
-              <SelectContent className="bg-[#1a2f4d] border-white/20 text-white">
+              <SelectContent className="bg-[#1a2f4d] border-gray-300 text-white">
                 <SelectItem value="all">All Departments</SelectItem>
                 <SelectItem value="Sales">Sales</SelectItem>
                 <SelectItem value="HR">HR</SelectItem>
@@ -274,7 +274,7 @@ const EmployeeManagement = () => {
                   setFilterDepartment('');
                 }}
                 variant="outline"
-                className="border-white/20 text-white hover:bg-white/10 w-full"
+                className="border-gray-300 text-white hover:bg-white w-full"
               >
                 Clear Filters
               </Button>
@@ -293,7 +293,7 @@ const EmployeeManagement = () => {
             placeholder="Search employees..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="pl-10 bg-white/5 border-white/20 text-white placeholder:text-gray-400"
+            className="pl-10 bg-white border-gray-300 text-white placeholder:text-gray-400"
           />
         </div>
         <Button
@@ -308,10 +308,10 @@ const EmployeeManagement = () => {
       </div>
 
       {/* Employee Table */}
-      <div className="bg-white/5 backdrop-blur-sm rounded-xl border border-white/10 overflow-hidden">
+      <div className="bg-white backdrop-blur-sm rounded-xl border border-gray-200 overflow-hidden">
         <Table>
           <TableHeader>
-            <TableRow className="border-white/10 hover:bg-white/5">
+            <TableRow className="border-gray-200 hover:bg-white">
               <TableHead className="text-gray-300">Name</TableHead>
               <TableHead className="text-gray-300">Mobile</TableHead>
               <TableHead className="text-gray-300">Designation</TableHead>
@@ -339,14 +339,14 @@ const EmployeeManagement = () => {
               sortedDepartments.map(department => (
                 <>
                   {/* Department Header Row */}
-                  <TableRow key={`dept-${department}`} className="bg-white/10 border-white/20">
+                  <TableRow key={`dept-${department}`} className="bg-white border-gray-300">
                     <TableCell colSpan={8} className="text-white font-bold py-3 text-sm uppercase tracking-wide">
                       {department} ({groupedEmployees[department].length})
                     </TableCell>
                   </TableRow>
                   {/* Employee Rows for this department */}
                   {groupedEmployees[department].map((employee) => (
-                    <TableRow key={employee.id} className="border-white/10 hover:bg-white/5" data-testid={`employee-row-${employee.id}`}>
+                    <TableRow key={employee.id} className="border-gray-200 hover:bg-white" data-testid={`employee-row-${employee.id}`}>
                       <TableCell className="text-white font-medium">{employee.name}</TableCell>
                       <TableCell className="text-gray-300">{employee.mobile}</TableCell>
                       <TableCell className="text-gray-300">{employee.designation || '-'}</TableCell>
@@ -399,7 +399,7 @@ const EmployeeManagement = () => {
 
       {/* Add/Edit Employee Dialog */}
       <Dialog open={showDialog} onOpenChange={setShowDialog}>
-        <DialogContent className="bg-[#1a2f4d] border-white/20 text-white">
+        <DialogContent className="bg-[#1a2f4d] border-gray-300 text-white">
           <DialogHeader>
             <DialogTitle className="text-xl">
               {editMode ? 'Edit Employee' : 'Add New Employee'}
@@ -414,7 +414,7 @@ const EmployeeManagement = () => {
                 value={formData.name}
                 onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                 required
-                className="bg-white/5 border-white/20 text-white mt-1"
+                className="bg-white border-gray-300 text-white mt-1"
               />
             </div>
             <div>
@@ -425,16 +425,16 @@ const EmployeeManagement = () => {
                 value={formData.mobile}
                 onChange={(e) => setFormData({ ...formData, mobile: e.target.value })}
                 required
-                className="bg-white/5 border-white/20 text-white mt-1"
+                className="bg-white border-gray-300 text-white mt-1"
               />
             </div>
             <div>
               <Label htmlFor="branch" className="text-gray-300">Branch *</Label>
               <Select value={formData.branch} onValueChange={(value) => setFormData({ ...formData, branch: value })}>
-                <SelectTrigger data-testid="employee-branch-select" className="bg-white/5 border-white/20 text-white mt-1">
+                <SelectTrigger data-testid="employee-branch-select" className="bg-white border-gray-300 text-white mt-1">
                   <SelectValue placeholder="Select branch" />
                 </SelectTrigger>
-                <SelectContent className="bg-[#1a2f4d] border-white/20 text-white">
+                <SelectContent className="bg-[#1a2f4d] border-gray-300 text-white">
                   <SelectItem value="Dubai">Dubai</SelectItem>
                   <SelectItem value="Saudi">Saudi</SelectItem>
                   <SelectItem value="Abu Dhabi">Abu Dhabi</SelectItem>
@@ -449,7 +449,7 @@ const EmployeeManagement = () => {
                 type="email"
                 value={formData.email}
                 onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                className="bg-white/5 border-white/20 text-white mt-1"
+                className="bg-white border-gray-300 text-white mt-1"
               />
             </div>
             <div>
@@ -460,10 +460,10 @@ const EmployeeManagement = () => {
                   setFormData({ ...formData, department: value, designation: '' });
                 }}
               >
-                <SelectTrigger data-testid="employee-department-select" className="bg-white/5 border-white/20 text-white mt-1">
+                <SelectTrigger data-testid="employee-department-select" className="bg-white border-gray-300 text-white mt-1">
                   <SelectValue placeholder="Select department" />
                 </SelectTrigger>
-                <SelectContent className="bg-[#1a2f4d] border-white/20 text-white">
+                <SelectContent className="bg-[#1a2f4d] border-gray-300 text-white">
                   <SelectItem value="Sales">Sales</SelectItem>
                   <SelectItem value="Academic">Academic</SelectItem>
                   <SelectItem value="HR">HR</SelectItem>
@@ -481,10 +481,10 @@ const EmployeeManagement = () => {
                 onValueChange={(value) => setFormData({ ...formData, designation: value })}
                 disabled={!formData.department}
               >
-                <SelectTrigger data-testid="employee-designation-select" className="bg-white/5 border-white/20 text-white mt-1">
+                <SelectTrigger data-testid="employee-designation-select" className="bg-white border-gray-300 text-white mt-1">
                   <SelectValue placeholder={formData.department ? "Select designation" : "Select department first"} />
                 </SelectTrigger>
-                <SelectContent className="bg-[#1a2f4d] border-white/20 text-white">
+                <SelectContent className="bg-[#1a2f4d] border-gray-300 text-white">
                   {formData.department && DESIGNATION_OPTIONS[formData.department]?.map((option) => (
                     <SelectItem key={option.value} value={option.value}>
                       {option.label}
@@ -498,10 +498,10 @@ const EmployeeManagement = () => {
                 <div>
                   <Label htmlFor="sales_type" className="text-gray-300">Sales Type *</Label>
                   <Select value={formData.sales_type} onValueChange={(value) => setFormData({ ...formData, sales_type: value })}>
-                    <SelectTrigger data-testid="employee-salestype-select" className="bg-white/5 border-white/20 text-white mt-1">
+                    <SelectTrigger data-testid="employee-salestype-select" className="bg-white border-gray-300 text-white mt-1">
                       <SelectValue placeholder="Select sales type" />
                     </SelectTrigger>
-                    <SelectContent className="bg-[#1a2f4d] border-white/20 text-white">
+                    <SelectContent className="bg-[#1a2f4d] border-gray-300 text-white">
                       <SelectItem value="tele">Tele Sales</SelectItem>
                       <SelectItem value="field">Field Sales</SelectItem>
                     </SelectContent>
@@ -510,10 +510,10 @@ const EmployeeManagement = () => {
                 <div>
                   <Label htmlFor="badge_title" className="text-gray-300">Badge Title</Label>
                   <Select value={formData.badge_title} onValueChange={(value) => setFormData({ ...formData, badge_title: value })}>
-                    <SelectTrigger data-testid="employee-badge-select" className="bg-white/5 border-white/20 text-white mt-1">
+                    <SelectTrigger data-testid="employee-badge-select" className="bg-white border-gray-300 text-white mt-1">
                       <SelectValue placeholder="Select badge" />
                     </SelectTrigger>
-                    <SelectContent className="bg-[#1a2f4d] border-white/20 text-white">
+                    <SelectContent className="bg-[#1a2f4d] border-gray-300 text-white">
                       <SelectItem value="Sales Manager">Sales Manager</SelectItem>
                       <SelectItem value="Assistant Sales Manager">Assistant Sales Manager</SelectItem>
                       <SelectItem value="Team Leader">Team Leader</SelectItem>
@@ -531,7 +531,7 @@ const EmployeeManagement = () => {
                 type="button"
                 variant="outline"
                 onClick={handleCloseDialog}
-                className="border-white/20 text-white hover:bg-white/10"
+                className="border-gray-300 text-white hover:bg-white"
               >
                 Cancel
               </Button>

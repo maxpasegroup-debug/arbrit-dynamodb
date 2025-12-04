@@ -67,7 +67,7 @@ const AvailabilityCalendar = () => {
           <h3 className="text-xl font-semibold text-white mb-2">
             Call Availability Calendar
           </h3>
-          <p className="text-slate-400">
+          <p className="text-gray-500">
             Manage your availability for client calls and meetings
           </p>
         </div>
@@ -127,7 +127,7 @@ const AvailabilityCalendar = () => {
       </div>
 
       {/* Availability Schedule */}
-      <Card className="bg-white/50 border-gray-300">
+      <Card className="bg-white0 border-gray-300">
         <CardHeader>
           <CardTitle className="text-white flex items-center gap-2">
             <Clock className="w-5 h-5" />

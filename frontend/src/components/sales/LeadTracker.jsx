@@ -376,18 +376,18 @@ const LeadTracker = () => {
         const dialog = document.createElement('div');
         dialog.innerHTML = `
           <div class="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-            <div class="bg-gray-50 rounded-xl p-6 max-w-md w-full mx-4 border border-white/10">
+            <div class="bg-gray-50 rounded-xl p-6 max-w-md w-full mx-4 border border-gray-200">
               <h3 class="text-xl font-bold text-gray-900 mb-4">Review Quotation</h3>
               <div class="space-y-3 mb-6">
-                <div class="bg-white/5 p-3 rounded">
+                <div class="bg-white p-3 rounded">
                   <p class="text-gray-500 text-sm">Client</p>
                   <p class="text-gray-900 font-semibold">${quotation.client_name}</p>
                 </div>
-                <div class="bg-white/5 p-3 rounded">
+                <div class="bg-white p-3 rounded">
                   <p class="text-gray-500 text-sm">Total Amount</p>
                   <p class="text-green-400 font-bold text-lg">${quotation.total_amount} AED</p>
                 </div>
-                <div class="bg-white/5 p-3 rounded">
+                <div class="bg-white p-3 rounded">
                   <p class="text-gray-500 text-sm">Created By</p>
                   <p class="text-gray-900">${quotation.created_by_name}</p>
                 </div>
@@ -470,18 +470,18 @@ const LeadTracker = () => {
         const dialog = document.createElement('div');
         dialog.innerHTML = `
           <div class="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-            <div class="bg-gray-50 rounded-xl p-6 max-w-md w-full mx-4 border border-white/10">
+            <div class="bg-gray-50 rounded-xl p-6 max-w-md w-full mx-4 border border-gray-200">
               <h3 class="text-xl font-bold text-gray-900 mb-4">Review Invoice</h3>
               <div class="space-y-3 mb-6">
-                <div class="bg-white/5 p-3 rounded">
+                <div class="bg-white p-3 rounded">
                   <p class="text-gray-500 text-sm">Client</p>
                   <p class="text-gray-900 font-semibold">${invoice.client_name}</p>
                 </div>
-                <div class="bg-white/5 p-3 rounded">
+                <div class="bg-white p-3 rounded">
                   <p class="text-gray-500 text-sm">Amount</p>
                   <p class="text-green-400 font-bold text-lg">${invoice.amount} AED</p>
                 </div>
-                <div class="bg-white/5 p-3 rounded">
+                <div class="bg-white p-3 rounded">
                   <p class="text-gray-500 text-sm">Requested By</p>
                   <p class="text-gray-900">${invoice.requested_by_name}</p>
                 </div>
@@ -584,7 +584,7 @@ const LeadTracker = () => {
         <Badge className={`bg-${color}-500/20 text-${color}-300 border-${color}-400/50`}>
           {label}
         </Badge>
-        <Badge className="bg-white/10 text-gray-900">
+        <Badge className="bg-white text-gray-900">
           {lead?.lead_score?.toUpperCase() || 'N/A'}
         </Badge>
       </div>
@@ -629,7 +629,7 @@ const LeadTracker = () => {
           <p className="text-gray-900 text-xs">{lead?.requirement || 'No requirements specified'}</p>
         </div>
 
-        <div className="pt-3 border-t border-white/10">
+        <div className="pt-3 border-t border-gray-200">
           <p className="text-gray-500 text-xs">Submitted By</p>
           <p className="text-gray-900 font-semibold">{lead?.submitted_by || 'Unknown'}</p>
           <p className="text-gray-500 text-xs">{lead?.submitted_by_role || ''}</p>
@@ -672,7 +672,7 @@ const LeadTracker = () => {
               return (
                 <div
                   key={alert.id}
-                  className="bg-white/5 rounded-lg p-4 border border-red-400/30 hover:border-red-400/60 transition-all"
+                  className="bg-white rounded-lg p-4 border border-red-400/30 hover:border-red-400/60 transition-all"
                 >
                   <div className="flex items-start justify-between">
                     <div className="flex-1">
@@ -730,7 +730,7 @@ const LeadTracker = () => {
       )}
 
       {/* Pipeline Bar */}
-      <div className="bg-white/50 backdrop-blur-sm rounded-xl border border-white/10 p-4">
+      <div className="bg-white0 backdrop-blur-sm rounded-xl border border-gray-200 p-4">
         <div className="grid grid-cols-6 gap-2">
           {statuses.map((status, idx) => (
             <button
@@ -739,7 +739,7 @@ const LeadTracker = () => {
               className={`p-3 rounded-lg transition-all ${
                 statusFilter === status
                   ? 'bg-blue-600 ring-2 ring-blue-400'
-                  : 'bg-white/5 hover:bg-white/10'
+                  : 'bg-white hover:bg-white'
               }`}
             >
               <div className="text-center">
@@ -807,7 +807,7 @@ const LeadTracker = () => {
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               placeholder="Search by company, contact, or course..."
-              className="pl-10 bg-gray-50 border-white/10 text-gray-900"
+              className="pl-10 bg-gray-50 border-gray-200 text-gray-900"
             />
           </div>
         </div>
@@ -815,7 +815,7 @@ const LeadTracker = () => {
         <select
           value={scoreFilter}
           onChange={(e) => setScoreFilter(e.target.value)}
-          className="bg-gray-50 border border-white/10 text-gray-900 rounded-md p-2"
+          className="bg-gray-50 border border-gray-200 text-gray-900 rounded-md p-2"
         >
           <option value="all">All Scores</option>
           <option value="hot">🔥 Hot</option>
@@ -829,7 +829,7 @@ const LeadTracker = () => {
             <select
               value={areaFilter}
               onChange={(e) => setAreaFilter(e.target.value)}
-              className="bg-gray-50 border border-white/10 text-gray-900 rounded-md p-2"
+              className="bg-gray-50 border border-gray-200 text-gray-900 rounded-md p-2"
             >
               <option value="all">All Areas</option>
               {areas.map(area => (
@@ -840,7 +840,7 @@ const LeadTracker = () => {
             <select
               value={employeeFilter}
               onChange={(e) => setEmployeeFilter(e.target.value)}
-              className="bg-gray-50 border border-white/10 text-gray-900 rounded-md p-2"
+              className="bg-gray-50 border border-gray-200 text-gray-900 rounded-md p-2"
             >
               <option value="all">All Employees</option>
               {employees.map(emp => (
@@ -956,7 +956,7 @@ const LeadTracker = () => {
                         size="sm"
                         variant="outline"
                         onClick={() => window.open(`tel:${lead.contact_mobile}`)}
-                        className="border-white/20 hover:bg-green-500/20"
+                        className="border-gray-300 hover:bg-green-500/20"
                         title="Call"
                       >
                         <Phone className="w-3 h-3" />
@@ -965,7 +965,7 @@ const LeadTracker = () => {
                         size="sm"
                         variant="outline"
                         onClick={() => handleWhatsApp(lead)}
-                        className="border-white/20 hover:bg-green-500/20"
+                        className="border-gray-300 hover:bg-green-500/20"
                         title="WhatsApp"
                       >
                         <MessageCircle className="w-3 h-3" />
@@ -1163,7 +1163,7 @@ const LeadTracker = () => {
                         size="sm"
                         variant="outline"
                         onClick={() => handleOpenCalendar(lead)}
-                        className="border-white/20 hover:bg-gray-900/20"
+                        className="border-gray-300 hover:bg-gray-900/20"
                         title="Check Calendar & Request Booking"
                       >
                         <Calendar className="w-3 h-3 mr-1" />
@@ -1173,7 +1173,7 @@ const LeadTracker = () => {
                       <select
                         value={lead.status}
                         onChange={(e) => handleUpdateStatus(lead.id, e.target.value)}
-                        className="ml-auto text-xs bg-gray-50 border border-white/10 text-gray-900 rounded px-2 py-1"
+                        className="ml-auto text-xs bg-gray-50 border border-gray-200 text-gray-900 rounded px-2 py-1"
                       >
                         {statuses.map(s => (
                           <option key={s} value={s}>{s}</option>
@@ -1184,7 +1184,7 @@ const LeadTracker = () => {
                 </div>
 
                 {lead.requirement && (
-                  <div className="mt-3 pt-3 border-t border-white/10 text-sm text-gray-500">
+                  <div className="mt-3 pt-3 border-t border-gray-200 text-sm text-gray-500">
                     <strong>Requirements:</strong> {lead.requirement}
                   </div>
                 )}
@@ -1203,7 +1203,7 @@ const LeadTracker = () => {
 
       {/* Trainer Calendar Modal */}
       <Dialog open={calendarOpen} onOpenChange={setCalendarOpen}>
-        <DialogContent className="max-w-5xl bg-white border-white/10 max-h-[90vh] overflow-y-auto">
+        <DialogContent className="max-w-5xl bg-white border-gray-200 max-h-[90vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle className="text-gray-900">
               Trainer Calendar - Check Availability & Request Booking
@@ -1236,7 +1236,7 @@ const LeadTracker = () => {
 
       {/* Duplicate Comparison Modal */}
       <Dialog open={comparisonOpen} onOpenChange={setComparisonOpen}>
-        <DialogContent className="max-w-7xl max-h-[95vh] overflow-y-auto bg-white border-white/10">
+        <DialogContent className="max-w-7xl max-h-[95vh] overflow-y-auto bg-white border-gray-200">
           <DialogHeader>
             <DialogTitle className="text-2xl text-gray-900 flex items-center gap-2">
               <AlertTriangle className="w-6 h-6 text-orange-400" />
@@ -1264,7 +1264,7 @@ const LeadTracker = () => {
               </div>
 
               {/* Decision Options */}
-              <div className="bg-white/5 rounded-lg p-6 border border-white/10">
+              <div className="bg-white rounded-lg p-6 border border-gray-200">
                 <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
                   <Award className="w-5 h-5 text-yellow-400" />
                   Sales Head Decision
@@ -1325,7 +1325,7 @@ const LeadTracker = () => {
                     value={resolutionNotes}
                     onChange={(e) => setResolutionNotes(e.target.value)}
                     placeholder="Add any notes about your decision..."
-                    className="bg-gray-50 border-white/10 text-gray-900 min-h-[80px]"
+                    className="bg-gray-50 border-gray-200 text-gray-900 min-h-[80px]"
                   />
                 </div>
 
@@ -1341,7 +1341,7 @@ const LeadTracker = () => {
                   <Button
                     onClick={() => setComparisonOpen(false)}
                     variant="outline"
-                    className="border-white/20 hover:bg-white/10"
+                    className="border-gray-300 hover:bg-white"
                     size="lg"
                   >
                     <XCircle className="w-5 h-5 mr-2" />
@@ -1373,7 +1373,7 @@ const LeadTracker = () => {
 
       {/* Sales Head: Quotation Requests Management Dialog */}
       <Dialog open={quotationRequestOpen} onOpenChange={setQuotationRequestOpen}>
-        <DialogContent className="bg-[#1a2f4d] border-white/20 text-gray-900 max-w-4xl max-h-[80vh] overflow-y-auto">
+        <DialogContent className="bg-[#1a2f4d] border-gray-300 text-gray-900 max-w-4xl max-h-[80vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle className="text-2xl">📋 Quotation Requests for {selectedRequest?.lead?.company_name || selectedRequest?.lead?.client_name}</DialogTitle>
             <DialogDescription className="text-gray-500">
@@ -1383,7 +1383,7 @@ const LeadTracker = () => {
           
           <div className="space-y-4">
             {(selectedRequest?.requests || []).map((quot) => (
-              <div key={quot.id} className="bg-white/5 rounded-lg p-4 border border-purple-400/30">
+              <div key={quot.id} className="bg-white rounded-lg p-4 border border-purple-400/30">
                 <div className="flex justify-between items-start mb-3">
                   <div>
                     <h4 className="font-semibold text-lg text-gray-900">{quot.client_name || quot.company_name}</h4>
@@ -1476,7 +1476,7 @@ const LeadTracker = () => {
 
       {/* Sales Head: Invoice Requests Management Dialog */}
       <Dialog open={invoiceRequestOpen} onOpenChange={setInvoiceRequestOpen}>
-        <DialogContent className="bg-[#1a2f4d] border-white/20 text-gray-900 max-w-4xl max-h-[80vh] overflow-y-auto">
+        <DialogContent className="bg-[#1a2f4d] border-gray-300 text-gray-900 max-w-4xl max-h-[80vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle className="text-2xl">💰 Invoice Requests for {selectedRequest?.lead?.company_name || selectedRequest?.lead?.client_name}</DialogTitle>
             <DialogDescription className="text-gray-500">
@@ -1486,7 +1486,7 @@ const LeadTracker = () => {
           
           <div className="space-y-4">
             {(selectedRequest?.requests || []).map((inv) => (
-              <div key={inv.id} className="bg-white/5 rounded-lg p-4 border border-green-400/30">
+              <div key={inv.id} className="bg-white rounded-lg p-4 border border-green-400/30">
                 <div className="flex justify-between items-start mb-3">
                   <div>
                     <h4 className="font-semibold text-lg text-gray-900">{inv.client_name || inv.company_name}</h4>

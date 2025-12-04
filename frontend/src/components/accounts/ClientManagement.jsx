@@ -133,10 +133,10 @@ const ClientManagement = () => {
       </div>
 
       {/* Clients Table */}
-      <div className="bg-white/5 backdrop-blur-sm rounded-xl border border-white/10 overflow-hidden">
+      <div className="bg-white backdrop-blur-sm rounded-xl border border-gray-200 overflow-hidden">
         <Table>
           <TableHeader>
-            <TableRow className="border-white/10">
+            <TableRow className="border-gray-200">
               <TableHead className="text-gray-300">Client Name</TableHead>
               <TableHead className="text-gray-300">Company</TableHead>
               <TableHead className="text-gray-300">Contact</TableHead>
@@ -157,7 +157,7 @@ const ClientManagement = () => {
               </TableRow>
             ) : (
               clients.map((client) => (
-                <TableRow key={client.id} className="border-white/10">
+                <TableRow key={client.id} className="border-gray-200">
                   <TableCell className="text-white font-medium">{client.client_name}</TableCell>
                   <TableCell className="text-white">{client.company || '-'}</TableCell>
                   <TableCell className="text-gray-300">
@@ -216,7 +216,7 @@ const ClientManagement = () => {
                   id="client_name"
                   value={formData.client_name}
                   onChange={(e) => setFormData({...formData, client_name: e.target.value})}
-                  className="bg-slate-800 border-slate-600 text-white"
+                  className="bg-gray-50 border-slate-600 text-white"
                   placeholder="John Doe"
                 />
               </div>
@@ -226,7 +226,7 @@ const ClientManagement = () => {
                   id="company"
                   value={formData.company}
                   onChange={(e) => setFormData({...formData, company: e.target.value})}
-                  className="bg-slate-800 border-slate-600 text-white"
+                  className="bg-gray-50 border-slate-600 text-white"
                   placeholder="ABC Corp"
                 />
               </div>
@@ -240,7 +240,7 @@ const ClientManagement = () => {
                   type="email"
                   value={formData.email}
                   onChange={(e) => setFormData({...formData, email: e.target.value})}
-                  className="bg-slate-800 border-slate-600 text-white"
+                  className="bg-gray-50 border-slate-600 text-white"
                   placeholder="client@example.com"
                 />
               </div>
@@ -250,7 +250,7 @@ const ClientManagement = () => {
                   id="phone"
                   value={formData.phone}
                   onChange={(e) => setFormData({...formData, phone: e.target.value})}
-                  className="bg-slate-800 border-slate-600 text-white"
+                  className="bg-gray-50 border-slate-600 text-white"
                   placeholder="+971 50 123 4567"
                 />
               </div>
@@ -265,7 +265,7 @@ const ClientManagement = () => {
                   step="0.01"
                   value={formData.credit_limit}
                   onChange={(e) => setFormData({...formData, credit_limit: e.target.value})}
-                  className="bg-slate-800 border-slate-600 text-white"
+                  className="bg-gray-50 border-slate-600 text-white"
                 />
               </div>
               <div className="space-y-2">
@@ -275,16 +275,16 @@ const ClientManagement = () => {
                   type="number"
                   value={formData.payment_terms}
                   onChange={(e) => setFormData({...formData, payment_terms: e.target.value})}
-                  className="bg-slate-800 border-slate-600 text-white"
+                  className="bg-gray-50 border-slate-600 text-white"
                 />
               </div>
               <div className="space-y-2">
                 <Label htmlFor="currency">Currency</Label>
                 <Select value={formData.currency} onValueChange={(val) => setFormData({...formData, currency: val})}>
-                  <SelectTrigger className="bg-slate-800 border-slate-600 text-white">
+                  <SelectTrigger className="bg-gray-50 border-slate-600 text-white">
                     <SelectValue />
                   </SelectTrigger>
-                  <SelectContent className="bg-slate-800 border-slate-600 text-white">
+                  <SelectContent className="bg-gray-50 border-slate-600 text-white">
                     <SelectItem value="AED">AED</SelectItem>
                     <SelectItem value="USD">USD</SelectItem>
                     <SelectItem value="SAR">SAR</SelectItem>
@@ -300,7 +300,7 @@ const ClientManagement = () => {
                 id="notes"
                 value={formData.notes}
                 onChange={(e) => setFormData({...formData, notes: e.target.value})}
-                className="bg-slate-800 border-slate-600 text-white"
+                className="bg-gray-50 border-slate-600 text-white"
                 placeholder="Additional client information..."
               />
             </div>
@@ -310,7 +310,7 @@ const ClientManagement = () => {
             <Button
               variant="outline"
               onClick={() => setShowDialog(false)}
-              className="border-slate-600 text-white hover:bg-slate-800"
+              className="border-slate-600 text-white hover:bg-gray-50"
             >
               Cancel
             </Button>

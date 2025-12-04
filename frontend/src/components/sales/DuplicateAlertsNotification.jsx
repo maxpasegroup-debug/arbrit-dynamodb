@@ -42,7 +42,7 @@ const DuplicateAlertsNotification = ({ onViewAll }) => {
         <Button
           variant="ghost"
           size="icon"
-          className="relative hover:bg-white/10"
+          className="relative hover:bg-white"
         >
           <Bell className="w-5 h-5 text-white" />
           {unreadCount > 0 && (
@@ -52,7 +52,7 @@ const DuplicateAlertsNotification = ({ onViewAll }) => {
           )}
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-80 bg-white border-white/20 p-0">
+      <PopoverContent className="w-80 bg-white border-gray-300 p-0">
         <div className="p-4 border-b border-gray-300">
           <h3 className="font-semibold text-white flex items-center gap-2">
             <AlertTriangle className="w-4 h-4 text-orange-400" />
@@ -75,7 +75,7 @@ const DuplicateAlertsNotification = ({ onViewAll }) => {
                   : Math.round(alert.similarity_score * 100);
                 
                 return (
-                  <div key={alert.id} className="p-3 hover:bg-white/5 cursor-pointer" onClick={onViewAll}>
+                  <div key={alert.id} className="p-3 hover:bg-white cursor-pointer" onClick={onViewAll}>
                     <div className="flex items-start justify-between mb-2">
                       <p className="text-sm font-medium text-white">
                         🔴 Possible Duplicate

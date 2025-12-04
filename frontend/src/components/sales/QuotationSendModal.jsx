@@ -119,13 +119,13 @@ export default function QuotationSendModal({ lead, onClose, onSuccess }) {
               <FileText className="w-6 h-6" />
               Quotation Preview
             </h2>
-            <p className="text-slate-400 text-sm mt-1">
+            <p className="text-gray-500 text-sm mt-1">
               Review and send to client
             </p>
           </div>
           <button
             onClick={onClose}
-            className="text-slate-400 hover:text-white transition-colors"
+            className="text-gray-500 hover:text-white transition-colors"
           >
             <X className="w-6 h-6" />
           </button>
@@ -136,7 +136,7 @@ export default function QuotationSendModal({ lead, onClose, onSuccess }) {
           {/* Company Header */}
           <div className="text-center pb-4 border-b border-gray-300">
             <h1 className="text-3xl font-bold text-blue-400">ARBRIT SAFETY</h1>
-            <p className="text-slate-400 text-sm mt-1">Professional Safety Training & Consulting</p>
+            <p className="text-gray-500 text-sm mt-1">Professional Safety Training & Consulting</p>
           </div>
 
           {/* Quotation Title */}
@@ -147,11 +147,11 @@ export default function QuotationSendModal({ lead, onClose, onSuccess }) {
           {/* Quotation Info */}
           <div className="grid grid-cols-2 gap-4">
             <div className="bg-gray-100/50 p-4 rounded-lg">
-              <p className="text-slate-400 text-sm">Quotation Ref</p>
+              <p className="text-gray-500 text-sm">Quotation Ref</p>
               <p className="text-white font-semibold">{preview.quotation_ref}</p>
             </div>
             <div className="bg-gray-100/50 p-4 rounded-lg">
-              <p className="text-slate-400 text-sm">Valid Until</p>
+              <p className="text-gray-500 text-sm">Valid Until</p>
               <p className="text-white font-semibold">{preview.validity_period}</p>
             </div>
           </div>
@@ -161,19 +161,19 @@ export default function QuotationSendModal({ lead, onClose, onSuccess }) {
             <h3 className="text-lg font-semibold text-white mb-3">Client Details</h3>
             <div className="space-y-2 text-sm">
               <p className="text-white">
-                <span className="text-slate-400">Company:</span> {preview.client_name}
+                <span className="text-gray-500">Company:</span> {preview.client_name}
               </p>
               <p className="text-white">
-                <span className="text-slate-400">Contact Person:</span> {preview.contact_person}
+                <span className="text-gray-500">Contact Person:</span> {preview.contact_person}
               </p>
               {preview.contact_email && (
                 <p className="text-white">
-                  <span className="text-slate-400">Email:</span> {preview.contact_email}
+                  <span className="text-gray-500">Email:</span> {preview.contact_email}
                 </p>
               )}
               {preview.contact_mobile && (
                 <p className="text-white">
-                  <span className="text-slate-400">Mobile:</span> {preview.contact_mobile}
+                  <span className="text-gray-500">Mobile:</span> {preview.contact_mobile}
                 </p>
               )}
             </div>
@@ -210,11 +210,11 @@ export default function QuotationSendModal({ lead, onClose, onSuccess }) {
           <div className="bg-gray-100/50 p-4 rounded-lg">
             <div className="space-y-2">
               <div className="flex justify-between text-sm">
-                <span className="text-slate-400">Subtotal:</span>
+                <span className="text-gray-500">Subtotal:</span>
                 <span className="text-white">AED {preview.subtotal.toFixed(2)}</span>
               </div>
               <div className="flex justify-between text-sm">
-                <span className="text-slate-400">VAT (5%):</span>
+                <span className="text-gray-500">VAT (5%):</span>
                 <span className="text-white">AED {preview.vat.toFixed(2)}</span>
               </div>
               <div className="flex justify-between text-lg font-bold border-t border-gray-300 pt-2">

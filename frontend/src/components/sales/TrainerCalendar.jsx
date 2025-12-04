@@ -173,7 +173,7 @@ const TrainerCalendar = ({ onBookingRequest, selectedCourse, leadData }) => {
         className={`h-24 p-2 rounded-lg border transition-all ${
           isToday ? 'border-blue-400 bg-blue-500/20' :
           hasBookings ? 'border-orange-400/50 bg-orange-500/10 hover:bg-orange-500/20' :
-          isAvailable ? 'border-gray-300 bg-white/5 hover:bg-white/10 hover:border-white/20' :
+          isAvailable ? 'border-gray-300 bg-white hover:bg-white hover:border-gray-300' :
           'border-white/5 bg-gray-50/30 opacity-50 cursor-not-allowed'
         }`}
       >
@@ -209,7 +209,7 @@ const TrainerCalendar = ({ onBookingRequest, selectedCourse, leadData }) => {
 
   return (
     <div className="space-y-6">
-      <div className="bg-white/50 backdrop-blur-sm rounded-xl border border-gray-300 p-6">
+      <div className="bg-white0 backdrop-blur-sm rounded-xl border border-gray-300 p-6">
         <div className="flex justify-between items-center mb-6">
           <h3 className="text-xl font-semibold text-gray-900 flex items-center gap-2">
             <Calendar className="w-5 h-5" />
@@ -220,7 +220,7 @@ const TrainerCalendar = ({ onBookingRequest, selectedCourse, leadData }) => {
               variant="outline"
               size="sm"
               onClick={() => setCurrentMonth(new Date(currentMonth.setMonth(currentMonth.getMonth() - 1)))}
-              className="border-white/20 hover:bg-white/10"
+              className="border-gray-300 hover:bg-white"
             >
               <ChevronLeft className="w-4 h-4" />
             </Button>
@@ -229,7 +229,7 @@ const TrainerCalendar = ({ onBookingRequest, selectedCourse, leadData }) => {
               variant="outline"
               size="sm"
               onClick={() => setCurrentMonth(new Date(currentMonth.setMonth(currentMonth.getMonth() + 1)))}
-              className="border-white/20 hover:bg-white/10"
+              className="border-gray-300 hover:bg-white"
             >
               <ChevronRight className="w-4 h-4" />
             </Button>
@@ -271,15 +271,15 @@ const TrainerCalendar = ({ onBookingRequest, selectedCourse, leadData }) => {
           <div className="grid grid-cols-3 gap-2 text-xs">
             <div className="flex items-center gap-2">
               <div className="w-3 h-3 rounded bg-green-500/20 border border-green-400/50"></div>
-              <span className="text-slate-400">Available dates</span>
+              <span className="text-gray-500">Available dates</span>
             </div>
             <div className="flex items-center gap-2">
               <div className="w-3 h-3 rounded bg-orange-500/20 border border-orange-400/50"></div>
-              <span className="text-slate-400">Scheduled trainings</span>
+              <span className="text-gray-500">Scheduled trainings</span>
             </div>
             <div className="flex items-center gap-2">
               <div className="w-3 h-3 rounded bg-blue-500/20 border border-blue-400"></div>
-              <span className="text-slate-400">Today</span>
+              <span className="text-gray-500">Today</span>
             </div>
           </div>
           <p className="text-xs text-slate-400 mt-2">
@@ -293,7 +293,7 @@ const TrainerCalendar = ({ onBookingRequest, selectedCourse, leadData }) => {
         <DialogContent className="max-w-md bg-white border-gray-300">
           <DialogHeader>
             <DialogTitle className="text-gray-900">Request Training Booking</DialogTitle>
-            <DialogDescription className="text-slate-400">
+            <DialogDescription className="text-gray-500">
               Submit booking request for Academic Head approval
             </DialogDescription>
           </DialogHeader>
@@ -372,7 +372,7 @@ const TrainerCalendar = ({ onBookingRequest, selectedCourse, leadData }) => {
               <Button
                 variant="outline"
                 onClick={() => setBookingDialogOpen(false)}
-                className="flex-1 border-white/20 hover:bg-white/10"
+                className="flex-1 border-gray-300 hover:bg-white"
               >
                 Cancel
               </Button>

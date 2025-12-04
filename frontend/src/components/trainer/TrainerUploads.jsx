@@ -41,7 +41,7 @@ const TrainerUploads = () => {
   return (
     <div className="space-y-6">
       {/* File Upload Section */}
-      <Card className="bg-white/5 border-white/10">
+      <Card className="bg-white border-gray-200">
         <CardHeader>
           <CardTitle className="text-white text-xl">Upload Training Materials</CardTitle>
           <p className="text-sm text-gray-400 mt-1">Share training materials, presentations, and documents</p>
@@ -54,7 +54,7 @@ const TrainerUploads = () => {
             <Input
               type="file"
               onChange={handleFileChange}
-              className="bg-white/5 border-white/20 text-white file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-yellow-500/20 file:text-yellow-400 hover:file:bg-yellow-500/30"
+              className="bg-white border-gray-300 text-white file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-yellow-500/20 file:text-yellow-400 hover:file:bg-yellow-500/30"
             />
             {file && (
               <div className="mt-3 flex items-center gap-2 text-sm text-gray-300">
@@ -76,7 +76,7 @@ const TrainerUploads = () => {
       </Card>
 
       {/* Communication Section */}
-      <Card className="bg-white/5 border-white/10">
+      <Card className="bg-white border-gray-200">
         <CardHeader>
           <CardTitle className="text-white text-xl">Communication Center</CardTitle>
           <p className="text-sm text-gray-400 mt-1">Send messages to coordinators and academic head</p>
@@ -90,7 +90,7 @@ const TrainerUploads = () => {
               placeholder="Type your message here..."
               value={message}
               onChange={(e) => setMessage(e.target.value)}
-              className="bg-white/5 border-white/20 text-white placeholder:text-gray-400 min-h-32"
+              className="bg-white border-gray-300 text-white placeholder:text-gray-400 min-h-32"
             />
           </div>
           <div className="flex justify-end">

@@ -184,7 +184,7 @@ const LeaveManagement = () => {
           <h3 className="text-xl font-semibold text-white mb-2">
             Leave Management Center
           </h3>
-          <p className="text-slate-400">
+          <p className="text-gray-500">
             Review team requests and manage your own leave applications
           </p>
         </div>
@@ -253,14 +253,14 @@ const LeaveManagement = () => {
         <Button
           onClick={() => setActiveView('team_requests')}
           variant={activeView === 'team_requests' ? 'default' : 'outline'}
-          className={activeView === 'team_requests' ? 'bg-blue-600' : 'border-white/20'}
+          className={activeView === 'team_requests' ? 'bg-blue-600' : 'border-gray-300'}
         >
           Team Requests ({teamRequests.filter(r => r.status === 'pending').length})
         </Button>
         <Button
           onClick={() => setActiveView('my_requests')}
           variant={activeView === 'my_requests' ? 'default' : 'outline'}
-          className={activeView === 'my_requests' ? 'bg-blue-600' : 'border-white/20'}
+          className={activeView === 'my_requests' ? 'bg-blue-600' : 'border-gray-300'}
         >
           My Leave Requests
         </Button>
@@ -271,12 +271,12 @@ const LeaveManagement = () => {
         <div className="space-y-4">
           <h4 className="text-lg font-semibold text-white">Team Leave Requests</h4>
           {teamRequests.map((request) => (
-            <Card key={request.id} className="bg-white/50 border-gray-300">
+            <Card key={request.id} className="bg-white0 border-gray-300">
               <CardContent className="p-4">
                 <div className="flex justify-between items-start mb-4">
                   <div>
                     <h5 className="text-white font-semibold">{request.employeeName}</h5>
-                    <p className="text-slate-400">{request.employeeRole}</p>
+                    <p className="text-gray-500">{request.employeeRole}</p>
                   </div>
                   <Badge className={getStatusColor(request.status)}>
                     {getStatusIcon(request.status)}
@@ -286,26 +286,26 @@ const LeaveManagement = () => {
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                   <div>
-                    <p className="text-slate-400 text-sm">Leave Type</p>
+                    <p className="text-gray-500 text-sm">Leave Type</p>
                     <p className="text-white">{request.leaveType}</p>
                   </div>
                   <div>
-                    <p className="text-slate-400 text-sm">Duration</p>
+                    <p className="text-gray-500 text-sm">Duration</p>
                     <p className="text-white">{request.startDate} to {request.endDate} ({request.days} days)</p>
                   </div>
                   <div>
-                    <p className="text-slate-400 text-sm">Reason</p>
+                    <p className="text-gray-500 text-sm">Reason</p>
                     <p className="text-white">{request.reason}</p>
                   </div>
                   <div>
-                    <p className="text-slate-400 text-sm">Emergency Contact</p>
+                    <p className="text-gray-500 text-sm">Emergency Contact</p>
                     <p className="text-white">{request.emergencyContact}</p>
                   </div>
                 </div>
 
                 {request.handoverNotes && (
                   <div className="mb-4">
-                    <p className="text-slate-400 text-sm">Handover Notes</p>
+                    <p className="text-gray-500 text-sm">Handover Notes</p>
                     <p className="text-gray-700 bg-gray-50/50 p-2 rounded">{request.handoverNotes}</p>
                   </div>
                 )}
@@ -344,7 +344,7 @@ const LeaveManagement = () => {
                         setReviewDialogOpen(true);
                       }}
                       variant="outline"
-                      className="border-white/20"
+                      className="border-gray-300"
                     >
                       <Send className="w-4 h-4 mr-1" />
                       Forward to HR
@@ -370,7 +370,7 @@ const LeaveManagement = () => {
                 <h3 className="text-gray-700 text-lg font-semibold mb-2">
                   No Pending Requests
                 </h3>
-                <p className="text-slate-400">
+                <p className="text-gray-500">
                   All team leave requests have been processed.
                 </p>
               </CardContent>
@@ -384,12 +384,12 @@ const LeaveManagement = () => {
         <div className="space-y-4">
           <h4 className="text-lg font-semibold text-white">My Leave Requests</h4>
           {myRequests.map((request) => (
-            <Card key={request.id} className="bg-white/50 border-gray-300">
+            <Card key={request.id} className="bg-white0 border-gray-300">
               <CardContent className="p-4">
                 <div className="flex justify-between items-start mb-4">
                   <div>
                     <h5 className="text-white font-semibold">{request.leaveType}</h5>
-                    <p className="text-slate-400">{request.startDate} to {request.endDate} ({request.days} days)</p>
+                    <p className="text-gray-500">{request.startDate} to {request.endDate} ({request.days} days)</p>
                   </div>
                   <Badge className={getStatusColor(request.status)}>
                     {getStatusIcon(request.status)}
@@ -398,7 +398,7 @@ const LeaveManagement = () => {
                 </div>
 
                 <div className="mb-4">
-                  <p className="text-slate-400 text-sm">Reason</p>
+                  <p className="text-gray-500 text-sm">Reason</p>
                   <p className="text-white">{request.reason}</p>
                 </div>
 
@@ -418,7 +418,7 @@ const LeaveManagement = () => {
                 <h3 className="text-gray-700 text-lg font-semibold mb-2">
                   No Leave Requests
                 </h3>
-                <p className="text-slate-400">
+                <p className="text-gray-500">
                   You haven't submitted any leave requests yet.
                 </p>
               </CardContent>
@@ -453,7 +453,7 @@ const LeaveManagement = () => {
               <Button
                 variant="outline"
                 onClick={() => setReviewDialogOpen(false)}
-                className="border-white/20"
+                className="border-gray-300"
               >
                 Cancel
               </Button>
@@ -577,7 +577,7 @@ const LeaveManagement = () => {
                 type="button"
                 variant="outline"
                 onClick={() => setCreateRequestOpen(false)}
-                className="border-white/20"
+                className="border-gray-300"
               >
                 Cancel
               </Button>

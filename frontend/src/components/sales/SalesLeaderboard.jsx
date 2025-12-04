@@ -49,19 +49,19 @@ const SalesLeaderboard = () => {
       2: 'bg-gray-400/20 border-gray-400/50 text-gray-300',
       3: 'bg-amber-600/20 border-amber-600/50 text-amber-400'
     };
-    return colors[rank] || 'bg-white/5 border-white/20 text-gray-400';
+    return colors[rank] || 'bg-white border-gray-300 text-gray-400';
   };
 
   if (loading) {
     return (
-      <div className="bg-white/5 backdrop-blur-sm rounded-xl border border-gray-300 p-6">
+      <div className="bg-white backdrop-blur-sm rounded-xl border border-gray-300 p-6">
         <p className="text-gray-400">Loading leaderboard...</p>
       </div>
     );
   }
 
   return (
-    <div className="bg-white/5 backdrop-blur-sm rounded-xl border border-gray-300 overflow-hidden">
+    <div className="bg-white backdrop-blur-sm rounded-xl border border-gray-300 overflow-hidden">
       <div className="px-6 py-4 bg-gradient-to-r from-purple-500/20 to-blue-500/20 border-b border-gray-300">
         <div className="flex items-center gap-3">
           <TrendingUp className="w-6 h-6 text-purple-400" />

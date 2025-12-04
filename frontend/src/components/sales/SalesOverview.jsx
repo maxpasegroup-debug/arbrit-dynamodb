@@ -160,7 +160,7 @@ const SalesOverview = () => {
           return (
             <Card
               key={index}
-              className="group relative overflow-hidden border-gray-300 bg-white/5 backdrop-blur-sm hover:bg-white/10 transition-all duration-300"
+              className="group relative overflow-hidden border-gray-300 bg-white backdrop-blur-sm hover:bg-white transition-all duration-300"
             >
               <div className={`absolute inset-0 bg-gradient-to-br ${card.color} opacity-0 group-hover:opacity-10 transition-opacity duration-300`} />
               

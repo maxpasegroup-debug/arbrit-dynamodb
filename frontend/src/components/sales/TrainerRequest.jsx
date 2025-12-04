@@ -102,7 +102,7 @@ const TrainerRequest = () => {
         </Button>
       </div>
 
-      <div className="bg-white/5 backdrop-blur-sm rounded-xl border border-gray-300 overflow-hidden">
+      <div className="bg-white backdrop-blur-sm rounded-xl border border-gray-300 overflow-hidden">
         <Table>
           <TableHeader>
             <TableRow className="border-gray-300">
@@ -143,7 +143,7 @@ const TrainerRequest = () => {
       </div>
 
       <Dialog open={showDialog} onOpenChange={setShowDialog}>
-        <DialogContent className="bg-[#1a2f4d] border-white/20 text-white max-w-2xl">
+        <DialogContent className="bg-[#1a2f4d] border-gray-300 text-white max-w-2xl">
           <DialogHeader>
             <DialogTitle className="text-xl flex items-center gap-2">
               <GraduationCap className="w-5 h-5 text-yellow-400" />
@@ -159,7 +159,7 @@ const TrainerRequest = () => {
                   value={formData.client_name}
                   onChange={(e) => setFormData({ ...formData, client_name: e.target.value })}
                   required
-                  className="bg-white/5 border-white/20 text-white mt-1"
+                  className="bg-white border-gray-300 text-white mt-1"
                 />
               </div>
               <div>
@@ -170,7 +170,7 @@ const TrainerRequest = () => {
                   onChange={(e) => setFormData({ ...formData, course_type: e.target.value })}
                   required
                   placeholder="e.g., Fire Safety, First Aid"
-                  className="bg-white/5 border-white/20 text-white mt-1"
+                  className="bg-white border-gray-300 text-white mt-1"
                 />
               </div>
             </div>
@@ -184,7 +184,7 @@ const TrainerRequest = () => {
                   value={formData.preferred_date}
                   onChange={(e) => setFormData({ ...formData, preferred_date: e.target.value })}
                   required
-                  className="bg-white/5 border-white/20 text-white mt-1"
+                  className="bg-white border-gray-300 text-white mt-1"
                 />
               </div>
               <div>
@@ -194,7 +194,7 @@ const TrainerRequest = () => {
                   value={formData.duration}
                   onChange={(e) => setFormData({ ...formData, duration: e.target.value })}
                   placeholder="e.g., 2 days, 1 week"
-                  className="bg-white/5 border-white/20 text-white mt-1"
+                  className="bg-white border-gray-300 text-white mt-1"
                 />
               </div>
             </div>
@@ -206,7 +206,7 @@ const TrainerRequest = () => {
                 value={formData.location}
                 onChange={(e) => setFormData({ ...formData, location: e.target.value })}
                 placeholder="Training location"
-                className="bg-white/5 border-white/20 text-white mt-1"
+                className="bg-white border-gray-300 text-white mt-1"
               />
             </div>
 
@@ -218,7 +218,7 @@ const TrainerRequest = () => {
                 onChange={(e) => setFormData({ ...formData, remarks: e.target.value })}
                 rows={3}
                 placeholder="Additional requirements or notes..."
-                className="bg-white/5 border-white/20 text-white mt-1"
+                className="bg-white border-gray-300 text-white mt-1"
               />
             </div>
 
@@ -227,7 +227,7 @@ const TrainerRequest = () => {
                 type="button"
                 variant="outline"
                 onClick={() => setShowDialog(false)}
-                className="border-white/20 text-white hover:bg-white/10"
+                className="border-gray-300 text-white hover:bg-white"
               >
                 Cancel
               </Button>

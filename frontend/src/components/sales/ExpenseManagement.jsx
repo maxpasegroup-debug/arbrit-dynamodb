@@ -141,7 +141,7 @@ const ExpenseManagement = () => {
           <h3 className="text-xl font-semibold text-white mb-2">
             Expense Management Center
           </h3>
-          <p className="text-slate-400">
+          <p className="text-gray-500">
             Review team expenses and manage your own expense claims
           </p>
         </div>
@@ -210,14 +210,14 @@ const ExpenseManagement = () => {
         <Button
           onClick={() => setActiveView('team_expenses')}
           variant={activeView === 'team_expenses' ? 'default' : 'outline'}
-          className={activeView === 'team_expenses' ? 'bg-blue-600' : 'border-white/20'}
+          className={activeView === 'team_expenses' ? 'bg-blue-600' : 'border-gray-300'}
         >
           Team Expenses ({teamExpenses.filter(e => e.status === 'pending').length})
         </Button>
         <Button
           onClick={() => setActiveView('my_expenses')}
           variant={activeView === 'my_expenses' ? 'default' : 'outline'}
-          className={activeView === 'my_expenses' ? 'bg-blue-600' : 'border-white/20'}
+          className={activeView === 'my_expenses' ? 'bg-blue-600' : 'border-gray-300'}
         >
           My Expenses
         </Button>
@@ -228,13 +228,13 @@ const ExpenseManagement = () => {
         <div className="space-y-4">
           <h4 className="text-lg font-semibold text-white">Team Expense Claims for Review</h4>
           {teamExpenses.map((expense) => (
-            <Card key={expense.id} className="bg-white/50 border-gray-300">
+            <Card key={expense.id} className="bg-white0 border-gray-300">
               <CardContent className="p-4">
                 <div className="flex justify-between items-start mb-4">
                   <div className="flex items-center gap-4">
                     <div>
                       <h5 className="text-white font-semibold">{expense.employeeName}</h5>
-                      <p className="text-slate-400">{expense.employeeRole}</p>
+                      <p className="text-gray-500">{expense.employeeRole}</p>
                     </div>
                     <Badge className={getCategoryColor(expense.category)}>
                       {expense.category}
@@ -251,17 +251,17 @@ const ExpenseManagement = () => {
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                   <div>
-                    <p className="text-slate-400 text-sm">Expense Date</p>
+                    <p className="text-gray-500 text-sm">Expense Date</p>
                     <p className="text-white">{expense.expenseDate}</p>
                   </div>
                   <div>
-                    <p className="text-slate-400 text-sm">Submitted On</p>
+                    <p className="text-gray-500 text-sm">Submitted On</p>
                     <p className="text-white">{expense.submittedDate}</p>
                   </div>
                 </div>
 
                 <div className="mb-4">
-                  <p className="text-slate-400 text-sm">Description</p>
+                  <p className="text-gray-500 text-sm">Description</p>
                   <p className="text-white bg-gray-50/50 p-2 rounded">{expense.description}</p>
                 </div>
 
@@ -271,7 +271,7 @@ const ExpenseManagement = () => {
                       <Button
                         size="sm"
                         variant="outline"
-                        className="border-white/20"
+                        className="border-gray-300"
                         onClick={() => window.open(expense.receiptUrl, '_blank')}
                       >
                         <Eye className="w-4 h-4 mr-1" />
@@ -370,7 +370,7 @@ const ExpenseManagement = () => {
             {selectedExpense && (
               <div className="bg-gray-50/50 p-3 rounded-lg">
                 <p className="text-white font-medium">{selectedExpense.employeeName}</p>
-                <p className="text-slate-400">{selectedExpense.category} - {selectedExpense.amount} AED</p>
+                <p className="text-gray-500">{selectedExpense.category} - {selectedExpense.amount} AED</p>
                 <p className="text-gray-700 text-sm">{selectedExpense.description}</p>
               </div>
             )}
@@ -405,7 +405,7 @@ const ExpenseManagement = () => {
               <Button
                 variant="outline"
                 onClick={() => setReviewDialogOpen(false)}
-                className="border-white/20"
+                className="border-gray-300"
               >
                 Cancel
               </Button>
@@ -448,7 +448,7 @@ const ExpenseManagement = () => {
             <Button
               variant="outline"
               onClick={() => setCreateExpenseOpen(false)}
-              className="border-white/20"
+              className="border-gray-300"
             >
               Close
             </Button>

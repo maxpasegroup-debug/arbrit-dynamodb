@@ -70,12 +70,12 @@ const VisitLogger = () => {
 
       <div className="grid gap-4">
         {visits.length === 0 ? (
-          <Card className="bg-white/5 border-gray-300 p-8 text-center">
+          <Card className="bg-white border-gray-300 p-8 text-center">
             <p className="text-gray-400">No visits logged yet</p>
           </Card>
         ) : (
           visits.map((visit) => (
-            <Card key={visit.id} className="bg-white/5 border-gray-300 p-4">
+            <Card key={visit.id} className="bg-white border-gray-300 p-4">
               <div className="flex items-start gap-3">
                 <MapPin className="w-5 h-5 text-purple-400 mt-1" />
                 <div className="flex-1">
@@ -93,29 +93,29 @@ const VisitLogger = () => {
       </div>
 
       <Dialog open={showDialog} onOpenChange={setShowDialog}>
-        <DialogContent className="bg-[#1a2f4d] border-white/20 text-white">
+        <DialogContent className="bg-[#1a2f4d] border-gray-300 text-white">
           <DialogHeader>
             <DialogTitle>Log Client Visit</DialogTitle>
           </DialogHeader>
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
               <Label className="text-gray-300">Date *</Label>
-              <Input type="date" value={formData.date} onChange={(e) => setFormData({...formData, date: e.target.value})} required className="bg-white/5 border-white/20 text-white mt-1" />
+              <Input type="date" value={formData.date} onChange={(e) => setFormData({...formData, date: e.target.value})} required className="bg-white border-gray-300 text-white mt-1" />
             </div>
             <div>
               <Label className="text-gray-300">Company *</Label>
-              <Input value={formData.company} onChange={(e) => setFormData({...formData, company: e.target.value})} required className="bg-white/5 border-white/20 text-white mt-1" />
+              <Input value={formData.company} onChange={(e) => setFormData({...formData, company: e.target.value})} required className="bg-white border-gray-300 text-white mt-1" />
             </div>
             <div>
               <Label className="text-gray-300">Contact Person *</Label>
-              <Input value={formData.contact_person} onChange={(e) => setFormData({...formData, contact_person: e.target.value})} required className="bg-white/5 border-white/20 text-white mt-1" />
+              <Input value={formData.contact_person} onChange={(e) => setFormData({...formData, contact_person: e.target.value})} required className="bg-white border-gray-300 text-white mt-1" />
             </div>
             <div>
               <Label className="text-gray-300">Notes</Label>
-              <Textarea value={formData.notes} onChange={(e) => setFormData({...formData, notes: e.target.value})} rows={3} className="bg-white/5 border-white/20 text-white mt-1" />
+              <Textarea value={formData.notes} onChange={(e) => setFormData({...formData, notes: e.target.value})} rows={3} className="bg-white border-gray-300 text-white mt-1" />
             </div>
             <DialogFooter>
-              <Button type="button" variant="outline" onClick={() => setShowDialog(false)} className="border-white/20 text-white">Cancel</Button>
+              <Button type="button" variant="outline" onClick={() => setShowDialog(false)} className="border-gray-300 text-white">Cancel</Button>
               <Button type="submit" disabled={loading} style={{ background: 'linear-gradient(135deg, #d4af37 0%, #c9a02c 100%)' }} className="text-[#0a1e3d]">Log Visit</Button>
             </DialogFooter>
           </form>

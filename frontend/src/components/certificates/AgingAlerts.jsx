@@ -80,7 +80,7 @@ const AgingAlerts = () => {
 
   if (summary.total_alerts === 0) {
     return (
-      <Card className="bg-white/5 border-white/10">
+      <Card className="bg-white border-gray-200">
         <CardHeader>
           <CardTitle className="text-white flex items-center gap-2">
             <Bell className="w-5 h-5 text-green-400" />
@@ -93,7 +93,7 @@ const AgingAlerts = () => {
               <Bell className="w-8 h-8 text-green-400" />
             </div>
             <p className="text-green-300 font-semibold mb-2">All Clear!</p>
-            <p className="text-slate-400 text-sm">No aging alerts at this time</p>
+            <p className="text-gray-500 text-sm">No aging alerts at this time</p>
           </div>
         </CardContent>
       </Card>
@@ -112,7 +112,7 @@ const AgingAlerts = () => {
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-4 gap-4">
-            <div className="bg-white/10 backdrop-blur-sm rounded-lg p-3">
+            <div className="bg-white backdrop-blur-sm rounded-lg p-3">
               <p className="text-xs text-slate-300 mb-1">Total Alerts</p>
               <p className="text-2xl font-bold text-white">{summary.total_alerts}</p>
             </div>
@@ -147,7 +147,7 @@ const AgingAlerts = () => {
                   : alert.severity === 'urgent'
                   ? 'bg-orange-500/10 border-orange-400/50'
                   : 'bg-yellow-500/10 border-yellow-400/50'
-              } border rounded-lg p-4 hover:bg-white/5 transition-all`}
+              } border rounded-lg p-4 hover:bg-white transition-all`}
             >
               <div className="flex items-start gap-4">
                 <div className={`${
@@ -174,7 +174,7 @@ const AgingAlerts = () => {
                     <Badge className="bg-blue-500/20 text-blue-300 border-blue-400/50">
                       {alert.certificate_type}
                     </Badge>
-                    <Badge className="bg-white/10 text-white border-white/20">
+                    <Badge className="bg-white text-white border-gray-300">
                       {alert.status.replace(/_/g, ' ').toUpperCase()}
                     </Badge>
                   </div>
@@ -194,15 +194,15 @@ const AgingAlerts = () => {
                   
                   <div className="grid grid-cols-3 gap-3 text-xs">
                     <div>
-                      <p className="text-slate-400">Contact Person</p>
+                      <p className="text-gray-500">Contact Person</p>
                       <p className="text-white font-medium">{alert.contact_person}</p>
                     </div>
                     <div>
-                      <p className="text-slate-400">Mobile</p>
+                      <p className="text-gray-500">Mobile</p>
                       <p className="text-white font-medium">{alert.contact_mobile}</p>
                     </div>
                     <div>
-                      <p className="text-slate-400">
+                      <p className="text-gray-500">
                         {alert.certificate_type === 'In-House' ? 'Age (Hours)' : 'Age (Days)'}
                       </p>
                       <p className="text-white font-bold">

@@ -21,7 +21,7 @@ const CoordinatorCommunication = () => {
 
   return (
     <div className="space-y-6">
-      <Card className="bg-white/5 border-white/10">
+      <Card className="bg-white border-gray-200">
         <CardHeader>
           <CardTitle className="text-white text-xl">Communication Center</CardTitle>
           <p className="text-sm text-gray-400 mt-1">Communicate with trainers and clients</p>
@@ -37,7 +37,7 @@ const CoordinatorCommunication = () => {
               </div>
             ) : (
               messages.map((msg, index) => (
-                <Card key={index} className="bg-white/5 border-white/10">
+                <Card key={index} className="bg-white border-gray-200">
                   <CardContent className="p-4">
                     <div className="flex items-start gap-3">
                       <div className="bg-blue-500/20 p-2 rounded-lg">
@@ -63,7 +63,7 @@ const CoordinatorCommunication = () => {
               placeholder="Type your message..."
               value={message}
               onChange={(e) => setMessage(e.target.value)}
-              className="bg-white/5 border-white/20 text-white placeholder:text-gray-400 min-h-24"
+              className="bg-white border-gray-300 text-white placeholder:text-gray-400 min-h-24"
             />
             <div className="flex justify-end">
               <Button

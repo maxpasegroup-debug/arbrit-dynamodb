@@ -176,7 +176,7 @@ const QuotationDialog = ({ open, onOpenChange, lead, onSuccess }) => {
               {items.map((item, index) => (
                 <div key={index} className="grid grid-cols-12 gap-3 items-end p-3 bg-gray-50/50 rounded-lg">
                   <div className="col-span-4">
-                    <Label className="text-slate-400 text-xs">Description</Label>
+                    <Label className="text-gray-500 text-xs">Description</Label>
                     <Input
                       value={item.description}
                       onChange={(e) => updateItem(index, 'description', e.target.value)}
@@ -185,7 +185,7 @@ const QuotationDialog = ({ open, onOpenChange, lead, onSuccess }) => {
                     />
                   </div>
                   <div className="col-span-2">
-                    <Label className="text-slate-400 text-xs">Quantity</Label>
+                    <Label className="text-gray-500 text-xs">Quantity</Label>
                     <Input
                       type="number"
                       min="1"
@@ -195,7 +195,7 @@ const QuotationDialog = ({ open, onOpenChange, lead, onSuccess }) => {
                     />
                   </div>
                   <div className="col-span-2">
-                    <Label className="text-slate-400 text-xs">Unit Price (AED)</Label>
+                    <Label className="text-gray-500 text-xs">Unit Price (AED)</Label>
                     <Input
                       type="number"
                       min="0"
@@ -206,7 +206,7 @@ const QuotationDialog = ({ open, onOpenChange, lead, onSuccess }) => {
                     />
                   </div>
                   <div className="col-span-2">
-                    <Label className="text-slate-400 text-xs">Amount (AED)</Label>
+                    <Label className="text-gray-500 text-xs">Amount (AED)</Label>
                     <Input
                       type="number"
                       value={item.amount.toFixed(2)}
@@ -235,7 +235,7 @@ const QuotationDialog = ({ open, onOpenChange, lead, onSuccess }) => {
             <div className="border-t border-gray-300 pt-4">
               <div className="flex justify-end">
                 <div className="text-right">
-                  <Label className="text-slate-400">Total Amount</Label>
+                  <Label className="text-gray-500">Total Amount</Label>
                   <div className="text-2xl font-bold text-green-400">
                     {formData.total_amount.toFixed(2)} AED
                   </div>

@@ -142,7 +142,7 @@ const CertificateTemplates = () => {
 
   if (loading) {
     return (
-      <Card className="bg-white/5 border-white/10">
+      <Card className="bg-white border-gray-200">
         <CardContent className="p-6">
           <p className="text-gray-400 text-center">Loading templates...</p>
         </CardContent>
@@ -152,7 +152,7 @@ const CertificateTemplates = () => {
 
   return (
     <>
-      <Card className="bg-white/5 border-white/10">
+      <Card className="bg-white border-gray-200">
         <CardHeader className="flex flex-row items-center justify-between">
           <div>
             <CardTitle className="text-white text-xl">Certificate Templates</CardTitle>
@@ -176,7 +176,7 @@ const CertificateTemplates = () => {
           ) : (
             <div className="space-y-3">
               {templates.map((template) => (
-                <Card key={template.id} className="bg-white/5 border-white/10 hover:bg-white/10 transition-all">
+                <Card key={template.id} className="bg-white border-gray-200 hover:bg-white transition-all">
                   <CardContent className="p-4">
                     <div className="flex items-center justify-between">
                       <div className="flex-1">
@@ -233,7 +233,7 @@ const CertificateTemplates = () => {
 
       {/* Create/Edit Template Modal */}
       <Dialog open={showModal} onOpenChange={setShowModal}>
-        <DialogContent className="bg-[#1a2f4d] border-white/20 text-white max-w-2xl">
+        <DialogContent className="bg-[#1a2f4d] border-gray-300 text-white max-w-2xl">
           <DialogHeader>
             <DialogTitle className="text-white">
               {editMode ? 'Edit Template' : 'Create New Template'}
@@ -245,7 +245,7 @@ const CertificateTemplates = () => {
               <Input
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                className="bg-white/5 border-white/20 text-white mt-2"
+                className="bg-white border-gray-300 text-white mt-2"
                 placeholder="e.g., Default Inhouse Template"
               />
             </div>
@@ -257,7 +257,7 @@ const CertificateTemplates = () => {
                   type="color"
                   value={primaryColor}
                   onChange={(e) => setPrimaryColor(e.target.value)}
-                  className="bg-white/5 border-white/20 text-white mt-2 h-10"
+                  className="bg-white border-gray-300 text-white mt-2 h-10"
                 />
               </div>
               <div>
@@ -266,7 +266,7 @@ const CertificateTemplates = () => {
                   type="color"
                   value={secondaryColor}
                   onChange={(e) => setSecondaryColor(e.target.value)}
-                  className="bg-white/5 border-white/20 text-white mt-2 h-10"
+                  className="bg-white border-gray-300 text-white mt-2 h-10"
                 />
               </div>
             </div>
@@ -276,7 +276,7 @@ const CertificateTemplates = () => {
               <Input
                 value={logoUrl}
                 onChange={(e) => setLogoUrl(e.target.value)}
-                className="bg-white/5 border-white/20 text-white mt-2"
+                className="bg-white border-gray-300 text-white mt-2"
                 placeholder="https://example.com/logo.png"
               />
             </div>
@@ -286,7 +286,7 @@ const CertificateTemplates = () => {
               <Input
                 value={sealUrl}
                 onChange={(e) => setSealUrl(e.target.value)}
-                className="bg-white/5 border-white/20 text-white mt-2"
+                className="bg-white border-gray-300 text-white mt-2"
                 placeholder="https://example.com/seal.png"
               />
             </div>
@@ -296,7 +296,7 @@ const CertificateTemplates = () => {
               <Input
                 value={signatureUrl}
                 onChange={(e) => setSignatureUrl(e.target.value)}
-                className="bg-white/5 border-white/20 text-white mt-2"
+                className="bg-white border-gray-300 text-white mt-2"
                 placeholder="https://example.com/signature.png"
               />
             </div>
@@ -317,7 +317,7 @@ const CertificateTemplates = () => {
                 setShowModal(false);
                 resetForm();
               }}
-              className="border-white/20 text-white hover:bg-white/10"
+              className="border-gray-300 text-white hover:bg-white"
             >
               Cancel
             </Button>

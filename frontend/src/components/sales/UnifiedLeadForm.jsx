@@ -907,7 +907,7 @@ const UnifiedLeadForm = ({
       )}
 
       {/* Additional Notes */}
-      <div className="space-y-4 p-4 bg-white/50 border border-gray-300 rounded-lg">
+      <div className="space-y-4 p-4 bg-white0 border border-gray-300 rounded-lg">
         <h4 className="text-sm font-semibold text-slate-200">Additional Information</h4>
         <div className="grid grid-cols-1 gap-4">
           <div>
@@ -991,7 +991,7 @@ const UnifiedLeadForm = ({
             <DialogTitle className="text-gray-900 text-xl">
               {existingLead ? 'Edit Lead' : 'Create New Lead'}
             </DialogTitle>
-            <DialogDescription className="text-slate-400">
+            <DialogDescription className="text-gray-500">
               Fill in the details below to create a new lead
             </DialogDescription>
           </DialogHeader>
@@ -1017,7 +1017,7 @@ const UnifiedLeadForm = ({
           <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto bg-white border-gray-300">
             <DialogHeader>
               <DialogTitle className="text-gray-900 text-xl">ARBRIT Lead Submission Form</DialogTitle>
-              <DialogDescription className="text-slate-400">
+              <DialogDescription className="text-gray-500">
                 Enhanced lead capture with intelligent scoring
               </DialogDescription>
             </DialogHeader>

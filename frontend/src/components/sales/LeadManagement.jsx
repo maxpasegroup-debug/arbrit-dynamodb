@@ -199,20 +199,20 @@ const LeadManagement = () => {
       </div>
 
       {/* Search and Filter Bar */}
-      <div className="flex gap-4 items-center bg-white/5 backdrop-blur-sm rounded-xl border border-gray-300 p-4">
+      <div className="flex gap-4 items-center bg-white backdrop-blur-sm rounded-xl border border-gray-300 p-4">
         <div className="flex-1">
           <Input
             placeholder="Search by client name, company, or mobile..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="bg-white/5 border-white/20 text-white"
+            className="bg-white border-gray-300 text-white"
           />
         </div>
         <Select value={statusFilter} onValueChange={setStatusFilter}>
-          <SelectTrigger className="w-48 bg-white/5 border-white/20 text-white">
+          <SelectTrigger className="w-48 bg-white border-gray-300 text-white">
             <SelectValue placeholder="Filter by status" />
           </SelectTrigger>
-          <SelectContent className="bg-[#1a2f4d] border-white/20 text-white">
+          <SelectContent className="bg-[#1a2f4d] border-gray-300 text-white">
             <SelectItem value="all">All Status</SelectItem>
             <SelectItem value="New">New</SelectItem>
             <SelectItem value="Contacted">Contacted</SelectItem>
@@ -233,7 +233,7 @@ const LeadManagement = () => {
       </div>
 
       {/* All Leads Table */}
-      <div className="bg-white/5 backdrop-blur-sm rounded-xl border border-gray-300 overflow-hidden">
+      <div className="bg-white backdrop-blur-sm rounded-xl border border-gray-300 overflow-hidden">
         <div className="p-4 border-b border-gray-300">
           <h3 className="text-lg font-semibold text-white">All Team Leads ({filteredLeads.length})</h3>
         </div>
@@ -263,7 +263,7 @@ const LeadManagement = () => {
               </TableRow>
             ) : (
               filteredLeads.map((lead) => (
-                <TableRow key={lead.id} className="border-gray-300 hover:bg-white/5">
+                <TableRow key={lead.id} className="border-gray-300 hover:bg-white">
                   <TableCell className="text-white font-medium">
                     {lead.company_name || lead.client_name}
                   </TableCell>
@@ -322,23 +322,23 @@ const LeadManagement = () => {
 
       {/* Update Lead Dialog */}
       <Dialog open={showUpdateDialog} onOpenChange={setShowUpdateDialog}>
-        <DialogContent className="bg-[#1a2f4d] border-white/20 text-white">
+        <DialogContent className="bg-[#1a2f4d] border-gray-300 text-white">
           <DialogHeader>
             <DialogTitle>Update Lead Status</DialogTitle>
           </DialogHeader>
           {selectedLead && (
             <div className="space-y-4">
-              <div className="bg-white/5 rounded-lg p-3">
+              <div className="bg-white rounded-lg p-3">
                 <p className="text-sm text-gray-400">Client</p>
                 <p className="font-semibold">{selectedLead.company_name || selectedLead.client_name}</p>
               </div>
               <div>
                 <label className="text-sm text-gray-300 mb-2 block">Status</label>
                 <Select value={updateData.status} onValueChange={(v) => setUpdateData({...updateData, status: v})}>
-                  <SelectTrigger className="bg-white/5 border-white/20 text-white">
+                  <SelectTrigger className="bg-white border-gray-300 text-white">
                     <SelectValue />
                   </SelectTrigger>
-                  <SelectContent className="bg-[#1a2f4d] border-white/20 text-white">
+                  <SelectContent className="bg-[#1a2f4d] border-gray-300 text-white">
                     <SelectItem value="New">New</SelectItem>
                     <SelectItem value="Contacted">Contacted</SelectItem>
                     <SelectItem value="Quoted">Quoted</SelectItem>
@@ -354,13 +354,13 @@ const LeadManagement = () => {
                   value={updateData.remarks}
                   onChange={(e) => setUpdateData({...updateData, remarks: e.target.value})}
                   rows={3}
-                  className="bg-white/5 border-white/20 text-white"
+                  className="bg-white border-gray-300 text-white"
                 />
               </div>
             </div>
           )}
           <DialogFooter>
-            <Button variant="outline" onClick={() => setShowUpdateDialog(false)} className="border-white/20 text-white">
+            <Button variant="outline" onClick={() => setShowUpdateDialog(false)} className="border-gray-300 text-white">
               Cancel
             </Button>
             <Button onClick={submitUpdate} style={{ background: 'linear-gradient(135deg, #d4af37 0%, #c9a02c 100%)' }} className="text-[#0a1e3d]">
@@ -372,7 +372,7 @@ const LeadManagement = () => {
 
       {/* Lead Form Dialog */}
       <Dialog open={formOpen} onOpenChange={setFormOpen}>
-        <DialogContent className="bg-[#1a2f4d] border-white/20 text-white max-w-4xl max-h-[90vh] overflow-y-auto">
+        <DialogContent className="bg-[#1a2f4d] border-gray-300 text-white max-w-4xl max-h-[90vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle>Create New Lead</DialogTitle>
           </DialogHeader>

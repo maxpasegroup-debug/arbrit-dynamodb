@@ -255,7 +255,7 @@ const AssessmentReports = () => {
                               const question = form.responses[0]?.responses?.find(r => r.question_id === qId);
                               return (
                                 <div key={qId} className="flex justify-between items-center text-sm">
-                                  <span className="text-slate-300">{question?.question_text || 'Question'}</span>
+                                  <span className="text-gray-700">{question?.question_text || 'Question'}</span>
                                   <div className="flex items-center gap-2">
                                     <div className="flex gap-1">
                                       {[1, 2, 3, 4, 5].map(star => (
@@ -285,7 +285,7 @@ const AssessmentReports = () => {
         <Card>
           <CardContent className="py-12 text-center">
             <TrendingUp className="w-16 h-16 text-slate-300 mx-auto mb-4" />
-            <p className="text-slate-400">Apply filters to view reports</p>
+            <p className="text-gray-500">Apply filters to view reports</p>
           </CardContent>
         </Card>
       )}

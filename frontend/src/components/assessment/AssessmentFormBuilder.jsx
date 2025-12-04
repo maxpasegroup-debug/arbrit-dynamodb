@@ -119,7 +119,7 @@ const AssessmentFormBuilder = ({ onBack, onFormCreated }) => {
       <div className="flex justify-between items-center">
         <h2 className="text-2xl font-bold text-slate-100">Create Assessment Form</h2>
         <div className="flex gap-2">
-          <Button variant="outline" onClick={onBack} className="border-white/20 hover:bg-white/10">
+          <Button variant="outline" onClick={onBack} className="border-gray-300 hover:bg-white">
             <ArrowLeft className="w-4 h-4 mr-2" />
             Back
           </Button>
@@ -131,69 +131,69 @@ const AssessmentFormBuilder = ({ onBack, onFormCreated }) => {
       </div>
 
       {/* Form Details */}
-      <div className="bg-slate-900/50 backdrop-blur-sm rounded-xl border border-white/10 p-6">
+      <div className="bg-white0 backdrop-blur-sm rounded-xl border border-gray-200 p-6">
         <h3 className="text-lg font-semibold text-slate-100 mb-4">Form Details</h3>
         <div className="space-y-4">
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <Label htmlFor="title" className="text-slate-300">Form Title *</Label>
+              <Label htmlFor="title" className="text-gray-700">Form Title *</Label>
               <Input
                 id="title"
                 value={formData.title}
                 onChange={(e) => setFormData({...formData, title: e.target.value})}
                 placeholder="e.g., Training Feedback Form"
-                className="bg-slate-800 border-white/10 text-slate-100"
+                className="bg-gray-50 border-gray-200 text-slate-100"
               />
             </div>
             <div>
-              <Label htmlFor="course_name" className="text-slate-300">Course Name</Label>
+              <Label htmlFor="course_name" className="text-gray-700">Course Name</Label>
               <Input
                 id="course_name"
                 value={formData.course_name}
                 onChange={(e) => setFormData({...formData, course_name: e.target.value})}
-                className="bg-slate-800 border-white/10 text-slate-100"
+                className="bg-gray-50 border-gray-200 text-slate-100"
               />
             </div>
           </div>
 
           <div>
-            <Label htmlFor="description" className="text-slate-300">Description</Label>
+            <Label htmlFor="description" className="text-gray-700">Description</Label>
             <textarea
               id="description"
               value={formData.description}
               onChange={(e) => setFormData({...formData, description: e.target.value})}
-              className="w-full bg-slate-800 border border-white/10 text-slate-100 rounded-md p-2 min-h-[80px]"
+              className="w-full bg-gray-50 border border-gray-200 text-slate-100 rounded-md p-2 min-h-[80px]"
               placeholder="Brief description of the assessment..."
             />
           </div>
 
           <div className="grid grid-cols-3 gap-4">
             <div>
-              <Label htmlFor="batch_name" className="text-slate-300">Batch Name</Label>
+              <Label htmlFor="batch_name" className="text-gray-700">Batch Name</Label>
               <Input
                 id="batch_name"
                 value={formData.batch_name}
                 onChange={(e) => setFormData({...formData, batch_name: e.target.value})}
-                className="bg-slate-800 border-white/10 text-slate-100"
+                className="bg-gray-50 border-gray-200 text-slate-100"
               />
             </div>
             <div>
-              <Label htmlFor="session_date" className="text-slate-300">Session Date</Label>
+              <Label htmlFor="session_date" className="text-gray-700">Session Date</Label>
               <Input
                 id="session_date"
                 type="date"
                 value={formData.session_date}
                 onChange={(e) => setFormData({...formData, session_date: e.target.value})}
-                className="bg-slate-800 border-white/10 text-slate-100"
+                className="bg-gray-50 border-gray-200 text-slate-100"
               />
             </div>
             <div>
-              <Label htmlFor="branch" className="text-slate-300">Branch</Label>
+              <Label htmlFor="branch" className="text-gray-700">Branch</Label>
               <select
                 id="branch"
                 value={formData.branch}
                 onChange={(e) => setFormData({...formData, branch: e.target.value})}
-                className="w-full bg-slate-800 border border-white/10 text-slate-100 rounded-md p-2"
+                className="w-full bg-gray-50 border border-gray-200 text-slate-100 rounded-md p-2"
               >
                 <option value="Dubai">Dubai</option>
                 <option value="Abu Dhabi">Abu Dhabi</option>
@@ -205,28 +205,28 @@ const AssessmentFormBuilder = ({ onBack, onFormCreated }) => {
       </div>
 
       {/* Add Question */}
-      <div className="bg-slate-900/50 backdrop-blur-sm rounded-xl border border-white/10 p-6">
+      <div className="bg-white0 backdrop-blur-sm rounded-xl border border-gray-200 p-6">
         <h3 className="text-lg font-semibold text-slate-100 mb-4">Add Question</h3>
         <div className="space-y-4">
           <div>
-            <Label htmlFor="question_text" className="text-slate-300">Question Text *</Label>
+            <Label htmlFor="question_text" className="text-gray-700">Question Text *</Label>
             <Input
               id="question_text"
               value={currentQuestion.question_text}
               onChange={(e) => setCurrentQuestion({...currentQuestion, question_text: e.target.value})}
               placeholder="Enter your question..."
-              className="bg-slate-800 border-white/10 text-slate-100"
+              className="bg-gray-50 border-gray-200 text-slate-100"
             />
           </div>
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <Label htmlFor="question_type" className="text-slate-300">Question Type</Label>
+              <Label htmlFor="question_type" className="text-gray-700">Question Type</Label>
               <select
                 id="question_type"
                 value={currentQuestion.question_type}
                 onChange={(e) => setCurrentQuestion({...currentQuestion, question_type: e.target.value})}
-                className="w-full bg-slate-800 border border-white/10 text-slate-100 rounded-md p-2"
+                className="w-full bg-gray-50 border border-gray-200 text-slate-100 rounded-md p-2"
               >
                 <option value="rating">Rating (1-5)</option>
                 <option value="text">Text Answer</option>
@@ -249,7 +249,7 @@ const AssessmentFormBuilder = ({ onBack, onFormCreated }) => {
 
           {currentQuestion.question_type === 'multiple_choice' && (
             <div>
-              <Label className="text-slate-300">Options</Label>
+              <Label className="text-gray-700">Options</Label>
               <div className="space-y-2 mt-2">
                 {currentQuestion.options.map((option, index) => (
                   <div key={index} className="flex gap-2">
@@ -257,7 +257,7 @@ const AssessmentFormBuilder = ({ onBack, onFormCreated }) => {
                       value={option}
                       onChange={(e) => updateOption(index, e.target.value)}
                       placeholder={`Option ${index + 1}`}
-                      className="bg-slate-800 border-white/10 text-slate-100"
+                      className="bg-gray-50 border-gray-200 text-slate-100"
                     />
                     <Button
                       type="button"
@@ -265,7 +265,7 @@ const AssessmentFormBuilder = ({ onBack, onFormCreated }) => {
                       size="sm"
                       onClick={() => removeOption(index)}
                       disabled={currentQuestion.options.length === 1}
-                      className="border-white/20 hover:bg-red-500/20"
+                      className="border-gray-300 hover:bg-red-500/20"
                     >
                       <Trash2 className="w-4 h-4" />
                     </Button>
@@ -276,7 +276,7 @@ const AssessmentFormBuilder = ({ onBack, onFormCreated }) => {
                   variant="outline"
                   size="sm"
                   onClick={addOption}
-                  className="border-white/20 hover:bg-white/10"
+                  className="border-gray-300 hover:bg-white"
                 >
                   <Plus className="w-4 h-4 mr-2" />
                   Add Option
@@ -294,11 +294,11 @@ const AssessmentFormBuilder = ({ onBack, onFormCreated }) => {
 
       {/* Questions List */}
       {formData.questions.length > 0 && (
-        <div className="bg-slate-900/50 backdrop-blur-sm rounded-xl border border-white/10 p-6">
+        <div className="bg-white0 backdrop-blur-sm rounded-xl border border-gray-200 p-6">
           <h3 className="text-lg font-semibold text-slate-100 mb-4">Questions ({formData.questions.length})</h3>
           <div className="space-y-3">
             {formData.questions.map((question, index) => (
-              <div key={question.id} className="bg-white/5 border border-white/10 rounded-lg p-4">
+              <div key={question.id} className="bg-white border border-gray-200 rounded-lg p-4">
                 <div className="flex justify-between items-start">
                   <div className="flex-1">
                     <p className="font-medium text-slate-100">
@@ -317,7 +317,7 @@ const AssessmentFormBuilder = ({ onBack, onFormCreated }) => {
                     variant="outline"
                     size="sm"
                     onClick={() => removeQuestion(index)}
-                    className="border-white/20 hover:bg-red-500/20"
+                    className="border-gray-300 hover:bg-red-500/20"
                   >
                     <Trash2 className="w-4 h-4" />
                   </Button>

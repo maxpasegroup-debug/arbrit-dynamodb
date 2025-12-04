@@ -140,7 +140,7 @@ export default function MasterCleanupPanel() {
             <Database className="w-6 h-6" />
             Master Cleanup Panel
           </h2>
-          <p className="text-slate-400 text-sm mt-1">
+          <p className="text-gray-500 text-sm mt-1">
             Manage and remove employee data across the system
           </p>
         </div>
@@ -157,7 +157,7 @@ export default function MasterCleanupPanel() {
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Employee Selector */}
-        <Card className="bg-slate-800/50 border-white/10 p-6">
+        <Card className="bg-gray-50/50 border-gray-200 p-6">
           <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
             <User className="w-5 h-5" />
             Select Employee
@@ -171,7 +171,7 @@ export default function MasterCleanupPanel() {
                 className={`w-full text-left p-3 rounded-lg transition-all ${
                   selectedEmployee?.id === emp.id
                     ? 'bg-blue-600 text-white'
-                    : 'bg-slate-700/50 text-slate-300 hover:bg-slate-700'
+                    : 'bg-gray-100/50 text-slate-300 hover:bg-gray-100'
                 }`}
               >
                 <div className="font-medium">{emp.name}</div>
@@ -184,7 +184,7 @@ export default function MasterCleanupPanel() {
         </Card>
 
         {/* Employee Data Display */}
-        <Card className="bg-slate-800/50 border-white/10 p-6 lg:col-span-2">
+        <Card className="bg-gray-50/50 border-gray-200 p-6 lg:col-span-2">
           {!selectedEmployee ? (
             <div className="flex flex-col items-center justify-center h-full text-slate-400">
               <User className="w-16 h-16 mb-4 opacity-50" />
@@ -197,7 +197,7 @@ export default function MasterCleanupPanel() {
           ) : employeeData ? (
             <div className="space-y-4">
               {/* Employee Info */}
-              <div className="bg-slate-700/50 p-4 rounded-lg">
+              <div className="bg-gray-100/50 p-4 rounded-lg">
                 <h3 className="text-xl font-bold text-white mb-2">
                   {employeeData.employee.name}
                 </h3>
@@ -224,8 +224,8 @@ export default function MasterCleanupPanel() {
                       key={key}
                       className={`p-4 rounded-lg border ${
                         hasData
-                          ? 'bg-slate-700/30 border-white/10'
-                          : 'bg-slate-800/30 border-white/5'
+                          ? 'bg-gray-100/30 border-gray-200'
+                          : 'bg-gray-50/30 border-white/5'
                       }`}
                     >
                       <div className="flex items-center justify-between">

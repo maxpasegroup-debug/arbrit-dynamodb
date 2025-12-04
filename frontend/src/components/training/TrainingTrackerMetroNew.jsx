@@ -129,14 +129,14 @@ const TrainingTrackerMetroNew = () => {
               <GraduationCap className="w-8 h-8 text-yellow-400" />
               <h2 className="text-3xl font-bold text-white">Training Tracker</h2>
             </div>
-            <p className="text-slate-300">Metro-style tracking from initiation to completion</p>
+            <p className="text-gray-700">Metro-style tracking from initiation to completion</p>
           </div>
         </div>
       </div>
 
       {/* Filter Tabs */}
       <Tabs value={filterStatus} onValueChange={setFilterStatus} className="w-full">
-        <TabsList className="bg-white/10 border border-white/20">
+        <TabsList className="bg-white border border-gray-300">
           <TabsTrigger value="all" className="data-[state=active]:bg-white/20">
             <BookOpen className="w-4 h-4 mr-2" />
             All Trainings ({stats?.total || 0})
@@ -183,7 +183,7 @@ const TrainingTrackerMetroNew = () => {
                   </div>
 
                   {/* Training Cards */}
-                  <div className="bg-white/5 backdrop-blur-sm rounded-b-xl border border-white/10 p-4 space-y-3 min-h-[400px] max-h-[600px] overflow-y-auto">
+                  <div className="bg-white backdrop-blur-sm rounded-b-xl border border-gray-200 p-4 space-y-3 min-h-[400px] max-h-[600px] overflow-y-auto">
                     {trainingsInStage.length === 0 ? (
                       <div className="text-center py-8 text-slate-400 text-sm">
                         No trainings in {stage.label.toLowerCase()}
@@ -196,7 +196,7 @@ const TrainingTrackerMetroNew = () => {
                         return (
                           <div
                             key={training.id}
-                            className="bg-slate-800/80 rounded-lg p-4 border border-white/10 hover:border-white/20 transition-all cursor-pointer"
+                            className="bg-gray-50/80 rounded-lg p-4 border border-gray-200 hover:border-gray-300 transition-all cursor-pointer"
                             onClick={() => {
                               setSelectedTraining(training);
                               setDetailsOpen(true);
@@ -213,7 +213,7 @@ const TrainingTrackerMetroNew = () => {
                             </div>
 
                             {/* Progress Map */}
-                            <div className="mb-3 p-2 bg-slate-900/50 rounded border border-white/5">
+                            <div className="mb-3 p-2 bg-white0 rounded border border-white/5">
                               <div className="flex items-center justify-between mb-1">
                                 {stages.map((s, idx) => {
                                   const isCompleted = idx < currentStageIndex;
@@ -228,7 +228,7 @@ const TrainingTrackerMetroNew = () => {
                                             ? 'bg-green-500'
                                             : isCurrent
                                             ? s.color
-                                            : 'bg-slate-700'
+                                            : 'bg-gray-100'
                                         }`}
                                         title={s.label}
                                       >
@@ -237,7 +237,7 @@ const TrainingTrackerMetroNew = () => {
                                       {idx < stages.length - 1 && (
                                         <div
                                           className={`w-3 h-0.5 ${
-                                            isCompleted ? 'bg-green-500' : 'bg-slate-700'
+                                            isCompleted ? 'bg-green-500' : 'bg-gray-100'
                                           }`}
                                         />
                                       )}
@@ -310,7 +310,7 @@ const TrainingTrackerMetroNew = () => {
 
       {/* Training Details Dialog */}
       <Dialog open={detailsOpen} onOpenChange={setDetailsOpen}>
-        <DialogContent className="bg-[#1a2f4d] border-white/20 text-white max-w-2xl">
+        <DialogContent className="bg-[#1a2f4d] border-gray-300 text-white max-w-2xl">
           <DialogHeader>
             <DialogTitle className="text-2xl">Training Details</DialogTitle>
           </DialogHeader>
@@ -370,7 +370,7 @@ const TrainingTrackerMetroNew = () => {
               {selectedTraining.notes && (
                 <div>
                   <p className="text-sm text-gray-400 mb-2">Notes</p>
-                  <p className="text-white bg-white/5 p-3 rounded-lg">{selectedTraining.notes}</p>
+                  <p className="text-white bg-white p-3 rounded-lg">{selectedTraining.notes}</p>
                 </div>
               )}
             </div>

@@ -45,7 +45,7 @@ const TrainingCalendar = () => {
 
   if (loading) {
     return (
-      <Card className="bg-white/5 border-white/10">
+      <Card className="bg-white border-gray-200">
         <CardContent className="p-6">
           <p className="text-gray-400 text-center">Loading calendar...</p>
         </CardContent>
@@ -55,7 +55,7 @@ const TrainingCalendar = () => {
 
   return (
     <div className="space-y-6">
-      <Card className="bg-white/5 border-white/10">
+      <Card className="bg-white border-gray-200">
         <CardHeader className="flex flex-row items-center justify-between">
           <div>
             <CardTitle className="text-white text-xl">Training Calendar</CardTitle>
@@ -76,7 +76,7 @@ const TrainingCalendar = () => {
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {sessions.map((session) => (
-                <Card key={session.id} className="bg-white/5 border-white/10 hover:bg-white/10 transition-all">
+                <Card key={session.id} className="bg-white border-gray-200 hover:bg-white transition-all">
                   <CardContent className="p-4">
                     <div className="flex justify-between items-start mb-3">
                       <h3 className="text-white font-semibold">{session.course_name}</h3>

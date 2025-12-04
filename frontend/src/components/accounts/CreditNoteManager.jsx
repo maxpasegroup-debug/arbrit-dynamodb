@@ -140,10 +140,10 @@ const CreditNoteManager = () => {
       </div>
 
       {/* Credit Notes Table */}
-      <div className="bg-white/5 backdrop-blur-sm rounded-xl border border-white/10 overflow-hidden">
+      <div className="bg-white backdrop-blur-sm rounded-xl border border-gray-200 overflow-hidden">
         <Table>
           <TableHeader>
-            <TableRow className="border-white/10">
+            <TableRow className="border-gray-200">
               <TableHead className="text-gray-300">Credit Note #</TableHead>
               <TableHead className="text-gray-300">Invoice #</TableHead>
               <TableHead className="text-gray-300">Client</TableHead>
@@ -163,7 +163,7 @@ const CreditNoteManager = () => {
               </TableRow>
             ) : (
               creditNotes.map((note) => (
-                <TableRow key={note.id} className="border-white/10">
+                <TableRow key={note.id} className="border-gray-200">
                   <TableCell className="text-white font-medium">{note.credit_note_number}</TableCell>
                   <TableCell className="text-white">{note.invoice_number || '-'}</TableCell>
                   <TableCell className="text-white">{note.client_name}</TableCell>
@@ -200,7 +200,7 @@ const CreditNoteManager = () => {
                 <Input
                   value={formData.credit_note_number}
                   onChange={(e) => setFormData({...formData, credit_note_number: e.target.value})}
-                  className="bg-slate-800 border-slate-600 text-white"
+                  className="bg-gray-50 border-slate-600 text-white"
                 />
               </div>
               <div className="space-y-2">
@@ -209,7 +209,7 @@ const CreditNoteManager = () => {
                   type="date"
                   value={formData.issued_date}
                   onChange={(e) => setFormData({...formData, issued_date: e.target.value})}
-                  className="bg-slate-800 border-slate-600 text-white"
+                  className="bg-gray-50 border-slate-600 text-white"
                 />
               </div>
             </div>
@@ -217,10 +217,10 @@ const CreditNoteManager = () => {
             <div className="space-y-2">
               <Label>Link to Invoice (Optional)</Label>
               <Select value={formData.invoice_id || 'none'} onValueChange={handleInvoiceSelect}>
-                <SelectTrigger className="bg-slate-800 border-slate-600 text-white">
+                <SelectTrigger className="bg-gray-50 border-slate-600 text-white">
                   <SelectValue placeholder="Select invoice (optional)" />
                 </SelectTrigger>
-                <SelectContent className="bg-slate-800 border-slate-600 text-white">
+                <SelectContent className="bg-gray-50 border-slate-600 text-white">
                   <SelectItem value="none">None</SelectItem>
                   {invoices.map((inv) => (
                     <SelectItem key={inv.id} value={inv.id}>
@@ -236,7 +236,7 @@ const CreditNoteManager = () => {
               <Input
                 value={formData.client_name}
                 onChange={(e) => setFormData({...formData, client_name: e.target.value})}
-                className="bg-slate-800 border-slate-600 text-white"
+                className="bg-gray-50 border-slate-600 text-white"
               />
             </div>
 
@@ -248,16 +248,16 @@ const CreditNoteManager = () => {
                   step="0.01"
                   value={formData.amount}
                   onChange={(e) => setFormData({...formData, amount: e.target.value})}
-                  className="bg-slate-800 border-slate-600 text-white"
+                  className="bg-gray-50 border-slate-600 text-white"
                 />
               </div>
               <div className="space-y-2">
                 <Label>Reason *</Label>
                 <Select value={formData.reason} onValueChange={(val) => setFormData({...formData, reason: val})}>
-                  <SelectTrigger className="bg-slate-800 border-slate-600 text-white">
+                  <SelectTrigger className="bg-gray-50 border-slate-600 text-white">
                     <SelectValue />
                   </SelectTrigger>
-                  <SelectContent className="bg-slate-800 border-slate-600 text-white">
+                  <SelectContent className="bg-gray-50 border-slate-600 text-white">
                     <SelectItem value="Refund">Refund</SelectItem>
                     <SelectItem value="Cancellation">Cancellation</SelectItem>
                     <SelectItem value="Discount">Discount</SelectItem>
@@ -272,14 +272,14 @@ const CreditNoteManager = () => {
               <Textarea
                 value={formData.description}
                 onChange={(e) => setFormData({...formData, description: e.target.value})}
-                className="bg-slate-800 border-slate-600 text-white min-h-[100px]"
+                className="bg-gray-50 border-slate-600 text-white min-h-[100px]"
                 placeholder="Explain the reason for this credit note..."
               />
             </div>
           </div>
 
           <DialogFooter>
-            <Button variant="outline" onClick={() => setShowDialog(false)} className="border-slate-600 text-white hover:bg-slate-800">
+            <Button variant="outline" onClick={() => setShowDialog(false)} className="border-slate-600 text-white hover:bg-gray-50">
               Cancel
             </Button>
             <Button 

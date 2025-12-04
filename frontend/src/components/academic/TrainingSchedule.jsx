@@ -98,10 +98,10 @@ const TrainingSchedule = () => {
       {/* Upcoming Sessions */}
       <div>
         <h4 className="text-lg font-semibold text-white mb-3">Upcoming Training Sessions</h4>
-        <div className="bg-white/5 backdrop-blur-sm rounded-xl border border-white/10 overflow-hidden">
+        <div className="bg-white backdrop-blur-sm rounded-xl border border-gray-200 overflow-hidden">
           <Table>
             <TableHeader>
-              <TableRow className="border-white/10">
+              <TableRow className="border-gray-200">
                 <TableHead className="text-gray-300">Date</TableHead>
                 <TableHead className="text-gray-300">WO Reference</TableHead>
                 <TableHead className="text-gray-300">Client</TableHead>
@@ -119,7 +119,7 @@ const TrainingSchedule = () => {
                 </TableRow>
               ) : (
                 upcomingSessions.map((session) => (
-                  <TableRow key={session.id} className="border-white/10">
+                  <TableRow key={session.id} className="border-gray-200">
                     <TableCell className="text-white font-medium">
                       <div className="flex items-center gap-1">
                         <Calendar className="w-4 h-4 text-blue-400" />
@@ -163,10 +163,10 @@ const TrainingSchedule = () => {
       {/* Completed Sessions */}
       <div>
         <h4 className="text-lg font-semibold text-white mb-3">Completed Sessions ({completedSessions.length})</h4>
-        <div className="bg-white/5 backdrop-blur-sm rounded-xl border border-white/10 overflow-hidden">
+        <div className="bg-white backdrop-blur-sm rounded-xl border border-gray-200 overflow-hidden">
           <Table>
             <TableHeader>
-              <TableRow className="border-white/10">
+              <TableRow className="border-gray-200">
                 <TableHead className="text-gray-300">Date</TableHead>
                 <TableHead className="text-gray-300">Client</TableHead>
                 <TableHead className="text-gray-300">Course</TableHead>
@@ -181,7 +181,7 @@ const TrainingSchedule = () => {
                 </TableRow>
               ) : (
                 completedSessions.slice(0, 5).map((session) => (
-                  <TableRow key={session.id} className="border-white/10">
+                  <TableRow key={session.id} className="border-gray-200">
                     <TableCell className="text-gray-300">{new Date(session.training_date).toLocaleDateString()}</TableCell>
                     <TableCell className="text-white font-medium">{session.client_name}</TableCell>
                     <TableCell className="text-gray-300">{session.course}</TableCell>
@@ -197,13 +197,13 @@ const TrainingSchedule = () => {
 
       {/* Status Update Dialog */}
       <Dialog open={showDialog} onOpenChange={setShowDialog}>
-        <DialogContent className="bg-[#1a2f4d] border-white/20 text-white">
+        <DialogContent className="bg-[#1a2f4d] border-gray-300 text-white">
           <DialogHeader>
             <DialogTitle>Update Session Status</DialogTitle>
           </DialogHeader>
           {selectedSession && (
             <div className="space-y-4">
-              <div className="bg-white/5 rounded-lg p-3">
+              <div className="bg-white rounded-lg p-3">
                 <p><span className="text-gray-400">Client:</span> <span className="font-semibold">{selectedSession.client_name}</span></p>
                 <p><span className="text-gray-400">Course:</span> {selectedSession.course}</p>
                 <p><span className="text-gray-400">Date:</span> {new Date(selectedSession.training_date).toLocaleDateString()}</p>
@@ -212,10 +212,10 @@ const TrainingSchedule = () => {
               <div>
                 <label className="text-sm text-gray-300 mb-2 block">Status</label>
                 <Select value={statusUpdate.status} onValueChange={(value) => setStatusUpdate({...statusUpdate, status: value})}>
-                  <SelectTrigger className="bg-white/5 border-white/20 text-white">
+                  <SelectTrigger className="bg-white border-gray-300 text-white">
                     <SelectValue />
                   </SelectTrigger>
-                  <SelectContent className="bg-[#1a2f4d] border-white/20 text-white">
+                  <SelectContent className="bg-[#1a2f4d] border-gray-300 text-white">
                     <SelectItem value="Scheduled">Scheduled</SelectItem>
                     <SelectItem value="In-Progress">In-Progress</SelectItem>
                     <SelectItem value="Completed">Completed</SelectItem>
@@ -230,14 +230,14 @@ const TrainingSchedule = () => {
                   value={statusUpdate.notes}
                   onChange={(e) => setStatusUpdate({...statusUpdate, notes: e.target.value})}
                   rows={3}
-                  className="bg-white/5 border-white/20 text-white"
+                  className="bg-white border-gray-300 text-white"
                   placeholder="Add any notes about the session..."
                 />
               </div>
             </div>
           )}
           <DialogFooter>
-            <Button variant="outline" onClick={() => setShowDialog(false)} className="border-white/20 text-white">Cancel</Button>
+            <Button variant="outline" onClick={() => setShowDialog(false)} className="border-gray-300 text-white">Cancel</Button>
             <Button onClick={submitStatusUpdate} style={{ background: 'linear-gradient(135deg, #d4af37 0%, #c9a02c 100%)' }} className="text-[#0a1e3d]">Update Status</Button>
           </DialogFooter>
         </DialogContent>

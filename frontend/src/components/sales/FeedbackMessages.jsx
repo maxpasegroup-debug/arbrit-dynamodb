@@ -93,7 +93,7 @@ const FeedbackMessages = () => {
           <h3 className="text-xl font-semibold text-white mb-2">
             Messages & Feedback
           </h3>
-          <p className="text-slate-400">
+          <p className="text-gray-500">
             Communication and feedback from higher management
           </p>
         </div>
@@ -246,7 +246,7 @@ const FeedbackMessages = () => {
             <h3 className="text-gray-700 text-lg font-semibold mb-2">
               No Messages Yet
             </h3>
-            <p className="text-slate-400">
+            <p className="text-gray-500">
               Messages and feedback from management will appear here.
             </p>
           </CardContent>

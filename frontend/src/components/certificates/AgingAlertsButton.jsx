@@ -110,7 +110,7 @@ const AgingAlertsButton = () => {
 
       {/* Aging Alerts Modal */}
       <Dialog open={alertsOpen} onOpenChange={setAlertsOpen}>
-        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto bg-slate-900 border-white/10">
+        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto bg-white border-gray-200">
           <DialogHeader>
             <DialogTitle className="text-white flex items-center gap-2">
               <Bell className="w-6 h-6 text-red-400" />
@@ -132,13 +132,13 @@ const AgingAlertsButton = () => {
                 <Bell className="w-10 h-10 text-green-400" />
               </div>
               <p className="text-xl font-semibold text-green-300 mb-2">All Clear!</p>
-              <p className="text-slate-400">No aging alerts at this time. All certificates are on track.</p>
+              <p className="text-gray-500">No aging alerts at this time. All certificates are on track.</p>
             </div>
           ) : (
             <div className="space-y-4 mt-4">
               {/* Summary Cards */}
               <div className="grid grid-cols-4 gap-3">
-                <div className="bg-white/10 backdrop-blur-sm rounded-lg p-3">
+                <div className="bg-white backdrop-blur-sm rounded-lg p-3">
                   <p className="text-xs text-slate-300 mb-1">Total Alerts</p>
                   <p className="text-2xl font-bold text-white">{summary.total_alerts}</p>
                 </div>
@@ -198,7 +198,7 @@ const AgingAlertsButton = () => {
                             <Badge className="bg-blue-500/20 text-blue-300 border-blue-400/50">
                               {alert.certificate_type}
                             </Badge>
-                            <Badge className="bg-white/10 text-white border-white/20">
+                            <Badge className="bg-white text-white border-gray-300">
                               {alert.status.replace(/_/g, ' ').toUpperCase()}
                             </Badge>
                           </div>
@@ -218,15 +218,15 @@ const AgingAlertsButton = () => {
                           
                           <div className="grid grid-cols-3 gap-2 text-xs">
                             <div>
-                              <p className="text-slate-400">Contact</p>
+                              <p className="text-gray-500">Contact</p>
                               <p className="text-white font-medium">{alert.contact_person}</p>
                             </div>
                             <div>
-                              <p className="text-slate-400">Mobile</p>
+                              <p className="text-gray-500">Mobile</p>
                               <p className="text-white font-medium">{alert.contact_mobile}</p>
                             </div>
                             <div>
-                              <p className="text-slate-400">Age</p>
+                              <p className="text-gray-500">Age</p>
                               <p className="text-white font-bold">
                                 {alert.certificate_type === 'In-House' 
                                   ? `${alert.age_hours}h` 

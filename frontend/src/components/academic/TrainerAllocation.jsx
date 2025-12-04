@@ -77,7 +77,7 @@ const TrainerAllocation = () => {
       </div>
 
       {/* Filters */}
-      <div className="bg-white/5 backdrop-blur-sm rounded-xl border border-white/10 p-4">
+      <div className="bg-white backdrop-blur-sm rounded-xl border border-gray-200 p-4">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div>
             <label className="text-sm text-gray-400 mb-2 block">Search Trainer</label>
@@ -87,17 +87,17 @@ const TrainerAllocation = () => {
                 placeholder="Search by name..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="bg-white/5 border-white/20 text-white pl-10"
+                className="bg-white border-gray-300 text-white pl-10"
               />
             </div>
           </div>
           <div>
             <label className="text-sm text-gray-400 mb-2 block">Filter by Branch</label>
             <Select value={branchFilter} onValueChange={setBranchFilter}>
-              <SelectTrigger className="bg-white/5 border-white/20 text-white">
+              <SelectTrigger className="bg-white border-gray-300 text-white">
                 <SelectValue placeholder="All Branches" />
               </SelectTrigger>
-              <SelectContent className="bg-[#1a2f4d] border-white/20 text-white">
+              <SelectContent className="bg-[#1a2f4d] border-gray-300 text-white">
                 <SelectItem value="all">All Branches</SelectItem>
                 {branches.map(branch => (
                   <SelectItem key={branch} value={branch}>{branch}</SelectItem>
@@ -115,10 +115,10 @@ const TrainerAllocation = () => {
       </div>
 
       {/* Trainers Table */}
-      <div className="bg-white/5 backdrop-blur-sm rounded-xl border border-white/10 overflow-hidden">
+      <div className="bg-white backdrop-blur-sm rounded-xl border border-gray-200 overflow-hidden">
         <Table>
           <TableHeader>
-            <TableRow className="border-white/10">
+            <TableRow className="border-gray-200">
               <TableHead className="text-gray-300">Name</TableHead>
               <TableHead className="text-gray-300">Designation</TableHead>
               <TableHead className="text-gray-300">Branch</TableHead>
@@ -135,7 +135,7 @@ const TrainerAllocation = () => {
               </TableRow>
             ) : (
               filteredTrainers.map((trainer) => (
-                <TableRow key={trainer.id} className="border-white/10">
+                <TableRow key={trainer.id} className="border-gray-200">
                   <TableCell className="text-white font-medium">
                     <div className="flex items-center gap-2">
                       <Award className="w-4 h-4 text-yellow-400" />

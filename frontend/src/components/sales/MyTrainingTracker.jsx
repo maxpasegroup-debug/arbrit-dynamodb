@@ -73,7 +73,7 @@ const MyTrainingTracker = () => {
           <h3 className="text-xl font-semibold text-white mb-2">
             My Training Progress
           </h3>
-          <p className="text-slate-400">
+          <p className="text-gray-500">
             Track training delivery status for leads you've closed
           </p>
         </div>
@@ -121,7 +121,7 @@ const MyTrainingTracker = () => {
       {/* Training List */}
       <div className="space-y-4">
         {trainings.map((training) => (
-          <Card key={training.id} className="bg-white/50 border-gray-300">
+          <Card key={training.id} className="bg-white0 border-gray-300">
             <CardHeader className="pb-3">
               <div className="flex justify-between items-start">
                 <div className="flex-1">
@@ -154,7 +154,7 @@ const MyTrainingTracker = () => {
               {/* Progress Bar */}
               <div className="space-y-2">
                 <div className="flex justify-between text-sm">
-                  <span className="text-slate-400">Progress</span>
+                  <span className="text-gray-500">Progress</span>
                   <span className="text-gray-700">{training.progress}%</span>
                 </div>
                 <Progress value={training.progress} className="h-2" />
@@ -163,19 +163,19 @@ const MyTrainingTracker = () => {
               {/* Training Details */}
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
                 <div>
-                  <p className="text-slate-400">Participants</p>
+                  <p className="text-gray-500">Participants</p>
                   <p className="text-white font-semibold">{training.participants}</p>
                 </div>
                 <div>
-                  <p className="text-slate-400">Trainer</p>
+                  <p className="text-gray-500">Trainer</p>
                   <p className="text-white font-semibold">{training.trainer}</p>
                 </div>
                 <div>
-                  <p className="text-slate-400">Lead Value</p>
+                  <p className="text-gray-500">Lead Value</p>
                   <p className="text-white font-semibold">{training.leadValue.toLocaleString()} AED</p>
                 </div>
                 <div>
-                  <p className="text-slate-400">Status</p>
+                  <p className="text-gray-500">Status</p>
                   <p className="text-white font-semibold capitalize">
                     {training.status.replace('_', ' ')}
                   </p>
@@ -184,7 +184,7 @@ const MyTrainingTracker = () => {
 
               {/* Stages Progress */}
               <div className="space-y-2">
-                <p className="text-slate-400 text-sm font-medium">Stages:</p>
+                <p className="text-gray-500 text-sm font-medium">Stages:</p>
                 <div className="flex flex-wrap gap-2">
                   {training.stages.map((stage, index) => (
                     <Badge
@@ -214,7 +214,7 @@ const MyTrainingTracker = () => {
             <h3 className="text-gray-700 text-lg font-semibold mb-2">
               No Training Records Found
             </h3>
-            <p className="text-slate-400">
+            <p className="text-gray-500">
               Training progress will appear here once your closed leads proceed to training delivery.
             </p>
           </CardContent>

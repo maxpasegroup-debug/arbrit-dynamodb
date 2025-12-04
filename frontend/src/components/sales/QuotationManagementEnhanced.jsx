@@ -177,7 +177,7 @@ const QuotationManagementEnhanced = () => {
             <FileText className="w-6 h-6 text-yellow-400" />
             Pending Approvals ({pendingQuotations.length})
           </h3>
-          <div className="bg-white/5 backdrop-blur-sm rounded-xl border border-gray-300 overflow-hidden">
+          <div className="bg-white backdrop-blur-sm rounded-xl border border-gray-300 overflow-hidden">
             <Table>
               <TableHeader>
                 <TableRow className="border-gray-300">
@@ -255,7 +255,7 @@ const QuotationManagementEnhanced = () => {
       {/* All Quotations */}
       <div>
         <h3 className="text-xl font-semibold text-white mb-4">All Quotations ({otherQuotations.length})</h3>
-        <div className="bg-white/5 backdrop-blur-sm rounded-xl border border-gray-300 overflow-hidden">
+        <div className="bg-white backdrop-blur-sm rounded-xl border border-gray-300 overflow-hidden">
           <Table>
             <TableHeader>
               <TableRow className="border-gray-300">
@@ -402,7 +402,7 @@ const QuotationManagementEnhanced = () => {
             </DialogDescription>
           </DialogHeader>
 
-          <div className="p-4 bg-white/5 rounded-lg border border-gray-300 my-4">
+          <div className="p-4 bg-white rounded-lg border border-gray-300 my-4">
             <p className="text-sm text-gray-400">
               Client: <span className="text-white font-medium">{selectedQuotation?.client_name}</span>
             </p>

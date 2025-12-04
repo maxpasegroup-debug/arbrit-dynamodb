@@ -128,7 +128,7 @@ const ExpenseApprovalManagement = () => {
       </div>
 
       {/* Pending Expense Claims */}
-      <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl p-6">
+      <div className="bg-white backdrop-blur-sm border border-gray-200 rounded-xl p-6">
         <h3 className="text-xl font-semibold text-white mb-4 flex items-center gap-2">
           <Clock className="w-5 h-5 text-yellow-400" />
           Pending Approvals ({pendingExpenses.length})
@@ -151,7 +151,7 @@ const ExpenseApprovalManagement = () => {
                     <div className="flex items-center gap-3 mb-2">
                       <h4 className="text-lg font-semibold text-white">{expense.employee_name}</h4>
                       {getStatusBadge(expense.status)}
-                      <Badge className={`${getCategoryColor(expense.category)} bg-white/5 border-white/10`}>
+                      <Badge className={`${getCategoryColor(expense.category)} bg-white border-gray-200`}>
                         {expense.category}
                       </Badge>
                     </div>
@@ -213,13 +213,13 @@ const ExpenseApprovalManagement = () => {
 
       {/* Processed Expense Claims */}
       {processedExpenses.length > 0 && (
-        <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl p-6">
+        <div className="bg-white backdrop-blur-sm border border-gray-200 rounded-xl p-6">
           <h3 className="text-xl font-semibold text-white mb-4">Recently Processed</h3>
           <div className="space-y-3">
             {processedExpenses.slice(0, 5).map((expense) => (
               <div 
                 key={expense.id}
-                className="bg-white/5 border border-white/10 rounded-lg p-3 flex items-center justify-between"
+                className="bg-white border border-gray-200 rounded-lg p-3 flex items-center justify-between"
               >
                 <div>
                   <p className="text-white font-medium">{expense.employee_name}</p>
@@ -246,7 +246,7 @@ const ExpenseApprovalManagement = () => {
 
       {/* View Details Dialog */}
       <Dialog open={viewDialogOpen} onOpenChange={setViewDialogOpen}>
-        <DialogContent className="bg-[#1a2f4d] border-white/10 text-white max-w-2xl">
+        <DialogContent className="bg-[#1a2f4d] border-gray-200 text-white max-w-2xl">
           <DialogHeader>
             <DialogTitle className="text-2xl">Expense Claim Details</DialogTitle>
           </DialogHeader>
@@ -283,7 +283,7 @@ const ExpenseApprovalManagement = () => {
               
               <div>
                 <p className="text-sm text-gray-400 mb-2">Description</p>
-                <div className="bg-white/5 border border-white/10 rounded-lg p-3">
+                <div className="bg-white border border-gray-200 rounded-lg p-3">
                   <p className="text-white whitespace-pre-wrap">{selectedExpense.description}</p>
                 </div>
               </div>
@@ -291,7 +291,7 @@ const ExpenseApprovalManagement = () => {
               {selectedExpense.dept_head_remarks && (
                 <div>
                   <p className="text-sm text-gray-400 mb-2">Manager Remarks</p>
-                  <div className="bg-white/5 border border-white/10 rounded-lg p-3">
+                  <div className="bg-white border border-gray-200 rounded-lg p-3">
                     <p className="text-white">{selectedExpense.dept_head_remarks}</p>
                   </div>
                 </div>
@@ -317,7 +317,7 @@ const ExpenseApprovalManagement = () => {
 
       {/* Approve/Reject Dialog */}
       <Dialog open={actionDialogOpen} onOpenChange={setActionDialogOpen}>
-        <DialogContent className="bg-[#1a2f4d] border-white/10 text-white">
+        <DialogContent className="bg-[#1a2f4d] border-gray-200 text-white">
           <DialogHeader>
             <DialogTitle className="text-2xl">
               {actionType === 'approve' ? 'Approve Expense Claim' : 'Reject Expense Claim'}
@@ -331,7 +331,7 @@ const ExpenseApprovalManagement = () => {
           </DialogHeader>
           <div className="space-y-4">
             {selectedExpense && (
-              <div className="bg-white/5 border border-white/10 rounded-lg p-3">
+              <div className="bg-white border border-gray-200 rounded-lg p-3">
                 <p className="text-sm text-gray-400">Employee</p>
                 <p className="text-white font-medium">{selectedExpense.employee_name}</p>
                 <p className="text-sm text-gray-400 mt-2">Amount</p>
@@ -351,7 +351,7 @@ const ExpenseApprovalManagement = () => {
                 value={remarks}
                 onChange={(e) => setRemarks(e.target.value)}
                 placeholder={actionType === 'approve' ? 'Add any notes...' : 'Reason for rejection...'}
-                className="bg-white/5 border-white/10 text-white"
+                className="bg-white border-gray-200 text-white"
                 rows={4}
               />
             </div>
@@ -361,7 +361,7 @@ const ExpenseApprovalManagement = () => {
                 variant="outline"
                 onClick={() => setActionDialogOpen(false)}
                 disabled={processing}
-                className="border-white/20 text-white"
+                className="border-gray-300 text-white"
               >
                 Cancel
               </Button>

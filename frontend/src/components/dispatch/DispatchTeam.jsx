@@ -36,7 +36,7 @@ const DispatchTeam = () => {
 
   if (loading) {
     return (
-      <Card className="bg-white/5 border-white/10">
+      <Card className="bg-white border-gray-200">
         <CardContent className="p-6">
           <p className="text-gray-400 text-center">Loading team...</p>
         </CardContent>
@@ -45,7 +45,7 @@ const DispatchTeam = () => {
   }
 
   return (
-    <Card className="bg-white/5 border-white/10">
+    <Card className="bg-white border-gray-200">
       <CardHeader>
         <CardTitle className="text-white text-xl">Dispatch Team</CardTitle>
         <p className="text-sm text-gray-400 mt-1">Team members and attendance status</p>
@@ -59,7 +59,7 @@ const DispatchTeam = () => {
         ) : (
           <div className="space-y-3">
             {team.map((member) => (
-              <Card key={member.id} className="bg-white/5 border-white/10 hover:bg-white/10 transition-all">
+              <Card key={member.id} className="bg-white border-gray-200 hover:bg-white transition-all">
                 <CardContent className="p-4 flex items-center justify-between">
                   <div className="flex-1 grid grid-cols-3 gap-4">
                     <div>

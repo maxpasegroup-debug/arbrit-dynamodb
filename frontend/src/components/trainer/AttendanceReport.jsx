@@ -71,7 +71,7 @@ const AttendanceReport = () => {
 
   if (loading) {
     return (
-      <Card className="bg-white/5 border-white/10">
+      <Card className="bg-white border-gray-200">
         <CardContent className="p-6">
           <p className="text-gray-400 text-center">Loading sessions...</p>
         </CardContent>
@@ -81,7 +81,7 @@ const AttendanceReport = () => {
 
   return (
     <div className="space-y-6">
-      <Card className="bg-white/5 border-white/10">
+      <Card className="bg-white border-gray-200">
         <CardHeader>
           <CardTitle className="text-white text-xl">Attendance & Session Report</CardTitle>
           <p className="text-sm text-gray-400 mt-1">Mark attendance and submit session reports</p>
@@ -93,10 +93,10 @@ const AttendanceReport = () => {
               Select Session
             </label>
             <Select value={selectedSession} onValueChange={setSelectedSession}>
-              <SelectTrigger className="bg-white/5 border-white/20 text-white">
+              <SelectTrigger className="bg-white border-gray-300 text-white">
                 <SelectValue placeholder="Choose a session" />
               </SelectTrigger>
-              <SelectContent className="bg-[#1a2f4d] border-white/20">
+              <SelectContent className="bg-[#1a2f4d] border-gray-300">
                 {sessions.length === 0 ? (
                   <SelectItem value="no-sessions" disabled>
                     No sessions available
@@ -106,7 +106,7 @@ const AttendanceReport = () => {
                     <SelectItem 
                       key={session.id} 
                       value={session.id}
-                      className="text-white hover:bg-white/10"
+                      className="text-white hover:bg-white"
                     >
                       {session.course_name} - {new Date(session.date).toLocaleDateString()}
                     </SelectItem>
@@ -125,7 +125,7 @@ const AttendanceReport = () => {
               placeholder="Enter attendance details (e.g., '25 out of 30 participants present')..."
               value={attendance}
               onChange={(e) => setAttendance(e.target.value)}
-              className="bg-white/5 border-white/20 text-white placeholder:text-gray-400 min-h-20"
+              className="bg-white border-gray-300 text-white placeholder:text-gray-400 min-h-20"
             />
           </div>
 
@@ -138,7 +138,7 @@ const AttendanceReport = () => {
               placeholder="Describe the session, topics covered, participant engagement, issues, etc..."
               value={report}
               onChange={(e) => setReport(e.target.value)}
-              className="bg-white/5 border-white/20 text-white placeholder:text-gray-400 min-h-32"
+              className="bg-white border-gray-300 text-white placeholder:text-gray-400 min-h-32"
             />
           </div>
 
