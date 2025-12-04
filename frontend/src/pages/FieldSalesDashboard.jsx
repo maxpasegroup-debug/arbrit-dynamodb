@@ -180,7 +180,7 @@ const FieldSalesDashboard = () => {
             </TabsTrigger>
             <TabsTrigger 
               value="leave"
-              className="data-[state=active]:bg-green-500/20 data-[state=active]:text-white text-gray-300"
+              className="data-[state=active]:bg-green-500 data-[state=active]:text-white text-gray-700"
             >
               <UserCheck className="w-4 h-4 mr-2" />
               Leave
