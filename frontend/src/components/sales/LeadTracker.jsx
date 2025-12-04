@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Phone, MessageCircle, FileText, Calendar, CheckCircle, Filter, Search, Download, Eye, DollarSign } from 'lucide-react';
+import { Phone, MessageCircle, FileText, Calendar, CheckCircle, Filter, Search, Download, Eye, DollarSign, Edit } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
