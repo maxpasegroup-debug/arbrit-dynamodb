@@ -1019,28 +1019,27 @@ const LeadTracker = () => {
                             );
                           }
                         } else {
-                          // No invoice yet - Sales team can create
-                          if (!isSalesHead) {
-                            return (
-                              <Button
-                                size="sm"
-                                variant="outline"
-                                className="border-green-400/50 text-green-300 hover:bg-green-500/20"
-                                title="Create Invoice Request"
-                                onClick={async () => {
-                                  try {
-                                    const token = localStorage.getItem('token');
-                                    await axios.post(`${API}/sales/invoice-requests`, {
-                                      lead_id: lead.id,
-                                      client_name: lead.client_name || lead.company_name,
-                                      amount: lead.lead_value || '0',
-                                      description: `Invoice for ${lead.course_name || 'Training Services'}`,
-                                      remarks: 'Invoice request from lead tracker'
-                                    }, {
-                                      headers: { Authorization: `Bearer ${token}` }
-                                    });
-                                  
-                                  toast.success('Invoice request submitted to Sales Head');
+                          // No invoice yet - Both Sales team and Sales Head can create
+                          return (
+                            <Button
+                              size="sm"
+                              variant="outline"
+                              className="border-green-400/50 text-green-300 hover:bg-green-500/20"
+                              title="Create Invoice Request"
+                              onClick={async () => {
+                                try {
+                                  const token = localStorage.getItem('token');
+                                  await axios.post(`${API}/sales/invoice-requests`, {
+                                    lead_id: lead.id,
+                                    client_name: lead.client_name || lead.company_name,
+                                    amount: lead.lead_value || '0',
+                                    description: `Invoice for ${lead.course_name || 'Training Services'}`,
+                                    remarks: 'Invoice request from lead tracker'
+                                  }, {
+                                    headers: { Authorization: `Bearer ${token}` }
+                                  });
+                                
+                                  toast.success(isSalesHead ? 'Invoice request created' : 'Invoice request submitted to Sales Head');
                                   fetchLeads();
                                 } catch (error) {
                                   console.error('Error requesting invoice:', error);
@@ -1048,7 +1047,8 @@ const LeadTracker = () => {
                                 }
                               }}
                             >
-                              <DollarSign className="w-3 h-3" />
+                              <DollarSign className="w-3 h-3 mr-1" />
+                              Invoice
                             </Button>
                           );
                         }
