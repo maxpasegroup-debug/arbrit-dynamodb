@@ -327,7 +327,7 @@ const AcademicHeadDashboard = () => {
 
             {/* 4. TRAINING CALENDAR - Unified Workflow */}
             <TabsContent value="training-calendar" className="mt-0">
-              <TrainingCalendarUnified />
+              <TrainingAllocationManagement />
             </TabsContent>
 
             {/* 5. COURSES */}
