@@ -1290,6 +1290,15 @@ const LeadTracker = () => {
         onSuccess={fetchLeads}
       />
 
+      {/* Quotation Send Modal (Preview & Send PDF) */}
+      {quotationSendModalOpen && (
+        <QuotationSendModal
+          lead={selectedLeadForSend}
+          onClose={() => setQuotationSendModalOpen(false)}
+          onSuccess={handleQuotationSendSuccess}
+        />
+      )}
+
       {/* Sales Head: Quotation Requests Management Dialog */}
       <Dialog open={quotationRequestOpen} onOpenChange={setQuotationRequestOpen}>
         <DialogContent className="bg-[#1a2f4d] border-white/20 text-white max-w-4xl max-h-[80vh] overflow-y-auto">
