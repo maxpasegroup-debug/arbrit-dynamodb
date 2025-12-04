@@ -324,7 +324,24 @@ const AcademicHeadDashboard = () => {
 
             {/* 3. DESPATCH & DELIVERY */}
             <TabsContent value="despatch-delivery" className="mt-0">
-              <CertificateDispatchManagement />
+              <Tabs defaultValue="generation" className="space-y-6">
+                <TabsList className="bg-white/10 border border-white/20">
+                  <TabsTrigger value="generation" className="data-[state=active]:bg-yellow-500/20 data-[state=active]:text-white">
+                    Generate Certificates
+                  </TabsTrigger>
+                  <TabsTrigger value="dispatch" className="data-[state=active]:bg-yellow-500/20 data-[state=active]:text-white">
+                    Dispatch Management
+                  </TabsTrigger>
+                </TabsList>
+                
+                <TabsContent value="generation" className="mt-0">
+                  <CertificateGeneration />
+                </TabsContent>
+                
+                <TabsContent value="dispatch" className="mt-0">
+                  <CertificateDispatchManagement />
+                </TabsContent>
+              </Tabs>
             </TabsContent>
 
             {/* 4. TRAINING CALENDAR - Unified Workflow */}
