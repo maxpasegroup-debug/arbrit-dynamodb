@@ -210,6 +210,27 @@ const LeadTracker = () => {
     return <Badge className={`${color} text-xs`}>{icon} {score}</Badge>;
   };
 
+  // Get detailed lifecycle status for display
+  const getLifecycleStatus = (lead) => {
+    // Priority order: Training Complete > Invoice Paid > Invoice Status > Quotation Status
+    if (lead.status === 'Won - Training Complete') {
+      return { text: '✅ Training Complete', color: 'bg-emerald-500/20 text-emerald-300 border-emerald-400/50' };
+    }
+    if (lead.invoice_status === 'Paid') {
+      return { text: '💰 Invoice Paid', color: 'bg-green-500/20 text-green-300 border-green-400/50' };
+    }
+    if (lead.invoice_status === 'Pending Accounts') {
+      return { text: '📋 Pending Accounts', color: 'bg-orange-500/20 text-orange-300 border-orange-400/50' };
+    }
+    if (lead.invoice_status === 'Sent - Awaiting Payment') {
+      return { text: '⏳ Awaiting Payment', color: 'bg-blue-500/20 text-blue-300 border-blue-400/50' };
+    }
+    if (lead.quotation_status === 'Approved') {
+      return { text: '✓ Quotation Approved', color: 'bg-purple-500/20 text-purple-300 border-purple-400/50' };
+    }
+    return null;
+  };
+
   const getStatusCount = (status) => {
     return leads.filter(l => l.status === status).length;
   };
