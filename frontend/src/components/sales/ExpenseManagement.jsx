@@ -324,7 +324,7 @@ const ExpenseManagement = () => {
                       <p>❌ Rejected by {expense.reviewedBy} on {expense.reviewDate}</p>
                     )}
                     {expense.reviewComments && (
-                      <p className="mt-1 text-gray-700">Comments: {expense.reviewComments}</p>
+                      <p className="mt-1 text-green-400">Comments: {expense.reviewComments}</p>
                     )}
                   </div>
                 )}
@@ -385,7 +385,7 @@ const ExpenseManagement = () => {
                     ? "Optional: Add approval notes..." 
                     : "Please provide reason for rejection..."
                 }
-                className="bg-slate-800 border-white/20 text-gray-900"
+                className="bg-slate-800 border-white/20 text-slate-100"
               />
             </div>
 

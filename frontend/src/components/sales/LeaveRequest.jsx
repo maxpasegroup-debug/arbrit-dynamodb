@@ -185,7 +185,7 @@ const LeaveRequest = () => {
                   value={formData.leaveType}
                   onValueChange={(value) => setFormData({...formData, leaveType: value})}
                 >
-                  <SelectTrigger className="bg-slate-800 border-white/20 text-gray-900">
+                  <SelectTrigger className="bg-slate-800 border-white/20 text-slate-100">
                     <SelectValue placeholder="Select leave type" />
                   </SelectTrigger>
                   <SelectContent className="bg-slate-800 border-white/20">
@@ -204,7 +204,7 @@ const LeaveRequest = () => {
                   type="text"
                   value={calculateLeaveDays(formData.startDate, formData.endDate) || ''}
                   placeholder="Will calculate automatically"
-                  className="bg-slate-800 border-white/20 text-gray-900"
+                  className="bg-slate-800 border-white/20 text-slate-100"
                   readOnly
                 />
               </div>
@@ -217,7 +217,7 @@ const LeaveRequest = () => {
                   type="date"
                   value={formData.startDate}
                   onChange={(e) => setFormData({...formData, startDate: e.target.value})}
-                  className="bg-slate-800 border-white/20 text-gray-900"
+                  className="bg-slate-800 border-white/20 text-slate-100"
                   min={new Date().toISOString().split('T')[0]}
                 />
               </div>
@@ -228,7 +228,7 @@ const LeaveRequest = () => {
                   type="date"
                   value={formData.endDate}
                   onChange={(e) => setFormData({...formData, endDate: e.target.value})}
-                  className="bg-slate-800 border-white/20 text-gray-900"
+                  className="bg-slate-800 border-white/20 text-slate-100"
                   min={formData.startDate || new Date().toISOString().split('T')[0]}
                 />
               </div>
@@ -240,7 +240,7 @@ const LeaveRequest = () => {
                 value={formData.reason}
                 onChange={(e) => setFormData({...formData, reason: e.target.value})}
                 placeholder="Please provide the reason for your leave request..."
-                className="bg-slate-800 border-white/20 text-gray-900 min-h-[80px]"
+                className="bg-slate-800 border-white/20 text-slate-100 min-h-[80px]"
               />
             </div>
 
@@ -251,7 +251,7 @@ const LeaveRequest = () => {
                 value={formData.emergencyContact}
                 onChange={(e) => setFormData({...formData, emergencyContact: e.target.value})}
                 placeholder="Contact person during your leave"
-                className="bg-slate-800 border-white/20 text-gray-900"
+                className="bg-slate-800 border-white/20 text-slate-100"
               />
             </div>
 
@@ -261,7 +261,7 @@ const LeaveRequest = () => {
                 value={formData.handoverNotes}
                 onChange={(e) => setFormData({...formData, handoverNotes: e.target.value})}
                 placeholder="Any important tasks or client information for handover..."
-                className="bg-slate-800 border-white/20 text-gray-900 min-h-[60px]"
+                className="bg-slate-800 border-white/20 text-slate-100 min-h-[60px]"
               />
             </div>
 

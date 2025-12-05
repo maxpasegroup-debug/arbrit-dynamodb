@@ -104,7 +104,7 @@ const LeadDetailsModal = ({ open, onOpenChange, lead, onSuccess }) => {
       <DialogContent className="max-w-5xl max-h-[90vh] overflow-y-auto bg-slate-900 border-white/20">
         <DialogHeader>
           <div className="flex items-center justify-between">
-            <DialogTitle className="text-2xl text-gray-900">
+            <DialogTitle className="text-2xl text-slate-100">
               Lead Details - {leadData.company_name || leadData.client_name}
             </DialogTitle>
             <div className="flex gap-2">
@@ -170,7 +170,7 @@ const LeadDetailsModal = ({ open, onOpenChange, lead, onSuccess }) => {
                     <select
                       value={leadData.status || 'new'}
                       onChange={(e) => setLeadData({ ...leadData, status: e.target.value })}
-                      className="w-full bg-slate-800 border border-white/20 text-gray-900 rounded-md p-2 mt-1"
+                      className="w-full bg-slate-800 border border-white/20 text-slate-100 rounded-md p-2 mt-1"
                     >
                       <option value="new">New</option>
                       <option value="contacted">Contacted</option>
@@ -191,7 +191,7 @@ const LeadDetailsModal = ({ open, onOpenChange, lead, onSuccess }) => {
                     <select
                       value={leadData.lead_score || 'warm'}
                       onChange={(e) => setLeadData({ ...leadData, lead_score: e.target.value })}
-                      className="w-full bg-slate-800 border border-white/20 text-gray-900 rounded-md p-2 mt-1"
+                      className="w-full bg-slate-800 border border-white/20 text-slate-100 rounded-md p-2 mt-1"
                     >
                       <option value="hot">🔥 HOT</option>
                       <option value="warm">🟡 WARM</option>
@@ -220,7 +220,7 @@ const LeadDetailsModal = ({ open, onOpenChange, lead, onSuccess }) => {
 
             {/* Contact Information */}
             <div className="bg-slate-900 rounded-lg p-4 border border-white/20">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
+              <h3 className="text-lg font-semibold text-slate-100 mb-4 flex items-center gap-2">
                 <Building2 className="w-5 h-5" />
                 Contact Information
               </h3>
@@ -231,7 +231,7 @@ const LeadDetailsModal = ({ open, onOpenChange, lead, onSuccess }) => {
                     <Input
                       value={leadData.company_name || leadData.client_name}
                       onChange={(e) => setLeadData({ ...leadData, company_name: e.target.value })}
-                      className="bg-slate-800 border-white/20 text-gray-900 mt-1"
+                      className="bg-slate-800 border-white/20 text-slate-100 mt-1"
                     />
                   ) : (
                     <p className="text-slate-100 mt-1">{leadData.company_name || leadData.client_name || 'N/A'}</p>
@@ -243,7 +243,7 @@ const LeadDetailsModal = ({ open, onOpenChange, lead, onSuccess }) => {
                     <Input
                       value={leadData.contact_person || ''}
                       onChange={(e) => setLeadData({ ...leadData, contact_person: e.target.value })}
-                      className="bg-slate-800 border-white/20 text-gray-900 mt-1"
+                      className="bg-slate-800 border-white/20 text-slate-100 mt-1"
                     />
                   ) : (
                     <p className="text-slate-100 mt-1">{leadData.contact_person || 'N/A'}</p>
@@ -268,7 +268,7 @@ const LeadDetailsModal = ({ open, onOpenChange, lead, onSuccess }) => {
 
             {/* Training Details */}
             <div className="bg-slate-900 rounded-lg p-4 border border-white/20">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">Training Requirements</h3>
+              <h3 className="text-lg font-semibold text-slate-100 mb-4">Training Requirements</h3>
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <Label className="text-slate-400 text-xs">Course</Label>
@@ -294,7 +294,7 @@ const LeadDetailsModal = ({ open, onOpenChange, lead, onSuccess }) => {
 
             {/* Additional Info */}
             <div className="bg-slate-900 rounded-lg p-4 border border-white/20">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">Additional Information</h3>
+              <h3 className="text-lg font-semibold text-slate-100 mb-4">Additional Information</h3>
               <div className="space-y-3">
                 <div>
                   <Label className="text-slate-400 text-xs">Lead Owner</Label>

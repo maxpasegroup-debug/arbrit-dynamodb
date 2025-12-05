@@ -207,13 +207,13 @@ const EnhancedDuplicateManagement = () => {
                   <div className="bg-blue-500/10 rounded p-3 border border-blue-400/30">
                     <p className="text-xs text-blue-300 mb-1">LEAD A (First)</p>
                     <p className="text-white font-semibold">{leadA.company_name || 'N/A'}</p>
-                    <p className="text-sm text-gray-700">By: {leadA.submitted_by || 'Unknown'} ({leadA.submitted_by_role})</p>
+                    <p className="text-sm text-green-400">By: {leadA.submitted_by || 'Unknown'} ({leadA.submitted_by_role})</p>
                     <p className="text-xs text-slate-400 mt-1">Value: {leadA.lead_value} AED</p>
                   </div>
                   <div className="bg-orange-500/10 rounded p-3 border border-orange-400/30">
                     <p className="text-xs text-orange-300 mb-1">LEAD B (Second)</p>
                     <p className="text-white font-semibold">{leadB.company_name || 'N/A'}</p>
-                    <p className="text-sm text-gray-700">By: {leadB.submitted_by || 'Unknown'} ({leadB.submitted_by_role})</p>
+                    <p className="text-sm text-green-400">By: {leadB.submitted_by || 'Unknown'} ({leadB.submitted_by_role})</p>
                     <p className="text-xs text-slate-400 mt-1">Value: {leadB.lead_value} AED</p>
                   </div>
                 </div>
@@ -221,7 +221,7 @@ const EnhancedDuplicateManagement = () => {
                 {alert.similarity_factors && (
                   <div className="bg-red-500/10 rounded p-3 border border-red-400/30">
                     <p className="text-xs text-red-300 font-semibold mb-2">🚨 Similarity Factors:</p>
-                    <ul className="text-xs text-gray-700 space-y-1">
+                    <ul className="text-xs text-green-400 space-y-1">
                       {alert.similarity_factors.map((factor, idx) => (
                         <li key={idx}>• {factor}</li>
                       ))}

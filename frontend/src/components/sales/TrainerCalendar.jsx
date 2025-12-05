@@ -191,7 +191,7 @@ const TrainerCalendar = ({ onBookingRequest, selectedCourse, leadData }) => {
                 </div>
               ))}
               {dayBookings.length > 2 && (
-                <Badge className="text-xs bg-slate-700 text-gray-700 w-full">
+                <Badge className="text-xs bg-slate-700 text-green-400 w-full">
                   +{dayBookings.length - 2} more
                 </Badge>
               )}
@@ -211,7 +211,7 @@ const TrainerCalendar = ({ onBookingRequest, selectedCourse, leadData }) => {
     <div className="space-y-6">
       <div className="bg-slate-9000 backdrop-blur-sm rounded-xl border border-white/20 p-6">
         <div className="flex justify-between items-center mb-6">
-          <h3 className="text-xl font-semibold text-gray-900 flex items-center gap-2">
+          <h3 className="text-xl font-semibold text-slate-100 flex items-center gap-2">
             <Calendar className="w-5 h-5" />
             Trainer Availability Calendar
           </h3>
@@ -224,7 +224,7 @@ const TrainerCalendar = ({ onBookingRequest, selectedCourse, leadData }) => {
             >
               <ChevronLeft className="w-4 h-4" />
             </Button>
-            <span className="px-4 py-2 text-gray-900 font-medium">{monthName}</span>
+            <span className="px-4 py-2 text-slate-100 font-medium">{monthName}</span>
             <Button
               variant="outline"
               size="sm"
@@ -249,7 +249,7 @@ const TrainerCalendar = ({ onBookingRequest, selectedCourse, leadData }) => {
               </Badge>
             ))}
             {trainers.length > 5 && (
-              <Badge className="bg-slate-700 text-gray-700 text-xs">
+              <Badge className="bg-slate-700 text-green-400 text-xs">
                 +{trainers.length - 5} more
               </Badge>
             )}
@@ -267,7 +267,7 @@ const TrainerCalendar = ({ onBookingRequest, selectedCourse, leadData }) => {
         </div>
 
         <div className="mt-4 p-3 bg-slate-800/50 rounded-lg border border-white/20">
-          <p className="text-xs text-gray-700 font-semibold mb-2">Calendar Legend:</p>
+          <p className="text-xs text-green-400 font-semibold mb-2">Calendar Legend:</p>
           <div className="grid grid-cols-3 gap-2 text-xs">
             <div className="flex items-center gap-2">
               <div className="w-3 h-3 rounded bg-green-500/20 border border-green-400/50"></div>
@@ -300,7 +300,7 @@ const TrainerCalendar = ({ onBookingRequest, selectedCourse, leadData }) => {
 
           <div className="space-y-4">
             <div className="p-3 bg-blue-500/10 border border-blue-400/30 rounded-lg">
-              <p className="text-sm text-gray-700">
+              <p className="text-sm text-green-400">
                 <strong>Selected Date:</strong> {selectedDate?.toLocaleDateString('en-US', { 
                   weekday: 'long', 
                   year: 'numeric', 
@@ -315,7 +315,7 @@ const TrainerCalendar = ({ onBookingRequest, selectedCourse, leadData }) => {
               <select
                 value={bookingData.course_id}
                 onChange={(e) => handleCourseChange(e.target.value)}
-                className="w-full bg-slate-800 border border-white/20 text-gray-900 rounded-md p-2"
+                className="w-full bg-slate-800 border border-white/20 text-slate-100 rounded-md p-2"
                 required
               >
                 <option value="">Choose a course</option>
@@ -332,7 +332,7 @@ const TrainerCalendar = ({ onBookingRequest, selectedCourse, leadData }) => {
               <Input
                 value={bookingData.company_name}
                 onChange={(e) => setBookingData({ ...bookingData, company_name: e.target.value })}
-                className="bg-slate-800 border-white/20 text-gray-900"
+                className="bg-slate-800 border-white/20 text-slate-100"
                 placeholder="Enter company name"
               />
             </div>
@@ -342,7 +342,7 @@ const TrainerCalendar = ({ onBookingRequest, selectedCourse, leadData }) => {
               <Input
                 value={bookingData.contact_person}
                 onChange={(e) => setBookingData({ ...bookingData, contact_person: e.target.value })}
-                className="bg-slate-800 border-white/20 text-gray-900"
+                className="bg-slate-800 border-white/20 text-slate-100"
                 placeholder="Enter contact name"
               />
             </div>
@@ -352,7 +352,7 @@ const TrainerCalendar = ({ onBookingRequest, selectedCourse, leadData }) => {
               <Input
                 value={bookingData.contact_mobile}
                 onChange={(e) => setBookingData({ ...bookingData, contact_mobile: e.target.value })}
-                className="bg-slate-800 border-white/20 text-gray-900"
+                className="bg-slate-800 border-white/20 text-slate-100"
                 placeholder="971xxxxxxxxx"
               />
             </div>
@@ -364,7 +364,7 @@ const TrainerCalendar = ({ onBookingRequest, selectedCourse, leadData }) => {
                 min="1"
                 value={bookingData.num_trainees}
                 onChange={(e) => setBookingData({ ...bookingData, num_trainees: parseInt(e.target.value) || 1 })}
-                className="bg-slate-800 border-white/20 text-gray-900"
+                className="bg-slate-800 border-white/20 text-slate-100"
               />
             </div>
 

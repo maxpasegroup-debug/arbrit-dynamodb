@@ -108,7 +108,7 @@ const PerformanceOverview = () => {
             <div>
               <Label className="text-slate-300">Area</Label>
               <Select value={filters.area} onValueChange={(value) => setFilters({...filters, area: value})}>
-                <SelectTrigger className="bg-slate-800 border-white/20 text-gray-900">
+                <SelectTrigger className="bg-slate-800 border-white/20 text-slate-100">
                   <SelectValue placeholder="All Areas" />
                 </SelectTrigger>
                 <SelectContent className="bg-slate-800 border-white/20">
@@ -124,7 +124,7 @@ const PerformanceOverview = () => {
             <div>
               <Label className="text-slate-300">Badge Level</Label>
               <Select value={filters.badge} onValueChange={(value) => setFilters({...filters, badge: value})}>
-                <SelectTrigger className="bg-slate-800 border-white/20 text-gray-900">
+                <SelectTrigger className="bg-slate-800 border-white/20 text-slate-100">
                   <SelectValue placeholder="All Badges" />
                 </SelectTrigger>
                 <SelectContent className="bg-slate-800 border-white/20">
@@ -142,14 +142,14 @@ const PerformanceOverview = () => {
                 value={filters.individual}
                 onChange={(e) => setFilters({...filters, individual: e.target.value})}
                 placeholder="Search by name..."
-                className="bg-slate-800 border-white/20 text-gray-900"
+                className="bg-slate-800 border-white/20 text-slate-100"
               />
             </div>
 
             <div>
               <Label className="text-slate-300">Time Range</Label>
               <Select value={filters.timeRange} onValueChange={(value) => setFilters({...filters, timeRange: value})}>
-                <SelectTrigger className="bg-slate-800 border-white/20 text-gray-900">
+                <SelectTrigger className="bg-slate-800 border-white/20 text-slate-100">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent className="bg-slate-800 border-white/20">

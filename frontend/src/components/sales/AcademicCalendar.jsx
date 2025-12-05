@@ -335,19 +335,19 @@ const AcademicCalendar = () => {
         <div className="grid grid-cols-4 gap-4">
           <div className="flex items-center gap-2">
             <div className="w-4 h-4 bg-green-500/20 border border-green-500/50 rounded"></div>
-            <span className="text-sm text-gray-700">Available</span>
+            <span className="text-sm text-green-400">Available</span>
           </div>
           <div className="flex items-center gap-2">
             <div className="w-4 h-4 bg-yellow-500/20 border border-yellow-500/50 rounded"></div>
-            <span className="text-sm text-gray-700">Partially Booked</span>
+            <span className="text-sm text-green-400">Partially Booked</span>
           </div>
           <div className="flex items-center gap-2">
             <div className="w-4 h-4 bg-red-500/20 border border-red-500/50 rounded"></div>
-            <span className="text-sm text-gray-700">Fully Booked</span>
+            <span className="text-sm text-green-400">Fully Booked</span>
           </div>
           <div className="flex items-center gap-2">
             <div className="w-4 h-4 bg-slate-900 border border-white/20 rounded"></div>
-            <span className="text-sm text-gray-700">Past Date</span>
+            <span className="text-sm text-green-400">Past Date</span>
           </div>
         </div>
       </div>

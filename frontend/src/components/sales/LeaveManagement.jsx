@@ -356,7 +356,7 @@ const LeaveManagement = () => {
                   <div className="text-sm text-slate-400">
                     {request.status === 'approved' && `Approved by ${request.reviewedBy} on ${request.reviewDate}`}
                     {request.reviewComments && (
-                      <p className="mt-1 text-gray-700">Comments: {request.reviewComments}</p>
+                      <p className="mt-1 text-green-400">Comments: {request.reviewComments}</p>
                     )}
                   </div>
                 )}
@@ -445,7 +445,7 @@ const LeaveManagement = () => {
                 value={reviewComments}
                 onChange={(e) => setReviewComments(e.target.value)}
                 placeholder="Add any comments or notes..."
-                className="bg-slate-800 border-white/20 text-gray-900"
+                className="bg-slate-800 border-white/20 text-slate-100"
               />
             </div>
             
@@ -489,7 +489,7 @@ const LeaveManagement = () => {
                   value={newRequest.leaveType}
                   onValueChange={(value) => setNewRequest({...newRequest, leaveType: value})}
                 >
-                  <SelectTrigger className="bg-slate-800 border-white/20 text-gray-900">
+                  <SelectTrigger className="bg-slate-800 border-white/20 text-slate-100">
                     <SelectValue placeholder="Select leave type" />
                   </SelectTrigger>
                   <SelectContent className="bg-slate-800 border-white/20">
@@ -512,7 +512,7 @@ const LeaveManagement = () => {
                       : ''
                   }
                   placeholder="Will calculate automatically"
-                  className="bg-slate-800 border-white/20 text-gray-900"
+                  className="bg-slate-800 border-white/20 text-slate-100"
                   readOnly
                 />
               </div>
@@ -525,7 +525,7 @@ const LeaveManagement = () => {
                   type="date"
                   value={newRequest.startDate}
                   onChange={(e) => setNewRequest({...newRequest, startDate: e.target.value})}
-                  className="bg-slate-800 border-white/20 text-gray-900"
+                  className="bg-slate-800 border-white/20 text-slate-100"
                   min={new Date().toISOString().split('T')[0]}
                 />
               </div>
@@ -536,7 +536,7 @@ const LeaveManagement = () => {
                   type="date"
                   value={newRequest.endDate}
                   onChange={(e) => setNewRequest({...newRequest, endDate: e.target.value})}
-                  className="bg-slate-800 border-white/20 text-gray-900"
+                  className="bg-slate-800 border-white/20 text-slate-100"
                   min={newRequest.startDate || new Date().toISOString().split('T')[0]}
                 />
               </div>
@@ -548,7 +548,7 @@ const LeaveManagement = () => {
                 value={newRequest.reason}
                 onChange={(e) => setNewRequest({...newRequest, reason: e.target.value})}
                 placeholder="Please provide the reason for your leave request..."
-                className="bg-slate-800 border-white/20 text-gray-900"
+                className="bg-slate-800 border-white/20 text-slate-100"
               />
             </div>
 
@@ -558,7 +558,7 @@ const LeaveManagement = () => {
                 value={newRequest.emergencyContact}
                 onChange={(e) => setNewRequest({...newRequest, emergencyContact: e.target.value})}
                 placeholder="Contact person during your leave"
-                className="bg-slate-800 border-white/20 text-gray-900"
+                className="bg-slate-800 border-white/20 text-slate-100"
               />
             </div>
 
@@ -568,7 +568,7 @@ const LeaveManagement = () => {
                 value={newRequest.handoverNotes}
                 onChange={(e) => setNewRequest({...newRequest, handoverNotes: e.target.value})}
                 placeholder="Important tasks, client information for handover..."
-                className="bg-slate-800 border-white/20 text-gray-900"
+                className="bg-slate-800 border-white/20 text-slate-100"
               />
             </div>
 

@@ -191,7 +191,7 @@ const FeedbackMessages = () => {
                     )}
                   </div>
                   
-                  <CardTitle className={`text-lg mb-2 ${message.read ? 'text-gray-700' : 'text-white'}`}>
+                  <CardTitle className={`text-lg mb-2 ${message.read ? 'text-green-400' : 'text-white'}`}>
                     {message.title}
                   </CardTitle>
                   
@@ -212,7 +212,7 @@ const FeedbackMessages = () => {
                     size="sm"
                     variant="ghost"
                     onClick={() => toggleStar(message.id)}
-                    className={message.starred ? 'text-yellow-400 hover:text-yellow-300' : 'text-slate-400 hover:text-gray-700'}
+                    className={message.starred ? 'text-yellow-400 hover:text-yellow-300' : 'text-slate-400 hover:text-green-400'}
                   >
                     <Star className={`w-4 h-4 ${message.starred ? 'fill-current' : ''}`} />
                   </Button>
@@ -231,7 +231,7 @@ const FeedbackMessages = () => {
             </CardHeader>
 
             <CardContent>
-              <p className={`leading-relaxed ${message.read ? 'text-slate-400' : 'text-gray-700'}`}>
+              <p className={`leading-relaxed ${message.read ? 'text-slate-400' : 'text-green-400'}`}>
                 {message.message}
               </p>
             </CardContent>

@@ -139,7 +139,7 @@ const QuotationDialog = ({ open, onOpenChange, lead, onSuccess }) => {
                   value={formData.client_name}
                   onChange={(e) => setFormData({...formData, client_name: e.target.value})}
                   placeholder="Client name"
-                  className="bg-slate-800 border-white/20 text-gray-900"
+                  className="bg-slate-800 border-white/20 text-slate-100"
                   required
                 />
               </div>
@@ -149,7 +149,7 @@ const QuotationDialog = ({ open, onOpenChange, lead, onSuccess }) => {
                   value={formData.lead_id}
                   onChange={(e) => setFormData({...formData, lead_id: e.target.value})}
                   placeholder="Associated lead ID"
-                  className="bg-slate-800 border-white/20 text-gray-900"
+                  className="bg-slate-800 border-white/20 text-slate-100"
                   readOnly
                 />
               </div>
@@ -181,7 +181,7 @@ const QuotationDialog = ({ open, onOpenChange, lead, onSuccess }) => {
                       value={item.description}
                       onChange={(e) => updateItem(index, 'description', e.target.value)}
                       placeholder="Item description"
-                      className="bg-slate-700 border-white/20 text-gray-900 text-sm"
+                      className="bg-slate-700 border-white/20 text-slate-100 text-sm"
                     />
                   </div>
                   <div className="col-span-2">
@@ -191,7 +191,7 @@ const QuotationDialog = ({ open, onOpenChange, lead, onSuccess }) => {
                       min="1"
                       value={item.quantity}
                       onChange={(e) => updateItem(index, 'quantity', e.target.value)}
-                      className="bg-slate-700 border-white/20 text-gray-900 text-sm"
+                      className="bg-slate-700 border-white/20 text-slate-100 text-sm"
                     />
                   </div>
                   <div className="col-span-2">
@@ -202,7 +202,7 @@ const QuotationDialog = ({ open, onOpenChange, lead, onSuccess }) => {
                       step="0.01"
                       value={item.unit_price}
                       onChange={(e) => updateItem(index, 'unit_price', e.target.value)}
-                      className="bg-slate-700 border-white/20 text-gray-900 text-sm"
+                      className="bg-slate-700 border-white/20 text-slate-100 text-sm"
                     />
                   </div>
                   <div className="col-span-2">
@@ -211,7 +211,7 @@ const QuotationDialog = ({ open, onOpenChange, lead, onSuccess }) => {
                       type="number"
                       value={item.amount.toFixed(2)}
                       readOnly
-                      className="bg-slate-700/50 border-white/20 text-gray-900 text-sm"
+                      className="bg-slate-700/50 border-white/20 text-slate-100 text-sm"
                     />
                   </div>
                   <div className="col-span-2">
@@ -253,7 +253,7 @@ const QuotationDialog = ({ open, onOpenChange, lead, onSuccess }) => {
                 value={formData.remarks}
                 onChange={(e) => setFormData({...formData, remarks: e.target.value})}
                 placeholder="Any additional notes or terms..."
-                className="bg-slate-800 border-white/20 text-gray-900 min-h-[80px]"
+                className="bg-slate-800 border-white/20 text-slate-100 min-h-[80px]"
               />
             </div>
           </div>
