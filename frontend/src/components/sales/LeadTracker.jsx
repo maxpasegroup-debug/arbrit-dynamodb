@@ -880,11 +880,11 @@ const LeadTracker = () => {
             {searchTerm || statusFilter !== 'all' ? 'No leads match your filters' : 'No leads yet'}
           </p>
         ) : (
-          <div className="space-y-4">
+          <div className="space-y-3">
             {filteredLeads.map((lead) => (
               <div
                 key={lead.id}
-                className={`bg-white/5 backdrop-blur-sm border-2 border-white/20 ${getLeftBorderColor(lead.status)} border-l-8 rounded-xl p-5 hover:border-gray-900 hover:shadow-xl hover:scale-[1.01] transition-all duration-200 relative overflow-hidden`}
+                className={`bg-white/5 backdrop-blur-sm border-2 border-white/20 ${getLeftBorderColor(lead.status)} rounded-lg p-5 hover:bg-white/10 hover:shadow-xl  transition-all duration-200 relative overflow-hidden`}
               >
                 {/* Corner ribbon for urgent leads */}
                 {lead.urgency === 'high' && (
@@ -1381,7 +1381,7 @@ const LeadTracker = () => {
             </DialogDescription>
           </DialogHeader>
           
-          <div className="space-y-4">
+          <div className="space-y-3">
             {(selectedRequest?.requests || []).map((quot) => (
               <div key={quot.id} className="bg-slate-900 rounded-lg p-4 border border-purple-400/30">
                 <div className="flex justify-between items-start mb-3">
@@ -1484,7 +1484,7 @@ const LeadTracker = () => {
             </DialogDescription>
           </DialogHeader>
           
-          <div className="space-y-4">
+          <div className="space-y-3">
             {(selectedRequest?.requests || []).map((inv) => (
               <div key={inv.id} className="bg-slate-900 rounded-lg p-4 border border-green-400/30">
                 <div className="flex justify-between items-start mb-3">
