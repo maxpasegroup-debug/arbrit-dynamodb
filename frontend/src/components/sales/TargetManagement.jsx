@@ -280,7 +280,7 @@ const TargetManagement = () => {
                   {teamMembers.length > 0 ? (
                     teamMembers.map(member => (
                       <SelectItem key={member.id} value={member.id}>
-                        {member.name} - {member.role}
+                        {member.name} ({member.sales_type === 'field' ? 'Field Sales' : member.sales_type === 'tele' ? 'Tele Sales' : 'Sales'})
                       </SelectItem>
                     ))
                   ) : (
