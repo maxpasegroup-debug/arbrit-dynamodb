@@ -67,12 +67,12 @@ const FieldSalesDashboard = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-green-900 to-slate-900">
       {/* Header */}
-      <header className="bg-white border-b border-gray-200 sticky top-0 z-50 shadow-sm">
+      <header className="bg-slate-900 border-b border-white/10 sticky top-0 z-50 shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center py-4">
             <div className="flex items-center space-x-4">
               <div className="bg-gradient-to-r from-green-500 to-emerald-500 p-2 rounded-lg">
-                <User className="h-6 w-6 text-gray-900" />
+                <User className="h-6 w-6 text-white" />
               </div>
               <div>
                 <h1 className="text-xl font-bold text-white">Field Sales Dashboard</h1>
@@ -80,7 +80,7 @@ const FieldSalesDashboard = () => {
               </div>
             </div>
             <div className="flex items-center space-x-4">
-              <Badge className="bg-gradient-to-r from-green-500 to-emerald-500 text-gray-900 border-gray-900">
+              <Badge className="bg-gradient-to-r from-green-500 to-emerald-500 text-white border-gray-900">
                 <Award className="w-4 h-4 mr-1" />
                 {userData.role}
               </Badge>
@@ -88,7 +88,7 @@ const FieldSalesDashboard = () => {
                 onClick={handleLogout}
                 variant="outline" 
                 size="sm" 
-                className="border-gray-300 text-green-400 hover:bg-gray-100"
+                className="border-white/20 text-green-400 hover:bg-gray-100"
               >
                 <LogOut className="h-4 w-4 mr-2" />
                 Logout
@@ -109,7 +109,7 @@ const FieldSalesDashboard = () => {
 
         {/* Quick Stats */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-          <div className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
+          <div className="bg-slate-900 border border-white/10 rounded-xl p-6 shadow-sm">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-slate-400 text-sm">My Leads</p>
@@ -119,7 +119,7 @@ const FieldSalesDashboard = () => {
             </div>
           </div>
           
-          <div className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
+          <div className="bg-slate-900 border border-white/10 rounded-xl p-6 shadow-sm">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-slate-400 text-sm">Revenue Generated</p>
@@ -129,7 +129,7 @@ const FieldSalesDashboard = () => {
             </div>
           </div>
           
-          <div className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
+          <div className="bg-slate-900 border border-white/10 rounded-xl p-6 shadow-sm">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-slate-400 text-sm">Trainings Tracked</p>
@@ -142,7 +142,7 @@ const FieldSalesDashboard = () => {
 
         {/* Main Tabs */}
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-6 bg-white/5 backdrop-blur-sm border border-white/10">
+          <TabsList className="grid w-full grid-cols-6 bg-slate-900/5 backdrop-blur-sm border border-white/10">
             <TabsTrigger 
               value="leads"
               className="data-[state=active]:bg-green-500/20 data-[state=active]:text-white text-green-400"

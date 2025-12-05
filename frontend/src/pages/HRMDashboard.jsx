@@ -17,7 +17,7 @@ const HRMDashboard = () => {
       background: 'linear-gradient(135deg, #0a1e3d 0%, #1a2f4d 50%, #0d1b2a 100%)'
     }}>
       {/* Header */}
-      <header className="bg-white/5 backdrop-blur-xl border-b border-gray-200 sticky top-0 z-50">
+      <header className="bg-slate-900/5 backdrop-blur-xl border-b border-white/10 sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
@@ -26,7 +26,7 @@ const HRMDashboard = () => {
                 onClick={() => navigate('/dashboard/coo')}
                 variant="outline"
                 size="sm"
-                className="border-gray-300 text-green-400 hover:bg-gray-100"
+                className="border-white/20 text-green-400 hover:bg-gray-100"
               >
                 <ArrowLeft className="w-4 h-4 mr-2" />
                 Back to Dashboard
@@ -43,7 +43,7 @@ const HRMDashboard = () => {
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-6 py-8">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-4 bg-white/5 backdrop-blur-sm border border-white/10">
+          <TabsList className="grid w-full grid-cols-4 bg-slate-900/5 backdrop-blur-sm border border-white/10">
             <TabsTrigger 
               value="employees" 
               data-testid="tab-employees"

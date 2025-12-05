@@ -190,7 +190,7 @@ const MDDashboard = () => {
 
         {/* Tabs Navigation */}
         <Tabs defaultValue="sales" className="mb-8">
-          <TabsList className="grid w-full grid-cols-6 bg-white border border-gray-300">
+          <TabsList className="grid w-full grid-cols-6 bg-slate-900 border border-white/20">
             <TabsTrigger value="sales">
               <TrendingUp className="w-4 h-4 mr-2" />
               Sales
@@ -217,7 +217,7 @@ const MDDashboard = () => {
           {/* Sales Tab */}
           <TabsContent value="sales">
             <Tabs defaultValue="overview" className="w-full">
-              <TabsList className="bg-white/5 backdrop-blur-sm border border-white/10">
+              <TabsList className="bg-slate-900/5 backdrop-blur-sm border border-white/10">
                 <TabsTrigger value="overview">Overview</TabsTrigger>
                 <TabsTrigger value="leads">Leads</TabsTrigger>
                 <TabsTrigger value="quotations">Quotations</TabsTrigger>
@@ -241,7 +241,7 @@ const MDDashboard = () => {
           {/* Academics Tab */}
           <TabsContent value="academics">
             <Tabs defaultValue="courses" className="w-full">
-              <TabsList className="bg-white/5 backdrop-blur-sm border border-white/10">
+              <TabsList className="bg-slate-900/5 backdrop-blur-sm border border-white/10">
                 <TabsTrigger value="courses">Courses</TabsTrigger>
                 <TabsTrigger value="requests">Requests</TabsTrigger>
                 <TabsTrigger value="trainers">Trainers</TabsTrigger>
@@ -289,9 +289,9 @@ const MDDashboard = () => {
 
       {/* Control Panel Dialog */}
       <Dialog open={controlPanelOpen} onOpenChange={setControlPanelOpen}>
-        <DialogContent className="max-w-5xl bg-white border-gray-200">
+        <DialogContent className="max-w-5xl bg-slate-900 border-white/10">
           <DialogHeader>
-            <DialogTitle className="text-gray-900 text-2xl">MD Control Panel - Department Access</DialogTitle>
+            <DialogTitle className="text-white text-2xl">MD Control Panel - Department Access</DialogTitle>
             <DialogDescription className="text-slate-400">
               Access all department dashboards and administrative controls
             </DialogDescription>
@@ -299,7 +299,7 @@ const MDDashboard = () => {
           
           <div className="grid grid-cols-2 gap-6 mt-6">
             {/* Sales Department Card */}
-            <Card className="bg-white/5 border-blue-500/30 hover:border-blue-500/50 transition-all cursor-pointer group"
+            <Card className="bg-slate-900/5 border-blue-500/30 hover:border-blue-500/50 transition-all cursor-pointer group"
                   onClick={() => navigate('/dashboard/sales-head')}>
               <CardContent className="p-6">
                 <div className="flex items-center gap-4 mb-4">
@@ -318,7 +318,7 @@ const MDDashboard = () => {
             </Card>
 
             {/* Academic Department Card */}
-            <Card className="bg-white/5 border-purple-500/30 hover:border-purple-500/50 transition-all cursor-pointer group"
+            <Card className="bg-slate-900/5 border-purple-500/30 hover:border-purple-500/50 transition-all cursor-pointer group"
                   onClick={() => navigate('/dashboard/academic')}>
               <CardContent className="p-6">
                 <div className="flex items-center gap-4 mb-4">
@@ -337,7 +337,7 @@ const MDDashboard = () => {
             </Card>
 
             {/* Accounts/Finance Department Card */}
-            <Card className="bg-white/5 border-green-500/30 hover:border-green-500/50 transition-all cursor-pointer group"
+            <Card className="bg-slate-900/5 border-green-500/30 hover:border-green-500/50 transition-all cursor-pointer group"
                   onClick={() => navigate('/dashboard/accounts')}>
               <CardContent className="p-6">
                 <div className="flex items-center gap-4 mb-4">
@@ -356,7 +356,7 @@ const MDDashboard = () => {
             </Card>
 
             {/* Operations/HR Department Card */}
-            <Card className="bg-white/5 border-orange-500/30 hover:border-orange-500/50 transition-all cursor-pointer group"
+            <Card className="bg-slate-900/5 border-orange-500/30 hover:border-orange-500/50 transition-all cursor-pointer group"
                   onClick={() => navigate('/dashboard/hr')}>
               <CardContent className="p-6">
                 <div className="flex items-center gap-4 mb-4">
@@ -375,7 +375,7 @@ const MDDashboard = () => {
             </Card>
 
             {/* PIN Management Card */}
-            <Card className="bg-white/5 border-amber-500/30 hover:border-amber-500/50 transition-all cursor-pointer group"
+            <Card className="bg-slate-900/5 border-amber-500/30 hover:border-amber-500/50 transition-all cursor-pointer group"
                   onClick={() => {
                     setControlPanelOpen(false);
                     setPinManagementOpen(true);
@@ -401,7 +401,7 @@ const MDDashboard = () => {
 
       {/* PIN Management Modal */}
       <Dialog open={pinManagementOpen} onOpenChange={setPinManagementOpen}>
-        <DialogContent className="max-w-6xl bg-white border-gray-200 max-h-[90vh] overflow-y-auto">
+        <DialogContent className="max-w-6xl bg-slate-900 border-white/10 max-h-[90vh] overflow-y-auto">
           <PinManagement />
         </DialogContent>
       </Dialog>

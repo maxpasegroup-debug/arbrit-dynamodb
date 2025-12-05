@@ -106,7 +106,7 @@ const SalesHeadDashboard = () => {
       <div className="min-h-screen flex items-center justify-center" style={{
         background: 'linear-gradient(135deg, #0a1e3d 0%, #1a2f4d 50%, #0d1b2a 100%)'
       }}>
-        <div className="text-gray-900 text-xl">Loading...</div>
+        <div className="text-white text-xl">Loading...</div>
       </div>
     );
   }
@@ -116,14 +116,14 @@ const SalesHeadDashboard = () => {
       background: 'linear-gradient(135deg, #0a1e3d 0%, #1a2f4d 50%, #0d1b2a 100%)'
     }}>
       {/* Header */}
-      <header className="bg-white/5 backdrop-blur-xl border-b border-gray-200 sticky top-0 z-50">
+      <header className="bg-slate-900/5 backdrop-blur-xl border-b border-white/10 sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
               <img 
                 src="https://customer-assets.emergentagent.com/job_b916bfee-a2e0-4a78-a130-e219040d5774/artifacts/qhdckkjh_ARBRIT.jpeg" 
                 alt="Arbrit Logo" 
-                className="h-12 w-12 object-contain bg-white rounded-lg p-1"
+                className="h-12 w-12 object-contain bg-slate-900 rounded-lg p-1"
               />
               <div>
                 <div className="flex items-center gap-2">
@@ -146,7 +146,7 @@ const SalesHeadDashboard = () => {
               </Button>
               <DuplicateAlertsNotification onViewAll={() => setActiveTab('duplicates')} />
               <div className="text-right">
-                <p className="text-sm font-semibold text-gray-900">{user?.name}</p>
+                <p className="text-sm font-semibold text-white">{user?.name}</p>
                 <p className="text-xs text-gray-300">Sales Head</p>
               </div>
               <Button
@@ -154,7 +154,7 @@ const SalesHeadDashboard = () => {
                 onClick={handleLogout}
                 variant="outline"
                 size="sm"
-                className="border-gray-300 text-green-400 hover:bg-gray-100"
+                className="border-white/20 text-green-400 hover:bg-gray-100"
               >
                 <LogOut className="w-4 h-4 mr-2" />
                 Logout
@@ -166,8 +166,8 @@ const SalesHeadDashboard = () => {
 
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-6 py-8">
-        <div className="mb-8 bg-white/5  rounded-xl border border-gray-200 p-6">
-          <h2 className="text-2xl font-bold text-gray-900 mb-2">
+        <div className="mb-8 bg-slate-900/5  rounded-xl border border-white/10 p-6">
+          <h2 className="text-2xl font-bold text-white mb-2">
             Welcome back, {user?.name?.split(' ')[0]}!
           </h2>
           <p className="text-gray-300">
@@ -176,7 +176,7 @@ const SalesHeadDashboard = () => {
         </div>
 
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-6 bg-white/5 backdrop-blur-sm border border-white/10">
+          <TabsList className="grid w-full grid-cols-6 bg-slate-900/5 backdrop-blur-sm border border-white/10">
             <TabsTrigger 
               value="overview" 
               data-testid="tab-overview"
@@ -257,7 +257,7 @@ const SalesHeadDashboard = () => {
 
       {/* Online Lead Dialog with Employee Assignment */}
       <Dialog open={onlineLeadDialogOpen} onOpenChange={setOnlineLeadDialogOpen}>
-        <DialogContent className="bg-[#1a2f4d] border-gray-300 text-gray-900 max-w-4xl max-h-[90vh] overflow-y-auto">
+        <DialogContent className="bg-[#1a2f4d] border-white/20 text-white max-w-4xl max-h-[90vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle className="text-2xl">📥 Add Online Lead</DialogTitle>
             <DialogDescription className="text-slate-400">

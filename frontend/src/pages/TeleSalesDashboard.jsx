@@ -71,7 +71,7 @@ export default function TeleSalesDashboard() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-green-900 to-slate-900">
       {/* Header */}
-      <div className="bg-gray-50/50 border-b border-gray-200 sticky top-0 z-10 backdrop-blur-lg">
+      <div className="bg-gray-50/50 border-b border-white/10 sticky top-0 z-10 backdrop-blur-lg">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center py-4">
             <div>
@@ -95,31 +95,31 @@ export default function TeleSalesDashboard() {
         {/* Stats */}
         {!loading && (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-            <Card className="bg-gray-50/50 border-gray-200 p-6">
+            <Card className="bg-gray-50/50 border-white/10 p-6">
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-slate-400 text-sm">Total Leads</p>
-                  <p className="text-3xl font-bold text-gray-900 mt-2">{stats.leads}</p>
+                  <p className="text-3xl font-bold text-white mt-2">{stats.leads}</p>
                 </div>
                 <Users className="w-12 h-12 text-green-400 opacity-50" />
               </div>
             </Card>
 
-            <Card className="bg-gray-50/50 border-gray-200 p-6">
+            <Card className="bg-gray-50/50 border-white/10 p-6">
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-slate-400 text-sm">Quoted</p>
-                  <p className="text-3xl font-bold text-gray-900 mt-2">{stats.quoted}</p>
+                  <p className="text-3xl font-bold text-white mt-2">{stats.quoted}</p>
                 </div>
                 <Phone className="w-12 h-12 text-green-400 opacity-50" />
               </div>
             </Card>
 
-            <Card className="bg-gray-50/50 border-gray-200 p-6">
+            <Card className="bg-gray-50/50 border-white/10 p-6">
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-slate-400 text-sm">Won Deals</p>
-                  <p className="text-3xl font-bold text-gray-900 mt-2">{stats.won}</p>
+                  <p className="text-3xl font-bold text-white mt-2">{stats.won}</p>
                 </div>
                 <TrendingUp className="w-12 h-12 text-green-400 opacity-50" />
               </div>

@@ -69,7 +69,7 @@ const SalesEmployeeDashboard = () => {
           <div className="flex justify-between items-center py-4">
             <div className="flex items-center space-x-4">
               <div className="bg-gradient-to-r from-green-500 to-emerald-500 p-2 rounded-lg">
-                <User className="h-6 w-6 text-gray-900" />
+                <User className="h-6 w-6 text-white" />
               </div>
               <div>
                 <h1 className="text-xl font-bold text-white">Sales Employee Dashboard</h1>
@@ -77,7 +77,7 @@ const SalesEmployeeDashboard = () => {
               </div>
             </div>
             <div className="flex items-center space-x-4">
-              <Badge className="bg-gradient-to-r from-green-500 to-emerald-500 text-gray-900 border-gray-900">
+              <Badge className="bg-gradient-to-r from-green-500 to-emerald-500 text-white border-gray-900">
                 <Award className="w-4 h-4 mr-1" />
                 {userData.role}
               </Badge>
@@ -85,7 +85,7 @@ const SalesEmployeeDashboard = () => {
                 onClick={handleLogout}
                 variant="outline" 
                 size="sm" 
-                className="border-gray-300 text-green-400 hover:bg-gray-100"
+                className="border-white/20 text-green-400 hover:bg-gray-100"
               >
                 <LogOut className="h-4 w-4 mr-2" />
                 Logout
@@ -106,7 +106,7 @@ const SalesEmployeeDashboard = () => {
 
         {/* Quick Stats */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-          <div className="bg-white border border-gray-200 rounded-xl shadow-sm p-6">
+          <div className="bg-slate-900 border border-white/10 rounded-xl shadow-sm p-6">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-slate-400 text-sm">My Leads</p>
@@ -116,7 +116,7 @@ const SalesEmployeeDashboard = () => {
             </div>
           </div>
           
-          <div className="bg-white border border-gray-200 rounded-xl shadow-sm p-6">
+          <div className="bg-slate-900 border border-white/10 rounded-xl shadow-sm p-6">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-slate-400 text-sm">Revenue Generated</p>
@@ -126,7 +126,7 @@ const SalesEmployeeDashboard = () => {
             </div>
           </div>
           
-          <div className="bg-white border border-gray-200 rounded-xl shadow-sm p-6">
+          <div className="bg-slate-900 border border-white/10 rounded-xl shadow-sm p-6">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-slate-400 text-sm">Trainings Tracked</p>
@@ -139,7 +139,7 @@ const SalesEmployeeDashboard = () => {
 
         {/* Main Tabs */}
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-6 bg-white/5 backdrop-blur-sm border border-white/10">
+          <TabsList className="grid w-full grid-cols-6 bg-slate-900/5 backdrop-blur-sm border border-white/10">
             <TabsTrigger 
               value="leads"
               className="data-[state=active]:bg-green-500/20 data-[state=active]:text-white text-gray-300"

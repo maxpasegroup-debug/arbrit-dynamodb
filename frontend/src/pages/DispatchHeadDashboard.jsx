@@ -53,7 +53,7 @@ const DispatchHeadDashboard = () => {
   if (loading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-[#0a1e3d] via-[#1a2f4d] to-[#0a1e3d] flex items-center justify-center">
-        <p className="text-gray-900">Loading...</p>
+        <p className="text-white">Loading...</p>
       </div>
     );
   }
@@ -112,7 +112,7 @@ const DispatchHeadDashboard = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#0a1e3d] via-[#1a2f4d] to-[#0a1e3d]">
-      <div className="bg-white/5  border-b border-gray-200">
+      <div className="bg-slate-900/5  border-b border-white/10">
         <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
           <div>
             <h1 className="text-2xl font-bold text-white">Dispatch Head Dashboard</h1>
@@ -120,13 +120,13 @@ const DispatchHeadDashboard = () => {
           </div>
           <div className="flex items-center gap-4">
             <div className="text-right">
-              <p className="text-sm font-medium text-gray-900">{user?.name}</p>
+              <p className="text-sm font-medium text-white">{user?.name}</p>
               <p className="text-xs text-gray-400">{user?.role}</p>
             </div>
             <Button
               onClick={handleLogout}
               variant="outline"
-              className="border-gray-300 text-green-400 hover:bg-gray-100"
+              className="border-white/20 text-green-400 hover:bg-gray-100"
             >
               <LogOut className="w-4 h-4 mr-2" />
               Logout
@@ -136,8 +136,8 @@ const DispatchHeadDashboard = () => {
       </div>
 
       <main className="max-w-7xl mx-auto px-6 py-8">
-        <div className="mb-8 bg-white/5  rounded-xl border border-gray-200 p-6">
-          <h2 className="text-2xl font-bold text-gray-900 mb-2">
+        <div className="mb-8 bg-slate-900/5  rounded-xl border border-white/10 p-6">
+          <h2 className="text-2xl font-bold text-white mb-2">
             Welcome, {user?.name?.split(' ')[0]}!
           </h2>
           <p className="text-gray-300">
@@ -146,7 +146,7 @@ const DispatchHeadDashboard = () => {
         </div>
 
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-8 bg-white/5 backdrop-blur-sm border border-white/10">
+          <TabsList className="grid w-full grid-cols-8 bg-slate-900/5 backdrop-blur-sm border border-white/10">
             <TabsTrigger 
               value="overview"
               className="data-[state=active]:bg-yellow-500/20 data-[state=active]:text-white text-gray-300"
@@ -214,7 +214,7 @@ const DispatchHeadDashboard = () => {
                     <Card
                       key={module.id}
                       onClick={() => handleModuleClick(module.id)}
-                      className="group relative overflow-hidden cursor-pointer border-gray-200 bg-white/5  hover:bg-white transition-all duration-300 hover:scale-105 hover:shadow-2xl"
+                      className="group relative overflow-hidden cursor-pointer border-white/10 bg-slate-900/5  hover:bg-white transition-all duration-300 hover:scale-105 hover:shadow-2xl"
                       style={{ minHeight: '140px' }}
                     >
                       <div className={`absolute inset-0 bg-gradient-to-br ${module.color} opacity-0 group-hover:opacity-10 transition-opacity duration-300`} />
@@ -224,7 +224,7 @@ const DispatchHeadDashboard = () => {
                           <Icon className={`w-5 h-5 ${module.iconColor}`} />
                         </div>
                         
-                        <h3 className="text-base font-bold text-gray-900 mb-1">{module.title}</h3>
+                        <h3 className="text-base font-bold text-white mb-1">{module.title}</h3>
                         <p className="text-sm text-gray-400">{module.description}</p>
                       </div>
 
