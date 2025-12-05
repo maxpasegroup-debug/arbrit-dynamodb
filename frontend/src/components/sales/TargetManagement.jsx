@@ -44,17 +44,18 @@ const TargetManagement = () => {
         setTargets([]);
       }
 
-      // Fetch team members
+      // Fetch team members (from users collection)
       try {
-        const teamRes = await axios.get(`${API}/hrm/employees`, {
+        const teamRes = await axios.get(`${API}/admin/users`, {
           headers: { Authorization: `Bearer ${token}` }
         });
         const salesTeam = (teamRes.data || []).filter(e => 
-          ['Field Sales', 'Tele Sales', 'Sales Employee'].includes(e.designation)
+          ['Field Sales', 'Tele Sales', 'Sales Employee'].includes(e.role)
         );
         setTeamMembers(salesTeam);
       } catch (err) {
         console.error('Error fetching team:', err);
+        setTeamMembers([]);
       }
     } catch (error) {
       console.error('Error fetching data:', error);
