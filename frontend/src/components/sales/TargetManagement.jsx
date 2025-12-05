@@ -44,13 +44,17 @@ const TargetManagement = () => {
         setTargets([]);
       }
 
-      // Fetch team members (from users collection)
+      // Fetch team members (from employees collection)
       try {
-        const teamRes = await axios.get(`${API}/admin/users`, {
+        const teamRes = await axios.get(`${API}/hrm/employees`, {
           headers: { Authorization: `Bearer ${token}` }
         });
+        // Filter by Sales department and exclude Sales Head
         const salesTeam = (teamRes.data || []).filter(e => 
-          ['Field Sales', 'Tele Sales', 'Sales Employee'].includes(e.role)
+          e.department === 'Sales' && 
+          e.designation !== 'Sales Head' &&
+          e.sales_type && 
+          e.sales_type !== 'none'
         );
         setTeamMembers(salesTeam);
       } catch (err) {
