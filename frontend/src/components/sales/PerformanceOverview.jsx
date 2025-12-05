@@ -65,9 +65,9 @@ const PerformanceOverview = () => {
   const getBadgeColor = (badge) => {
     switch (badge) {
       case 'Gold': return 'bg-yellow-500/20 text-yellow-400 border-yellow-400/30';
-      case 'Silver': return 'bg-gray-400/20 text-gray-300 border-gray-400/30';
+      case 'Silver': return 'bg-slate-500/20 text-gray-300 border-gray-400/30';
       case 'Bronze': return 'bg-orange-600/20 text-orange-400 border-orange-500/30';
-      default: return 'bg-gray-400/20 text-slate-400 border-slate-400/30';
+      default: return 'bg-slate-500/20 text-slate-400 border-slate-400/30';
     }
   };
 
@@ -89,14 +89,14 @@ const PerformanceOverview = () => {
           <h3 className="text-xl font-semibold text-white mb-2">
             Performance Analytics
           </h3>
-          <p className="text-gray-500">
+          <p className="text-slate-400">
             Comprehensive team performance analysis and insights
           </p>
         </div>
       </div>
 
       {/* Filters */}
-      <Card className="bg-white0 border-gray-300">
+      <Card className="bg-slate-9000 border-white/20">
         <CardHeader>
           <CardTitle className="text-white flex items-center gap-2">
             <Filter className="w-5 h-5" />
@@ -106,12 +106,12 @@ const PerformanceOverview = () => {
         <CardContent className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
             <div>
-              <Label className="text-gray-700">Area</Label>
+              <Label className="text-slate-300">Area</Label>
               <Select value={filters.area} onValueChange={(value) => setFilters({...filters, area: value})}>
-                <SelectTrigger className="bg-gray-50 border-gray-300 text-gray-900">
+                <SelectTrigger className="bg-slate-800 border-white/20 text-gray-900">
                   <SelectValue placeholder="All Areas" />
                 </SelectTrigger>
-                <SelectContent className="bg-gray-50 border-gray-300">
+                <SelectContent className="bg-slate-800 border-white/20">
                   <SelectItem value="all">All Areas</SelectItem>
                   <SelectItem value="Dubai">Dubai</SelectItem>
                   <SelectItem value="Abu Dhabi">Abu Dhabi</SelectItem>
@@ -122,12 +122,12 @@ const PerformanceOverview = () => {
             </div>
 
             <div>
-              <Label className="text-gray-700">Badge Level</Label>
+              <Label className="text-slate-300">Badge Level</Label>
               <Select value={filters.badge} onValueChange={(value) => setFilters({...filters, badge: value})}>
-                <SelectTrigger className="bg-gray-50 border-gray-300 text-gray-900">
+                <SelectTrigger className="bg-slate-800 border-white/20 text-gray-900">
                   <SelectValue placeholder="All Badges" />
                 </SelectTrigger>
-                <SelectContent className="bg-gray-50 border-gray-300">
+                <SelectContent className="bg-slate-800 border-white/20">
                   <SelectItem value="all">All Badges</SelectItem>
                   <SelectItem value="Gold">Gold</SelectItem>
                   <SelectItem value="Silver">Silver</SelectItem>
@@ -137,22 +137,22 @@ const PerformanceOverview = () => {
             </div>
 
             <div>
-              <Label className="text-gray-700">Individual</Label>
+              <Label className="text-slate-300">Individual</Label>
               <Input
                 value={filters.individual}
                 onChange={(e) => setFilters({...filters, individual: e.target.value})}
                 placeholder="Search by name..."
-                className="bg-gray-50 border-gray-300 text-gray-900"
+                className="bg-slate-800 border-white/20 text-gray-900"
               />
             </div>
 
             <div>
-              <Label className="text-gray-700">Time Range</Label>
+              <Label className="text-slate-300">Time Range</Label>
               <Select value={filters.timeRange} onValueChange={(value) => setFilters({...filters, timeRange: value})}>
-                <SelectTrigger className="bg-gray-50 border-gray-300 text-gray-900">
+                <SelectTrigger className="bg-slate-800 border-white/20 text-gray-900">
                   <SelectValue />
                 </SelectTrigger>
-                <SelectContent className="bg-gray-50 border-gray-300">
+                <SelectContent className="bg-slate-800 border-white/20">
                   <SelectItem value="current_month">Current Month</SelectItem>
                   <SelectItem value="last_month">Last Month</SelectItem>
                   <SelectItem value="current_quarter">Current Quarter</SelectItem>
@@ -217,36 +217,36 @@ const PerformanceOverview = () => {
       </div>
 
       {/* Monthly Target Progress */}
-      <Card className="bg-white0 border-gray-300">
+      <Card className="bg-slate-9000 border-white/20">
         <CardHeader>
           <CardTitle className="text-white">Monthly Target Progress</CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="flex justify-between text-sm">
-            <span className="text-gray-500">Progress</span>
-            <span className="text-gray-700">{achievementPercentage.toFixed(1)}%</span>
+            <span className="text-slate-400">Progress</span>
+            <span className="text-slate-300">{achievementPercentage.toFixed(1)}%</span>
           </div>
           <Progress value={achievementPercentage} className="h-3" />
           <div className="flex justify-between text-sm">
-            <span className="text-gray-500">Achieved: {analytics.monthlyAchieved.toLocaleString()} AED</span>
-            <span className="text-gray-500">Target: {analytics.monthlyTarget.toLocaleString()} AED</span>
+            <span className="text-slate-400">Achieved: {analytics.monthlyAchieved.toLocaleString()} AED</span>
+            <span className="text-slate-400">Target: {analytics.monthlyTarget.toLocaleString()} AED</span>
           </div>
         </CardContent>
       </Card>
 
       {/* Team Performance */}
-      <Card className="bg-white0 border-gray-300">
+      <Card className="bg-slate-9000 border-white/20">
         <CardHeader>
           <CardTitle className="text-white">Individual Performance</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="space-y-3">
             {teamPerformance.map((member) => (
-              <div key={member.id} className="flex items-center justify-between p-3 bg-gray-50/50 rounded-lg">
+              <div key={member.id} className="flex items-center justify-between p-3 bg-slate-800/50 rounded-lg">
                 <div className="flex items-center gap-4">
                   <div>
                     <p className="text-white font-medium">{member.name}</p>
-                    <p className="text-gray-500 text-sm">{member.role}</p>
+                    <p className="text-slate-400 text-sm">{member.role}</p>
                   </div>
                   <Badge className={getBadgeColor(member.badge)}>
                     <Award className="w-3 h-3 mr-1" />
@@ -255,15 +255,15 @@ const PerformanceOverview = () => {
                 </div>
                 <div className="flex gap-6 text-sm">
                   <div className="text-center">
-                    <p className="text-gray-500">Leads</p>
+                    <p className="text-slate-400">Leads</p>
                     <p className="text-white font-semibold">{member.leads}</p>
                   </div>
                   <div className="text-center">
-                    <p className="text-gray-500">Revenue</p>
+                    <p className="text-slate-400">Revenue</p>
                     <p className="text-white font-semibold">{member.revenue.toLocaleString()}</p>
                   </div>
                   <div className="text-center">
-                    <p className="text-gray-500">Conversion</p>
+                    <p className="text-slate-400">Conversion</p>
                     <p className="text-white font-semibold">{member.conversion}%</p>
                   </div>
                 </div>
@@ -274,29 +274,29 @@ const PerformanceOverview = () => {
       </Card>
 
       {/* Area Performance */}
-      <Card className="bg-white0 border-gray-300">
+      <Card className="bg-slate-9000 border-white/20">
         <CardHeader>
           <CardTitle className="text-white">Area-wise Performance</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {areaPerformance.map((area, index) => (
-              <div key={index} className="p-4 bg-gray-50/50 rounded-lg border border-gray-300">
+              <div key={index} className="p-4 bg-slate-800/50 rounded-lg border border-white/20">
                 <div className="flex items-center gap-2 mb-3">
                   <MapPin className="w-4 h-4 text-blue-400" />
                   <h4 className="text-white font-semibold">{area.area}</h4>
                 </div>
                 <div className="space-y-2 text-sm">
                   <div className="flex justify-between">
-                    <span className="text-gray-500">Leads:</span>
+                    <span className="text-slate-400">Leads:</span>
                     <span className="text-white">{area.leads}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-gray-500">Revenue:</span>
+                    <span className="text-slate-400">Revenue:</span>
                     <span className="text-white">{area.revenue.toLocaleString()} AED</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-gray-500">Team Size:</span>
+                    <span className="text-slate-400">Team Size:</span>
                     <span className="text-white">{area.members}</span>
                   </div>
                 </div>

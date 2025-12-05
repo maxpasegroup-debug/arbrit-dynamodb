@@ -52,8 +52,8 @@ const DuplicateAlertsNotification = ({ onViewAll }) => {
           )}
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-80 bg-white border-gray-300 p-0">
-        <div className="p-4 border-b border-gray-300">
+      <PopoverContent className="w-80 bg-slate-900 border-white/20 p-0">
+        <div className="p-4 border-b border-white/20">
           <h3 className="font-semibold text-white flex items-center gap-2">
             <AlertTriangle className="w-4 h-4 text-orange-400" />
             Duplicate Alerts
@@ -101,7 +101,7 @@ const DuplicateAlertsNotification = ({ onViewAll }) => {
           )}
         </div>
         {alerts.length > 0 && (
-          <div className="p-3 border-t border-gray-300">
+          <div className="p-3 border-t border-white/20">
             <Button
               onClick={onViewAll}
               className="w-full bg-blue-600 hover:bg-blue-700"

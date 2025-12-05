@@ -121,10 +121,10 @@ const PettyCashTracker = () => {
       </div>
 
       {/* Expenses Table */}
-      <div className="bg-white backdrop-blur-sm rounded-xl border border-gray-200 overflow-hidden">
+      <div className="bg-slate-900 backdrop-blur-sm rounded-xl border border-white/10 overflow-hidden">
         <Table>
           <TableHeader>
-            <TableRow className="border-gray-200">
+            <TableRow className="border-white/10">
               <TableHead className="text-gray-300">Date</TableHead>
               <TableHead className="text-gray-300">Category</TableHead>
               <TableHead className="text-gray-300">Description</TableHead>
@@ -142,7 +142,7 @@ const PettyCashTracker = () => {
               </TableRow>
             ) : (
               expenses.map((expense) => (
-                <TableRow key={expense.id} className="border-gray-200">
+                <TableRow key={expense.id} className="border-white/10">
                   <TableCell className="text-white">
                     {new Date(expense.expense_date).toLocaleDateString()}
                   </TableCell>
@@ -160,7 +160,7 @@ const PettyCashTracker = () => {
 
       {/* Add Expense Dialog */}
       <Dialog open={showDialog} onOpenChange={setShowDialog}>
-        <DialogContent className="bg-white border-slate-700 text-white max-w-xl">
+        <DialogContent className="bg-slate-900 border-slate-700 text-white max-w-xl">
           <DialogHeader>
             <DialogTitle className="text-xl flex items-center gap-2">
               <Wallet className="w-6 h-6 text-blue-400" />
@@ -177,7 +177,7 @@ const PettyCashTracker = () => {
                   step="0.01"
                   value={formData.amount}
                   onChange={(e) => setFormData({...formData, amount: e.target.value})}
-                  className="bg-gray-50 border-slate-600 text-white"
+                  className="bg-slate-800 border-slate-600 text-white"
                 />
               </div>
               <div className="space-y-2">
@@ -186,7 +186,7 @@ const PettyCashTracker = () => {
                   type="date"
                   value={formData.expense_date}
                   onChange={(e) => setFormData({...formData, expense_date: e.target.value})}
-                  className="bg-gray-50 border-slate-600 text-white"
+                  className="bg-slate-800 border-slate-600 text-white"
                 />
               </div>
             </div>
@@ -194,10 +194,10 @@ const PettyCashTracker = () => {
             <div className="space-y-2">
               <Label>Category *</Label>
               <Select value={formData.category} onValueChange={(val) => setFormData({...formData, category: val})}>
-                <SelectTrigger className="bg-gray-50 border-slate-600 text-white">
+                <SelectTrigger className="bg-slate-800 border-slate-600 text-white">
                   <SelectValue />
                 </SelectTrigger>
-                <SelectContent className="bg-gray-50 border-slate-600 text-white">
+                <SelectContent className="bg-slate-800 border-slate-600 text-white">
                   <SelectItem value="Office Supplies">Office Supplies</SelectItem>
                   <SelectItem value="Travel">Travel</SelectItem>
                   <SelectItem value="Meals">Meals</SelectItem>
@@ -213,7 +213,7 @@ const PettyCashTracker = () => {
               <Textarea
                 value={formData.description}
                 onChange={(e) => setFormData({...formData, description: e.target.value})}
-                className="bg-gray-50 border-slate-600 text-white"
+                className="bg-slate-800 border-slate-600 text-white"
                 placeholder="What was this expense for?"
               />
             </div>
@@ -223,14 +223,14 @@ const PettyCashTracker = () => {
               <Input
                 value={formData.receipt_number}
                 onChange={(e) => setFormData({...formData, receipt_number: e.target.value})}
-                className="bg-gray-50 border-slate-600 text-white"
+                className="bg-slate-800 border-slate-600 text-white"
                 placeholder="Optional receipt reference"
               />
             </div>
           </div>
 
           <DialogFooter>
-            <Button variant="outline" onClick={() => setShowDialog(false)} className="border-slate-600 text-white hover:bg-gray-50">
+            <Button variant="outline" onClick={() => setShowDialog(false)} className="border-slate-600 text-white hover:bg-slate-800">
               Cancel
             </Button>
             <Button onClick={submitExpense} disabled={loading || !formData.amount || !formData.description} className="bg-blue-500 hover:bg-blue-600">

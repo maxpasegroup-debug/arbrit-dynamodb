@@ -51,10 +51,10 @@ const FollowUps = () => {
         </h3>
       </div>
 
-      <div className="bg-white backdrop-blur-sm rounded-xl border border-gray-300 overflow-hidden">
+      <div className="bg-slate-900 backdrop-blur-sm rounded-xl border border-white/20 overflow-hidden">
         <Table>
           <TableHeader>
-            <TableRow className="border-gray-300">
+            <TableRow className="border-white/20">
               <TableHead className="text-gray-300">Client</TableHead>
               <TableHead className="text-gray-300">Contact</TableHead>
               <TableHead className="text-gray-300">Status</TableHead>
@@ -78,7 +78,7 @@ const FollowUps = () => {
               </TableRow>
             ) : (
               followUps.map((lead) => (
-                <TableRow key={lead.id} className="border-gray-300">
+                <TableRow key={lead.id} className="border-white/20">
                   <TableCell className="text-white font-medium">{lead.client_name}</TableCell>
                   <TableCell className="text-gray-300">
                     {lead.mobile && (

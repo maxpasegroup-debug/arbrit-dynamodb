@@ -44,7 +44,7 @@ const SalesTrainingTracker = () => {
       'Completed': <Badge className="bg-green-500/20 text-green-300 border-green-400/50">✅ Completed</Badge>,
       'Reviewed': <Badge className="bg-emerald-500/20 text-emerald-300 border-emerald-400/50">⭐ Reviewed</Badge>
     };
-    return badges[status] || <Badge className="bg-gray-500/20 text-gray-300">{status}</Badge>;
+    return badges[status] || <Badge className="bg-slate-8000/20 text-gray-300">{status}</Badge>;
   };
 
   const getProgressSteps = (training) => {
@@ -85,7 +85,7 @@ const SalesTrainingTracker = () => {
             <BookOpen className="w-8 h-8 text-purple-400" />
             Training Requests
           </h2>
-          <p className="text-gray-500 mt-1">{trainings.length} total requests</p>
+          <p className="text-slate-400 mt-1">{trainings.length} total requests</p>
         </div>
         <Button
           onClick={() => setShowForm(true)}
@@ -97,10 +97,10 @@ const SalesTrainingTracker = () => {
 
       <div className="grid gap-4">
         {trainings.length === 0 ? (
-          <Card className="bg-white border-gray-200">
+          <Card className="bg-slate-900 border-white/10">
             <CardContent className="py-12 text-center">
               <BookOpen className="w-16 h-16 text-slate-600 mx-auto mb-4" />
-              <p className="text-gray-500 text-lg">No training requests yet</p>
+              <p className="text-slate-400 text-lg">No training requests yet</p>
               <Button
                 onClick={() => setShowForm(true)}
                 className="mt-4 bg-purple-600 hover:bg-purple-700"
@@ -111,7 +111,7 @@ const SalesTrainingTracker = () => {
           </Card>
         ) : (
           trainings.map((training) => (
-            <Card key={training.id} className="bg-white border-gray-200 hover:bg-white transition-all">
+            <Card key={training.id} className="bg-slate-900 border-white/10 hover:bg-white transition-all">
               <CardContent className="p-6">
                 <div className="flex items-start justify-between mb-4">
                   <div className="flex-1">

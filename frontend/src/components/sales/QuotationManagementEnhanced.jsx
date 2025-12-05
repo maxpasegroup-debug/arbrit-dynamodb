@@ -144,7 +144,7 @@ const QuotationManagementEnhanced = () => {
 
   const getStatusColor = (status) => {
     const colors = {
-      'Draft': 'bg-gray-500/20 text-gray-300 border-gray-500/30',
+      'Draft': 'bg-slate-8000/20 text-gray-300 border-gray-500/30',
       'Pending': 'bg-yellow-500/20 text-yellow-300 border-yellow-500/30',
       'Approved': 'bg-green-500/20 text-green-300 border-green-500/30',
       'Rejected': 'bg-red-500/20 text-red-300 border-red-500/30',
@@ -177,10 +177,10 @@ const QuotationManagementEnhanced = () => {
             <FileText className="w-6 h-6 text-yellow-400" />
             Pending Approvals ({pendingQuotations.length})
           </h3>
-          <div className="bg-white backdrop-blur-sm rounded-xl border border-gray-300 overflow-hidden">
+          <div className="bg-slate-900 backdrop-blur-sm rounded-xl border border-white/20 overflow-hidden">
             <Table>
               <TableHeader>
-                <TableRow className="border-gray-300">
+                <TableRow className="border-white/20">
                   <TableHead className="text-gray-300">Client Name</TableHead>
                   <TableHead className="text-gray-300">Amount</TableHead>
                   <TableHead className="text-gray-300">Created By</TableHead>
@@ -190,7 +190,7 @@ const QuotationManagementEnhanced = () => {
               </TableHeader>
               <TableBody>
                 {pendingQuotations.map((quot) => (
-                  <TableRow key={quot.id} className="border-gray-300">
+                  <TableRow key={quot.id} className="border-white/20">
                     <TableCell className="text-white font-medium">{quot.client_name}</TableCell>
                     <TableCell className="text-white">AED {parseFloat(quot.total_amount || 0).toLocaleString()}</TableCell>
                     <TableCell className="text-gray-300">{quot.created_by_name}</TableCell>
@@ -255,10 +255,10 @@ const QuotationManagementEnhanced = () => {
       {/* All Quotations */}
       <div>
         <h3 className="text-xl font-semibold text-white mb-4">All Quotations ({otherQuotations.length})</h3>
-        <div className="bg-white backdrop-blur-sm rounded-xl border border-gray-300 overflow-hidden">
+        <div className="bg-slate-900 backdrop-blur-sm rounded-xl border border-white/20 overflow-hidden">
           <Table>
             <TableHeader>
-              <TableRow className="border-gray-300">
+              <TableRow className="border-white/20">
                 <TableHead className="text-gray-300">Client Name</TableHead>
                 <TableHead className="text-gray-300">Amount</TableHead>
                 <TableHead className="text-gray-300">Created By</TableHead>
@@ -275,7 +275,7 @@ const QuotationManagementEnhanced = () => {
                 </TableRow>
               ) : (
                 otherQuotations.map((quot) => (
-                  <TableRow key={quot.id} className="border-gray-300">
+                  <TableRow key={quot.id} className="border-white/20">
                     <TableCell className="text-white font-medium">{quot.client_name}</TableCell>
                     <TableCell className="text-white">AED {parseFloat(quot.total_amount || 0).toLocaleString()}</TableCell>
                     <TableCell className="text-gray-300">{quot.created_by_name}</TableCell>
@@ -318,7 +318,7 @@ const QuotationManagementEnhanced = () => {
 
       {/* Edit Dialog */}
       <Dialog open={showEditDialog} onOpenChange={setShowEditDialog}>
-        <DialogContent className="bg-white border-gray-300 text-white max-w-2xl">
+        <DialogContent className="bg-slate-900 border-white/20 text-white max-w-2xl">
           <DialogHeader>
             <DialogTitle className="text-xl">Edit Quotation</DialogTitle>
           </DialogHeader>
@@ -330,7 +330,7 @@ const QuotationManagementEnhanced = () => {
                 id="client_name"
                 value={formData.client_name}
                 onChange={(e) => setFormData({...formData, client_name: e.target.value})}
-                className="bg-gray-50 border-slate-600 text-white"
+                className="bg-slate-800 border-slate-600 text-white"
               />
             </div>
 
@@ -342,7 +342,7 @@ const QuotationManagementEnhanced = () => {
                 step="0.01"
                 value={formData.total_amount}
                 onChange={(e) => setFormData({...formData, total_amount: e.target.value})}
-                className="bg-gray-50 border-slate-600 text-white"
+                className="bg-slate-800 border-slate-600 text-white"
               />
             </div>
 
@@ -352,7 +352,7 @@ const QuotationManagementEnhanced = () => {
                 id="items"
                 value={formData.items}
                 onChange={(e) => setFormData({...formData, items: e.target.value})}
-                className="bg-gray-50 border-slate-600 text-white min-h-[100px]"
+                className="bg-slate-800 border-slate-600 text-white min-h-[100px]"
               />
             </div>
 
@@ -362,7 +362,7 @@ const QuotationManagementEnhanced = () => {
                 id="remarks"
                 value={formData.remarks}
                 onChange={(e) => setFormData({...formData, remarks: e.target.value})}
-                className="bg-gray-50 border-slate-600 text-white"
+                className="bg-slate-800 border-slate-600 text-white"
               />
             </div>
           </div>
@@ -371,7 +371,7 @@ const QuotationManagementEnhanced = () => {
             <Button
               variant="outline"
               onClick={() => setShowEditDialog(false)}
-              className="border-slate-600 text-white hover:bg-gray-50"
+              className="border-slate-600 text-white hover:bg-slate-800"
             >
               Cancel
             </Button>
@@ -388,7 +388,7 @@ const QuotationManagementEnhanced = () => {
 
       {/* Delete Confirmation Dialog */}
       <Dialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog}>
-        <DialogContent className="bg-white border-gray-300 text-white">
+        <DialogContent className="bg-slate-900 border-white/20 text-white">
           <DialogHeader>
             <DialogTitle className="text-xl flex items-center gap-2">
               <AlertTriangle className="w-6 h-6 text-red-500" />
@@ -402,7 +402,7 @@ const QuotationManagementEnhanced = () => {
             </DialogDescription>
           </DialogHeader>
 
-          <div className="p-4 bg-white rounded-lg border border-gray-300 my-4">
+          <div className="p-4 bg-slate-900 rounded-lg border border-white/20 my-4">
             <p className="text-sm text-gray-400">
               Client: <span className="text-white font-medium">{selectedQuotation?.client_name}</span>
             </p>
@@ -415,7 +415,7 @@ const QuotationManagementEnhanced = () => {
             <Button
               variant="outline"
               onClick={() => setShowDeleteDialog(false)}
-              className="border-slate-600 text-white hover:bg-gray-50"
+              className="border-slate-600 text-white hover:bg-slate-800"
             >
               Cancel
             </Button>
@@ -432,7 +432,7 @@ const QuotationManagementEnhanced = () => {
 
       {/* Approve/Reject Dialog */}
       <Dialog open={showApproveDialog} onOpenChange={setShowApproveDialog}>
-        <DialogContent className="bg-white border-gray-300 text-white">
+        <DialogContent className="bg-slate-900 border-white/20 text-white">
           <DialogHeader>
             <DialogTitle className="text-xl">
               {actionType === 'approve' ? 'Approve Quotation' : 'Reject Quotation'}
@@ -447,7 +447,7 @@ const QuotationManagementEnhanced = () => {
                 value={remarks}
                 onChange={(e) => setRemarks(e.target.value)}
                 placeholder="Add any comments..."
-                className="bg-gray-50 border-slate-600 text-white"
+                className="bg-slate-800 border-slate-600 text-white"
               />
             </div>
           </div>
@@ -456,7 +456,7 @@ const QuotationManagementEnhanced = () => {
             <Button
               variant="outline"
               onClick={() => setShowApproveDialog(false)}
-              className="border-slate-600 text-white hover:bg-gray-50"
+              className="border-slate-600 text-white hover:bg-slate-800"
             >
               Cancel
             </Button>

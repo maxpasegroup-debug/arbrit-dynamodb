@@ -14,7 +14,7 @@ const CertificateManagement = () => {
   return (
     <div className="space-y-6">
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-        <TabsList className="grid w-full grid-cols-2 bg-white border border-gray-200">
+        <TabsList className="grid w-full grid-cols-2 bg-slate-900 border border-white/10">
           <TabsTrigger 
             value="dispatch"
             className="data-[state=active]:bg-indigo-500/20 data-[state=active]:text-white text-gray-300"

@@ -39,13 +39,13 @@ const TrainingCalendar = () => {
       case 'in-progress': return 'bg-yellow-500/20 text-yellow-400 border-yellow-400/50';
       case 'completed': return 'bg-green-500/20 text-green-400 border-green-400/50';
       case 'cancelled': return 'bg-red-500/20 text-red-400 border-red-400/50';
-      default: return 'bg-gray-500/20 text-gray-400 border-gray-400/50';
+      default: return 'bg-slate-8000/20 text-gray-400 border-gray-400/50';
     }
   };
 
   if (loading) {
     return (
-      <Card className="bg-white border-gray-200">
+      <Card className="bg-slate-900 border-white/10">
         <CardContent className="p-6">
           <p className="text-gray-400 text-center">Loading calendar...</p>
         </CardContent>
@@ -55,7 +55,7 @@ const TrainingCalendar = () => {
 
   return (
     <div className="space-y-6">
-      <Card className="bg-white border-gray-200">
+      <Card className="bg-slate-900 border-white/10">
         <CardHeader className="flex flex-row items-center justify-between">
           <div>
             <CardTitle className="text-white text-xl">Training Calendar</CardTitle>
@@ -76,7 +76,7 @@ const TrainingCalendar = () => {
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {sessions.map((session) => (
-                <Card key={session.id} className="bg-white border-gray-200 hover:bg-white transition-all">
+                <Card key={session.id} className="bg-slate-900 border-white/10 hover:bg-white transition-all">
                   <CardContent className="p-4">
                     <div className="flex justify-between items-start mb-3">
                       <h3 className="text-white font-semibold">{session.course_name}</h3>

@@ -11,7 +11,7 @@ const QuotationManagement = () => {
         </div>
       </div>
 
-      <div className="bg-white backdrop-blur-sm rounded-xl border border-gray-300 p-8 text-center">
+      <div className="bg-slate-900 backdrop-blur-sm rounded-xl border border-white/20 p-8 text-center">
         <p className="text-gray-300">Quotation Management - Coming Soon</p>
         <p className="text-sm text-gray-500 mt-2">Feature under development</p>
       </div>

@@ -78,7 +78,7 @@ const PaymentRecording = ({ onSuccess }) => {
       'Cheque': 'bg-purple-500/20 text-purple-300 border-purple-400/50',
       'Credit Card': 'bg-yellow-500/20 text-yellow-300 border-yellow-400/50'
     };
-    return colors[method] || 'bg-gray-500/20 text-gray-300 border-gray-400/50';
+    return colors[method] || 'bg-slate-8000/20 text-gray-300 border-gray-400/50';
   };
 
   return (
@@ -87,7 +87,7 @@ const PaymentRecording = ({ onSuccess }) => {
       <div className="flex items-center justify-between">
         <div>
           <h3 className="text-2xl font-bold text-white">Payment Recording</h3>
-          <p className="text-gray-500 text-sm mt-1">Record and track client payments</p>
+          <p className="text-slate-400 text-sm mt-1">Record and track client payments</p>
         </div>
         <Button
           onClick={() => setRecordOpen(true)}
@@ -103,15 +103,15 @@ const PaymentRecording = ({ onSuccess }) => {
         {loading ? (
           <p className="text-center py-12 text-slate-400">Loading payments...</p>
         ) : payments.length === 0 ? (
-          <div className="text-center py-12 bg-white rounded-lg border border-gray-200">
+          <div className="text-center py-12 bg-slate-900 rounded-lg border border-white/10">
             <DollarSign className="w-16 h-16 text-slate-600 mx-auto mb-4" />
-            <p className="text-gray-500 text-lg">No payments recorded yet</p>
+            <p className="text-slate-400 text-lg">No payments recorded yet</p>
           </div>
         ) : (
           payments.map((payment, idx) => (
             <div
               key={idx}
-              className="bg-white border border-gray-200 rounded-lg p-4 hover:bg-white transition-all"
+              className="bg-slate-900 border border-white/10 rounded-lg p-4 hover:bg-white transition-all"
             >
               <div className="flex items-start justify-between">
                 <div className="flex-1">
@@ -123,13 +123,13 @@ const PaymentRecording = ({ onSuccess }) => {
                   </div>
                   <div className="grid grid-cols-3 gap-3 text-sm text-slate-300">
                     <div>
-                      <span className="text-gray-500">Amount:</span> AED {payment.amount}
+                      <span className="text-slate-400">Amount:</span> AED {payment.amount}
                     </div>
                     <div>
-                      <span className="text-gray-500">Date:</span> {payment.payment_date}
+                      <span className="text-slate-400">Date:</span> {payment.payment_date}
                     </div>
                     <div>
-                      <span className="text-gray-500">Ref:</span> {payment.reference_number || 'N/A'}
+                      <span className="text-slate-400">Ref:</span> {payment.reference_number || 'N/A'}
                     </div>
                   </div>
                   {payment.notes && (
@@ -144,10 +144,10 @@ const PaymentRecording = ({ onSuccess }) => {
 
       {/* Record Payment Dialog */}
       <Dialog open={recordOpen} onOpenChange={setRecordOpen}>
-        <DialogContent className="max-w-2xl bg-white border-gray-200">
+        <DialogContent className="max-w-2xl bg-slate-900 border-white/10">
           <DialogHeader>
             <DialogTitle className="text-white">Record New Payment</DialogTitle>
-            <DialogDescription className="text-gray-500">
+            <DialogDescription className="text-slate-400">
               Enter payment details to record a transaction
             </DialogDescription>
           </DialogHeader>
@@ -160,7 +160,7 @@ const PaymentRecording = ({ onSuccess }) => {
                   value={paymentData.client_name}
                   onChange={(e) => setPaymentData({ ...paymentData, client_name: e.target.value })}
                   required
-                  className="bg-gray-50 border-gray-200 text-white"
+                  className="bg-slate-800 border-white/10 text-white"
                 />
               </div>
               <div>
@@ -171,7 +171,7 @@ const PaymentRecording = ({ onSuccess }) => {
                   value={paymentData.amount}
                   onChange={(e) => setPaymentData({ ...paymentData, amount: e.target.value })}
                   required
-                  className="bg-gray-50 border-gray-200 text-white"
+                  className="bg-slate-800 border-white/10 text-white"
                 />
               </div>
               <div>
@@ -181,7 +181,7 @@ const PaymentRecording = ({ onSuccess }) => {
                   value={paymentData.payment_date}
                   onChange={(e) => setPaymentData({ ...paymentData, payment_date: e.target.value })}
                   required
-                  className="bg-gray-50 border-gray-200 text-white"
+                  className="bg-slate-800 border-white/10 text-white"
                 />
               </div>
               <div>
@@ -189,7 +189,7 @@ const PaymentRecording = ({ onSuccess }) => {
                 <select
                   value={paymentData.payment_method}
                   onChange={(e) => setPaymentData({ ...paymentData, payment_method: e.target.value })}
-                  className="w-full bg-gray-50 border border-gray-200 text-white rounded-md p-2"
+                  className="w-full bg-slate-800 border border-white/10 text-white rounded-md p-2"
                 >
                   <option value="Bank Transfer">Bank Transfer</option>
                   <option value="Cash">Cash</option>
@@ -202,7 +202,7 @@ const PaymentRecording = ({ onSuccess }) => {
                 <Input
                   value={paymentData.reference_number}
                   onChange={(e) => setPaymentData({ ...paymentData, reference_number: e.target.value })}
-                  className="bg-gray-50 border-gray-200 text-white"
+                  className="bg-slate-800 border-white/10 text-white"
                 />
               </div>
               <div className="col-span-2">
@@ -210,7 +210,7 @@ const PaymentRecording = ({ onSuccess }) => {
                 <textarea
                   value={paymentData.notes}
                   onChange={(e) => setPaymentData({ ...paymentData, notes: e.target.value })}
-                  className="w-full bg-gray-50 border border-gray-200 text-white rounded-md p-2 min-h-[80px]"
+                  className="w-full bg-slate-800 border border-white/10 text-white rounded-md p-2 min-h-[80px]"
                   placeholder="Additional notes..."
                 />
               </div>

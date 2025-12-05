@@ -63,7 +63,7 @@ const ExpenseSubmissionModal = ({ open, onOpenChange }) => {
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="bg-white border-slate-700 text-white max-w-xl">
+      <DialogContent className="bg-slate-900 border-slate-700 text-white max-w-xl">
         <DialogHeader>
           <DialogTitle className="text-2xl font-bold text-white">Submit Expense Claim</DialogTitle>
         </DialogHeader>
@@ -77,7 +77,7 @@ const ExpenseSubmissionModal = ({ open, onOpenChange }) => {
               step="0.01"
               value={formData.amount}
               onChange={(e) => handleChange('amount', e.target.value)}
-              className="bg-gray-50 border-slate-600 text-white"
+              className="bg-slate-800 border-slate-600 text-white"
               required
               placeholder="0.00"
             />
@@ -86,10 +86,10 @@ const ExpenseSubmissionModal = ({ open, onOpenChange }) => {
           <div className="space-y-2">
             <Label htmlFor="category">Category *</Label>
             <Select value={formData.category} onValueChange={(value) => handleChange('category', value)}>
-              <SelectTrigger className="bg-gray-50 border-slate-600 text-white">
+              <SelectTrigger className="bg-slate-800 border-slate-600 text-white">
                 <SelectValue />
               </SelectTrigger>
-              <SelectContent className="bg-gray-50 border-slate-600 text-white">
+              <SelectContent className="bg-slate-800 border-slate-600 text-white">
                 <SelectItem value="Travel">Travel</SelectItem>
                 <SelectItem value="Accommodation">Accommodation</SelectItem>
                 <SelectItem value="Meals">Meals</SelectItem>
@@ -108,7 +108,7 @@ const ExpenseSubmissionModal = ({ open, onOpenChange }) => {
               type="date"
               value={formData.expense_date}
               onChange={(e) => handleChange('expense_date', e.target.value)}
-              className="bg-gray-50 border-slate-600 text-white"
+              className="bg-slate-800 border-slate-600 text-white"
               required
             />
           </div>
@@ -119,7 +119,7 @@ const ExpenseSubmissionModal = ({ open, onOpenChange }) => {
               id="description"
               value={formData.description}
               onChange={(e) => handleChange('description', e.target.value)}
-              className="bg-gray-50 border-slate-600 text-white min-h-[100px]"
+              className="bg-slate-800 border-slate-600 text-white min-h-[100px]"
               placeholder="Describe your expense..."
               required
             />
@@ -132,7 +132,7 @@ const ExpenseSubmissionModal = ({ open, onOpenChange }) => {
               type="url"
               value={formData.attachment_url}
               onChange={(e) => handleChange('attachment_url', e.target.value)}
-              className="bg-gray-50 border-slate-600 text-white"
+              className="bg-slate-800 border-slate-600 text-white"
               placeholder="https://..."
             />
             <p className="text-xs text-slate-400">Upload receipt to your preferred storage and paste the link here</p>
@@ -143,7 +143,7 @@ const ExpenseSubmissionModal = ({ open, onOpenChange }) => {
               type="button"
               variant="outline"
               onClick={() => onOpenChange(false)}
-              className="border-slate-600 text-white hover:bg-gray-50"
+              className="border-slate-600 text-white hover:bg-slate-800"
             >
               Cancel
             </Button>

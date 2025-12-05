@@ -38,7 +38,7 @@ const CertificateCoordination = () => {
       case 'approved': return 'bg-green-500/20 text-green-400 border-green-400/50';
       case 'pending': return 'bg-yellow-500/20 text-yellow-400 border-yellow-400/50';
       case 'delivered': return 'bg-blue-500/20 text-blue-400 border-blue-400/50';
-      default: return 'bg-gray-500/20 text-gray-400 border-gray-400/50';
+      default: return 'bg-slate-8000/20 text-gray-400 border-gray-400/50';
     }
   };
 
@@ -60,7 +60,7 @@ const CertificateCoordination = () => {
 
   if (loading) {
     return (
-      <Card className="bg-white border-gray-200">
+      <Card className="bg-slate-900 border-white/10">
         <CardContent className="p-6">
           <p className="text-gray-400 text-center">Loading certificates...</p>
         </CardContent>
@@ -70,7 +70,7 @@ const CertificateCoordination = () => {
 
   return (
     <div className="space-y-6">
-      <Card className="bg-white border-gray-200">
+      <Card className="bg-slate-900 border-white/10">
         <CardHeader>
           <CardTitle className="text-white text-xl">Certificate Coordination</CardTitle>
           <p className="text-sm text-gray-400 mt-1">Coordinate certificate delivery and tracking</p>
@@ -85,7 +85,7 @@ const CertificateCoordination = () => {
           ) : (
             <div className="space-y-3">
               {certificates.map((cert) => (
-                <Card key={cert.id} className="bg-white border-gray-200 hover:bg-white transition-all">
+                <Card key={cert.id} className="bg-slate-900 border-white/10 hover:bg-white transition-all">
                   <CardContent className="p-4">
                     <div className="flex items-center justify-between">
                       <div className="flex-1">

@@ -49,7 +49,7 @@ const CertificateGeneration = () => {
         <p className="text-gray-300">Generate and manage training certificates</p>
       </div>
 
-      <div className="bg-white backdrop-blur-sm border border-gray-200 rounded-xl p-6">
+      <div className="bg-slate-900 backdrop-blur-sm border border-white/10 rounded-xl p-6">
         <h3 className="text-xl font-semibold text-white mb-4">Completed Trainings</h3>
         
         {completedTrainings.length === 0 ? (

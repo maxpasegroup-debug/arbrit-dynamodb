@@ -200,7 +200,7 @@ const TrainingCalendarUnified = () => {
   return (
     <div className="space-y-6">
       {/* Pending Requests Section */}
-      <div className="bg-white backdrop-blur-sm rounded-xl border border-gray-200 p-6">
+      <div className="bg-slate-900 backdrop-blur-sm rounded-xl border border-white/10 p-6">
         <div className="flex items-center justify-between mb-6">
           <div>
             <h2 className="text-2xl font-bold text-white">📋 Pending Booking Requests</h2>
@@ -224,7 +224,7 @@ const TrainingCalendarUnified = () => {
             {requests.map((request) => (
               <div
                 key={request.id}
-                className="bg-gray-50/50 rounded-lg p-6 border border-gray-200 hover:border-yellow-500/30 transition-all"
+                className="bg-slate-800/50 rounded-lg p-6 border border-white/10 hover:border-yellow-500/30 transition-all"
               >
                 <div className="flex justify-between items-start">
                   <div className="flex-1 space-y-3">
@@ -306,7 +306,7 @@ const TrainingCalendarUnified = () => {
       </div>
 
       {/* Scheduled Trainings Calendar */}
-      <div className="bg-white backdrop-blur-sm rounded-xl border border-gray-200 p-6">
+      <div className="bg-slate-900 backdrop-blur-sm rounded-xl border border-white/10 p-6">
         <div className="flex items-center justify-between mb-6">
           <div>
             <h2 className="text-2xl font-bold text-white">📅 Scheduled Trainings Calendar</h2>
@@ -365,12 +365,12 @@ const TrainingCalendarUnified = () => {
 
       {/* Approval Wizard Dialog */}
       <Dialog open={wizardOpen} onOpenChange={setWizardOpen}>
-        <DialogContent className="bg-[#1a2f4d] border-gray-300 text-white max-w-3xl max-h-[90vh] overflow-y-auto">
+        <DialogContent className="bg-[#1a2f4d] border-white/20 text-white max-w-3xl max-h-[90vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle className="text-2xl">
               Training Approval - Step {currentStep} of 5
             </DialogTitle>
-            <p className="text-gray-500">{getStepTitle(currentStep)}</p>
+            <p className="text-slate-400">{getStepTitle(currentStep)}</p>
           </DialogHeader>
 
           {selectedRequest && (
@@ -383,7 +383,7 @@ const TrainingCalendarUnified = () => {
                       className={`w-10 h-10 rounded-full flex items-center justify-center font-semibold ${
                         step <= currentStep
                           ? 'bg-yellow-500 text-white'
-                          : 'bg-gray-100 text-slate-400'
+                          : 'bg-slate-700 text-slate-400'
                       }`}
                     >
                       {step}
@@ -391,7 +391,7 @@ const TrainingCalendarUnified = () => {
                     {step < 5 && (
                       <div
                         className={`flex-1 h-1 mx-2 ${
-                          step < currentStep ? 'bg-yellow-500' : 'bg-gray-100'
+                          step < currentStep ? 'bg-yellow-500' : 'bg-slate-700'
                         }`}
                       />
                     )}
@@ -400,7 +400,7 @@ const TrainingCalendarUnified = () => {
               </div>
 
               {/* Step Content */}
-              <div className="bg-white rounded-lg p-6 min-h-[300px]">
+              <div className="bg-slate-900 rounded-lg p-6 min-h-[300px]">
                 {/* Step 1: Review Details */}
                 {currentStep === 1 && (
                   <div className="space-y-4">
@@ -436,7 +436,7 @@ const TrainingCalendarUnified = () => {
                     {selectedRequest.notes && (
                       <div>
                         <p className="text-sm text-gray-400 mb-2">Notes</p>
-                        <p className="text-white bg-white p-3 rounded">{selectedRequest.notes}</p>
+                        <p className="text-white bg-slate-900 p-3 rounded">{selectedRequest.notes}</p>
                       </div>
                     )}
                   </div>
@@ -448,39 +448,39 @@ const TrainingCalendarUnified = () => {
                     <h3 className="text-lg font-semibold text-white mb-4">Schedule Date & Time</h3>
                     <div className="grid grid-cols-2 gap-4">
                       <div>
-                        <Label className="text-gray-700">Training Date *</Label>
+                        <Label className="text-slate-300">Training Date *</Label>
                         <Input
                           type="date"
                           value={wizardData.training_date}
                           onChange={(e) => setWizardData({ ...wizardData, training_date: e.target.value })}
-                          className="bg-white border-gray-300 text-white"
+                          className="bg-slate-900 border-white/20 text-white"
                         />
                       </div>
                       <div>
-                        <Label className="text-gray-700">Training Time *</Label>
+                        <Label className="text-slate-300">Training Time *</Label>
                         <Input
                           type="time"
                           value={wizardData.training_time}
                           onChange={(e) => setWizardData({ ...wizardData, training_time: e.target.value })}
-                          className="bg-white border-gray-300 text-white"
+                          className="bg-slate-900 border-white/20 text-white"
                         />
                       </div>
                       <div>
-                        <Label className="text-gray-700">Duration (hours)</Label>
+                        <Label className="text-slate-300">Duration (hours)</Label>
                         <Input
                           type="number"
                           value={wizardData.training_duration}
                           onChange={(e) => setWizardData({ ...wizardData, training_duration: e.target.value })}
-                          className="bg-white border-gray-300 text-white"
+                          className="bg-slate-900 border-white/20 text-white"
                         />
                       </div>
                       <div>
-                        <Label className="text-gray-700">Location *</Label>
+                        <Label className="text-slate-300">Location *</Label>
                         <Input
                           value={wizardData.location}
                           onChange={(e) => setWizardData({ ...wizardData, location: e.target.value })}
                           placeholder="Training location"
-                          className="bg-white border-gray-300 text-white"
+                          className="bg-slate-900 border-white/20 text-white"
                         />
                       </div>
                     </div>
@@ -493,22 +493,22 @@ const TrainingCalendarUnified = () => {
                     <h3 className="text-lg font-semibold text-white mb-4">Allocate Trainer</h3>
                     <div className="space-y-4">
                       <div>
-                        <Label className="text-gray-700">Trainer Type *</Label>
+                        <Label className="text-slate-300">Trainer Type *</Label>
                         <Select
                           value={wizardData.trainer_type}
                           onValueChange={(v) => setWizardData({ ...wizardData, trainer_type: v })}
                         >
-                          <SelectTrigger className="bg-white border-gray-300 text-white">
+                          <SelectTrigger className="bg-slate-900 border-white/20 text-white">
                             <SelectValue />
                           </SelectTrigger>
-                          <SelectContent className="bg-[#1a2f4d] border-gray-300 text-white">
+                          <SelectContent className="bg-[#1a2f4d] border-white/20 text-white">
                             <SelectItem value="full-time">Full-Time Trainer</SelectItem>
                             <SelectItem value="part-time">Part-Time / Outsourced Trainer</SelectItem>
                           </SelectContent>
                         </Select>
                       </div>
                       <div>
-                        <Label className="text-gray-700">Select Trainer *</Label>
+                        <Label className="text-slate-300">Select Trainer *</Label>
                         <Select
                           value={wizardData.trainer_id}
                           onValueChange={(v) => {
@@ -520,10 +520,10 @@ const TrainingCalendarUnified = () => {
                             });
                           }}
                         >
-                          <SelectTrigger className="bg-white border-gray-300 text-white">
+                          <SelectTrigger className="bg-slate-900 border-white/20 text-white">
                             <SelectValue placeholder="Select trainer" />
                           </SelectTrigger>
-                          <SelectContent className="bg-[#1a2f4d] border-gray-300 text-white">
+                          <SelectContent className="bg-[#1a2f4d] border-white/20 text-white">
                             {trainers.map(trainer => (
                               <SelectItem key={trainer.id} value={trainer.id}>
                                 {trainer.name} - {trainer.designation}
@@ -542,23 +542,23 @@ const TrainingCalendarUnified = () => {
                     <h3 className="text-lg font-semibold text-white mb-4">Work Order Details</h3>
                     <div className="space-y-4">
                       <div>
-                        <Label className="text-gray-700">Work Order Notes</Label>
+                        <Label className="text-slate-300">Work Order Notes</Label>
                         <Textarea
                           value={wizardData.work_order_notes}
                           onChange={(e) => setWizardData({ ...wizardData, work_order_notes: e.target.value })}
                           placeholder="Instructions for the trainer..."
                           rows={3}
-                          className="bg-white border-gray-300 text-white"
+                          className="bg-slate-900 border-white/20 text-white"
                         />
                       </div>
                       <div>
-                        <Label className="text-gray-700">Special Requirements</Label>
+                        <Label className="text-slate-300">Special Requirements</Label>
                         <Textarea
                           value={wizardData.special_requirements}
                           onChange={(e) => setWizardData({ ...wizardData, special_requirements: e.target.value })}
                           placeholder="Equipment, materials, etc..."
                           rows={3}
-                          className="bg-white border-gray-300 text-white"
+                          className="bg-slate-900 border-white/20 text-white"
                         />
                       </div>
                     </div>
@@ -580,7 +580,7 @@ const TrainingCalendarUnified = () => {
                         <p><strong>Trainer:</strong> {wizardData.trainer_name} ({wizardData.trainer_type})</p>
                       </div>
                     </div>
-                    <p className="text-gray-500 text-sm">
+                    <p className="text-slate-400 text-sm">
                       Clicking "Approve & Schedule" will:
                     </p>
                     <ul className="list-disc list-inside text-slate-400 text-sm space-y-1">
@@ -601,7 +601,7 @@ const TrainingCalendarUnified = () => {
                 <Button
                   onClick={prevStep}
                   variant="outline"
-                  className="border-gray-300 text-white"
+                  className="border-white/20 text-white"
                 >
                   Previous
                 </Button>
@@ -611,7 +611,7 @@ const TrainingCalendarUnified = () => {
               <Button
                 onClick={() => setWizardOpen(false)}
                 variant="outline"
-                className="border-gray-300 text-white"
+                className="border-white/20 text-white"
               >
                 Cancel
               </Button>

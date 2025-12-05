@@ -75,12 +75,12 @@ const ExpenseHRReview = () => {
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <h2 className="text-2xl font-bold text-slate-100">HR Expense Authorisation</h2>
-        <Badge variant="outline" className="text-base border-gray-300">
+        <Badge variant="outline" className="text-base border-white/20">
           {claims.length} pending
         </Badge>
       </div>
 
-      <div className="bg-white0 backdrop-blur-sm rounded-xl border border-gray-200 p-6">
+      <div className="bg-slate-9000 backdrop-blur-sm rounded-xl border border-white/10 p-6">
         <h3 className="text-lg font-semibold text-slate-100 mb-4">Pending HR Review</h3>
         {loading ? (
           <p className="text-center py-8 text-slate-400">Loading...</p>
@@ -89,7 +89,7 @@ const ExpenseHRReview = () => {
         ) : (
           <div className="space-y-3">
             {claims.map((claim) => (
-              <div key={claim.id} className="bg-white border border-gray-200 rounded-lg p-4 hover:bg-white transition-all">
+              <div key={claim.id} className="bg-slate-900 border border-white/10 rounded-lg p-4 hover:bg-white transition-all">
                 <div className="flex justify-between items-start">
                   <div className="flex-1">
                     <div className="flex items-center gap-2 mb-2">
@@ -152,9 +152,9 @@ const ExpenseHRReview = () => {
 
       {/* Approval Dialog */}
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-        <DialogContent className="bg-white border-gray-200">
+        <DialogContent className="bg-slate-900 border-white/10">
           <DialogHeader>
-            <DialogTitle className="text-gray-900">
+            <DialogTitle className="text-slate-100">
               HR {decision === 'approve' ? 'Approval' : 'Rejection'}
             </DialogTitle>
             <DialogDescription>
@@ -175,13 +175,13 @@ const ExpenseHRReview = () => {
               <textarea
                 value={remarks}
                 onChange={(e) => setRemarks(e.target.value)}
-                className="w-full bg-gray-50 border border-gray-200 text-slate-100 rounded-md p-2 mt-1 min-h-[80px]"
+                className="w-full bg-slate-800 border border-white/10 text-slate-100 rounded-md p-2 mt-1 min-h-[80px]"
                 placeholder="Add any notes or comments..."
               />
             </div>
             
             <div className="flex gap-2">
-              <Button variant="outline" onClick={() => setDialogOpen(false)} className="flex-1 border-gray-300 hover:bg-white">
+              <Button variant="outline" onClick={() => setDialogOpen(false)} className="flex-1 border-white/20 hover:bg-white">
                 Cancel
               </Button>
               <Button

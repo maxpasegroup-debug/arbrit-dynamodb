@@ -76,7 +76,7 @@ const VATReports = () => {
       </div>
 
       {/* Report Parameters */}
-      <Card className="bg-white backdrop-blur-sm border-gray-200">
+      <Card className="bg-slate-900 backdrop-blur-sm border-white/10">
         <CardHeader>
           <CardTitle className="text-white flex items-center gap-2">
             <Calendar className="w-5 h-5" />
@@ -92,7 +92,7 @@ const VATReports = () => {
                 type="date"
                 value={startDate}
                 onChange={(e) => setStartDate(e.target.value)}
-                className="bg-gray-50 border-slate-600 text-white"
+                className="bg-slate-800 border-slate-600 text-white"
               />
             </div>
             <div className="space-y-2">
@@ -102,7 +102,7 @@ const VATReports = () => {
                 type="date"
                 value={endDate}
                 onChange={(e) => setEndDate(e.target.value)}
-                className="bg-gray-50 border-slate-600 text-white"
+                className="bg-slate-800 border-slate-600 text-white"
               />
             </div>
             <div className="flex items-end">
@@ -168,14 +168,14 @@ const VATReports = () => {
           </div>
 
           {/* Invoice Details */}
-          <Card className="bg-white backdrop-blur-sm border-gray-200">
+          <Card className="bg-slate-900 backdrop-blur-sm border-white/10">
             <CardHeader>
               <CardTitle className="text-white">Invoice Details</CardTitle>
             </CardHeader>
             <CardContent>
               <Table>
                 <TableHeader>
-                  <TableRow className="border-gray-200">
+                  <TableRow className="border-white/10">
                     <TableHead className="text-gray-300">Invoice #</TableHead>
                     <TableHead className="text-gray-300">Client</TableHead>
                     <TableHead className="text-gray-300">Date</TableHead>
@@ -186,7 +186,7 @@ const VATReports = () => {
                 </TableHeader>
                 <TableBody>
                   {reportData.invoices.map((invoice) => (
-                    <TableRow key={invoice.id} className="border-gray-200">
+                    <TableRow key={invoice.id} className="border-white/10">
                       <TableCell className="text-white">{invoice.invoice_number}</TableCell>
                       <TableCell className="text-white">{invoice.client_name}</TableCell>
                       <TableCell className="text-gray-300">

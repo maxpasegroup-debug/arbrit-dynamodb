@@ -189,7 +189,7 @@ const CompanyDocuments = () => {
       </div>
 
       {/* Documents Grid */}
-      <div className="bg-white backdrop-blur-sm rounded-xl border border-gray-200 p-6">
+      <div className="bg-slate-900 backdrop-blur-sm rounded-xl border border-white/10 p-6">
         {loading && documents.length === 0 ? (
           <p className="text-gray-400 text-center py-8">Loading documents...</p>
         ) : documents.length === 0 ? (
@@ -199,7 +199,7 @@ const CompanyDocuments = () => {
             {documents.map((doc) => {
               const daysUntilExpiry = Math.floor((new Date(doc.expiry_date) - new Date()) / (1000 * 60 * 60 * 24));
               return (
-                <div key={doc.id} className="bg-white border border-gray-200 rounded-lg p-4">
+                <div key={doc.id} className="bg-slate-900 border border-white/10 rounded-lg p-4">
                   <div className="flex items-start justify-between">
                     <div className="flex items-start gap-3 flex-1">
                       <FileText className="w-5 h-5 text-purple-400 mt-1" />
@@ -233,7 +233,7 @@ const CompanyDocuments = () => {
 
       {/* Upload Dialog */}
       <Dialog open={showDialog} onOpenChange={setShowDialog}>
-        <DialogContent className="bg-[#1a2f4d] border-gray-300 text-white">
+        <DialogContent className="bg-[#1a2f4d] border-white/20 text-white">
           <DialogHeader>
             <DialogTitle className="text-xl">Upload Company Document</DialogTitle>
           </DialogHeader>
@@ -245,7 +245,7 @@ const CompanyDocuments = () => {
                 value={formData.doc_name}
                 onChange={(e) => setFormData({ ...formData, doc_name: e.target.value })}
                 placeholder="e.g., Trade License 2025"
-                className="bg-white border-gray-300 text-white mt-1"
+                className="bg-slate-900 border-white/20 text-white mt-1"
               />
             </div>
             <div>
@@ -255,7 +255,7 @@ const CompanyDocuments = () => {
                 value={formData.doc_type}
                 onChange={(e) => setFormData({ ...formData, doc_type: e.target.value })}
                 placeholder="e.g., Trade License, ISO Certificate"
-                className="bg-white border-gray-300 text-white mt-1"
+                className="bg-slate-900 border-white/20 text-white mt-1"
               />
             </div>
             <div>
@@ -265,7 +265,7 @@ const CompanyDocuments = () => {
                 type="file"
                 onChange={handleFileChange}
                 accept=".pdf,.jpg,.jpeg,.png"
-                className="bg-white border-gray-300 text-white mt-1"
+                className="bg-slate-900 border-white/20 text-white mt-1"
               />
             </div>
             <div>
@@ -275,7 +275,7 @@ const CompanyDocuments = () => {
                 type="date"
                 value={formData.expiry_date}
                 onChange={(e) => setFormData({ ...formData, expiry_date: e.target.value })}
-                className="bg-white border-gray-300 text-white mt-1"
+                className="bg-slate-900 border-white/20 text-white mt-1"
               />
             </div>
             <DialogFooter>
@@ -286,7 +286,7 @@ const CompanyDocuments = () => {
                   setShowDialog(false);
                   setFormData({ doc_name: '', doc_type: '', file: null, expiry_date: '' });
                 }}
-                className="border-gray-300 text-white hover:bg-white"
+                className="border-white/20 text-white hover:bg-white"
               >
                 Cancel
               </Button>

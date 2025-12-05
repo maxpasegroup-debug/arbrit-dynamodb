@@ -34,19 +34,19 @@ const AssignmentBoard = () => {
 
   const getStatusColor = (status) => {
     switch (status?.toUpperCase()) {
-      case 'PENDING': return 'bg-gray-500/20 text-gray-400 border-gray-400/50';
+      case 'PENDING': return 'bg-slate-8000/20 text-gray-400 border-gray-400/50';
       case 'PICKUP_READY': return 'bg-amber-500/20 text-amber-400 border-amber-400/50';
       case 'OUT_FOR_DELIVERY': return 'bg-blue-500/20 text-blue-400 border-blue-400/50';
       case 'DELIVERED': return 'bg-green-500/20 text-green-400 border-green-400/50';
       case 'FAILED': return 'bg-red-500/20 text-red-400 border-red-400/50';
       case 'RETURNED': return 'bg-orange-500/20 text-orange-400 border-orange-400/50';
-      default: return 'bg-gray-500/20 text-gray-400 border-gray-400/50';
+      default: return 'bg-slate-8000/20 text-gray-400 border-gray-400/50';
     }
   };
 
   if (loading) {
     return (
-      <Card className="bg-white border-gray-200">
+      <Card className="bg-slate-900 border-white/10">
         <CardContent className="p-6">
           <p className="text-gray-400 text-center">Loading assignments...</p>
         </CardContent>
@@ -55,7 +55,7 @@ const AssignmentBoard = () => {
   }
 
   return (
-    <Card className="bg-white border-gray-200">
+    <Card className="bg-slate-900 border-white/10">
       <CardHeader>
         <CardTitle className="text-white text-xl">Assignment Board</CardTitle>
         <p className="text-sm text-gray-400 mt-1">All delivery task assignments</p>
@@ -69,7 +69,7 @@ const AssignmentBoard = () => {
         ) : (
           <div className="space-y-3">
             {tasks.map((task) => (
-              <Card key={task.id} className="bg-white border-gray-200 hover:bg-white transition-all">
+              <Card key={task.id} className="bg-slate-900 border-white/10 hover:bg-white transition-all">
                 <CardContent className="p-4">
                   <div className="flex items-center justify-between mb-3">
                     <div className="flex-1">

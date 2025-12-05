@@ -61,7 +61,7 @@ const QuotationApproval = () => {
 
   const getStatusColor = (status) => {
     const colors = {
-      'Draft': 'bg-gray-500/20 text-gray-300 border-gray-500/30',
+      'Draft': 'bg-slate-8000/20 text-gray-300 border-gray-500/30',
       'Pending': 'bg-yellow-500/20 text-yellow-300 border-yellow-500/30',
       'Approved': 'bg-green-500/20 text-green-300 border-green-500/30',
       'Rejected': 'bg-red-500/20 text-red-300 border-red-500/30',
@@ -80,10 +80,10 @@ const QuotationApproval = () => {
           <FileText className="w-6 h-6 text-yellow-400" />
           Pending Approvals ({pendingQuotations.length})
         </h3>
-        <div className="bg-white backdrop-blur-sm rounded-xl border border-gray-300 overflow-hidden">
+        <div className="bg-slate-900 backdrop-blur-sm rounded-xl border border-white/20 overflow-hidden">
           <Table>
             <TableHeader>
-              <TableRow className="border-gray-300">
+              <TableRow className="border-white/20">
                 <TableHead className="text-gray-300">Client Name</TableHead>
                 <TableHead className="text-gray-300">Amount</TableHead>
                 <TableHead className="text-gray-300">Created By</TableHead>
@@ -101,7 +101,7 @@ const QuotationApproval = () => {
                 </TableRow>
               ) : (
                 pendingQuotations.map((quot) => (
-                  <TableRow key={quot.id} className="border-gray-300">
+                  <TableRow key={quot.id} className="border-white/20">
                     <TableCell className="text-white font-medium">{quot.client_name}</TableCell>
                     <TableCell className="text-gray-300">${parseFloat(quot.total_amount || 0).toLocaleString()}</TableCell>
                     <TableCell className="text-gray-300 text-sm">{quot.created_by_name || 'N/A'}</TableCell>
@@ -143,10 +143,10 @@ const QuotationApproval = () => {
 
       <div>
         <h3 className="text-xl font-semibold text-white mb-4">Processed Quotations ({processedQuotations.length})</h3>
-        <div className="bg-white backdrop-blur-sm rounded-xl border border-gray-300 overflow-hidden">
+        <div className="bg-slate-900 backdrop-blur-sm rounded-xl border border-white/20 overflow-hidden">
           <Table>
             <TableHeader>
-              <TableRow className="border-gray-300">
+              <TableRow className="border-white/20">
                 <TableHead className="text-gray-300">Client Name</TableHead>
                 <TableHead className="text-gray-300">Amount</TableHead>
                 <TableHead className="text-gray-300">Created By</TableHead>
@@ -163,7 +163,7 @@ const QuotationApproval = () => {
                 </TableRow>
               ) : (
                 processedQuotations.map((quot) => (
-                  <TableRow key={quot.id} className="border-gray-300">
+                  <TableRow key={quot.id} className="border-white/20">
                     <TableCell className="text-white font-medium">{quot.client_name}</TableCell>
                     <TableCell className="text-gray-300">${parseFloat(quot.total_amount || 0).toLocaleString()}</TableCell>
                     <TableCell className="text-gray-300 text-sm">{quot.created_by_name || 'N/A'}</TableCell>
@@ -182,7 +182,7 @@ const QuotationApproval = () => {
       </div>
 
       <Dialog open={showDialog} onOpenChange={setShowDialog}>
-        <DialogContent className="bg-[#1a2f4d] border-gray-300 text-white">
+        <DialogContent className="bg-[#1a2f4d] border-white/20 text-white">
           <DialogHeader>
             <DialogTitle>
               {actionType === 'approve' ? 'Approve Quotation' : 'Reject Quotation'}
@@ -190,7 +190,7 @@ const QuotationApproval = () => {
           </DialogHeader>
           {selectedQuotation && (
             <div className="space-y-4">
-              <div className="bg-white rounded-lg p-4 space-y-2">
+              <div className="bg-slate-900 rounded-lg p-4 space-y-2">
                 <div className="flex justify-between">
                   <span className="text-gray-400">Client:</span>
                   <span className="font-semibold">{selectedQuotation.client_name}</span>
@@ -200,7 +200,7 @@ const QuotationApproval = () => {
                   <span className="font-semibold">${parseFloat(selectedQuotation.total_amount || 0).toLocaleString()}</span>
                 </div>
                 {selectedQuotation.items && (
-                  <div className="mt-3 pt-3 border-t border-gray-300">
+                  <div className="mt-3 pt-3 border-t border-white/20">
                     <span className="text-gray-400 text-sm">Items:</span>
                     <p className="text-sm mt-1 whitespace-pre-wrap">{selectedQuotation.items}</p>
                   </div>
@@ -213,13 +213,13 @@ const QuotationApproval = () => {
                   onChange={(e) => setRemarks(e.target.value)}
                   rows={3}
                   placeholder="Add any comments..."
-                  className="bg-white border-gray-300 text-white"
+                  className="bg-slate-900 border-white/20 text-white"
                 />
               </div>
             </div>
           )}
           <DialogFooter>
-            <Button variant="outline" onClick={() => setShowDialog(false)} className="border-gray-300 text-white">
+            <Button variant="outline" onClick={() => setShowDialog(false)} className="border-white/20 text-white">
               Cancel
             </Button>
             <Button

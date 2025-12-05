@@ -76,7 +76,7 @@ const AssessmentQRGenerator = ({ userRole }) => {
   if (loading) {
     return (
       <div className="flex items-center justify-center py-12">
-        <p className="text-gray-500">Loading forms...</p>
+        <p className="text-slate-400">Loading forms...</p>
       </div>
     );
   }
@@ -95,7 +95,7 @@ const AssessmentQRGenerator = ({ userRole }) => {
       {forms.length === 0 ? (
         <Card>
           <CardContent className="py-12 text-center">
-            <p className="text-gray-500">No assessment forms available</p>
+            <p className="text-slate-400">No assessment forms available</p>
           </CardContent>
         </Card>
       ) : (
@@ -104,7 +104,7 @@ const AssessmentQRGenerator = ({ userRole }) => {
           <div className="space-y-4">
             <h3 className="text-lg font-semibold text-slate-100">Select Form</h3>
             {forms.map((form) => (
-              <Card key={form.id} className="bg-white0 border border-gray-200 hover:bg-white transition-all cursor-pointer" onClick={() => generateQRCode(form)}>
+              <Card key={form.id} className="bg-slate-9000 border border-white/10 hover:bg-white transition-all cursor-pointer" onClick={() => generateQRCode(form)}>
                 <CardHeader className="pb-3">
                   <div className="flex items-start justify-between">
                     <div className="flex-1">
@@ -156,7 +156,7 @@ const AssessmentQRGenerator = ({ userRole }) => {
                   <CardTitle className="text-base">{selectedForm.title}</CardTitle>
                 </CardHeader>
                 <CardContent className="text-center space-y-4">
-                  <div className="bg-gray-50 p-6 rounded-lg border-2 border-gray-300 inline-block">
+                  <div className="bg-slate-800 p-6 rounded-lg border-2 border-white/20 inline-block">
                     <img src={qrDataUrl} alt="QR Code" className="w-64 h-64" />
                   </div>
                   <div className="space-y-2">
@@ -182,7 +182,7 @@ const AssessmentQRGenerator = ({ userRole }) => {
               <Card>
                 <CardContent className="py-12 text-center">
                   <QrCode className="w-16 h-16 text-slate-300 mx-auto mb-4" />
-                  <p className="text-gray-500">Select a form to generate QR code</p>
+                  <p className="text-slate-400">Select a form to generate QR code</p>
                 </CardContent>
               </Card>
             )}

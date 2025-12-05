@@ -188,15 +188,15 @@ const EmployeeRecords = () => {
       )}
 
       {/* Employee Selection */}
-      <div className="bg-white backdrop-blur-sm rounded-xl border border-gray-200 p-6">
+      <div className="bg-slate-900 backdrop-blur-sm rounded-xl border border-white/10 p-6">
         <div className="flex items-center justify-between mb-4">
           <div className="flex-1 max-w-md">
             <Label className="text-gray-300 mb-2 block">Select Employee</Label>
             <Select value={selectedEmployee} onValueChange={handleEmployeeChange}>
-              <SelectTrigger data-testid="employee-select" className="bg-white border-gray-300 text-white">
+              <SelectTrigger data-testid="employee-select" className="bg-slate-900 border-white/20 text-white">
                 <SelectValue placeholder="Choose an employee" />
               </SelectTrigger>
-              <SelectContent className="bg-[#1a2f4d] border-gray-300 text-white">
+              <SelectContent className="bg-[#1a2f4d] border-white/20 text-white">
                 {employees.map((emp) => (
                   <SelectItem key={emp.id} value={emp.id}>
                     {emp.name} - {emp.branch}
@@ -228,7 +228,7 @@ const EmployeeRecords = () => {
                 {documents.map((doc) => {
                   const daysUntilExpiry = Math.floor((new Date(doc.expiry_date) - new Date()) / (1000 * 60 * 60 * 24));
                   return (
-                    <div key={doc.id} className="bg-white border border-gray-200 rounded-lg p-4">
+                    <div key={doc.id} className="bg-slate-900 border border-white/10 rounded-lg p-4">
                       <div className="flex items-start justify-between">
                         <div className="flex items-start gap-3 flex-1">
                           <FileText className="w-5 h-5 text-purple-400 mt-1" />
@@ -263,7 +263,7 @@ const EmployeeRecords = () => {
 
       {/* Upload Dialog */}
       <Dialog open={showDialog} onOpenChange={setShowDialog}>
-        <DialogContent className="bg-[#1a2f4d] border-gray-300 text-white">
+        <DialogContent className="bg-[#1a2f4d] border-white/20 text-white">
           <DialogHeader>
             <DialogTitle className="text-xl">Upload Employee Document</DialogTitle>
           </DialogHeader>
@@ -271,10 +271,10 @@ const EmployeeRecords = () => {
             <div>
               <Label className="text-gray-300">Document Type</Label>
               <Select value={formData.doc_type} onValueChange={(value) => setFormData({ ...formData, doc_type: value })}>
-                <SelectTrigger data-testid="doc-type-select" className="bg-white border-gray-300 text-white mt-1">
+                <SelectTrigger data-testid="doc-type-select" className="bg-slate-900 border-white/20 text-white mt-1">
                   <SelectValue placeholder="Select document type" />
                 </SelectTrigger>
-                <SelectContent className="bg-[#1a2f4d] border-gray-300 text-white">
+                <SelectContent className="bg-[#1a2f4d] border-white/20 text-white">
                   <SelectItem value="Passport">Passport</SelectItem>
                   <SelectItem value="Visa">Visa</SelectItem>
                   <SelectItem value="Emirates ID">Emirates ID</SelectItem>
@@ -289,7 +289,7 @@ const EmployeeRecords = () => {
                 type="file"
                 onChange={handleFileChange}
                 accept=".pdf,.jpg,.jpeg,.png"
-                className="bg-white border-gray-300 text-white mt-1"
+                className="bg-slate-900 border-white/20 text-white mt-1"
               />
             </div>
             <div>
@@ -299,7 +299,7 @@ const EmployeeRecords = () => {
                 type="date"
                 value={formData.expiry_date}
                 onChange={(e) => setFormData({ ...formData, expiry_date: e.target.value })}
-                className="bg-white border-gray-300 text-white mt-1"
+                className="bg-slate-900 border-white/20 text-white mt-1"
               />
             </div>
             <DialogFooter>
@@ -310,7 +310,7 @@ const EmployeeRecords = () => {
                   setShowDialog(false);
                   setFormData({ doc_type: '', file: null, expiry_date: '' });
                 }}
-                className="border-gray-300 text-white hover:bg-white"
+                className="border-white/20 text-white hover:bg-white"
               >
                 Cancel
               </Button>

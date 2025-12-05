@@ -46,23 +46,23 @@ const SalesLeaderboard = () => {
   const getRankBadge = (rank) => {
     const colors = {
       1: 'bg-yellow-500/20 border-yellow-500/50 text-yellow-300',
-      2: 'bg-gray-400/20 border-gray-400/50 text-gray-300',
+      2: 'bg-slate-500/20 border-gray-400/50 text-gray-300',
       3: 'bg-amber-600/20 border-amber-600/50 text-amber-400'
     };
-    return colors[rank] || 'bg-white border-gray-300 text-gray-400';
+    return colors[rank] || 'bg-white border-white/20 text-gray-400';
   };
 
   if (loading) {
     return (
-      <div className="bg-white backdrop-blur-sm rounded-xl border border-gray-300 p-6">
+      <div className="bg-slate-900 backdrop-blur-sm rounded-xl border border-white/20 p-6">
         <p className="text-gray-400">Loading leaderboard...</p>
       </div>
     );
   }
 
   return (
-    <div className="bg-white backdrop-blur-sm rounded-xl border border-gray-300 overflow-hidden">
-      <div className="px-6 py-4 bg-gradient-to-r from-purple-500/20 to-blue-500/20 border-b border-gray-300">
+    <div className="bg-slate-900 backdrop-blur-sm rounded-xl border border-white/20 overflow-hidden">
+      <div className="px-6 py-4 bg-gradient-to-r from-purple-500/20 to-blue-500/20 border-b border-white/20">
         <div className="flex items-center gap-3">
           <TrendingUp className="w-6 h-6 text-purple-400" />
           <h3 className="text-lg font-semibold text-white">🏆 Sales Performance Leaderboard</h3>
@@ -133,7 +133,7 @@ const SalesLeaderboard = () => {
         )}
 
         {leaderboard.length > 0 && (
-          <div className="mt-6 pt-4 border-t border-gray-300">
+          <div className="mt-6 pt-4 border-t border-white/20">
             <p className="text-xs text-center text-gray-500">
               Rankings based on total leads created and conversion rate
             </p>

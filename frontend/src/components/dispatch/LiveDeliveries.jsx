@@ -45,7 +45,7 @@ const LiveDeliveries = () => {
       case 'PICKUP_READY': return 'bg-amber-500/20 text-amber-400 border-amber-400/50';
       case 'FAILED': return 'bg-red-500/20 text-red-400 border-red-400/50';
       case 'RETURNED': return 'bg-orange-500/20 text-orange-400 border-orange-400/50';
-      default: return 'bg-gray-500/20 text-gray-400 border-gray-400/50';
+      default: return 'bg-slate-8000/20 text-gray-400 border-gray-400/50';
     }
   };
 
@@ -55,7 +55,7 @@ const LiveDeliveries = () => {
 
   if (loading) {
     return (
-      <Card className="bg-white border-gray-200">
+      <Card className="bg-slate-900 border-white/10">
         <CardContent className="p-6">
           <p className="text-gray-400 text-center">Loading live deliveries...</p>
         </CardContent>
@@ -64,17 +64,17 @@ const LiveDeliveries = () => {
   }
 
   return (
-    <Card className="bg-white border-gray-200">
+    <Card className="bg-slate-900 border-white/10">
       <CardHeader className="flex flex-row items-center justify-between">
         <div>
           <CardTitle className="text-white text-xl">Live Deliveries</CardTitle>
           <p className="text-sm text-gray-400 mt-1">Track ongoing and pending deliveries</p>
         </div>
         <Select value={filterStatus} onValueChange={setFilterStatus}>
-          <SelectTrigger className="bg-white border-gray-300 text-white w-48">
+          <SelectTrigger className="bg-slate-900 border-white/20 text-white w-48">
             <SelectValue />
           </SelectTrigger>
-          <SelectContent className="bg-[#1a2f4d] border-gray-300">
+          <SelectContent className="bg-[#1a2f4d] border-white/20">
             <SelectItem value="all" className="text-white hover:bg-white">All Status</SelectItem>
             <SelectItem value="OUT_FOR_DELIVERY" className="text-white hover:bg-white">Out for Delivery</SelectItem>
             <SelectItem value="PICKUP_READY" className="text-white hover:bg-white">Pickup Ready</SelectItem>
@@ -92,7 +92,7 @@ const LiveDeliveries = () => {
         ) : (
           <div className="space-y-3">
             {filteredTasks.map((task) => (
-              <Card key={task.id} className="bg-white border-gray-200 hover:bg-white transition-all">
+              <Card key={task.id} className="bg-slate-900 border-white/10 hover:bg-white transition-all">
                 <CardContent className="p-4">
                   <div className="flex items-start justify-between mb-3">
                     <div className="flex-1">
@@ -114,7 +114,7 @@ const LiveDeliveries = () => {
                     </div>
                   </div>
                   {task.remarks && (
-                    <div className="mt-3 p-2 bg-white rounded text-sm text-gray-300">
+                    <div className="mt-3 p-2 bg-slate-900 rounded text-sm text-gray-300">
                       <p className="text-xs text-gray-400">Remarks:</p>
                       <p>{task.remarks}</p>
                     </div>

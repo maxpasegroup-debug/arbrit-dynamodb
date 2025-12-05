@@ -77,7 +77,7 @@ const TrainingRequestForm = ({ open, onOpenChange, onSuccess }) => {
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-3xl bg-white border-gray-200 max-h-[90vh] overflow-y-auto">
+      <DialogContent className="max-w-3xl bg-slate-900 border-white/10 max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="text-white text-2xl flex items-center gap-3">
             <div className="p-2 bg-purple-500/20 rounded-lg">
@@ -101,7 +101,7 @@ const TrainingRequestForm = ({ open, onOpenChange, onSuccess }) => {
                 <Input
                   value={formData.client_name}
                   onChange={(e) => setFormData({...formData, client_name: e.target.value})}
-                  className="bg-gray-50 border-gray-200 text-white"
+                  className="bg-slate-800 border-white/10 text-white"
                   placeholder="ABC Construction"
                   required
                 />
@@ -111,7 +111,7 @@ const TrainingRequestForm = ({ open, onOpenChange, onSuccess }) => {
                 <Input
                   value={formData.contact_person}
                   onChange={(e) => setFormData({...formData, contact_person: e.target.value})}
-                  className="bg-gray-50 border-gray-200 text-white"
+                  className="bg-slate-800 border-white/10 text-white"
                   placeholder="Ahmed Ali"
                   required
                 />
@@ -121,7 +121,7 @@ const TrainingRequestForm = ({ open, onOpenChange, onSuccess }) => {
                 <Input
                   value={formData.contact_mobile}
                   onChange={(e) => setFormData({...formData, contact_mobile: e.target.value})}
-                  className="bg-gray-50 border-gray-200 text-white"
+                  className="bg-slate-800 border-white/10 text-white"
                   placeholder="971501234567"
                   required
                 />
@@ -132,7 +132,7 @@ const TrainingRequestForm = ({ open, onOpenChange, onSuccess }) => {
                   type="email"
                   value={formData.contact_email}
                   onChange={(e) => setFormData({...formData, contact_email: e.target.value})}
-                  className="bg-gray-50 border-gray-200 text-white"
+                  className="bg-slate-800 border-white/10 text-white"
                   placeholder="contact@company.com"
                 />
               </div>
@@ -152,7 +152,7 @@ const TrainingRequestForm = ({ open, onOpenChange, onSuccess }) => {
                 <Input
                   value={formData.course_name}
                   onChange={(e) => setFormData({...formData, course_name: e.target.value})}
-                  className="bg-gray-50 border-gray-200 text-white"
+                  className="bg-slate-800 border-white/10 text-white"
                   placeholder="Scaffolding Safety"
                   required
                 />
@@ -163,7 +163,7 @@ const TrainingRequestForm = ({ open, onOpenChange, onSuccess }) => {
                   type="number"
                   value={formData.number_of_participants}
                   onChange={(e) => setFormData({...formData, number_of_participants: e.target.value})}
-                  className="bg-gray-50 border-gray-200 text-white"
+                  className="bg-slate-800 border-white/10 text-white"
                   placeholder="25"
                   min="1"
                   required
@@ -174,7 +174,7 @@ const TrainingRequestForm = ({ open, onOpenChange, onSuccess }) => {
                 <select
                   value={formData.location}
                   onChange={(e) => setFormData({...formData, location: e.target.value})}
-                  className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-md text-white"
+                  className="w-full px-3 py-2 bg-slate-800 border border-white/10 rounded-md text-white"
                   required
                 >
                   <option value="Dubai">Dubai</option>
@@ -188,7 +188,7 @@ const TrainingRequestForm = ({ open, onOpenChange, onSuccess }) => {
                 <select
                   value={formData.urgency}
                   onChange={(e) => setFormData({...formData, urgency: e.target.value})}
-                  className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-md text-white"
+                  className="w-full px-3 py-2 bg-slate-800 border border-white/10 rounded-md text-white"
                   required
                 >
                   <option value="High">🔴 High</option>
@@ -217,7 +217,7 @@ const TrainingRequestForm = ({ open, onOpenChange, onSuccess }) => {
                     newDates[0] = e.target.value;
                     setFormData({...formData, preferred_dates: newDates});
                   }}
-                  className="bg-gray-50 border-gray-200 text-white"
+                  className="bg-slate-800 border-white/10 text-white"
                 />
               </div>
               <div>
@@ -230,7 +230,7 @@ const TrainingRequestForm = ({ open, onOpenChange, onSuccess }) => {
                     newDates[1] = e.target.value;
                     setFormData({...formData, preferred_dates: newDates});
                   }}
-                  className="bg-gray-50 border-gray-200 text-white"
+                  className="bg-slate-800 border-white/10 text-white"
                 />
               </div>
             </div>
@@ -242,18 +242,18 @@ const TrainingRequestForm = ({ open, onOpenChange, onSuccess }) => {
             <textarea
               value={formData.requirement}
               onChange={(e) => setFormData({...formData, requirement: e.target.value})}
-              className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-md text-white min-h-[80px]"
+              className="w-full px-3 py-2 bg-slate-800 border border-white/10 rounded-md text-white min-h-[80px]"
               placeholder="Any special requirements or notes..."
             />
           </div>
 
           {/* Action Buttons */}
-          <div className="flex gap-3 justify-end pt-4 border-t border-gray-200">
+          <div className="flex gap-3 justify-end pt-4 border-t border-white/10">
             <Button
               type="button"
               variant="outline"
               onClick={() => onOpenChange(false)}
-              className="border-gray-300 text-white hover:bg-white"
+              className="border-white/20 text-white hover:bg-white"
               disabled={loading}
             >
               Cancel

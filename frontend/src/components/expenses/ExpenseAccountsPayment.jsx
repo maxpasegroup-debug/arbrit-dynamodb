@@ -87,8 +87,8 @@ const ExpenseAccountsPayment = () => {
       </div>
 
       {/* Pending Payments */}
-      <div className="bg-white backdrop-blur-sm rounded-xl border border-gray-200 overflow-hidden">
-        <div className="px-6 py-4 bg-white border-b border-gray-200">
+      <div className="bg-slate-900 backdrop-blur-sm rounded-xl border border-white/10 overflow-hidden">
+        <div className="px-6 py-4 bg-slate-900 border-b border-white/10">
           <h3 className="text-lg font-semibold text-white">Pending Payments</h3>
         </div>
         <div className="p-6">
@@ -98,12 +98,12 @@ const ExpenseAccountsPayment = () => {
             <div className="text-center py-12">
               <CheckCircle className="w-16 h-16 mx-auto mb-4 text-green-400 opacity-50" />
               <p className="text-gray-400 text-lg">No pending payments</p>
-              <p className="text-gray-500 text-sm mt-2">All expense claims have been processed</p>
+              <p className="text-slate-400 text-sm mt-2">All expense claims have been processed</p>
             </div>
           ) : (
             <div className="space-y-4">
               {pendingClaims.map((claim) => (
-                <div key={claim.id} className="bg-white border border-gray-200 rounded-lg p-5 hover:bg-white transition-all">
+                <div key={claim.id} className="bg-slate-900 border border-white/10 rounded-lg p-5 hover:bg-white transition-all">
                   <div className="flex justify-between items-start">
                     <div className="flex-1">
                       <div className="flex items-center gap-3 mb-3">
@@ -132,7 +132,7 @@ const ExpenseAccountsPayment = () => {
                         </div>
                       </div>
                       
-                      <div className="mt-3 p-3 bg-white rounded border border-gray-200">
+                      <div className="mt-3 p-3 bg-slate-900 rounded border border-white/10">
                         <p className="text-sm text-gray-400">Description:</p>
                         <p className="text-white mt-1">{claim.description}</p>
                       </div>
@@ -157,8 +157,8 @@ const ExpenseAccountsPayment = () => {
 
       {/* Recently Paid Claims */}
       {paidClaims.length > 0 && (
-        <div className="bg-white backdrop-blur-sm rounded-xl border border-gray-200 overflow-hidden">
-          <div className="px-6 py-4 bg-white border-b border-gray-200">
+        <div className="bg-slate-900 backdrop-blur-sm rounded-xl border border-white/10 overflow-hidden">
+          <div className="px-6 py-4 bg-slate-900 border-b border-white/10">
             <h3 className="text-lg font-semibold text-white">Recently Paid</h3>
           </div>
           <div className="p-6">
@@ -198,12 +198,12 @@ const ExpenseAccountsPayment = () => {
 
       {/* Payment Dialog */}
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-        <DialogContent className="bg-white border-slate-700 text-white">
+        <DialogContent className="bg-slate-900 border-slate-700 text-white">
           <DialogHeader>
             <DialogTitle className="text-xl">Mark Expense as Paid</DialogTitle>
             <DialogDescription className="text-gray-400">
               {selectedClaim && (
-                <div className="mt-3 p-4 bg-white rounded-lg border border-gray-200">
+                <div className="mt-3 p-4 bg-slate-900 rounded-lg border border-white/10">
                   <p className="font-semibold text-white text-lg">
                     {selectedClaim.employee_name}
                   </p>
@@ -234,7 +234,7 @@ const ExpenseAccountsPayment = () => {
                 value={paymentReference}
                 onChange={(e) => setPaymentReference(e.target.value)}
                 placeholder="Transaction ID, Cheque number, etc."
-                className="bg-gray-50 border-slate-600 text-white"
+                className="bg-slate-800 border-slate-600 text-white"
               />
             </div>
           </div>
@@ -243,7 +243,7 @@ const ExpenseAccountsPayment = () => {
             <Button
               variant="outline"
               onClick={() => setDialogOpen(false)}
-              className="border-slate-600 text-white hover:bg-gray-50"
+              className="border-slate-600 text-white hover:bg-slate-800"
             >
               Cancel
             </Button>

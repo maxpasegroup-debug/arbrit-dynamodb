@@ -88,7 +88,7 @@ const LeadSubmissionModal = ({ open, onOpenChange }) => {
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="bg-white border-slate-700 text-white max-w-2xl max-h-[90vh] overflow-y-auto">
+      <DialogContent className="bg-slate-900 border-slate-700 text-white max-w-2xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="text-2xl font-bold text-white">Submit New Lead</DialogTitle>
         </DialogHeader>
@@ -100,7 +100,7 @@ const LeadSubmissionModal = ({ open, onOpenChange }) => {
               id="client_name"
               value={formData.client_name}
               onChange={(e) => handleChange('client_name', e.target.value)}
-              className="bg-gray-50 border-slate-600 text-white"
+              className="bg-slate-800 border-slate-600 text-white"
               required
               placeholder="Enter client name"
             />
@@ -112,7 +112,7 @@ const LeadSubmissionModal = ({ open, onOpenChange }) => {
               id="requirement"
               value={formData.requirement}
               onChange={(e) => handleChange('requirement', e.target.value)}
-              className="bg-gray-50 border-slate-600 text-white min-h-[80px]"
+              className="bg-slate-800 border-slate-600 text-white min-h-[80px]"
               required
               placeholder="Describe the client's requirements..."
             />
@@ -124,7 +124,7 @@ const LeadSubmissionModal = ({ open, onOpenChange }) => {
               id="industry"
               value={formData.industry}
               onChange={(e) => handleChange('industry', e.target.value)}
-              className="bg-gray-50 border-slate-600 text-white"
+              className="bg-slate-800 border-slate-600 text-white"
               placeholder="e.g., Construction, Oil & Gas, Manufacturing"
             />
           </div>
@@ -133,10 +133,10 @@ const LeadSubmissionModal = ({ open, onOpenChange }) => {
             <div className="space-y-2">
               <Label htmlFor="source">Source *</Label>
               <Select value={formData.source} onValueChange={(value) => handleChange('source', value)}>
-                <SelectTrigger className="bg-gray-50 border-slate-600 text-white">
+                <SelectTrigger className="bg-slate-800 border-slate-600 text-white">
                   <SelectValue />
                 </SelectTrigger>
-                <SelectContent className="bg-gray-50 border-slate-600 text-white">
+                <SelectContent className="bg-slate-800 border-slate-600 text-white">
                   <SelectItem value="Online">Online</SelectItem>
                   <SelectItem value="Offline">Offline</SelectItem>
                   <SelectItem value="Referral">Referral</SelectItem>
@@ -148,10 +148,10 @@ const LeadSubmissionModal = ({ open, onOpenChange }) => {
             <div className="space-y-2">
               <Label htmlFor="status">Status</Label>
               <Select value={formData.status} onValueChange={(value) => handleChange('status', value)}>
-                <SelectTrigger className="bg-gray-50 border-slate-600 text-white">
+                <SelectTrigger className="bg-slate-800 border-slate-600 text-white">
                   <SelectValue />
                 </SelectTrigger>
-                <SelectContent className="bg-gray-50 border-slate-600 text-white">
+                <SelectContent className="bg-slate-800 border-slate-600 text-white">
                   <SelectItem value="New">New</SelectItem>
                   <SelectItem value="Contacted">Contacted</SelectItem>
                   <SelectItem value="Qualified">Qualified</SelectItem>
@@ -165,10 +165,10 @@ const LeadSubmissionModal = ({ open, onOpenChange }) => {
           <div className="space-y-2">
             <Label htmlFor="assigned_to">Assign To</Label>
             <Select value={formData.assigned_to} onValueChange={(value) => handleChange('assigned_to', value)}>
-              <SelectTrigger className="bg-gray-50 border-slate-600 text-white">
+              <SelectTrigger className="bg-slate-800 border-slate-600 text-white">
                 <SelectValue placeholder="Select employee (optional)" />
               </SelectTrigger>
-              <SelectContent className="bg-gray-50 border-slate-600 text-white">
+              <SelectContent className="bg-slate-800 border-slate-600 text-white">
                 {employees.map((emp) => (
                   <SelectItem key={emp.id} value={emp.id}>
                     {emp.name} ({emp.role})
@@ -185,7 +185,7 @@ const LeadSubmissionModal = ({ open, onOpenChange }) => {
               type="date"
               value={formData.next_followup_date}
               onChange={(e) => handleChange('next_followup_date', e.target.value)}
-              className="bg-gray-50 border-slate-600 text-white"
+              className="bg-slate-800 border-slate-600 text-white"
             />
           </div>
 
@@ -195,7 +195,7 @@ const LeadSubmissionModal = ({ open, onOpenChange }) => {
               id="remarks"
               value={formData.remarks}
               onChange={(e) => handleChange('remarks', e.target.value)}
-              className="bg-gray-50 border-slate-600 text-white min-h-[80px]"
+              className="bg-slate-800 border-slate-600 text-white min-h-[80px]"
               placeholder="Add any additional remarks..."
             />
           </div>
@@ -205,7 +205,7 @@ const LeadSubmissionModal = ({ open, onOpenChange }) => {
               type="button"
               variant="outline"
               onClick={() => onOpenChange(false)}
-              className="border-slate-600 text-white hover:bg-gray-50"
+              className="border-slate-600 text-white hover:bg-slate-800"
             >
               Cancel
             </Button>

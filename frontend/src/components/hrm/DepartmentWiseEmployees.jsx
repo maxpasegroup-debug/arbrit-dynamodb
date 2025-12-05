@@ -342,7 +342,7 @@ const DepartmentWiseEmployees = () => {
   if (loading && employees.length === 0) {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
-        <p className="text-gray-500">Loading employees...</p>
+        <p className="text-slate-400">Loading employees...</p>
       </div>
     );
   }
@@ -354,14 +354,14 @@ const DepartmentWiseEmployees = () => {
   return (
     <div className="space-y-6">
       {/* Header with Search and Filters */}
-      <div className="bg-gradient-to-r from-slate-800/50 to-slate-900/50 rounded-xl border border-gray-200 p-6">
+      <div className="bg-gradient-to-r from-slate-800/50 to-slate-900/50 rounded-xl border border-white/10 p-6">
         <div className="flex flex-col md:flex-row gap-4 items-start md:items-center justify-between">
           <div>
             <h2 className="text-2xl font-bold text-white flex items-center gap-3">
               <Building2 className="w-8 h-8 text-cyan-400" />
               Organization Structure
             </h2>
-            <p className="text-gray-500 mt-1">
+            <p className="text-slate-400 mt-1">
               {totalEmployees} employees across {Object.keys(grouped).length} departments
             </p>
           </div>
@@ -384,7 +384,7 @@ const DepartmentWiseEmployees = () => {
                 placeholder="Search employees..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-10 bg-gray-50 border-gray-200 text-white"
+                className="pl-10 bg-slate-800 border-white/10 text-white"
               />
             </div>
 
@@ -392,7 +392,7 @@ const DepartmentWiseEmployees = () => {
             <select
               value={selectedBranch}
               onChange={(e) => setSelectedBranch(e.target.value)}
-              className="px-4 py-2 bg-gray-50 border border-gray-200 rounded-md text-white text-sm"
+              className="px-4 py-2 bg-slate-800 border border-white/10 rounded-md text-white text-sm"
             >
               <option value="all">All Branches</option>
               {branches.map(branch => (
@@ -429,11 +429,11 @@ const DepartmentWiseEmployees = () => {
                       <div>
                         <h3 className="text-2xl font-bold text-white flex items-center gap-2">
                           {deptName}
-                          <Badge className="bg-white/20 text-white border-white/30">
+                          <Badge className="bg-slate-900/20 text-white border-white/30">
                             {deptEmployees.length}
                           </Badge>
                         </h3>
-                        <p className="text-gray-500 text-sm">{config.description}</p>
+                        <p className="text-slate-400 text-sm">{config.description}</p>
                       </div>
                     </div>
                     <Button
@@ -462,7 +462,7 @@ const DepartmentWiseEmployees = () => {
                         return (
                           <Card
                             key={employee.id || idx}
-                            className={`bg-white border-gray-200 hover:bg-white transition-all ${
+                            className={`bg-white border-white/10 hover:bg-white transition-all ${
                               isManagement ? 'ring-2 ring-amber-500/30' : ''
                             }`}
                           >
@@ -533,7 +533,7 @@ const DepartmentWiseEmployees = () => {
                                   {/* Additional Info */}
                                   {employee.badge_title && (
                                     <div className="mt-2">
-                                      <Badge className="bg-gray-100/50 text-slate-300 border-slate-600">
+                                      <Badge className="bg-slate-700/50 text-slate-300 border-slate-600">
                                         {employee.badge_title}
                                       </Badge>
                                     </div>
@@ -555,10 +555,10 @@ const DepartmentWiseEmployees = () => {
 
       {/* No Results */}
       {Object.keys(grouped).length === 0 && (
-        <Card className="bg-white border-gray-200">
+        <Card className="bg-slate-900 border-white/10">
           <CardContent className="py-12 text-center">
             <Users className="w-16 h-16 text-slate-600 mx-auto mb-4" />
-            <p className="text-gray-500 text-lg">No employees found</p>
+            <p className="text-slate-400 text-lg">No employees found</p>
             {(searchTerm || selectedBranch !== 'all') && (
               <Button
                 onClick={() => {
@@ -566,7 +566,7 @@ const DepartmentWiseEmployees = () => {
                   setSelectedBranch('all');
                 }}
                 variant="outline"
-                className="mt-4 border-gray-300 text-white hover:bg-white"
+                className="mt-4 border-white/20 text-white hover:bg-white"
               >
                 Clear Filters
               </Button>
@@ -577,7 +577,7 @@ const DepartmentWiseEmployees = () => {
 
       {/* Add/Edit Employee Dialog */}
       <Dialog open={showAddDialog} onOpenChange={setShowAddDialog}>
-        <DialogContent className="max-w-2xl bg-white border-gray-200">
+        <DialogContent className="max-w-2xl bg-slate-900 border-white/10">
           <DialogHeader>
             <DialogTitle className="text-white text-2xl">
               {editingEmployee ? 'Edit Employee' : 'Add New Employee'}
@@ -591,7 +591,7 @@ const DepartmentWiseEmployees = () => {
                 <Input
                   value={formData.name}
                   onChange={(e) => setFormData({...formData, name: e.target.value})}
-                  className="bg-gray-50 border-gray-200 text-white"
+                  className="bg-slate-800 border-white/10 text-white"
                   required
                 />
               </div>
@@ -600,7 +600,7 @@ const DepartmentWiseEmployees = () => {
                 <Input
                   value={formData.mobile}
                   onChange={(e) => setFormData({...formData, mobile: e.target.value})}
-                  className="bg-gray-50 border-gray-200 text-white"
+                  className="bg-slate-800 border-white/10 text-white"
                   required
                 />
               </div>
@@ -609,7 +609,7 @@ const DepartmentWiseEmployees = () => {
                 <select
                   value={formData.branch}
                   onChange={(e) => setFormData({...formData, branch: e.target.value})}
-                  className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-md text-white"
+                  className="w-full px-3 py-2 bg-slate-800 border border-white/10 rounded-md text-white"
                   required
                 >
                   <option value="">Select Branch</option>
@@ -625,7 +625,7 @@ const DepartmentWiseEmployees = () => {
                   type="email"
                   value={formData.email}
                   onChange={(e) => setFormData({...formData, email: e.target.value})}
-                  className="bg-gray-50 border-gray-200 text-white"
+                  className="bg-slate-800 border-white/10 text-white"
                 />
               </div>
               <div>
@@ -633,7 +633,7 @@ const DepartmentWiseEmployees = () => {
                 <select
                   value={formData.department}
                   onChange={(e) => setFormData({...formData, department: e.target.value})}
-                  className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-md text-white"
+                  className="w-full px-3 py-2 bg-slate-800 border border-white/10 rounded-md text-white"
                 >
                   <option value="">Select Department</option>
                   <option value="Management">Management</option>
@@ -650,7 +650,7 @@ const DepartmentWiseEmployees = () => {
                 <Input
                   value={formData.designation}
                   onChange={(e) => setFormData({...formData, designation: e.target.value})}
-                  className="bg-gray-50 border-gray-200 text-white"
+                  className="bg-slate-800 border-white/10 text-white"
                 />
               </div>
               <div className="col-span-2">
@@ -658,7 +658,7 @@ const DepartmentWiseEmployees = () => {
                 <Input
                   value={formData.badge_title}
                   onChange={(e) => setFormData({...formData, badge_title: e.target.value})}
-                  className="bg-gray-50 border-gray-200 text-white"
+                  className="bg-slate-800 border-white/10 text-white"
                 />
               </div>
             </div>
@@ -668,7 +668,7 @@ const DepartmentWiseEmployees = () => {
                 type="button"
                 variant="outline"
                 onClick={() => setShowAddDialog(false)}
-                className="border-gray-300 text-white hover:bg-white"
+                className="border-white/20 text-white hover:bg-white"
               >
                 Cancel
               </Button>

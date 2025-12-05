@@ -93,7 +93,7 @@ const FileUpload = ({ onFileSelect, onFileRemove, accept = "*", maxSize = 50 }) 
               ? 'border-yellow-400 bg-yellow-500/10'
               : error
               ? 'border-red-400 bg-red-500/10'
-              : 'border-gray-300 bg-white hover:border-white/40 hover:bg-white'
+              : 'border-white/20 bg-slate-900 hover:border-white/40 hover:bg-white'
           }`}
           onDragEnter={handleDrag}
           onDragLeave={handleDrag}
@@ -142,7 +142,7 @@ const FileUpload = ({ onFileSelect, onFileRemove, accept = "*", maxSize = 50 }) 
           )}
         </div>
       ) : (
-        <div className="bg-white border border-gray-200 rounded-lg p-4">
+        <div className="bg-slate-900 border border-white/10 rounded-lg p-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3 flex-1">
               <div className="text-3xl">{getFileIcon(selectedFile.name)}</div>

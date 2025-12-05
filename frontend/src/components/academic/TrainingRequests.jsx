@@ -116,10 +116,10 @@ const TrainingRequests = () => {
       {/* Pending Requests */}
       <div>
         <h4 className="text-lg font-semibold text-white mb-3">Pending Requests ({pendingRequests.length})</h4>
-        <div className="bg-white backdrop-blur-sm rounded-xl border border-gray-200 overflow-hidden">
+        <div className="bg-slate-900 backdrop-blur-sm rounded-xl border border-white/10 overflow-hidden">
           <Table>
             <TableHeader>
-              <TableRow className="border-gray-200">
+              <TableRow className="border-white/10">
                 <TableHead className="text-gray-300">Client</TableHead>
                 <TableHead className="text-gray-300">Course</TableHead>
                 <TableHead className="text-gray-300">Preferred Dates</TableHead>
@@ -135,7 +135,7 @@ const TrainingRequests = () => {
                 </TableRow>
               ) : (
                 pendingRequests.map((req) => (
-                  <TableRow key={req.id} className="border-gray-200">
+                  <TableRow key={req.id} className="border-white/10">
                     <TableCell className="text-white font-medium">{req.client_name}</TableCell>
                     <TableCell className="text-gray-300">{req.course_type || req.course}</TableCell>
                     <TableCell className="text-gray-300 text-sm">{req.preferred_date || req.preferred_dates}</TableCell>
@@ -168,10 +168,10 @@ const TrainingRequests = () => {
       {/* Processed Requests */}
       <div>
         <h4 className="text-lg font-semibold text-white mb-3">Processed Requests ({processedRequests.length})</h4>
-        <div className="bg-white backdrop-blur-sm rounded-xl border border-gray-200 overflow-hidden">
+        <div className="bg-slate-900 backdrop-blur-sm rounded-xl border border-white/10 overflow-hidden">
           <Table>
             <TableHeader>
-              <TableRow className="border-gray-200">
+              <TableRow className="border-white/10">
                 <TableHead className="text-gray-300">Client</TableHead>
                 <TableHead className="text-gray-300">Course</TableHead>
                 <TableHead className="text-gray-300">Status</TableHead>
@@ -186,7 +186,7 @@ const TrainingRequests = () => {
                 </TableRow>
               ) : (
                 processedRequests.map((req) => (
-                  <TableRow key={req.id} className="border-gray-200">
+                  <TableRow key={req.id} className="border-white/10">
                     <TableCell className="text-white font-medium">{req.client_name}</TableCell>
                     <TableCell className="text-gray-300">{req.course_type || req.course}</TableCell>
                     <TableCell><Badge className={getStatusColor(req.status)}>{req.status}</Badge></TableCell>
@@ -202,7 +202,7 @@ const TrainingRequests = () => {
 
       {/* Action Dialog */}
       <Dialog open={showDialog} onOpenChange={setShowDialog}>
-        <DialogContent className="bg-[#1a2f4d] border-gray-300 text-white max-w-2xl">
+        <DialogContent className="bg-[#1a2f4d] border-white/20 text-white max-w-2xl">
           <DialogHeader>
             <DialogTitle>
               {actionType === 'approve' && 'Approve Training Request'}
@@ -213,7 +213,7 @@ const TrainingRequests = () => {
           </DialogHeader>
           {selectedRequest && (
             <div className="space-y-4">
-              <div className="bg-white rounded-lg p-4">
+              <div className="bg-slate-900 rounded-lg p-4">
                 <p><span className="text-gray-400">Client:</span> <span className="font-semibold">{selectedRequest.client_name}</span></p>
                 <p><span className="text-gray-400">Course:</span> {selectedRequest.course_type || selectedRequest.course}</p>
                 <p><span className="text-gray-400">Preferred:</span> {selectedRequest.preferred_date || selectedRequest.preferred_dates}</p>
@@ -223,7 +223,7 @@ const TrainingRequests = () => {
                 <div>
                   <Label className="text-gray-300">Select Trainer</Label>
                   <select 
-                    className="w-full mt-1 bg-white border border-gray-300 rounded-md p-2 text-white"
+                    className="w-full mt-1 bg-slate-900 border border-white/20 rounded-md p-2 text-white"
                     value={formData.trainer_id}
                     onChange={(e) => {
                       const trainer = trainers.find(t => t.id === e.target.value);
@@ -241,25 +241,25 @@ const TrainingRequests = () => {
               {(actionType === 'approve' || actionType === 'assign') && (
                 <div>
                   <Label className="text-gray-300">Confirmed Slots</Label>
-                  <Input value={formData.confirmed_slots} onChange={(e) => setFormData({...formData, confirmed_slots: e.target.value})} className="bg-white border-gray-300 text-white mt-1" />
+                  <Input value={formData.confirmed_slots} onChange={(e) => setFormData({...formData, confirmed_slots: e.target.value})} className="bg-slate-900 border-white/20 text-white mt-1" />
                 </div>
               )}
 
               {actionType === 'alternative' && (
                 <div>
                   <Label className="text-gray-300">Alternative Dates</Label>
-                  <Input value={formData.alternative_dates} onChange={(e) => setFormData({...formData, alternative_dates: e.target.value})} className="bg-white border-gray-300 text-white mt-1" />
+                  <Input value={formData.alternative_dates} onChange={(e) => setFormData({...formData, alternative_dates: e.target.value})} className="bg-slate-900 border-white/20 text-white mt-1" />
                 </div>
               )}
 
               <div>
                 <Label className="text-gray-300">Remarks</Label>
-                <Textarea value={formData.remarks} onChange={(e) => setFormData({...formData, remarks: e.target.value})} rows={3} className="bg-white border-gray-300 text-white mt-1" />
+                <Textarea value={formData.remarks} onChange={(e) => setFormData({...formData, remarks: e.target.value})} rows={3} className="bg-slate-900 border-white/20 text-white mt-1" />
               </div>
             </div>
           )}
           <DialogFooter>
-            <Button variant="outline" onClick={() => setShowDialog(false)} className="border-gray-300 text-white">Cancel</Button>
+            <Button variant="outline" onClick={() => setShowDialog(false)} className="border-white/20 text-white">Cancel</Button>
             <Button onClick={submitAction} style={{ background: 'linear-gradient(135deg, #d4af37 0%, #c9a02c 100%)' }} className="text-[#0a1e3d]">Submit</Button>
           </DialogFooter>
         </DialogContent>

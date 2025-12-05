@@ -201,7 +201,7 @@ const CertificationsReports = () => {
             <AgingAlertsButton />
             <Button
               onClick={exportCertificateReport}
-              className="bg-white text-green-600 hover:bg-green-50"
+              className="bg-slate-900 text-green-600 hover:bg-green-50"
             >
               <Download className="w-4 h-4 mr-2" />
               Export Report
@@ -211,7 +211,7 @@ const CertificationsReports = () => {
 
         {/* Stats Cards */}
         <div className="grid grid-cols-4 gap-4 mt-6">
-          <div className="bg-white backdrop-blur-sm rounded-lg p-4">
+          <div className="bg-slate-900 backdrop-blur-sm rounded-lg p-4">
             <div className="flex items-center gap-2 mb-2">
               <Award className="w-5 h-5" />
               <p className="text-sm text-green-100">Total Certificates</p>
@@ -243,7 +243,7 @@ const CertificationsReports = () => {
       </div>
 
       {/* Certificate List */}
-      <div className="bg-white0 backdrop-blur-sm rounded-xl border border-gray-200 p-6">
+      <div className="bg-slate-9000 backdrop-blur-sm rounded-xl border border-white/10 p-6">
         <h3 className="text-xl font-semibold text-white mb-4 flex items-center gap-2">
           <FileText className="w-5 h-5 text-blue-400" />
           Certificate Registry
@@ -254,7 +254,7 @@ const CertificationsReports = () => {
         ) : records.length === 0 ? (
           <div className="text-center py-12">
             <Award className="w-16 h-16 text-slate-600 mx-auto mb-4" />
-            <p className="text-gray-500 text-lg">No certificates issued yet</p>
+            <p className="text-slate-400 text-lg">No certificates issued yet</p>
           </div>
         ) : (
           <div className="space-y-4">
@@ -269,7 +269,7 @@ const CertificationsReports = () => {
               return (
                 <div
                   key={record.id}
-                  className="bg-white border border-gray-200 rounded-xl overflow-hidden hover:border-gray-300 transition-all"
+                  className="bg-slate-900 border border-white/10 rounded-xl overflow-hidden hover:border-white/20 transition-all"
                 >
                   {/* Main Card Content */}
                   <div className="p-5">
@@ -302,19 +302,19 @@ const CertificationsReports = () => {
 
                     {/* Course and Date Info Grid */}
                     <div className="grid grid-cols-4 gap-4 mb-4">
-                      <div className="bg-white rounded-lg p-3">
+                      <div className="bg-slate-900 rounded-lg p-3">
                         <p className="text-xs text-slate-400 mb-1">Course</p>
                         <p className="text-sm font-medium text-white">{record.course_name}</p>
                       </div>
-                      <div className="bg-white rounded-lg p-3">
+                      <div className="bg-slate-900 rounded-lg p-3">
                         <p className="text-xs text-slate-400 mb-1">Training Date</p>
                         <p className="text-sm font-medium text-white">{training.toLocaleDateString()}</p>
                       </div>
-                      <div className="bg-white rounded-lg p-3">
+                      <div className="bg-slate-900 rounded-lg p-3">
                         <p className="text-xs text-slate-400 mb-1">Valid Until</p>
                         <p className="text-sm font-medium text-white">{expiry.toLocaleDateString()}</p>
                       </div>
-                      <div className="bg-white rounded-lg p-3">
+                      <div className="bg-slate-900 rounded-lg p-3">
                         <p className="text-xs text-slate-400 mb-1">Participants</p>
                         <p className="text-sm font-medium text-white">{record.participants_count || certCount}</p>
                       </div>
@@ -322,7 +322,7 @@ const CertificationsReports = () => {
 
                     {/* Certificate Numbers Section */}
                     {certCount > 0 && (
-                      <div className="border-t border-gray-200 pt-4">
+                      <div className="border-t border-white/10 pt-4">
                         <button
                           onClick={() => toggleExpand(record.id)}
                           className="w-full flex items-center justify-between text-left hover:bg-white p-2 rounded-lg transition-colors"
@@ -341,12 +341,12 @@ const CertificationsReports = () => {
                         </button>
 
                         {isExpanded && (
-                          <div className="mt-3 bg-gray-50/50 rounded-lg p-4">
+                          <div className="mt-3 bg-slate-800/50 rounded-lg p-4">
                             <div className="grid grid-cols-4 gap-2">
                               {record.certificate_numbers.map((certNum, idx) => (
                                 <div
                                   key={idx}
-                                  className="bg-white border border-gray-200 rounded px-3 py-2 text-center hover:bg-white transition-colors"
+                                  className="bg-slate-900 border border-white/10 rounded px-3 py-2 text-center hover:bg-white transition-colors"
                                 >
                                   <p className="text-xs text-slate-500 mb-1">Cert #{idx + 1}</p>
                                   <p className="text-sm font-mono text-blue-300 font-semibold">{certNum}</p>
@@ -355,11 +355,11 @@ const CertificationsReports = () => {
                             </div>
                             
                             {/* Summary Info */}
-                            <div className="mt-3 pt-3 border-t border-gray-200 flex items-center justify-between text-xs">
-                              <span className="text-gray-500">
+                            <div className="mt-3 pt-3 border-t border-white/10 flex items-center justify-between text-xs">
+                              <span className="text-slate-400">
                                 Total Certificates: <span className="text-white font-semibold">{certCount}</span>
                               </span>
-                              <span className="text-gray-500">
+                              <span className="text-slate-400">
                                 Range: <span className="text-blue-300 font-mono">{record.certificate_numbers[0]}</span> to <span className="text-blue-300 font-mono">{record.certificate_numbers[certCount - 1]}</span>
                               </span>
                             </div>
@@ -371,7 +371,7 @@ const CertificationsReports = () => {
 
                   {/* Dispatch Status Footer (if available) */}
                   {record.dispatch_status && (
-                    <div className="bg-white border-t border-gray-200 px-5 py-3 flex items-center justify-between">
+                    <div className="bg-slate-900 border-t border-white/10 px-5 py-3 flex items-center justify-between">
                       <div className="flex items-center gap-2 text-xs text-slate-400">
                         <span>Dispatch Status:</span>
                         <Badge className={`text-xs ${
@@ -405,16 +405,16 @@ const CertificationsReports = () => {
             <div>
               <h3 className="text-lg font-semibold text-orange-300 mb-2">Certificate Renewal Required</h3>
               {stats.expired > 0 && (
-                <p className="text-gray-700 mb-2">
+                <p className="text-slate-300 mb-2">
                   ⚠️ <span className="font-semibold text-red-300">{stats.expired} certificate(s)</span> have expired and need immediate renewal
                 </p>
               )}
               {stats.expiring_soon > 0 && (
-                <p className="text-gray-700">
+                <p className="text-slate-300">
                   🔔 <span className="font-semibold text-orange-300">{stats.expiring_soon} certificate(s)</span> expiring within 30 days
                 </p>
               )}
-              <p className="text-gray-500 text-sm mt-3">
+              <p className="text-slate-400 text-sm mt-3">
                 Contact these companies to schedule renewal training sessions
               </p>
             </div>
@@ -424,7 +424,7 @@ const CertificationsReports = () => {
 
       {/* Quick Stats */}
       <div className="grid grid-cols-3 gap-4">
-        <Card className="bg-white border-gray-200">
+        <Card className="bg-slate-900 border-white/10">
           <CardHeader className="pb-3">
             <CardTitle className="text-sm text-slate-400 flex items-center gap-2">
               <Building2 className="w-4 h-4" />
@@ -434,22 +434,22 @@ const CertificationsReports = () => {
           <CardContent>
             <div className="space-y-2 text-sm">
               <div className="flex justify-between">
-                <span className="text-gray-500">Active Certificates:</span>
+                <span className="text-slate-400">Active Certificates:</span>
                 <span className="text-green-400 font-semibold">{stats.active}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-gray-500">Renewal Pending:</span>
+                <span className="text-slate-400">Renewal Pending:</span>
                 <span className="text-orange-400 font-semibold">{stats.expiring_soon}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-gray-500">Expired:</span>
+                <span className="text-slate-400">Expired:</span>
                 <span className="text-red-400 font-semibold">{stats.expired}</span>
               </div>
             </div>
           </CardContent>
         </Card>
 
-        <Card className="bg-white border-gray-200">
+        <Card className="bg-slate-900 border-white/10">
           <CardHeader className="pb-3">
             <CardTitle className="text-sm text-slate-400 flex items-center gap-2">
               <TrendingUp className="w-4 h-4" />
@@ -468,7 +468,7 @@ const CertificationsReports = () => {
           </CardContent>
         </Card>
 
-        <Card className="bg-white border-gray-200">
+        <Card className="bg-slate-900 border-white/10">
           <CardHeader className="pb-3">
             <CardTitle className="text-sm text-slate-400 flex items-center gap-2">
               <Calendar className="w-4 h-4" />

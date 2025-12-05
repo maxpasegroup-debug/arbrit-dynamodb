@@ -102,16 +102,16 @@ const BookingApprovals = () => {
       <div className="flex justify-between items-center">
         <div>
           <h2 className="text-2xl font-bold text-slate-100">Training Booking Approvals</h2>
-          <p className="text-gray-500 text-sm mt-1">Review and approve training bookings from sales team</p>
+          <p className="text-slate-400 text-sm mt-1">Review and approve training bookings from sales team</p>
         </div>
-        <Badge variant="outline" className="text-base border-gray-300">
+        <Badge variant="outline" className="text-base border-white/20">
           {pendingRequests.length} pending
         </Badge>
       </div>
 
       {/* Pending Requests */}
       {pendingRequests.length > 0 && (
-        <div className="bg-white0 backdrop-blur-sm rounded-xl border border-gray-200 p-6">
+        <div className="bg-slate-9000 backdrop-blur-sm rounded-xl border border-white/10 p-6">
           <h3 className="text-lg font-semibold text-slate-100 mb-4">Pending Approval</h3>
           <div className="space-y-3">
             {pendingRequests.map((request) => (
@@ -196,11 +196,11 @@ const BookingApprovals = () => {
 
       {/* Processed Requests */}
       {processedRequests.length > 0 && (
-        <div className="bg-white0 backdrop-blur-sm rounded-xl border border-gray-200 p-6">
+        <div className="bg-slate-9000 backdrop-blur-sm rounded-xl border border-white/10 p-6">
           <h3 className="text-lg font-semibold text-slate-100 mb-4">Recent Decisions</h3>
           <div className="space-y-3">
             {processedRequests.slice(0, 10).map((request) => (
-              <div key={request.id} className="bg-white border border-gray-200 rounded-lg p-4">
+              <div key={request.id} className="bg-slate-900 border border-white/10 rounded-lg p-4">
                 <div className="flex justify-between items-start">
                   <div className="flex-1">
                     <div className="flex items-center gap-2 mb-2">
@@ -245,17 +245,17 @@ const BookingApprovals = () => {
       )}
 
       {!loading && requests.length === 0 && (
-        <div className="bg-white0 backdrop-blur-sm rounded-xl border border-gray-200 p-12 text-center">
+        <div className="bg-slate-9000 backdrop-blur-sm rounded-xl border border-white/10 p-12 text-center">
           <Calendar className="w-16 h-16 text-slate-600 mx-auto mb-4" />
-          <p className="text-gray-500">No booking requests yet</p>
+          <p className="text-slate-400">No booking requests yet</p>
         </div>
       )}
 
       {/* Approval/Rejection Dialog */}
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-        <DialogContent className="max-w-md bg-white border-gray-200">
+        <DialogContent className="max-w-md bg-slate-900 border-white/10">
           <DialogHeader>
-            <DialogTitle className="text-gray-900">
+            <DialogTitle className="text-slate-100">
               {decision === 'approved' ? 'Approve Booking' : 'Reject Booking'}
             </DialogTitle>
             <DialogDescription>
@@ -275,12 +275,12 @@ const BookingApprovals = () => {
           <div className="space-y-4">
             {decision === 'approved' && (
               <div>
-                <Label className="text-gray-700">Confirm Training Date *</Label>
+                <Label className="text-slate-300">Confirm Training Date *</Label>
                 <Input
                   type="date"
                   value={confirmedDate}
                   onChange={(e) => setConfirmedDate(e.target.value)}
-                  className="bg-gray-50 border-gray-200 text-slate-100"
+                  className="bg-slate-800 border-white/10 text-slate-100"
                   min={new Date().toISOString().split('T')[0]}
                 />
                 <p className="text-xs text-slate-400 mt-1">
@@ -290,11 +290,11 @@ const BookingApprovals = () => {
             )}
 
             <div>
-              <Label className="text-gray-700">Remarks (Optional)</Label>
+              <Label className="text-slate-300">Remarks (Optional)</Label>
               <textarea
                 value={remarks}
                 onChange={(e) => setRemarks(e.target.value)}
-                className="w-full bg-gray-50 border border-gray-200 text-slate-100 rounded-md p-2 min-h-[80px]"
+                className="w-full bg-slate-800 border border-white/10 text-slate-100 rounded-md p-2 min-h-[80px]"
                 placeholder={
                   decision === 'approved'
                     ? 'Add any special instructions...'
@@ -307,7 +307,7 @@ const BookingApprovals = () => {
               <Button
                 variant="outline"
                 onClick={() => setDialogOpen(false)}
-                className="flex-1 border-gray-300 hover:bg-white"
+                className="flex-1 border-white/20 hover:bg-white"
               >
                 Cancel
               </Button>

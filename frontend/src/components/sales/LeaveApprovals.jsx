@@ -79,10 +79,10 @@ const LeaveApprovals = () => {
           <CalendarCheck className="w-6 h-6 text-blue-400" />
           Pending Leave Requests ({pendingRequests.length})
         </h3>
-        <div className="bg-white backdrop-blur-sm rounded-xl border border-gray-300 overflow-hidden">
+        <div className="bg-slate-900 backdrop-blur-sm rounded-xl border border-white/20 overflow-hidden">
           <Table>
             <TableHeader>
-              <TableRow className="border-gray-300">
+              <TableRow className="border-white/20">
                 <TableHead className="text-gray-300">Employee</TableHead>
                 <TableHead className="text-gray-300">Leave Type</TableHead>
                 <TableHead className="text-gray-300">From</TableHead>
@@ -101,7 +101,7 @@ const LeaveApprovals = () => {
                 </TableRow>
               ) : (
                 pendingRequests.map((request) => (
-                  <TableRow key={request.id} className="border-gray-300">
+                  <TableRow key={request.id} className="border-white/20">
                     <TableCell className="text-white font-medium">{request.employee_name || 'Unknown'}</TableCell>
                     <TableCell className="text-gray-300">{request.leave_type || 'N/A'}</TableCell>
                     <TableCell className="text-gray-300 text-sm">
@@ -146,10 +146,10 @@ const LeaveApprovals = () => {
 
       <div>
         <h3 className="text-xl font-semibold text-white mb-4">Processed Requests ({processedRequests.length})</h3>
-        <div className="bg-white backdrop-blur-sm rounded-xl border border-gray-300 overflow-hidden">
+        <div className="bg-slate-900 backdrop-blur-sm rounded-xl border border-white/20 overflow-hidden">
           <Table>
             <TableHeader>
-              <TableRow className="border-gray-300">
+              <TableRow className="border-white/20">
                 <TableHead className="text-gray-300">Employee</TableHead>
                 <TableHead className="text-gray-300">Leave Type</TableHead>
                 <TableHead className="text-gray-300">From - To</TableHead>
@@ -166,7 +166,7 @@ const LeaveApprovals = () => {
                 </TableRow>
               ) : (
                 processedRequests.map((request) => (
-                  <TableRow key={request.id} className="border-gray-300">
+                  <TableRow key={request.id} className="border-white/20">
                     <TableCell className="text-white font-medium">{request.employee_name || 'Unknown'}</TableCell>
                     <TableCell className="text-gray-300">{request.leave_type || 'N/A'}</TableCell>
                     <TableCell className="text-gray-300 text-sm">
@@ -186,7 +186,7 @@ const LeaveApprovals = () => {
       </div>
 
       <Dialog open={showDialog} onOpenChange={setShowDialog}>
-        <DialogContent className="bg-[#1a2f4d] border-gray-300 text-white">
+        <DialogContent className="bg-[#1a2f4d] border-white/20 text-white">
           <DialogHeader>
             <DialogTitle>
               {actionType === 'approve' ? 'Approve Leave Request' : 'Reject Leave Request'}
@@ -194,7 +194,7 @@ const LeaveApprovals = () => {
           </DialogHeader>
           {selectedRequest && (
             <div className="space-y-4">
-              <div className="bg-white rounded-lg p-4 space-y-2">
+              <div className="bg-slate-900 rounded-lg p-4 space-y-2">
                 <div className="flex justify-between">
                   <span className="text-gray-400">Employee:</span>
                   <span className="font-semibold">{selectedRequest.employee_name}</span>
@@ -208,7 +208,7 @@ const LeaveApprovals = () => {
                   <span className="font-semibold">{selectedRequest.days} days</span>
                 </div>
                 {selectedRequest.reason && (
-                  <div className="mt-3 pt-3 border-t border-gray-300">
+                  <div className="mt-3 pt-3 border-t border-white/20">
                     <span className="text-gray-400 text-sm">Reason:</span>
                     <p className="text-sm mt-1">{selectedRequest.reason}</p>
                   </div>
@@ -221,13 +221,13 @@ const LeaveApprovals = () => {
                   onChange={(e) => setRemarks(e.target.value)}
                   rows={3}
                   placeholder="Add any comments..."
-                  className="bg-white border-gray-300 text-white"
+                  className="bg-slate-900 border-white/20 text-white"
                 />
               </div>
             </div>
           )}
           <DialogFooter>
-            <Button variant="outline" onClick={() => setShowDialog(false)} className="border-gray-300 text-white">
+            <Button variant="outline" onClick={() => setShowDialog(false)} className="border-white/20 text-white">
               Cancel
             </Button>
             <Button

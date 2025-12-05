@@ -93,10 +93,10 @@ const VisitLogs = () => {
         </Button>
       </div>
 
-      <div className="bg-white backdrop-blur-sm rounded-xl border border-gray-300 overflow-hidden">
+      <div className="bg-slate-900 backdrop-blur-sm rounded-xl border border-white/20 overflow-hidden">
         <Table>
           <TableHeader>
-            <TableRow className="border-gray-300">
+            <TableRow className="border-white/20">
               <TableHead className="text-gray-300">Client Name</TableHead>
               <TableHead className="text-gray-300">Location</TableHead>
               <TableHead className="text-gray-300">Date & Time</TableHead>
@@ -113,7 +113,7 @@ const VisitLogs = () => {
               </TableRow>
             ) : (
               visits.map((visit) => (
-                <TableRow key={visit.id} className="border-gray-300">
+                <TableRow key={visit.id} className="border-white/20">
                   <TableCell className="text-white font-medium">{visit.client_name}</TableCell>
                   <TableCell className="text-gray-300">
                     <div className="flex items-center gap-1">
@@ -149,7 +149,7 @@ const VisitLogs = () => {
       </div>
 
       <Dialog open={showDialog} onOpenChange={setShowDialog}>
-        <DialogContent className="bg-[#1a2f4d] border-gray-300 text-white max-w-2xl">
+        <DialogContent className="bg-[#1a2f4d] border-white/20 text-white max-w-2xl">
           <DialogHeader>
             <DialogTitle className="text-xl flex items-center gap-2">
               <MapPin className="w-5 h-5 text-blue-400" />
@@ -165,7 +165,7 @@ const VisitLogs = () => {
                   value={formData.client_name}
                   onChange={(e) => setFormData({ ...formData, client_name: e.target.value })}
                   required
-                  className="bg-white border-gray-300 text-white mt-1"
+                  className="bg-slate-900 border-white/20 text-white mt-1"
                 />
               </div>
               <div>
@@ -176,7 +176,7 @@ const VisitLogs = () => {
                   onChange={(e) => setFormData({ ...formData, location: e.target.value })}
                   required
                   placeholder="City, Area"
-                  className="bg-white border-gray-300 text-white mt-1"
+                  className="bg-slate-900 border-white/20 text-white mt-1"
                 />
               </div>
             </div>
@@ -190,7 +190,7 @@ const VisitLogs = () => {
                   value={formData.visit_date}
                   onChange={(e) => setFormData({ ...formData, visit_date: e.target.value })}
                   required
-                  className="bg-white border-gray-300 text-white mt-1"
+                  className="bg-slate-900 border-white/20 text-white mt-1"
                 />
               </div>
               <div>
@@ -200,7 +200,7 @@ const VisitLogs = () => {
                   type="time"
                   value={formData.visit_time}
                   onChange={(e) => setFormData({ ...formData, visit_time: e.target.value })}
-                  className="bg-white border-gray-300 text-white mt-1"
+                  className="bg-slate-900 border-white/20 text-white mt-1"
                 />
               </div>
             </div>
@@ -213,7 +213,7 @@ const VisitLogs = () => {
                 onChange={(e) => setFormData({ ...formData, purpose: e.target.value })}
                 rows={2}
                 placeholder="Meeting objective, demonstration, etc."
-                className="bg-white border-gray-300 text-white mt-1"
+                className="bg-slate-900 border-white/20 text-white mt-1"
               />
             </div>
 
@@ -225,7 +225,7 @@ const VisitLogs = () => {
                 onChange={(e) => setFormData({ ...formData, outcome: e.target.value })}
                 rows={2}
                 placeholder="What was discussed and achieved..."
-                className="bg-white border-gray-300 text-white mt-1"
+                className="bg-slate-900 border-white/20 text-white mt-1"
               />
             </div>
 
@@ -237,7 +237,7 @@ const VisitLogs = () => {
                 onChange={(e) => setFormData({ ...formData, next_action: e.target.value })}
                 rows={2}
                 placeholder="Follow-up steps, next meeting, etc."
-                className="bg-white border-gray-300 text-white mt-1"
+                className="bg-slate-900 border-white/20 text-white mt-1"
               />
             </div>
 
@@ -246,7 +246,7 @@ const VisitLogs = () => {
                 type="button"
                 variant="outline"
                 onClick={() => setShowDialog(false)}
-                className="border-gray-300 text-white hover:bg-white"
+                className="border-white/20 text-white hover:bg-white"
               >
                 Cancel
               </Button>

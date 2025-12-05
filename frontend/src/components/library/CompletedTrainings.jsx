@@ -56,7 +56,7 @@ const CompletedTrainings = () => {
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
-        <p className="text-gray-500">Loading training history...</p>
+        <p className="text-slate-400">Loading training history...</p>
       </div>
     );
   }
@@ -69,12 +69,12 @@ const CompletedTrainings = () => {
           <BookOpen className="w-8 h-8 text-cyan-400" />
           Arbrit&apos;s Journey - Completed Trainings
         </h2>
-        <p className="text-gray-500 mt-1">Complete history of all training programs delivered</p>
+        <p className="text-slate-400 mt-1">Complete history of all training programs delivered</p>
       </div>
 
       {/* Stats Cards */}
       <div className="grid grid-cols-3 gap-6">
-        <Card className="bg-white border-cyan-500/30">
+        <Card className="bg-slate-900 border-cyan-500/30">
           <CardHeader>
             <CardTitle className="text-white text-sm">Total Trainings</CardTitle>
           </CardHeader>
@@ -83,7 +83,7 @@ const CompletedTrainings = () => {
           </CardContent>
         </Card>
 
-        <Card className="bg-white border-blue-500/30">
+        <Card className="bg-slate-900 border-blue-500/30">
           <CardHeader>
             <CardTitle className="text-white text-sm">This Month</CardTitle>
           </CardHeader>
@@ -92,7 +92,7 @@ const CompletedTrainings = () => {
           </CardContent>
         </Card>
 
-        <Card className="bg-white border-green-500/30">
+        <Card className="bg-slate-900 border-green-500/30">
           <CardHeader>
             <CardTitle className="text-white text-sm">Certificates Issued</CardTitle>
           </CardHeader>
@@ -105,15 +105,15 @@ const CompletedTrainings = () => {
       {/* Training History */}
       <div className="space-y-4">
         {trainings.length === 0 ? (
-          <Card className="bg-white border-gray-200">
+          <Card className="bg-slate-900 border-white/10">
             <CardContent className="py-12 text-center">
               <BookOpen className="w-16 h-16 text-slate-600 mx-auto mb-4" />
-              <p className="text-gray-500 text-lg">No completed trainings yet</p>
+              <p className="text-slate-400 text-lg">No completed trainings yet</p>
             </CardContent>
           </Card>
         ) : (
           trainings.map((training, idx) => (
-            <Card key={idx} className="bg-white border-gray-200 hover:bg-white transition-all">
+            <Card key={idx} className="bg-slate-900 border-white/10 hover:bg-white transition-all">
               <CardContent className="p-6">
                 <div className="flex items-start justify-between">
                   <div className="flex-1">
@@ -141,7 +141,7 @@ const CompletedTrainings = () => {
                     </div>
                     
                     {training.client_name && (
-                      <p className="text-gray-500 text-sm">Client: {training.client_name}</p>
+                      <p className="text-slate-400 text-sm">Client: {training.client_name}</p>
                     )}
                   </div>
                   

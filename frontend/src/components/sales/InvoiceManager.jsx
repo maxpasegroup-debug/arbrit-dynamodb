@@ -101,12 +101,12 @@ const InvoiceManager = () => {
 
       <div className="grid gap-4">
         {requests.length === 0 ? (
-          <Card className="bg-white border-gray-300 p-8 text-center">
+          <Card className="bg-slate-900 border-white/20 p-8 text-center">
             <p className="text-gray-400">No invoice requests yet</p>
           </Card>
         ) : (
           requests.map((req) => (
-            <Card key={req.id} className="bg-white border-gray-300 p-4">
+            <Card key={req.id} className="bg-slate-900 border-white/20 p-4">
               <div className="flex justify-between items-start">
                 <div className="flex-1">
                   <div className="flex items-center gap-2 mb-2">
@@ -131,7 +131,7 @@ const InvoiceManager = () => {
                   }}
                   size="sm"
                   variant="outline"
-                  className="border-gray-300 text-white"
+                  className="border-white/20 text-white"
                 >
                   <Upload className="w-4 h-4 mr-1" />
                   Add Payment
@@ -143,7 +143,7 @@ const InvoiceManager = () => {
       </div>
 
       <Dialog open={showDialog} onOpenChange={setShowDialog}>
-        <DialogContent className="bg-[#1a2f4d] border-gray-300 text-white">
+        <DialogContent className="bg-[#1a2f4d] border-white/20 text-white">
           <DialogHeader>
             <DialogTitle>Request Invoice</DialogTitle>
           </DialogHeader>
@@ -151,10 +151,10 @@ const InvoiceManager = () => {
             <div>
               <Label className="text-gray-300">Payment Terms *</Label>
               <Select value={formData.payment_terms} onValueChange={(v) => setFormData({...formData, payment_terms: v})}>
-                <SelectTrigger className="bg-white border-gray-300 text-white mt-1">
+                <SelectTrigger className="bg-slate-900 border-white/20 text-white mt-1">
                   <SelectValue />
                 </SelectTrigger>
-                <SelectContent className="bg-[#1a2f4d] border-gray-300 text-white">
+                <SelectContent className="bg-[#1a2f4d] border-white/20 text-white">
                   <SelectItem value="Full Before">Full Payment Before Training</SelectItem>
                   <SelectItem value="Partial">Partial Payment</SelectItem>
                   <SelectItem value="After Training">Payment After Training</SelectItem>
@@ -164,15 +164,15 @@ const InvoiceManager = () => {
             {formData.payment_terms === 'Partial' && (
               <div>
                 <Label className="text-gray-300">Initial Amount</Label>
-                <Input type="number" value={formData.initial_amount} onChange={(e) => setFormData({...formData, initial_amount: e.target.value})} className="bg-white border-gray-300 text-white mt-1" />
+                <Input type="number" value={formData.initial_amount} onChange={(e) => setFormData({...formData, initial_amount: e.target.value})} className="bg-slate-900 border-white/20 text-white mt-1" />
               </div>
             )}
             <div>
               <Label className="text-gray-300">Notes for Accounts</Label>
-              <Textarea value={formData.notes} onChange={(e) => setFormData({...formData, notes: e.target.value})} rows={3} className="bg-white border-gray-300 text-white mt-1" />
+              <Textarea value={formData.notes} onChange={(e) => setFormData({...formData, notes: e.target.value})} rows={3} className="bg-slate-900 border-white/20 text-white mt-1" />
             </div>
             <DialogFooter>
-              <Button type="button" variant="outline" onClick={() => setShowDialog(false)} className="border-gray-300 text-white">Cancel</Button>
+              <Button type="button" variant="outline" onClick={() => setShowDialog(false)} className="border-white/20 text-white">Cancel</Button>
               <Button type="submit" disabled={loading} style={{ background: 'linear-gradient(135deg, #d4af37 0%, #c9a02c 100%)' }} className="text-[#0a1e3d]">Submit</Button>
             </DialogFooter>
           </form>
@@ -180,7 +180,7 @@ const InvoiceManager = () => {
       </Dialog>
 
       <Dialog open={showPaymentDialog} onOpenChange={setShowPaymentDialog}>
-        <DialogContent className="bg-[#1a2f4d] border-gray-300 text-white">
+        <DialogContent className="bg-[#1a2f4d] border-white/20 text-white">
           <DialogHeader>
             <DialogTitle>Add Payment Confirmation</DialogTitle>
           </DialogHeader>
@@ -192,12 +192,12 @@ const InvoiceManager = () => {
                 onChange={(e) => setPaymentConfirmation(e.target.value)}
                 rows={4}
                 placeholder="Enter transaction ID, reference number, or payment details..."
-                className="bg-white border-gray-300 text-white mt-1"
+                className="bg-slate-900 border-white/20 text-white mt-1"
               />
             </div>
           </div>
           <DialogFooter>
-            <Button variant="outline" onClick={() => setShowPaymentDialog(false)} className="border-gray-300 text-white">Cancel</Button>
+            <Button variant="outline" onClick={() => setShowPaymentDialog(false)} className="border-white/20 text-white">Cancel</Button>
             <Button onClick={handlePaymentUpdate} style={{ background: 'linear-gradient(135deg, #d4af37 0%, #c9a02c 100%)' }} className="text-[#0a1e3d]">Update</Button>
           </DialogFooter>
         </DialogContent>

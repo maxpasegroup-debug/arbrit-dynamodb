@@ -129,10 +129,10 @@ const RecurringInvoiceSetup = () => {
       </div>
 
       {/* Recurring Invoices Table */}
-      <div className="bg-white backdrop-blur-sm rounded-xl border border-gray-200 overflow-hidden">
+      <div className="bg-slate-900 backdrop-blur-sm rounded-xl border border-white/10 overflow-hidden">
         <Table>
           <TableHeader>
-            <TableRow className="border-gray-200">
+            <TableRow className="border-white/10">
               <TableHead className="text-gray-300">Client</TableHead>
               <TableHead className="text-gray-300">Amount</TableHead>
               <TableHead className="text-gray-300">Frequency</TableHead>
@@ -152,7 +152,7 @@ const RecurringInvoiceSetup = () => {
               </TableRow>
             ) : (
               recurringInvoices.map((invoice) => (
-                <TableRow key={invoice.id} className="border-gray-200">
+                <TableRow key={invoice.id} className="border-white/10">
                   <TableCell className="text-white font-medium">{invoice.client_name}</TableCell>
                   <TableCell className="text-white">AED {invoice.amount.toLocaleString()}</TableCell>
                   <TableCell className="text-white">{invoice.frequency}</TableCell>
@@ -178,7 +178,7 @@ const RecurringInvoiceSetup = () => {
 
       {/* Create Dialog */}
       <Dialog open={showDialog} onOpenChange={setShowDialog}>
-        <DialogContent className="bg-white border-slate-700 text-white max-w-2xl">
+        <DialogContent className="bg-slate-900 border-slate-700 text-white max-w-2xl">
           <DialogHeader>
             <DialogTitle className="text-xl flex items-center gap-2">
               <RefreshCw className="w-6 h-6 text-blue-400" />
@@ -190,10 +190,10 @@ const RecurringInvoiceSetup = () => {
             <div className="space-y-2">
               <Label>Select Client *</Label>
               <Select value={formData.client_id} onValueChange={handleClientSelect}>
-                <SelectTrigger className="bg-gray-50 border-slate-600 text-white">
+                <SelectTrigger className="bg-slate-800 border-slate-600 text-white">
                   <SelectValue placeholder="Choose a client" />
                 </SelectTrigger>
-                <SelectContent className="bg-gray-50 border-slate-600 text-white">
+                <SelectContent className="bg-slate-800 border-slate-600 text-white">
                   {clients.map((client) => (
                     <SelectItem key={client.id} value={client.id}>
                       {client.client_name} {client.company ? `(${client.company})` : ''}
@@ -211,16 +211,16 @@ const RecurringInvoiceSetup = () => {
                   step="0.01"
                   value={formData.amount}
                   onChange={(e) => setFormData({...formData, amount: e.target.value})}
-                  className="bg-gray-50 border-slate-600 text-white"
+                  className="bg-slate-800 border-slate-600 text-white"
                 />
               </div>
               <div className="space-y-2">
                 <Label>Frequency *</Label>
                 <Select value={formData.frequency} onValueChange={(val) => setFormData({...formData, frequency: val})}>
-                  <SelectTrigger className="bg-gray-50 border-slate-600 text-white">
+                  <SelectTrigger className="bg-slate-800 border-slate-600 text-white">
                     <SelectValue />
                   </SelectTrigger>
-                  <SelectContent className="bg-gray-50 border-slate-600 text-white">
+                  <SelectContent className="bg-slate-800 border-slate-600 text-white">
                     <SelectItem value="Monthly">Monthly</SelectItem>
                     <SelectItem value="Quarterly">Quarterly</SelectItem>
                     <SelectItem value="Yearly">Yearly</SelectItem>
@@ -236,7 +236,7 @@ const RecurringInvoiceSetup = () => {
                   type="date"
                   value={formData.start_date}
                   onChange={(e) => setFormData({...formData, start_date: e.target.value})}
-                  className="bg-gray-50 border-slate-600 text-white"
+                  className="bg-slate-800 border-slate-600 text-white"
                 />
               </div>
               <div className="space-y-2">
@@ -245,7 +245,7 @@ const RecurringInvoiceSetup = () => {
                   type="date"
                   value={formData.end_date}
                   onChange={(e) => setFormData({...formData, end_date: e.target.value})}
-                  className="bg-gray-50 border-slate-600 text-white"
+                  className="bg-slate-800 border-slate-600 text-white"
                 />
               </div>
             </div>
@@ -255,7 +255,7 @@ const RecurringInvoiceSetup = () => {
               <Textarea
                 value={formData.description}
                 onChange={(e) => setFormData({...formData, description: e.target.value})}
-                className="bg-gray-50 border-slate-600 text-white min-h-[100px]"
+                className="bg-slate-800 border-slate-600 text-white min-h-[100px]"
                 placeholder="What is this recurring invoice for?"
               />
             </div>
@@ -269,7 +269,7 @@ const RecurringInvoiceSetup = () => {
           </div>
 
           <DialogFooter>
-            <Button variant="outline" onClick={() => setShowDialog(false)} className="border-slate-600 text-white hover:bg-gray-50">
+            <Button variant="outline" onClick={() => setShowDialog(false)} className="border-slate-600 text-white hover:bg-slate-800">
               Cancel
             </Button>
             <Button 

@@ -115,7 +115,7 @@ const QuotationApprovalManagement = () => {
       </div>
 
       {/* Pending Quotations */}
-      <div className="bg-white backdrop-blur-sm border border-gray-200 rounded-xl p-6">
+      <div className="bg-slate-900 backdrop-blur-sm border border-white/10 rounded-xl p-6">
         <h3 className="text-xl font-semibold text-white mb-4 flex items-center gap-2">
           <Clock className="w-5 h-5 text-yellow-400" />
           Pending Approval ({pendingQuotations.length})
@@ -193,13 +193,13 @@ const QuotationApprovalManagement = () => {
 
       {/* Processed Quotations */}
       {processedQuotations.length > 0 && (
-        <div className="bg-white backdrop-blur-sm border border-gray-200 rounded-xl p-6">
+        <div className="bg-slate-900 backdrop-blur-sm border border-white/10 rounded-xl p-6">
           <h3 className="text-xl font-semibold text-white mb-4">Recently Processed</h3>
           <div className="space-y-3">
             {processedQuotations.slice(0, 5).map((quotation) => (
               <div 
                 key={quotation.id}
-                className="bg-white border border-gray-200 rounded-lg p-3 flex items-center justify-between"
+                className="bg-slate-900 border border-white/10 rounded-lg p-3 flex items-center justify-between"
               >
                 <div>
                   <p className="text-white font-medium">{quotation.client_name}</p>
@@ -224,7 +224,7 @@ const QuotationApprovalManagement = () => {
 
       {/* View Details Dialog */}
       <Dialog open={viewDialogOpen} onOpenChange={setViewDialogOpen}>
-        <DialogContent className="bg-[#1a2f4d] border-gray-200 text-white max-w-2xl">
+        <DialogContent className="bg-[#1a2f4d] border-white/10 text-white max-w-2xl">
           <DialogHeader>
             <DialogTitle className="text-2xl">Quotation Details</DialogTitle>
           </DialogHeader>
@@ -251,7 +251,7 @@ const QuotationApprovalManagement = () => {
               
               <div>
                 <p className="text-sm text-gray-400 mb-2">Items / Description</p>
-                <div className="bg-white border border-gray-200 rounded-lg p-3">
+                <div className="bg-slate-900 border border-white/10 rounded-lg p-3">
                   <p className="text-white whitespace-pre-wrap">{selectedQuotation.items || selectedQuotation.remarks || 'No description'}</p>
                 </div>
               </div>
@@ -259,7 +259,7 @@ const QuotationApprovalManagement = () => {
               {selectedQuotation.comments && (
                 <div>
                   <p className="text-sm text-gray-400 mb-2">Comments</p>
-                  <div className="bg-white border border-gray-200 rounded-lg p-3">
+                  <div className="bg-slate-900 border border-white/10 rounded-lg p-3">
                     <p className="text-white">{selectedQuotation.comments}</p>
                   </div>
                 </div>
@@ -271,7 +271,7 @@ const QuotationApprovalManagement = () => {
 
       {/* Approve/Reject Dialog */}
       <Dialog open={actionDialogOpen} onOpenChange={setActionDialogOpen}>
-        <DialogContent className="bg-[#1a2f4d] border-gray-200 text-white">
+        <DialogContent className="bg-[#1a2f4d] border-white/10 text-white">
           <DialogHeader>
             <DialogTitle className="text-2xl">
               {actionType === 'approve' ? 'Approve Quotation' : 'Reject Quotation'}
@@ -285,7 +285,7 @@ const QuotationApprovalManagement = () => {
           </DialogHeader>
           <div className="space-y-4">
             {selectedQuotation && (
-              <div className="bg-white border border-gray-200 rounded-lg p-3">
+              <div className="bg-slate-900 border border-white/10 rounded-lg p-3">
                 <p className="text-sm text-gray-400">Client</p>
                 <p className="text-white font-medium">{selectedQuotation.client_name}</p>
                 <p className="text-sm text-gray-400 mt-2">Amount</p>
@@ -301,7 +301,7 @@ const QuotationApprovalManagement = () => {
                 value={comments}
                 onChange={(e) => setComments(e.target.value)}
                 placeholder={actionType === 'approve' ? 'Add any notes...' : 'Reason for rejection...'}
-                className="bg-white border-gray-200 text-white"
+                className="bg-slate-900 border-white/10 text-white"
                 rows={4}
               />
             </div>
@@ -311,7 +311,7 @@ const QuotationApprovalManagement = () => {
                 variant="outline"
                 onClick={() => setActionDialogOpen(false)}
                 disabled={processing}
-                className="border-gray-300 text-white"
+                className="border-white/20 text-white"
               >
                 Cancel
               </Button>

@@ -24,7 +24,7 @@ const AvailabilityCalendar = () => {
       case 'available': return 'bg-green-500/20 text-green-400 border-green-400/30';
       case 'busy': return 'bg-red-500/20 text-red-400 border-red-400/30';
       case 'break': return 'bg-orange-500/20 text-orange-400 border-orange-400/30';
-      default: return 'bg-gray-500/20 text-gray-400 border-gray-400/30';
+      default: return 'bg-slate-8000/20 text-gray-400 border-gray-400/30';
     }
   };
 
@@ -67,12 +67,12 @@ const AvailabilityCalendar = () => {
           <h3 className="text-xl font-semibold text-white mb-2">
             Call Availability Calendar
           </h3>
-          <p className="text-gray-500">
+          <p className="text-slate-400">
             Manage your availability for client calls and meetings
           </p>
         </div>
         <div className="text-right">
-          <p className="text-gray-700 font-medium">
+          <p className="text-slate-300 font-medium">
             {currentDate.toLocaleDateString('en-US', { 
               weekday: 'long', 
               year: 'numeric', 
@@ -127,7 +127,7 @@ const AvailabilityCalendar = () => {
       </div>
 
       {/* Availability Schedule */}
-      <Card className="bg-white0 border-gray-300">
+      <Card className="bg-slate-9000 border-white/20">
         <CardHeader>
           <CardTitle className="text-white flex items-center gap-2">
             <Clock className="w-5 h-5" />
@@ -138,17 +138,17 @@ const AvailabilityCalendar = () => {
           {availability.map((slot, index) => (
             <div 
               key={index}
-              className="flex items-center justify-between p-3 bg-gray-50/50 rounded-lg border border-gray-300"
+              className="flex items-center justify-between p-3 bg-slate-800/50 rounded-lg border border-white/20"
             >
               <div className="flex items-center gap-4">
-                <div className="text-gray-700 font-mono text-lg min-w-[60px]">
+                <div className="text-slate-300 font-mono text-lg min-w-[60px]">
                   {slot.time}
                 </div>
                 <Badge className={`${getStatusColor(slot.status)} flex items-center gap-1`}>
                   {getStatusIcon(slot.status)}
                   {slot.status.charAt(0).toUpperCase() + slot.status.slice(1)}
                 </Badge>
-                <span className="text-gray-700">{slot.activity}</span>
+                <span className="text-slate-300">{slot.activity}</span>
               </div>
               
               <div className="flex gap-2">

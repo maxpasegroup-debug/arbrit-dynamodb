@@ -90,10 +90,10 @@ const LeadAllocation = () => {
         </h3>
         <div className="flex gap-3">
           <Select value={filter} onValueChange={setFilter}>
-            <SelectTrigger className="w-40 bg-white border-gray-300 text-white">
+            <SelectTrigger className="w-40 bg-slate-900 border-white/20 text-white">
               <SelectValue />
             </SelectTrigger>
-            <SelectContent className="bg-[#1a2f4d] border-gray-300 text-white">
+            <SelectContent className="bg-[#1a2f4d] border-white/20 text-white">
               <SelectItem value="unassigned">Unassigned</SelectItem>
               <SelectItem value="assigned">Assigned</SelectItem>
               <SelectItem value="all">All Leads</SelectItem>
@@ -102,10 +102,10 @@ const LeadAllocation = () => {
         </div>
       </div>
 
-      <div className="bg-white backdrop-blur-sm rounded-xl border border-gray-300 overflow-hidden">
+      <div className="bg-slate-900 backdrop-blur-sm rounded-xl border border-white/20 overflow-hidden">
         <Table>
           <TableHeader>
-            <TableRow className="border-gray-300">
+            <TableRow className="border-white/20">
               <TableHead className="text-gray-300">Client Name</TableHead>
               <TableHead className="text-gray-300">Contact</TableHead>
               <TableHead className="text-gray-300">Type</TableHead>
@@ -123,7 +123,7 @@ const LeadAllocation = () => {
               </TableRow>
             ) : (
               filteredLeads.map((lead) => (
-                <TableRow key={lead.id} className="border-gray-300">
+                <TableRow key={lead.id} className="border-white/20">
                   <TableCell className="text-white font-medium">{lead.client_name}</TableCell>
                   <TableCell className="text-gray-300 text-sm">
                     {lead.mobile && <div>{lead.mobile}</div>}
@@ -146,7 +146,7 @@ const LeadAllocation = () => {
                         {getAssignedEmployeeName(lead.assigned_to)}
                       </div>
                     ) : (
-                      <span className="text-gray-500 italic">Unassigned</span>
+                      <span className="text-slate-400 italic">Unassigned</span>
                     )}
                   </TableCell>
                   <TableCell>
@@ -168,23 +168,23 @@ const LeadAllocation = () => {
       </div>
 
       <Dialog open={showDialog} onOpenChange={setShowDialog}>
-        <DialogContent className="bg-[#1a2f4d] border-gray-300 text-white">
+        <DialogContent className="bg-[#1a2f4d] border-white/20 text-white">
           <DialogHeader>
             <DialogTitle>{selectedLead?.assigned_to ? 'Reassign Lead' : 'Assign Lead'}</DialogTitle>
           </DialogHeader>
           {selectedLead && (
             <div className="space-y-4">
-              <div className="bg-white rounded-lg p-3">
+              <div className="bg-slate-900 rounded-lg p-3">
                 <p className="text-sm text-gray-400">Client</p>
                 <p className="font-semibold">{selectedLead.client_name}</p>
               </div>
               <div>
                 <label className="text-sm text-gray-300 mb-2 block">Select Sales Employee</label>
                 <Select value={selectedEmployee} onValueChange={setSelectedEmployee}>
-                  <SelectTrigger className="bg-white border-gray-300 text-white">
+                  <SelectTrigger className="bg-slate-900 border-white/20 text-white">
                     <SelectValue placeholder="Choose employee..." />
                   </SelectTrigger>
-                  <SelectContent className="bg-[#1a2f4d] border-gray-300 text-white">
+                  <SelectContent className="bg-[#1a2f4d] border-white/20 text-white">
                     {employees.map(emp => (
                       <SelectItem key={emp.id} value={emp.id}>
                         {emp.name} - {emp.role}
@@ -196,7 +196,7 @@ const LeadAllocation = () => {
             </div>
           )}
           <DialogFooter>
-            <Button variant="outline" onClick={() => setShowDialog(false)} className="border-gray-300 text-white">
+            <Button variant="outline" onClick={() => setShowDialog(false)} className="border-white/20 text-white">
               Cancel
             </Button>
             <Button onClick={submitAllocation} style={{ background: 'linear-gradient(135deg, #d4af37 0%, #c9a02c 100%)' }} className="text-[#0a1e3d]">

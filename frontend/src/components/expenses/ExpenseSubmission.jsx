@@ -106,33 +106,33 @@ const ExpenseSubmission = () => {
               Submit Expense
             </Button>
           </DialogTrigger>
-          <DialogContent className="max-w-md bg-white border-gray-200">
+          <DialogContent className="max-w-md bg-slate-900 border-white/10">
             <DialogHeader>
-              <DialogTitle className="text-gray-900">Submit Expense Claim</DialogTitle>
-              <DialogDescription className="text-gray-500">
+              <DialogTitle className="text-slate-100">Submit Expense Claim</DialogTitle>
+              <DialogDescription className="text-slate-400">
                 Submit your expense for reimbursement
               </DialogDescription>
             </DialogHeader>
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
-                <Label htmlFor="expense_date" className="text-gray-700">Expense Date *</Label>
+                <Label htmlFor="expense_date" className="text-slate-300">Expense Date *</Label>
                 <Input
                   id="expense_date"
                   type="date"
                   value={formData.expense_date}
                   onChange={(e) => setFormData({ ...formData, expense_date: e.target.value })}
-                  className="bg-gray-50 border-gray-200 text-slate-100"
+                  className="bg-slate-800 border-white/10 text-slate-100"
                   required
                 />
               </div>
               
               <div>
-                <Label htmlFor="category" className="text-gray-700">Category *</Label>
+                <Label htmlFor="category" className="text-slate-300">Category *</Label>
                 <select
                   id="category"
                   value={formData.category}
                   onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-                  className="w-full bg-gray-50 border border-gray-200 text-slate-100 rounded-md p-2"
+                  className="w-full bg-slate-800 border border-white/10 text-slate-100 rounded-md p-2"
                   required
                 >
                   <option value="Travel">Travel</option>
@@ -144,7 +144,7 @@ const ExpenseSubmission = () => {
               </div>
 
               <div>
-                <Label htmlFor="amount" className="text-gray-700">Amount (AED) *</Label>
+                <Label htmlFor="amount" className="text-slate-300">Amount (AED) *</Label>
                 <Input
                   id="amount"
                   type="number"
@@ -152,38 +152,38 @@ const ExpenseSubmission = () => {
                   value={formData.amount}
                   onChange={(e) => setFormData({ ...formData, amount: e.target.value })}
                   placeholder="0.00"
-                  className="bg-gray-50 border-gray-200 text-slate-100"
+                  className="bg-slate-800 border-white/10 text-slate-100"
                   required
                 />
               </div>
 
               <div>
-                <Label htmlFor="description" className="text-gray-700">Description *</Label>
+                <Label htmlFor="description" className="text-slate-300">Description *</Label>
                 <textarea
                   id="description"
                   value={formData.description}
                   onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                  className="w-full bg-gray-50 border border-gray-200 text-slate-100 rounded-md p-2 min-h-[80px]"
+                  className="w-full bg-slate-800 border border-white/10 text-slate-100 rounded-md p-2 min-h-[80px]"
                   placeholder="Describe the expense..."
                   required
                 />
               </div>
 
               <div>
-                <Label htmlFor="attachment" className="text-gray-700">Attachment (Optional)</Label>
+                <Label htmlFor="attachment" className="text-slate-300">Attachment (Optional)</Label>
                 <Input
                   id="attachment"
                   type="text"
                   value={formData.attachment_url}
                   onChange={(e) => setFormData({ ...formData, attachment_url: e.target.value })}
                   placeholder="Upload URL or file reference"
-                  className="bg-gray-50 border-gray-200 text-slate-100"
+                  className="bg-slate-800 border-white/10 text-slate-100"
                 />
                 <p className="text-xs text-slate-400 mt-1">Upload bill/receipt and paste the URL here</p>
               </div>
 
               <div className="flex gap-2 pt-4">
-                <Button type="button" variant="outline" onClick={() => setDialogOpen(false)} className="flex-1 border-gray-300 hover:bg-white">
+                <Button type="button" variant="outline" onClick={() => setDialogOpen(false)} className="flex-1 border-white/20 hover:bg-white">
                   Cancel
                 </Button>
                 <Button type="submit" className="flex-1 bg-blue-600 hover:bg-blue-700">Submit Claim</Button>
@@ -194,7 +194,7 @@ const ExpenseSubmission = () => {
       </div>
 
       {/* Claims List */}
-      <div className="bg-white0 backdrop-blur-sm rounded-xl border border-gray-200 p-6">
+      <div className="bg-slate-9000 backdrop-blur-sm rounded-xl border border-white/10 p-6">
         <h3 className="text-lg font-semibold text-slate-100 mb-4">My Submitted Claims</h3>
         {loading ? (
           <p className="text-center py-8 text-slate-400">Loading...</p>
@@ -203,7 +203,7 @@ const ExpenseSubmission = () => {
         ) : (
           <div className="space-y-3">
             {claims.map((claim) => (
-              <div key={claim.id} className="bg-white border border-gray-200 rounded-lg p-4 hover:bg-white transition-all">
+              <div key={claim.id} className="bg-slate-900 border border-white/10 rounded-lg p-4 hover:bg-white transition-all">
                 <div className="flex justify-between items-start mb-2">
                   <div className="flex-1">
                     <div className="flex items-center gap-2 mb-1">
@@ -218,7 +218,7 @@ const ExpenseSubmission = () => {
                   </div>
                 </div>
                 
-                <div className="mt-3 pt-3 border-t border-gray-200 text-xs text-slate-400">
+                <div className="mt-3 pt-3 border-t border-white/10 text-xs text-slate-400">
                   <p>Submitted: {new Date(claim.created_at).toLocaleString()}</p>
                   {claim.dept_head_remarks && (
                     <p className="mt-1 text-slate-300"><strong>Dept Head:</strong> {claim.dept_head_remarks}</p>

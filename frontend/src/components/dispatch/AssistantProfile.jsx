@@ -74,7 +74,7 @@ const AssistantProfile = () => {
 
   if (loading) {
     return (
-      <Card className="bg-white border-gray-200">
+      <Card className="bg-slate-900 border-white/10">
         <CardContent className="p-6">
           <p className="text-gray-400 text-center">Loading profile...</p>
         </CardContent>
@@ -84,7 +84,7 @@ const AssistantProfile = () => {
 
   return (
     <div className="space-y-6">
-      <Card className="bg-white border-gray-200">
+      <Card className="bg-slate-900 border-white/10">
         <CardHeader>
           <CardTitle className="text-white text-xl">My Profile</CardTitle>
         </CardHeader>
@@ -113,7 +113,7 @@ const AssistantProfile = () => {
         </CardContent>
       </Card>
 
-      <Card className="bg-white border-gray-200">
+      <Card className="bg-slate-900 border-white/10">
         <CardHeader>
           <CardTitle className="text-white text-xl flex items-center gap-2">
             <Award className="w-5 h-5 text-yellow-400" />

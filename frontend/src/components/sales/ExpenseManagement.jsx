@@ -108,7 +108,7 @@ const ExpenseManagement = () => {
       case 'pending': return 'bg-orange-500/20 text-orange-400 border-orange-400/30';
       case 'rejected': return 'bg-red-500/20 text-red-400 border-red-400/30';
       case 'forwarded': return 'bg-blue-500/20 text-blue-400 border-blue-400/30';
-      default: return 'bg-gray-500/20 text-gray-400 border-gray-400/30';
+      default: return 'bg-slate-8000/20 text-gray-400 border-gray-400/30';
     }
   };
 
@@ -129,7 +129,7 @@ const ExpenseManagement = () => {
       case 'Communication': return 'bg-purple-500/20 text-purple-400';
       case 'Accommodation': return 'bg-orange-500/20 text-orange-400';
       case 'Office Supplies': return 'bg-cyan-500/20 text-cyan-400';
-      default: return 'bg-gray-500/20 text-gray-400';
+      default: return 'bg-slate-8000/20 text-gray-400';
     }
   };
 
@@ -141,7 +141,7 @@ const ExpenseManagement = () => {
           <h3 className="text-xl font-semibold text-white mb-2">
             Expense Management Center
           </h3>
-          <p className="text-gray-500">
+          <p className="text-slate-400">
             Review team expenses and manage your own expense claims
           </p>
         </div>
@@ -210,14 +210,14 @@ const ExpenseManagement = () => {
         <Button
           onClick={() => setActiveView('team_expenses')}
           variant={activeView === 'team_expenses' ? 'default' : 'outline'}
-          className={activeView === 'team_expenses' ? 'bg-blue-600' : 'border-gray-300'}
+          className={activeView === 'team_expenses' ? 'bg-blue-600' : 'border-white/20'}
         >
           Team Expenses ({teamExpenses.filter(e => e.status === 'pending').length})
         </Button>
         <Button
           onClick={() => setActiveView('my_expenses')}
           variant={activeView === 'my_expenses' ? 'default' : 'outline'}
-          className={activeView === 'my_expenses' ? 'bg-blue-600' : 'border-gray-300'}
+          className={activeView === 'my_expenses' ? 'bg-blue-600' : 'border-white/20'}
         >
           My Expenses
         </Button>
@@ -228,13 +228,13 @@ const ExpenseManagement = () => {
         <div className="space-y-4">
           <h4 className="text-lg font-semibold text-white">Team Expense Claims for Review</h4>
           {teamExpenses.map((expense) => (
-            <Card key={expense.id} className="bg-white0 border-gray-300">
+            <Card key={expense.id} className="bg-slate-9000 border-white/20">
               <CardContent className="p-4">
                 <div className="flex justify-between items-start mb-4">
                   <div className="flex items-center gap-4">
                     <div>
                       <h5 className="text-white font-semibold">{expense.employeeName}</h5>
-                      <p className="text-gray-500">{expense.employeeRole}</p>
+                      <p className="text-slate-400">{expense.employeeRole}</p>
                     </div>
                     <Badge className={getCategoryColor(expense.category)}>
                       {expense.category}
@@ -251,18 +251,18 @@ const ExpenseManagement = () => {
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                   <div>
-                    <p className="text-gray-500 text-sm">Expense Date</p>
+                    <p className="text-slate-400 text-sm">Expense Date</p>
                     <p className="text-white">{expense.expenseDate}</p>
                   </div>
                   <div>
-                    <p className="text-gray-500 text-sm">Submitted On</p>
+                    <p className="text-slate-400 text-sm">Submitted On</p>
                     <p className="text-white">{expense.submittedDate}</p>
                   </div>
                 </div>
 
                 <div className="mb-4">
-                  <p className="text-gray-500 text-sm">Description</p>
-                  <p className="text-white bg-gray-50/50 p-2 rounded">{expense.description}</p>
+                  <p className="text-slate-400 text-sm">Description</p>
+                  <p className="text-white bg-slate-800/50 p-2 rounded">{expense.description}</p>
                 </div>
 
                 <div className="flex items-center justify-between">
@@ -271,7 +271,7 @@ const ExpenseManagement = () => {
                       <Button
                         size="sm"
                         variant="outline"
-                        className="border-gray-300"
+                        className="border-white/20"
                         onClick={() => window.open(expense.receiptUrl, '_blank')}
                       >
                         <Eye className="w-4 h-4 mr-1" />
@@ -311,7 +311,7 @@ const ExpenseManagement = () => {
                 </div>
 
                 {expense.status !== 'pending' && (
-                  <div className="mt-4 pt-4 border-t border-gray-300 text-sm text-slate-400">
+                  <div className="mt-4 pt-4 border-t border-white/20 text-sm text-slate-400">
                     {expense.status === 'approved' && (
                       <>
                         <p>✅ Approved by {expense.reviewedBy} on {expense.reviewDate}</p>
@@ -358,7 +358,7 @@ const ExpenseManagement = () => {
 
       {/* Review Dialog */}
       <Dialog open={reviewDialogOpen} onOpenChange={setReviewDialogOpen}>
-        <DialogContent className="max-w-md bg-white border-gray-300">
+        <DialogContent className="max-w-md bg-slate-900 border-white/20">
           <DialogHeader>
             <DialogTitle className="text-white">
               {reviewAction === 'approve' && 'Approve & Forward Expense'}
@@ -368,15 +368,15 @@ const ExpenseManagement = () => {
           
           <div className="space-y-4">
             {selectedExpense && (
-              <div className="bg-gray-50/50 p-3 rounded-lg">
+              <div className="bg-slate-800/50 p-3 rounded-lg">
                 <p className="text-white font-medium">{selectedExpense.employeeName}</p>
-                <p className="text-gray-500">{selectedExpense.category} - {selectedExpense.amount} AED</p>
-                <p className="text-gray-700 text-sm">{selectedExpense.description}</p>
+                <p className="text-slate-400">{selectedExpense.category} - {selectedExpense.amount} AED</p>
+                <p className="text-slate-300 text-sm">{selectedExpense.description}</p>
               </div>
             )}
 
             <div>
-              <Label className="text-gray-700">Review Comments</Label>
+              <Label className="text-slate-300">Review Comments</Label>
               <Textarea
                 value={reviewComments}
                 onChange={(e) => setReviewComments(e.target.value)}
@@ -385,7 +385,7 @@ const ExpenseManagement = () => {
                     ? "Optional: Add approval notes..." 
                     : "Please provide reason for rejection..."
                 }
-                className="bg-gray-50 border-gray-300 text-gray-900"
+                className="bg-slate-800 border-white/20 text-gray-900"
               />
             </div>
 
@@ -405,7 +405,7 @@ const ExpenseManagement = () => {
               <Button
                 variant="outline"
                 onClick={() => setReviewDialogOpen(false)}
-                className="border-gray-300"
+                className="border-white/20"
               >
                 Cancel
               </Button>
@@ -427,7 +427,7 @@ const ExpenseManagement = () => {
 
       {/* Create Expense Modal */}
       <Dialog open={createExpenseOpen} onOpenChange={setCreateExpenseOpen}>
-        <DialogContent className="max-w-2xl bg-white border-gray-300">
+        <DialogContent className="max-w-2xl bg-slate-900 border-white/20">
           <DialogHeader>
             <DialogTitle className="text-white">Submit Personal Expense Claim</DialogTitle>
           </DialogHeader>
@@ -448,7 +448,7 @@ const ExpenseManagement = () => {
             <Button
               variant="outline"
               onClick={() => setCreateExpenseOpen(false)}
-              className="border-gray-300"
+              className="border-white/20"
             >
               Close
             </Button>

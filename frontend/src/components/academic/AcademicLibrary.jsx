@@ -272,7 +272,7 @@ const AcademicLibrary = () => {
             <BookOpen className="w-8 h-8 text-yellow-400" />
             Academic Library
           </h1>
-          <p className="text-gray-500">Organize and manage training materials for your team</p>
+          <p className="text-slate-400">Organize and manage training materials for your team</p>
         </div>
         <Button
           onClick={() => {
@@ -289,7 +289,7 @@ const AcademicLibrary = () => {
 
       {/* Stats Cards */}
       <div className="grid grid-cols-4 gap-4">
-        <Card className="bg-white border-gray-200">
+        <Card className="bg-slate-900 border-white/10">
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
@@ -300,7 +300,7 @@ const AcademicLibrary = () => {
             </div>
           </CardContent>
         </Card>
-        <Card className="bg-white border-gray-200">
+        <Card className="bg-slate-900 border-white/10">
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
@@ -311,7 +311,7 @@ const AcademicLibrary = () => {
             </div>
           </CardContent>
         </Card>
-        <Card className="bg-white border-gray-200">
+        <Card className="bg-slate-900 border-white/10">
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
@@ -322,7 +322,7 @@ const AcademicLibrary = () => {
             </div>
           </CardContent>
         </Card>
-        <Card className="bg-white border-gray-200">
+        <Card className="bg-slate-900 border-white/10">
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
@@ -339,7 +339,7 @@ const AcademicLibrary = () => {
       <div className="grid grid-cols-12 gap-6">
         {/* Folders Sidebar */}
         <div className="col-span-3">
-          <Card className="bg-white border-gray-200">
+          <Card className="bg-slate-900 border-white/10">
             <CardHeader>
               <CardTitle className="text-white flex items-center gap-2">
                 <Folder className="w-5 h-5 text-yellow-400" />
@@ -348,9 +348,9 @@ const AcademicLibrary = () => {
             </CardHeader>
             <CardContent className="space-y-2">
               {loading && folders.length === 0 ? (
-                <p className="text-gray-500 text-sm text-center py-4">Loading...</p>
+                <p className="text-slate-400 text-sm text-center py-4">Loading...</p>
               ) : folders.length === 0 ? (
-                <p className="text-gray-500 text-sm text-center py-4">No folders yet. Create one to get started!</p>
+                <p className="text-slate-400 text-sm text-center py-4">No folders yet. Create one to get started!</p>
               ) : (
                 folders.map((folder) => (
                   <div
@@ -359,7 +359,7 @@ const AcademicLibrary = () => {
                     className={`${
                       selectedFolder?.id === folder.id 
                         ? getFolderColor(folder.color) 
-                        : 'bg-white border-gray-200'
+                        : 'bg-white border-white/10'
                     } border rounded-lg p-3 cursor-pointer hover:bg-white transition-all group`}
                   >
                     <div className="flex items-center justify-between">
@@ -414,13 +414,13 @@ const AcademicLibrary = () => {
         {/* Documents Area */}
         <div className="col-span-9">
           {selectedFolder ? (
-            <Card className="bg-white border-gray-200">
+            <Card className="bg-slate-900 border-white/10">
               <CardHeader>
                 <div className="flex items-center justify-between">
                   <CardTitle className="text-white flex items-center gap-2">
                     <Folder className="w-5 h-5 text-yellow-400" />
                     {selectedFolder.folder_name}
-                    <Badge className="bg-white text-white border-gray-300">
+                    <Badge className="bg-slate-900 text-white border-white/20">
                       {documents.length} documents
                     </Badge>
                   </CardTitle>
@@ -431,14 +431,14 @@ const AcademicLibrary = () => {
                         placeholder="Search documents..."
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
-                        className="pl-10 bg-gray-50 border-gray-200 text-white w-64"
+                        className="pl-10 bg-slate-800 border-white/10 text-white w-64"
                       />
                     </div>
                     <Button
                       size="sm"
                       variant="outline"
                       onClick={() => setViewMode(viewMode === 'grid' ? 'list' : 'grid')}
-                      className="border-gray-200"
+                      className="border-white/10"
                     >
                       {viewMode === 'grid' ? <List className="w-4 h-4" /> : <Grid className="w-4 h-4" />}
                     </Button>
@@ -461,7 +461,7 @@ const AcademicLibrary = () => {
                 ) : filteredDocuments.length === 0 ? (
                   <div className="text-center py-12">
                     <FileText className="w-16 h-16 text-slate-600 mx-auto mb-4" />
-                    <p className="text-gray-500">No documents in this folder yet.</p>
+                    <p className="text-slate-400">No documents in this folder yet.</p>
                     <Button
                       onClick={() => {
                         setNewDocument({ ...newDocument, folder_id: selectedFolder.id });
@@ -482,7 +482,7 @@ const AcademicLibrary = () => {
                         return (
                           <div
                             key={doc.id}
-                            className="bg-white border border-gray-200 rounded-lg p-4 hover:bg-white transition-all group"
+                            className="bg-slate-900 border border-white/10 rounded-lg p-4 hover:bg-white transition-all group"
                           >
                             <div className="flex items-start justify-between mb-3">
                               <div className={`${
@@ -524,7 +524,7 @@ const AcademicLibrary = () => {
                         return (
                           <div
                             key={doc.id}
-                            className="bg-white border border-gray-200 rounded-lg p-3 hover:bg-white transition-all flex items-center justify-between group"
+                            className="bg-slate-900 border border-white/10 rounded-lg p-3 hover:bg-white transition-all flex items-center justify-between group"
                           >
                             <div className="flex items-center gap-3 flex-1">
                               <div className={`${
@@ -539,7 +539,7 @@ const AcademicLibrary = () => {
                                 <h4 className="font-semibold text-white text-sm mb-1">{doc.document_name}</h4>
                                 <p className="text-xs text-slate-400">{doc.description}</p>
                               </div>
-                              <Badge className="bg-white text-white border-gray-300">
+                              <Badge className="bg-slate-900 text-white border-white/20">
                                 {doc.document_type}
                               </Badge>
                               <span className="text-xs text-slate-500">{(doc.file_size / 1024).toFixed(1)} KB</span>
@@ -570,11 +570,11 @@ const AcademicLibrary = () => {
               </CardContent>
             </Card>
           ) : (
-            <Card className="bg-white border-gray-200">
+            <Card className="bg-slate-900 border-white/10">
               <CardContent className="py-24 text-center">
                 <Folder className="w-24 h-24 text-slate-600 mx-auto mb-4" />
                 <h3 className="text-xl font-semibold text-white mb-2">Select a folder to view documents</h3>
-                <p className="text-gray-500 mb-6">Choose a folder from the left sidebar or create a new one</p>
+                <p className="text-slate-400 mb-6">Choose a folder from the left sidebar or create a new one</p>
                 <Button
                   onClick={() => {
                     setEditingFolder(null);
@@ -594,7 +594,7 @@ const AcademicLibrary = () => {
 
       {/* Create/Edit Folder Modal */}
       <Dialog open={folderModalOpen} onOpenChange={setFolderModalOpen}>
-        <DialogContent className="bg-white border-gray-200">
+        <DialogContent className="bg-slate-900 border-white/10">
           <DialogHeader>
             <DialogTitle className="text-white">
               {editingFolder ? 'Edit Folder' : 'Create New Folder'}
@@ -609,7 +609,7 @@ const AcademicLibrary = () => {
                   onChange={(e) => setNewFolder({ ...newFolder, folder_name: e.target.value })}
                   placeholder="e.g., Fire Safety Training"
                   required
-                  className="bg-gray-50 border-gray-200 text-white"
+                  className="bg-slate-800 border-white/10 text-white"
                 />
               </div>
               <div>
@@ -618,17 +618,17 @@ const AcademicLibrary = () => {
                   value={newFolder.description}
                   onChange={(e) => setNewFolder({ ...newFolder, description: e.target.value })}
                   placeholder="Brief description of this folder's contents"
-                  className="bg-gray-50 border-gray-200 text-white"
+                  className="bg-slate-800 border-white/10 text-white"
                   rows={3}
                 />
               </div>
               <div>
                 <Label className="text-white">Color</Label>
                 <Select value={newFolder.color} onValueChange={(val) => setNewFolder({ ...newFolder, color: val })}>
-                  <SelectTrigger className="bg-gray-50 border-gray-200 text-white">
+                  <SelectTrigger className="bg-slate-800 border-white/10 text-white">
                     <SelectValue />
                   </SelectTrigger>
-                  <SelectContent className="bg-gray-50 border-gray-200">
+                  <SelectContent className="bg-slate-800 border-white/10">
                     <SelectItem value="blue">Blue</SelectItem>
                     <SelectItem value="green">Green</SelectItem>
                     <SelectItem value="purple">Purple</SelectItem>
@@ -653,7 +653,7 @@ const AcademicLibrary = () => {
 
       {/* Add Document Modal */}
       <Dialog open={documentModalOpen} onOpenChange={setDocumentModalOpen}>
-        <DialogContent className="bg-white border-gray-200 max-w-2xl">
+        <DialogContent className="bg-slate-900 border-white/10 max-w-2xl">
           <DialogHeader>
             <DialogTitle className="text-white">Add Document</DialogTitle>
           </DialogHeader>
@@ -682,7 +682,7 @@ const AcademicLibrary = () => {
                   onChange={(e) => setNewDocument({ ...newDocument, document_name: e.target.value })}
                   placeholder="e.g., Fire Safety Guidelines"
                   required
-                  className="bg-gray-50 border-gray-200 text-white"
+                  className="bg-slate-800 border-white/10 text-white"
                 />
               </div>
               
@@ -692,7 +692,7 @@ const AcademicLibrary = () => {
                   value={newDocument.description}
                   onChange={(e) => setNewDocument({ ...newDocument, description: e.target.value })}
                   placeholder="Brief description of this document"
-                  className="bg-gray-50 border-gray-200 text-white"
+                  className="bg-slate-800 border-white/10 text-white"
                   rows={3}
                 />
               </div>
@@ -704,10 +704,10 @@ const AcademicLibrary = () => {
                     value={newDocument.access_level} 
                     onValueChange={(val) => setNewDocument({ ...newDocument, access_level: val })}
                   >
-                    <SelectTrigger className="bg-gray-50 border-gray-200 text-white">
+                    <SelectTrigger className="bg-slate-800 border-white/10 text-white">
                       <SelectValue />
                     </SelectTrigger>
-                    <SelectContent className="bg-gray-50 border-gray-200">
+                    <SelectContent className="bg-slate-800 border-white/10">
                       <SelectItem value="All Trainers">All Trainers</SelectItem>
                       <SelectItem value="Selected Trainers">Selected Trainers</SelectItem>
                       <SelectItem value="Course Specific">Course Specific</SelectItem>
@@ -720,7 +720,7 @@ const AcademicLibrary = () => {
                     value={newDocument.tags}
                     onChange={(e) => setNewDocument({ ...newDocument, tags: e.target.value })}
                     placeholder="e.g., fire safety, emergency"
-                    className="bg-gray-50 border-gray-200 text-white"
+                    className="bg-slate-800 border-white/10 text-white"
                   />
                 </div>
               </div>

@@ -110,7 +110,7 @@ const DuplicateManagement = () => {
             <AlertTriangle className="w-6 h-6 text-orange-400" />
             Duplicate Alert Management
           </h2>
-          <p className="text-gray-500 mt-1">
+          <p className="text-slate-400 mt-1">
             Review and resolve potential duplicate lead submissions
           </p>
         </div>
@@ -124,10 +124,10 @@ const DuplicateManagement = () => {
           Loading alerts...
         </div>
       ) : alerts.length === 0 ? (
-        <div className="text-center py-12 bg-white rounded-lg border border-gray-300">
+        <div className="text-center py-12 bg-slate-900 rounded-lg border border-white/20">
           <Check className="w-12 h-12 text-green-400 mx-auto mb-3" />
-          <p className="text-gray-700 text-lg">All Clear!</p>
-          <p className="text-gray-500 mt-1">No duplicate alerts to review</p>
+          <p className="text-slate-300 text-lg">All Clear!</p>
+          <p className="text-slate-400 mt-1">No duplicate alerts to review</p>
         </div>
       ) : (
         <div className="space-y-4">
@@ -143,7 +143,7 @@ const DuplicateManagement = () => {
             return (
               <div
                 key={alert.id}
-                className="bg-white rounded-lg p-4 border border-gray-300 hover:border-orange-400/50 transition-all"
+                className="bg-slate-900 rounded-lg p-4 border border-white/20 hover:border-orange-400/50 transition-all"
               >
                 <div className="flex items-start justify-between">
                   <div className="flex-1">
@@ -168,19 +168,19 @@ const DuplicateManagement = () => {
                       <p className="text-white font-semibold text-lg mb-2">{newLeadData?.company_name || 'Unknown Company'}</p>
                       <div className="grid grid-cols-2 gap-3 text-sm">
                         <div>
-                          <span className="text-gray-500">Contact:</span>
+                          <span className="text-slate-400">Contact:</span>
                           <span className="text-slate-200 ml-2">{newLeadData?.contact_person || 'N/A'}</span>
                         </div>
                         <div>
-                          <span className="text-gray-500">Mobile:</span>
+                          <span className="text-slate-400">Mobile:</span>
                           <span className="text-slate-200 ml-2">{newLeadData?.contact_mobile || 'N/A'}</span>
                         </div>
                         <div>
-                          <span className="text-gray-500">Course:</span>
+                          <span className="text-slate-400">Course:</span>
                           <span className="text-slate-200 ml-2">{newLeadData?.course_name || 'N/A'}</span>
                         </div>
                         <div>
-                          <span className="text-gray-500">Value:</span>
+                          <span className="text-slate-400">Value:</span>
                           <span className="text-green-400 ml-2 font-semibold">
                             {newLeadData?.lead_value ? `${newLeadData.lead_value} AED` : 'N/A'}
                           </span>
@@ -190,7 +190,7 @@ const DuplicateManagement = () => {
 
                     <div className="bg-blue-500/10 rounded p-3 border border-blue-400/30 mb-2">
                       <p className="text-xs text-orange-300 font-semibold">⚠️ Detection Reason:</p>
-                      <p className="text-gray-700 text-sm mt-1">{alert.detection_reason || 'Similar lead detected in system'}</p>
+                      <p className="text-slate-300 text-sm mt-1">{alert.detection_reason || 'Similar lead detected in system'}</p>
                     </div>
 
                     <p className="text-xs text-slate-500">
@@ -233,7 +233,7 @@ const DuplicateManagement = () => {
 
       {/* Comparison Modal */}
       <Dialog open={comparisonOpen} onOpenChange={setComparisonOpen}>
-        <DialogContent className="max-w-6xl max-h-[90vh] overflow-y-auto bg-white border-gray-300">
+        <DialogContent className="max-w-6xl max-h-[90vh] overflow-y-auto bg-slate-900 border-white/20">
           <DialogHeader>
             <DialogTitle className="text-2xl text-white flex items-center gap-2">
               <AlertTriangle className="w-6 h-6 text-orange-400" />
@@ -266,31 +266,31 @@ const DuplicateManagement = () => {
                   <h3 className="text-lg font-semibold text-white mb-4">Lead A (Original)</h3>
                   <div className="space-y-3 text-sm">
                     <div>
-                      <p className="text-gray-500">Company</p>
+                      <p className="text-slate-400">Company</p>
                       <p className="text-white font-medium">{leadA.company_name || leadA.client_name}</p>
                     </div>
                     <div>
-                      <p className="text-gray-500">Contact</p>
+                      <p className="text-slate-400">Contact</p>
                       <p className="text-white">{leadA.contact_person || 'N/A'}</p>
                     </div>
                     <div>
-                      <p className="text-gray-500">Phone</p>
+                      <p className="text-slate-400">Phone</p>
                       <p className="text-white">{leadA.phone || leadA.contact_mobile || 'N/A'}</p>
                     </div>
                     <div>
-                      <p className="text-gray-500">Email</p>
+                      <p className="text-slate-400">Email</p>
                       <p className="text-white">{leadA.contact_email || 'N/A'}</p>
                     </div>
                     <div>
-                      <p className="text-gray-500">Submitted By</p>
+                      <p className="text-slate-400">Submitted By</p>
                       <p className="text-white">{leadA.created_by_name || leadA.assigned_to_name}</p>
                     </div>
                     <div>
-                      <p className="text-gray-500">Date</p>
+                      <p className="text-slate-400">Date</p>
                       <p className="text-white">{new Date(leadA.created_at).toLocaleString()}</p>
                     </div>
                     <div>
-                      <p className="text-gray-500">Status</p>
+                      <p className="text-slate-400">Status</p>
                       <Badge className="bg-blue-500/20 text-blue-300">{leadA.status}</Badge>
                     </div>
                   </div>
@@ -300,31 +300,31 @@ const DuplicateManagement = () => {
                   <h3 className="text-lg font-semibold text-white mb-4">Lead B (New Submission)</h3>
                   <div className="space-y-3 text-sm">
                     <div>
-                      <p className="text-gray-500">Company</p>
+                      <p className="text-slate-400">Company</p>
                       <p className="text-white font-medium">{leadB.company_name || leadB.client_name}</p>
                     </div>
                     <div>
-                      <p className="text-gray-500">Contact</p>
+                      <p className="text-slate-400">Contact</p>
                       <p className="text-white">{leadB.contact_person || 'N/A'}</p>
                     </div>
                     <div>
-                      <p className="text-gray-500">Phone</p>
+                      <p className="text-slate-400">Phone</p>
                       <p className="text-white">{leadB.phone || leadB.contact_mobile || 'N/A'}</p>
                     </div>
                     <div>
-                      <p className="text-gray-500">Email</p>
+                      <p className="text-slate-400">Email</p>
                       <p className="text-white">{leadB.contact_email || 'N/A'}</p>
                     </div>
                     <div>
-                      <p className="text-gray-500">Submitted By</p>
+                      <p className="text-slate-400">Submitted By</p>
                       <p className="text-white">{leadB.created_by_name || leadB.assigned_to_name}</p>
                     </div>
                     <div>
-                      <p className="text-gray-500">Date</p>
+                      <p className="text-slate-400">Date</p>
                       <p className="text-white">{new Date(leadB.created_at).toLocaleString()}</p>
                     </div>
                     <div>
-                      <p className="text-gray-500">Status</p>
+                      <p className="text-slate-400">Status</p>
                       <Badge className="bg-orange-500/20 text-orange-300">{leadB.status}</Badge>
                     </div>
                   </div>
@@ -332,7 +332,7 @@ const DuplicateManagement = () => {
               </div>
 
               {/* Action Buttons */}
-              <div className="grid grid-cols-2 gap-4 pt-4 border-t border-gray-300">
+              <div className="grid grid-cols-2 gap-4 pt-4 border-t border-white/20">
                 <Button
                   onClick={handleMerge}
                   className="bg-green-600 hover:bg-green-700 h-auto py-4"
@@ -370,7 +370,7 @@ const DuplicateManagement = () => {
                 <Button
                   onClick={() => setComparisonOpen(false)}
                   variant="outline"
-                  className="border-gray-300 text-white hover:bg-white h-auto py-4"
+                  className="border-white/20 text-white hover:bg-white h-auto py-4"
                 >
                   <div className="text-left">
                     <div className="font-semibold">Review Later</div>

@@ -190,15 +190,15 @@ const AcademicCalendar = () => {
       </div>
 
       {/* Course Filter */}
-      <div className="bg-white backdrop-blur-sm rounded-xl border border-gray-300 p-4">
+      <div className="bg-slate-900 backdrop-blur-sm rounded-xl border border-white/20 p-4">
         <div className="flex items-center gap-4">
           <BookOpen className="w-5 h-5 text-blue-400" />
           <label className="text-sm text-gray-300 font-semibold">Filter by Course:</label>
           <Select value={selectedCourse} onValueChange={setSelectedCourse}>
-            <SelectTrigger className="w-80 bg-gray-50 border-gray-300 text-white">
+            <SelectTrigger className="w-80 bg-slate-800 border-white/20 text-white">
               <SelectValue />
             </SelectTrigger>
-            <SelectContent className="bg-[#1a2f4d] border-gray-300 text-white">
+            <SelectContent className="bg-[#1a2f4d] border-white/20 text-white">
               <SelectItem value="all">All Courses</SelectItem>
               {courses.map(course => (
                 <SelectItem key={course.id} value={course.id}>
@@ -216,14 +216,14 @@ const AcademicCalendar = () => {
       </div>
 
       {/* Calendar */}
-      <div className="bg-white backdrop-blur-sm rounded-xl border border-gray-300 p-6">
+      <div className="bg-slate-900 backdrop-blur-sm rounded-xl border border-white/20 p-6">
         {/* Calendar Header */}
         <div className="flex justify-between items-center mb-6">
           <Button
             onClick={() => navigateMonth(-1)}
             variant="outline"
             size="sm"
-            className="border-gray-300 hover:bg-white"
+            className="border-white/20 hover:bg-white"
           >
             <ChevronLeft className="w-4 h-4" />
           </Button>
@@ -236,7 +236,7 @@ const AcademicCalendar = () => {
             onClick={() => navigateMonth(1)}
             variant="outline"
             size="sm"
-            className="border-gray-300 hover:bg-white"
+            className="border-white/20 hover:bg-white"
           >
             <ChevronRight className="w-4 h-4" />
           </Button>
@@ -263,7 +263,7 @@ const AcademicCalendar = () => {
             const availabilityStatus = getAvailabilityStatus(date);
             
             let bgColor = 'bg-white';
-            let borderColor = 'border-gray-300';
+            let borderColor = 'border-white/20';
             let textColor = 'text-slate-400';
             
             if (isAvailable) {
@@ -302,7 +302,7 @@ const AcademicCalendar = () => {
                       {bookingsOnDate.slice(0, 2).map((booking, idx) => (
                         <div 
                           key={idx} 
-                          className="text-xs bg-white rounded px-1 py-0.5 truncate"
+                          className="text-xs bg-slate-900 rounded px-1 py-0.5 truncate"
                           title={`${booking.course_name} - ${booking.company_name}`}
                         >
                           {booking.course_name || 'Training'}
@@ -330,7 +330,7 @@ const AcademicCalendar = () => {
       </div>
 
       {/* Legend */}
-      <div className="bg-white backdrop-blur-sm rounded-xl border border-gray-300 p-4">
+      <div className="bg-slate-900 backdrop-blur-sm rounded-xl border border-white/20 p-4">
         <h4 className="text-sm font-semibold text-white mb-3">Legend:</h4>
         <div className="grid grid-cols-4 gap-4">
           <div className="flex items-center gap-2">
@@ -346,7 +346,7 @@ const AcademicCalendar = () => {
             <span className="text-sm text-gray-700">Fully Booked</span>
           </div>
           <div className="flex items-center gap-2">
-            <div className="w-4 h-4 bg-white border border-gray-300 rounded"></div>
+            <div className="w-4 h-4 bg-slate-900 border border-white/20 rounded"></div>
             <span className="text-sm text-gray-700">Past Date</span>
           </div>
         </div>

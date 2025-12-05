@@ -37,13 +37,13 @@ const TrainerSchedule = () => {
       case 'upcoming': return 'bg-blue-500/20 text-blue-400 border-blue-400/50';
       case 'in-progress': return 'bg-yellow-500/20 text-yellow-400 border-yellow-400/50';
       case 'completed': return 'bg-green-500/20 text-green-400 border-green-400/50';
-      default: return 'bg-gray-500/20 text-gray-400 border-gray-400/50';
+      default: return 'bg-slate-8000/20 text-gray-400 border-gray-400/50';
     }
   };
 
   if (loading) {
     return (
-      <Card className="bg-white border-gray-200">
+      <Card className="bg-slate-900 border-white/10">
         <CardContent className="p-6">
           <p className="text-gray-400 text-center">Loading schedule...</p>
         </CardContent>
@@ -53,7 +53,7 @@ const TrainerSchedule = () => {
 
   return (
     <div className="space-y-6">
-      <Card className="bg-white border-gray-200">
+      <Card className="bg-slate-900 border-white/10">
         <CardHeader>
           <CardTitle className="text-white text-xl">My Training Schedule</CardTitle>
           <p className="text-sm text-gray-400 mt-1">View your upcoming training sessions</p>
@@ -68,7 +68,7 @@ const TrainerSchedule = () => {
           ) : (
             <div className="space-y-4">
               {schedule.map((session) => (
-                <Card key={session.id} className="bg-white border-gray-200 hover:bg-white transition-all">
+                <Card key={session.id} className="bg-slate-900 border-white/10 hover:bg-white transition-all">
                   <CardContent className="p-4">
                     <div className="flex items-start justify-between mb-3">
                       <div>

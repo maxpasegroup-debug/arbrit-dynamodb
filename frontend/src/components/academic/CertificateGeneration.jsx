@@ -132,7 +132,7 @@ const CertificateGeneration = () => {
 
   if (loading) {
     return (
-      <Card className="bg-white border-gray-200">
+      <Card className="bg-slate-900 border-white/10">
         <CardContent className="p-6">
           <p className="text-gray-400 text-center">Loading...</p>
         </CardContent>
@@ -144,7 +144,7 @@ const CertificateGeneration = () => {
     <>
       <div className="space-y-6">
         {/* Generate Certificates Section */}
-        <Card className="bg-white border-gray-200">
+        <Card className="bg-slate-900 border-white/10">
           <CardHeader className="flex flex-row items-center justify-between">
             <div>
               <CardTitle className="text-white text-xl">Generate Certificates</CardTitle>
@@ -161,7 +161,7 @@ const CertificateGeneration = () => {
         </Card>
 
         {/* Generated Certificates List */}
-        <Card className="bg-white border-gray-200">
+        <Card className="bg-slate-900 border-white/10">
           <CardHeader>
             <CardTitle className="text-white text-xl">Generated Certificates</CardTitle>
             <p className="text-sm text-gray-400 mt-1">View and manage issued certificates</p>
@@ -175,7 +175,7 @@ const CertificateGeneration = () => {
             ) : (
               <div className="space-y-3">
                 {generatedCerts.map((cert) => (
-                  <Card key={cert.id} className="bg-white border-gray-200 hover:bg-white transition-all">
+                  <Card key={cert.id} className="bg-slate-900 border-white/10 hover:bg-white transition-all">
                     <CardContent className="p-4">
                       <div className="flex items-center justify-between">
                         <div className="flex-1 grid grid-cols-4 gap-3 text-sm">
@@ -220,7 +220,7 @@ const CertificateGeneration = () => {
 
       {/* Generate Certificate Modal */}
       <Dialog open={showGenerateModal} onOpenChange={setShowGenerateModal}>
-        <DialogContent className="bg-[#1a2f4d] border-gray-300 text-white max-w-3xl max-h-[90vh] overflow-y-auto">
+        <DialogContent className="bg-[#1a2f4d] border-white/20 text-white max-w-3xl max-h-[90vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle className="text-white flex items-center gap-2">
               <Award className="w-5 h-5 text-yellow-400" />
@@ -232,10 +232,10 @@ const CertificateGeneration = () => {
             <div>
               <Label className="text-gray-300">Select Work Order</Label>
               <Select value={selectedWO} onValueChange={handleWOSelect}>
-                <SelectTrigger className="bg-white border-gray-300 text-white mt-2">
+                <SelectTrigger className="bg-slate-900 border-white/20 text-white mt-2">
                   <SelectValue placeholder="Choose work order" />
                 </SelectTrigger>
-                <SelectContent className="bg-[#1a2f4d] border-gray-300">
+                <SelectContent className="bg-[#1a2f4d] border-white/20">
                   {workOrders.map(wo => (
                     <SelectItem key={wo.id} value={wo.id} className="text-white hover:bg-white">
                       {wo.wo_ref_no} - {wo.client_name} ({wo.course})
@@ -252,7 +252,7 @@ const CertificateGeneration = () => {
                 <Input
                   value={courseName}
                   onChange={(e) => setCourseName(e.target.value)}
-                  className="bg-white border-gray-300 text-white mt-2"
+                  className="bg-slate-900 border-white/20 text-white mt-2"
                 />
               </div>
               <div>
@@ -260,7 +260,7 @@ const CertificateGeneration = () => {
                 <Input
                   value={trainerName}
                   onChange={(e) => setTrainerName(e.target.value)}
-                  className="bg-white border-gray-300 text-white mt-2"
+                  className="bg-slate-900 border-white/20 text-white mt-2"
                 />
               </div>
             </div>
@@ -273,7 +273,7 @@ const CertificateGeneration = () => {
                   type="date"
                   value={trainingDate}
                   onChange={(e) => setTrainingDate(e.target.value)}
-                  className="bg-white border-gray-300 text-white mt-2"
+                  className="bg-slate-900 border-white/20 text-white mt-2"
                 />
               </div>
               <div>
@@ -282,7 +282,7 @@ const CertificateGeneration = () => {
                   type="date"
                   value={completionDate}
                   onChange={(e) => setCompletionDate(e.target.value)}
-                  className="bg-white border-gray-300 text-white mt-2"
+                  className="bg-slate-900 border-white/20 text-white mt-2"
                 />
               </div>
               <div>
@@ -291,7 +291,7 @@ const CertificateGeneration = () => {
                   type="date"
                   value={expiryDate}
                   onChange={(e) => setExpiryDate(e.target.value)}
-                  className="bg-white border-gray-300 text-white mt-2"
+                  className="bg-slate-900 border-white/20 text-white mt-2"
                 />
               </div>
             </div>
@@ -311,19 +311,19 @@ const CertificateGeneration = () => {
               </div>
               <div className="space-y-2 max-h-64 overflow-y-auto">
                 {candidates.map((candidate, index) => (
-                  <div key={index} className="flex items-center gap-2 bg-white p-3 rounded">
+                  <div key={index} className="flex items-center gap-2 bg-slate-900 p-3 rounded">
                     <span className="text-gray-400 text-sm w-8">{index + 1}.</span>
                     <Input
                       placeholder="Candidate Name"
                       value={candidate.name}
                       onChange={(e) => updateCandidate(index, 'name', e.target.value)}
-                      className="bg-white border-gray-300 text-white flex-1"
+                      className="bg-slate-900 border-white/20 text-white flex-1"
                     />
                     <Input
                       placeholder="Grade (Optional)"
                       value={candidate.grade}
                       onChange={(e) => updateCandidate(index, 'grade', e.target.value)}
-                      className="bg-white border-gray-300 text-white w-32"
+                      className="bg-slate-900 border-white/20 text-white w-32"
                     />
                     {candidates.length > 1 && (
                       <Button
@@ -347,7 +347,7 @@ const CertificateGeneration = () => {
                 setShowGenerateModal(false);
                 resetForm();
               }}
-              className="border-gray-300 text-white hover:bg-white"
+              className="border-white/20 text-white hover:bg-white"
             >
               Cancel
             </Button>

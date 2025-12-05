@@ -173,8 +173,8 @@ const TrainerCalendar = ({ onBookingRequest, selectedCourse, leadData }) => {
         className={`h-24 p-2 rounded-lg border transition-all ${
           isToday ? 'border-blue-400 bg-blue-500/20' :
           hasBookings ? 'border-orange-400/50 bg-orange-500/10 hover:bg-orange-500/20' :
-          isAvailable ? 'border-gray-300 bg-white hover:bg-white hover:border-gray-300' :
-          'border-white/5 bg-gray-50/30 opacity-50 cursor-not-allowed'
+          isAvailable ? 'border-white/20 bg-slate-900 hover:bg-white hover:border-white/20' :
+          'border-white/5 bg-slate-800/30 opacity-50 cursor-not-allowed'
         }`}
       >
         <div className="text-left h-full flex flex-col">
@@ -191,7 +191,7 @@ const TrainerCalendar = ({ onBookingRequest, selectedCourse, leadData }) => {
                 </div>
               ))}
               {dayBookings.length > 2 && (
-                <Badge className="text-xs bg-gray-100 text-gray-700 w-full">
+                <Badge className="text-xs bg-slate-700 text-gray-700 w-full">
                   +{dayBookings.length - 2} more
                 </Badge>
               )}
@@ -209,7 +209,7 @@ const TrainerCalendar = ({ onBookingRequest, selectedCourse, leadData }) => {
 
   return (
     <div className="space-y-6">
-      <div className="bg-white0 backdrop-blur-sm rounded-xl border border-gray-300 p-6">
+      <div className="bg-slate-9000 backdrop-blur-sm rounded-xl border border-white/20 p-6">
         <div className="flex justify-between items-center mb-6">
           <h3 className="text-xl font-semibold text-gray-900 flex items-center gap-2">
             <Calendar className="w-5 h-5" />
@@ -220,7 +220,7 @@ const TrainerCalendar = ({ onBookingRequest, selectedCourse, leadData }) => {
               variant="outline"
               size="sm"
               onClick={() => setCurrentMonth(new Date(currentMonth.setMonth(currentMonth.getMonth() - 1)))}
-              className="border-gray-300 hover:bg-white"
+              className="border-white/20 hover:bg-white"
             >
               <ChevronLeft className="w-4 h-4" />
             </Button>
@@ -229,7 +229,7 @@ const TrainerCalendar = ({ onBookingRequest, selectedCourse, leadData }) => {
               variant="outline"
               size="sm"
               onClick={() => setCurrentMonth(new Date(currentMonth.setMonth(currentMonth.getMonth() + 1)))}
-              className="border-gray-300 hover:bg-white"
+              className="border-white/20 hover:bg-white"
             >
               <ChevronRight className="w-4 h-4" />
             </Button>
@@ -249,7 +249,7 @@ const TrainerCalendar = ({ onBookingRequest, selectedCourse, leadData }) => {
               </Badge>
             ))}
             {trainers.length > 5 && (
-              <Badge className="bg-gray-100 text-gray-700 text-xs">
+              <Badge className="bg-slate-700 text-gray-700 text-xs">
                 +{trainers.length - 5} more
               </Badge>
             )}
@@ -266,20 +266,20 @@ const TrainerCalendar = ({ onBookingRequest, selectedCourse, leadData }) => {
           {days}
         </div>
 
-        <div className="mt-4 p-3 bg-gray-50/50 rounded-lg border border-gray-300">
+        <div className="mt-4 p-3 bg-slate-800/50 rounded-lg border border-white/20">
           <p className="text-xs text-gray-700 font-semibold mb-2">Calendar Legend:</p>
           <div className="grid grid-cols-3 gap-2 text-xs">
             <div className="flex items-center gap-2">
               <div className="w-3 h-3 rounded bg-green-500/20 border border-green-400/50"></div>
-              <span className="text-gray-500">Available dates</span>
+              <span className="text-slate-400">Available dates</span>
             </div>
             <div className="flex items-center gap-2">
               <div className="w-3 h-3 rounded bg-orange-500/20 border border-orange-400/50"></div>
-              <span className="text-gray-500">Scheduled trainings</span>
+              <span className="text-slate-400">Scheduled trainings</span>
             </div>
             <div className="flex items-center gap-2">
               <div className="w-3 h-3 rounded bg-blue-500/20 border border-blue-400"></div>
-              <span className="text-gray-500">Today</span>
+              <span className="text-slate-400">Today</span>
             </div>
           </div>
           <p className="text-xs text-slate-400 mt-2">
@@ -290,10 +290,10 @@ const TrainerCalendar = ({ onBookingRequest, selectedCourse, leadData }) => {
 
       {/* Booking Request Dialog */}
       <Dialog open={bookingDialogOpen} onOpenChange={setBookingDialogOpen}>
-        <DialogContent className="max-w-md bg-white border-gray-300">
+        <DialogContent className="max-w-md bg-slate-900 border-white/20">
           <DialogHeader>
-            <DialogTitle className="text-gray-900">Request Training Booking</DialogTitle>
-            <DialogDescription className="text-gray-500">
+            <DialogTitle className="text-slate-100">Request Training Booking</DialogTitle>
+            <DialogDescription className="text-slate-400">
               Submit booking request for Academic Head approval
             </DialogDescription>
           </DialogHeader>
@@ -311,11 +311,11 @@ const TrainerCalendar = ({ onBookingRequest, selectedCourse, leadData }) => {
             </div>
 
             <div>
-              <Label className="text-gray-700">Select Course *</Label>
+              <Label className="text-slate-300">Select Course *</Label>
               <select
                 value={bookingData.course_id}
                 onChange={(e) => handleCourseChange(e.target.value)}
-                className="w-full bg-gray-50 border border-gray-300 text-gray-900 rounded-md p-2"
+                className="w-full bg-slate-800 border border-white/20 text-gray-900 rounded-md p-2"
                 required
               >
                 <option value="">Choose a course</option>
@@ -328,43 +328,43 @@ const TrainerCalendar = ({ onBookingRequest, selectedCourse, leadData }) => {
             </div>
 
             <div>
-              <Label className="text-gray-700">Company/Client Name *</Label>
+              <Label className="text-slate-300">Company/Client Name *</Label>
               <Input
                 value={bookingData.company_name}
                 onChange={(e) => setBookingData({ ...bookingData, company_name: e.target.value })}
-                className="bg-gray-50 border-gray-300 text-gray-900"
+                className="bg-slate-800 border-white/20 text-gray-900"
                 placeholder="Enter company name"
               />
             </div>
 
             <div>
-              <Label className="text-gray-700">Contact Person *</Label>
+              <Label className="text-slate-300">Contact Person *</Label>
               <Input
                 value={bookingData.contact_person}
                 onChange={(e) => setBookingData({ ...bookingData, contact_person: e.target.value })}
-                className="bg-gray-50 border-gray-300 text-gray-900"
+                className="bg-slate-800 border-white/20 text-gray-900"
                 placeholder="Enter contact name"
               />
             </div>
 
             <div>
-              <Label className="text-gray-700">Contact Mobile *</Label>
+              <Label className="text-slate-300">Contact Mobile *</Label>
               <Input
                 value={bookingData.contact_mobile}
                 onChange={(e) => setBookingData({ ...bookingData, contact_mobile: e.target.value })}
-                className="bg-gray-50 border-gray-300 text-gray-900"
+                className="bg-slate-800 border-white/20 text-gray-900"
                 placeholder="971xxxxxxxxx"
               />
             </div>
 
             <div>
-              <Label className="text-gray-700">Number of Trainees</Label>
+              <Label className="text-slate-300">Number of Trainees</Label>
               <Input
                 type="number"
                 min="1"
                 value={bookingData.num_trainees}
                 onChange={(e) => setBookingData({ ...bookingData, num_trainees: parseInt(e.target.value) || 1 })}
-                className="bg-gray-50 border-gray-300 text-gray-900"
+                className="bg-slate-800 border-white/20 text-gray-900"
               />
             </div>
 
@@ -372,7 +372,7 @@ const TrainerCalendar = ({ onBookingRequest, selectedCourse, leadData }) => {
               <Button
                 variant="outline"
                 onClick={() => setBookingDialogOpen(false)}
-                className="flex-1 border-gray-300 hover:bg-white"
+                className="flex-1 border-white/20 hover:bg-white"
               >
                 Cancel
               </Button>

@@ -41,13 +41,13 @@ const MyTasksHistory = () => {
       case 'DELIVERED': return 'bg-green-500/20 text-green-400 border-green-400/50';
       case 'FAILED': return 'bg-red-500/20 text-red-400 border-red-400/50';
       case 'RETURNED': return 'bg-orange-500/20 text-orange-400 border-orange-400/50';
-      default: return 'bg-gray-500/20 text-gray-400 border-gray-400/50';
+      default: return 'bg-slate-8000/20 text-gray-400 border-gray-400/50';
     }
   };
 
   if (loading) {
     return (
-      <Card className="bg-white border-gray-200">
+      <Card className="bg-slate-900 border-white/10">
         <CardContent className="p-6">
           <p className="text-gray-400 text-center">Loading history...</p>
         </CardContent>
@@ -56,7 +56,7 @@ const MyTasksHistory = () => {
   }
 
   return (
-    <Card className="bg-white border-gray-200">
+    <Card className="bg-slate-900 border-white/10">
       <CardHeader>
         <CardTitle className="text-white text-xl">Task History</CardTitle>
         <p className="text-sm text-gray-400 mt-1">Your completed delivery tasks</p>
@@ -70,7 +70,7 @@ const MyTasksHistory = () => {
         ) : (
           <div className="space-y-3">
             {tasks.map((task) => (
-              <Card key={task.id} className="bg-white border-gray-200">
+              <Card key={task.id} className="bg-slate-900 border-white/10">
                 <CardContent className="p-4">
                   <div className="flex items-center justify-between mb-2">
                     <h4 className="text-white font-semibold">{task.client_name}</h4>
@@ -95,7 +95,7 @@ const MyTasksHistory = () => {
                     </div>
                   </div>
                   {task.remarks && (
-                    <div className="mt-3 p-2 bg-white rounded text-sm">
+                    <div className="mt-3 p-2 bg-slate-900 rounded text-sm">
                       <p className="text-xs text-gray-400">Notes:</p>
                       <p className="text-gray-300">{task.remarks}</p>
                     </div>

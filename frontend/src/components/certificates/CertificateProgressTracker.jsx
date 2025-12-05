@@ -15,7 +15,7 @@ const CertificateProgressTracker = ({ currentStatus, deliveryNotePhoto, onViewDe
   return (
     <div className="relative py-4">
       {/* Progress Line */}
-      <div className="absolute top-8 left-0 right-0 h-1 bg-gray-100">
+      <div className="absolute top-8 left-0 right-0 h-1 bg-slate-700">
         <div
           className={`h-full transition-all duration-500 ${
             isDelivered 
@@ -45,7 +45,7 @@ const CertificateProgressTracker = ({ currentStatus, deliveryNotePhoto, onViewDe
                     ? isDelivered
                       ? 'bg-green-500 border-green-400 shadow-lg shadow-green-500/50'
                       : 'bg-blue-500 border-blue-400 shadow-lg shadow-blue-500/50 animate-pulse'
-                    : 'bg-gray-100 border-slate-600'
+                    : 'bg-slate-700 border-slate-600'
                 }`}
               >
                 {isCompleted || (isCurrent && isDelivered) ? (

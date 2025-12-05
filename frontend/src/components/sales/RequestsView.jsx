@@ -49,7 +49,7 @@ const RequestsView = () => {
   return (
     <div className="space-y-6">
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-        <TabsList className="grid w-full grid-cols-2 bg-white border border-gray-300">
+        <TabsList className="grid w-full grid-cols-2 bg-slate-900 border border-white/20">
           <TabsTrigger 
             value="trainer"
             className="data-[state=active]:bg-blue-500/20 data-[state=active]:text-white text-gray-300"
@@ -67,10 +67,10 @@ const RequestsView = () => {
         </TabsList>
 
         <TabsContent value="trainer" className="mt-6">
-          <div className="bg-white backdrop-blur-sm rounded-xl border border-gray-300 overflow-hidden">
+          <div className="bg-slate-900 backdrop-blur-sm rounded-xl border border-white/20 overflow-hidden">
             <Table>
               <TableHeader>
-                <TableRow className="border-gray-300">
+                <TableRow className="border-white/20">
                   <TableHead className="text-gray-300">Client Name</TableHead>
                   <TableHead className="text-gray-300">Course Type</TableHead>
                   <TableHead className="text-gray-300">Preferred Date</TableHead>
@@ -88,7 +88,7 @@ const RequestsView = () => {
                   </TableRow>
                 ) : (
                   trainerRequests.map((req) => (
-                    <TableRow key={req.id} className="border-gray-300">
+                    <TableRow key={req.id} className="border-white/20">
                       <TableCell className="text-white font-medium">{req.client_name}</TableCell>
                       <TableCell className="text-gray-300">{req.course_type || req.course}</TableCell>
                       <TableCell className="text-gray-300 text-sm">
@@ -108,10 +108,10 @@ const RequestsView = () => {
         </TabsContent>
 
         <TabsContent value="invoice" className="mt-6">
-          <div className="bg-white backdrop-blur-sm rounded-xl border border-gray-300 overflow-hidden">
+          <div className="bg-slate-900 backdrop-blur-sm rounded-xl border border-white/20 overflow-hidden">
             <Table>
               <TableHeader>
-                <TableRow className="border-gray-300">
+                <TableRow className="border-white/20">
                   <TableHead className="text-gray-300">Client Name</TableHead>
                   <TableHead className="text-gray-300">Quotation Ref</TableHead>
                   <TableHead className="text-gray-300">Amount</TableHead>
@@ -129,7 +129,7 @@ const RequestsView = () => {
                   </TableRow>
                 ) : (
                   invoiceRequests.map((req) => (
-                    <TableRow key={req.id} className="border-gray-300">
+                    <TableRow key={req.id} className="border-white/20">
                       <TableCell className="text-white font-medium">{req.client_name}</TableCell>
                       <TableCell className="text-gray-300">{req.quotation_ref || req.quotation_id || '-'}</TableCell>
                       <TableCell className="text-gray-300">

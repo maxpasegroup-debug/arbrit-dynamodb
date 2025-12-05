@@ -110,7 +110,7 @@ const CertificatesReady = () => {
 
   if (loading) {
     return (
-      <Card className="bg-white border-gray-200">
+      <Card className="bg-slate-900 border-white/10">
         <CardContent className="p-6">
           <p className="text-gray-400 text-center">Loading certificates...</p>
         </CardContent>
@@ -120,7 +120,7 @@ const CertificatesReady = () => {
 
   return (
     <>
-      <Card className="bg-white border-gray-200">
+      <Card className="bg-slate-900 border-white/10">
         <CardHeader className="flex flex-row items-center justify-between">
           <div>
             <CardTitle className="text-white text-xl">Certificates Ready for Dispatch</CardTitle>
@@ -128,10 +128,10 @@ const CertificatesReady = () => {
           </div>
           <div className="flex items-center gap-3">
             <Select value={selectedBranch} onValueChange={setSelectedBranch}>
-              <SelectTrigger className="bg-white border-gray-300 text-white w-40">
+              <SelectTrigger className="bg-slate-900 border-white/20 text-white w-40">
                 <SelectValue />
               </SelectTrigger>
-              <SelectContent className="bg-[#1a2f4d] border-gray-300">
+              <SelectContent className="bg-[#1a2f4d] border-white/20">
                 <SelectItem value="All" className="text-white hover:bg-white">All Branches</SelectItem>
                 <SelectItem value="Dubai" className="text-white hover:bg-white">Dubai</SelectItem>
                 <SelectItem value="Abu Dhabi" className="text-white hover:bg-white">Abu Dhabi</SelectItem>
@@ -159,7 +159,7 @@ const CertificatesReady = () => {
           ) : (
             <div className="space-y-3">
               {certificates.map((cert) => (
-                <Card key={cert.id} className="bg-white border-gray-200 hover:bg-white transition-all">
+                <Card key={cert.id} className="bg-slate-900 border-white/10 hover:bg-white transition-all">
                   <CardContent className="p-4 flex items-center gap-4">
                     <Checkbox
                       checked={selectedCerts.includes(cert.id)}
@@ -193,7 +193,7 @@ const CertificatesReady = () => {
       </Card>
 
       <Dialog open={showAssignModal} onOpenChange={setShowAssignModal}>
-        <DialogContent className="bg-[#1a2f4d] border-gray-300 text-white">
+        <DialogContent className="bg-[#1a2f4d] border-white/20 text-white">
           <DialogHeader>
             <DialogTitle className="text-white">Assign Delivery Tasks</DialogTitle>
           </DialogHeader>
@@ -204,10 +204,10 @@ const CertificatesReady = () => {
             <div>
               <Label className="text-gray-300">Assign to Dispatch Assistant</Label>
               <Select value={selectedAssistant} onValueChange={setSelectedAssistant}>
-                <SelectTrigger className="bg-white border-gray-300 text-white mt-2">
+                <SelectTrigger className="bg-slate-900 border-white/20 text-white mt-2">
                   <SelectValue placeholder="Choose assistant" />
                 </SelectTrigger>
-                <SelectContent className="bg-[#1a2f4d] border-gray-300">
+                <SelectContent className="bg-[#1a2f4d] border-white/20">
                   {assistants.map(assistant => (
                     <SelectItem key={assistant.id} value={assistant.id} className="text-white hover:bg-white">
                       {assistant.name}
@@ -222,7 +222,7 @@ const CertificatesReady = () => {
                 type="date"
                 value={dueDate}
                 onChange={(e) => setDueDate(e.target.value)}
-                className="bg-white border-gray-300 text-white mt-2"
+                className="bg-slate-900 border-white/20 text-white mt-2"
               />
             </div>
             <div>
@@ -230,7 +230,7 @@ const CertificatesReady = () => {
               <Textarea
                 value={remarks}
                 onChange={(e) => setRemarks(e.target.value)}
-                className="bg-white border-gray-300 text-white mt-2"
+                className="bg-slate-900 border-white/20 text-white mt-2"
                 placeholder="Add any notes or special instructions..."
               />
             </div>
@@ -239,7 +239,7 @@ const CertificatesReady = () => {
             <Button
               variant="outline"
               onClick={() => setShowAssignModal(false)}
-              className="border-gray-300 text-white hover:bg-white"
+              className="border-white/20 text-white hover:bg-white"
             >
               Cancel
             </Button>

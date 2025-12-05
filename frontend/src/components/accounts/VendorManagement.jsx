@@ -161,16 +161,16 @@ const VendorManagement = () => {
       </div>
 
       <Tabs defaultValue="vendors" className="space-y-4">
-        <TabsList className="bg-white border border-gray-300">
+        <TabsList className="bg-slate-900 border border-white/20">
           <TabsTrigger value="vendors">Vendors ({vendors.length})</TabsTrigger>
           <TabsTrigger value="payments">Payments History</TabsTrigger>
         </TabsList>
 
         <TabsContent value="vendors">
-          <div className="bg-white backdrop-blur-sm rounded-xl border border-gray-200 overflow-hidden">
+          <div className="bg-slate-900 backdrop-blur-sm rounded-xl border border-white/10 overflow-hidden">
             <Table>
               <TableHeader>
-                <TableRow className="border-gray-200">
+                <TableRow className="border-white/10">
                   <TableHead className="text-gray-300">Vendor Name</TableHead>
                   <TableHead className="text-gray-300">Type</TableHead>
                   <TableHead className="text-gray-300">Contact</TableHead>
@@ -189,7 +189,7 @@ const VendorManagement = () => {
                   </TableRow>
                 ) : (
                   vendors.map((vendor) => (
-                    <TableRow key={vendor.id} className="border-gray-200">
+                    <TableRow key={vendor.id} className="border-white/10">
                       <TableCell className="text-white font-medium">{vendor.vendor_name}</TableCell>
                       <TableCell className="text-white">{vendor.vendor_type}</TableCell>
                       <TableCell className="text-gray-300">{vendor.email || vendor.phone || '-'}</TableCell>
@@ -224,10 +224,10 @@ const VendorManagement = () => {
         </TabsContent>
 
         <TabsContent value="payments">
-          <div className="bg-white backdrop-blur-sm rounded-xl border border-gray-200 overflow-hidden">
+          <div className="bg-slate-900 backdrop-blur-sm rounded-xl border border-white/10 overflow-hidden">
             <Table>
               <TableHeader>
-                <TableRow className="border-gray-200">
+                <TableRow className="border-white/10">
                   <TableHead className="text-gray-300">Date</TableHead>
                   <TableHead className="text-gray-300">Vendor</TableHead>
                   <TableHead className="text-gray-300">Purpose</TableHead>
@@ -246,7 +246,7 @@ const VendorManagement = () => {
                   </TableRow>
                 ) : (
                   payments.map((payment) => (
-                    <TableRow key={payment.id} className="border-gray-200">
+                    <TableRow key={payment.id} className="border-white/10">
                       <TableCell className="text-white">
                         {new Date(payment.payment_date).toLocaleDateString()}
                       </TableCell>
@@ -267,7 +267,7 @@ const VendorManagement = () => {
 
       {/* Add Vendor Dialog */}
       <Dialog open={showVendorDialog} onOpenChange={setShowVendorDialog}>
-        <DialogContent className="bg-white border-slate-700 text-white max-w-2xl">
+        <DialogContent className="bg-slate-900 border-slate-700 text-white max-w-2xl">
           <DialogHeader>
             <DialogTitle className="text-xl flex items-center gap-2">
               <Truck className="w-6 h-6 text-blue-400" />
@@ -282,16 +282,16 @@ const VendorManagement = () => {
                 <Input
                   value={vendorForm.vendor_name}
                   onChange={(e) => setVendorForm({...vendorForm, vendor_name: e.target.value})}
-                  className="bg-gray-50 border-slate-600 text-white"
+                  className="bg-slate-800 border-slate-600 text-white"
                 />
               </div>
               <div className="space-y-2">
                 <Label>Vendor Type *</Label>
                 <Select value={vendorForm.vendor_type} onValueChange={(val) => setVendorForm({...vendorForm, vendor_type: val})}>
-                  <SelectTrigger className="bg-gray-50 border-slate-600 text-white">
+                  <SelectTrigger className="bg-slate-800 border-slate-600 text-white">
                     <SelectValue />
                   </SelectTrigger>
-                  <SelectContent className="bg-gray-50 border-slate-600 text-white">
+                  <SelectContent className="bg-slate-800 border-slate-600 text-white">
                     <SelectItem value="Trainer">Trainer</SelectItem>
                     <SelectItem value="Supplier">Supplier</SelectItem>
                     <SelectItem value="Service Provider">Service Provider</SelectItem>
@@ -307,7 +307,7 @@ const VendorManagement = () => {
                   type="email"
                   value={vendorForm.email}
                   onChange={(e) => setVendorForm({...vendorForm, email: e.target.value})}
-                  className="bg-gray-50 border-slate-600 text-white"
+                  className="bg-slate-800 border-slate-600 text-white"
                 />
               </div>
               <div className="space-y-2">
@@ -315,7 +315,7 @@ const VendorManagement = () => {
                 <Input
                   value={vendorForm.phone}
                   onChange={(e) => setVendorForm({...vendorForm, phone: e.target.value})}
-                  className="bg-gray-50 border-slate-600 text-white"
+                  className="bg-slate-800 border-slate-600 text-white"
                 />
               </div>
             </div>
@@ -325,7 +325,7 @@ const VendorManagement = () => {
               <Textarea
                 value={vendorForm.bank_details}
                 onChange={(e) => setVendorForm({...vendorForm, bank_details: e.target.value})}
-                className="bg-gray-50 border-slate-600 text-white"
+                className="bg-slate-800 border-slate-600 text-white"
                 placeholder="Bank name, account number, IBAN..."
               />
             </div>
@@ -337,16 +337,16 @@ const VendorManagement = () => {
                   type="number"
                   value={vendorForm.payment_terms}
                   onChange={(e) => setVendorForm({...vendorForm, payment_terms: e.target.value})}
-                  className="bg-gray-50 border-slate-600 text-white"
+                  className="bg-slate-800 border-slate-600 text-white"
                 />
               </div>
               <div className="space-y-2">
                 <Label>Currency</Label>
                 <Select value={vendorForm.currency} onValueChange={(val) => setVendorForm({...vendorForm, currency: val})}>
-                  <SelectTrigger className="bg-gray-50 border-slate-600 text-white">
+                  <SelectTrigger className="bg-slate-800 border-slate-600 text-white">
                     <SelectValue />
                   </SelectTrigger>
-                  <SelectContent className="bg-gray-50 border-slate-600 text-white">
+                  <SelectContent className="bg-slate-800 border-slate-600 text-white">
                     <SelectItem value="AED">AED</SelectItem>
                     <SelectItem value="USD">USD</SelectItem>
                     <SelectItem value="SAR">SAR</SelectItem>
@@ -360,13 +360,13 @@ const VendorManagement = () => {
               <Textarea
                 value={vendorForm.notes}
                 onChange={(e) => setVendorForm({...vendorForm, notes: e.target.value})}
-                className="bg-gray-50 border-slate-600 text-white"
+                className="bg-slate-800 border-slate-600 text-white"
               />
             </div>
           </div>
 
           <DialogFooter>
-            <Button variant="outline" onClick={() => setShowVendorDialog(false)} className="border-slate-600 text-white hover:bg-gray-50">
+            <Button variant="outline" onClick={() => setShowVendorDialog(false)} className="border-slate-600 text-white hover:bg-slate-800">
               Cancel
             </Button>
             <Button onClick={submitVendor} disabled={loading || !vendorForm.vendor_name} className="bg-blue-500 hover:bg-blue-600">
@@ -378,7 +378,7 @@ const VendorManagement = () => {
 
       {/* Payment Dialog */}
       <Dialog open={showPaymentDialog} onOpenChange={setShowPaymentDialog}>
-        <DialogContent className="bg-white border-slate-700 text-white max-w-2xl">
+        <DialogContent className="bg-slate-900 border-slate-700 text-white max-w-2xl">
           <DialogHeader>
             <DialogTitle className="text-xl flex items-center gap-2">
               <DollarSign className="w-6 h-6 text-green-400" />
@@ -388,7 +388,7 @@ const VendorManagement = () => {
 
           {selectedVendor && (
             <div className="space-y-4 my-4">
-              <div className="p-4 bg-white rounded-lg border border-gray-200">
+              <div className="p-4 bg-slate-900 rounded-lg border border-white/10">
                 <p className="text-sm text-gray-400">Vendor: <span className="text-white font-medium">{selectedVendor.vendor_name}</span></p>
                 <p className="text-sm text-gray-400 mt-1">Type: <span className="text-white">{selectedVendor.vendor_type}</span></p>
               </div>
@@ -401,7 +401,7 @@ const VendorManagement = () => {
                     step="0.01"
                     value={paymentForm.amount}
                     onChange={(e) => setPaymentForm({...paymentForm, amount: e.target.value})}
-                    className="bg-gray-50 border-slate-600 text-white"
+                    className="bg-slate-800 border-slate-600 text-white"
                   />
                 </div>
                 <div className="space-y-2">
@@ -410,7 +410,7 @@ const VendorManagement = () => {
                     type="date"
                     value={paymentForm.payment_date}
                     onChange={(e) => setPaymentForm({...paymentForm, payment_date: e.target.value})}
-                    className="bg-gray-50 border-slate-600 text-white"
+                    className="bg-slate-800 border-slate-600 text-white"
                   />
                 </div>
               </div>
@@ -419,10 +419,10 @@ const VendorManagement = () => {
                 <div className="space-y-2">
                   <Label>Payment Method *</Label>
                   <Select value={paymentForm.payment_method} onValueChange={(val) => setPaymentForm({...paymentForm, payment_method: val})}>
-                    <SelectTrigger className="bg-gray-50 border-slate-600 text-white">
+                    <SelectTrigger className="bg-slate-800 border-slate-600 text-white">
                       <SelectValue />
                     </SelectTrigger>
-                    <SelectContent className="bg-gray-50 border-slate-600 text-white">
+                    <SelectContent className="bg-slate-800 border-slate-600 text-white">
                       <SelectItem value="Bank Transfer">Bank Transfer</SelectItem>
                       <SelectItem value="Cash">Cash</SelectItem>
                       <SelectItem value="Cheque">Cheque</SelectItem>
@@ -432,10 +432,10 @@ const VendorManagement = () => {
                 <div className="space-y-2">
                   <Label>Purpose *</Label>
                   <Select value={paymentForm.purpose} onValueChange={(val) => setPaymentForm({...paymentForm, purpose: val})}>
-                    <SelectTrigger className="bg-gray-50 border-slate-600 text-white">
+                    <SelectTrigger className="bg-slate-800 border-slate-600 text-white">
                       <SelectValue />
                     </SelectTrigger>
-                    <SelectContent className="bg-gray-50 border-slate-600 text-white">
+                    <SelectContent className="bg-slate-800 border-slate-600 text-white">
                       <SelectItem value="Training Fee">Training Fee</SelectItem>
                       <SelectItem value="Supplies">Supplies</SelectItem>
                       <SelectItem value="Services">Services</SelectItem>
@@ -450,7 +450,7 @@ const VendorManagement = () => {
                 <Input
                   value={paymentForm.reference_number}
                   onChange={(e) => setPaymentForm({...paymentForm, reference_number: e.target.value})}
-                  className="bg-gray-50 border-slate-600 text-white"
+                  className="bg-slate-800 border-slate-600 text-white"
                   placeholder="Transaction ID, Cheque number..."
                 />
               </div>
@@ -460,14 +460,14 @@ const VendorManagement = () => {
                 <Textarea
                   value={paymentForm.notes}
                   onChange={(e) => setPaymentForm({...paymentForm, notes: e.target.value})}
-                  className="bg-gray-50 border-slate-600 text-white"
+                  className="bg-slate-800 border-slate-600 text-white"
                 />
               </div>
             </div>
           )}
 
           <DialogFooter>
-            <Button variant="outline" onClick={() => setShowPaymentDialog(false)} className="border-slate-600 text-white hover:bg-gray-50">
+            <Button variant="outline" onClick={() => setShowPaymentDialog(false)} className="border-slate-600 text-white hover:bg-slate-800">
               Cancel
             </Button>
             <Button onClick={submitPayment} disabled={loading || !paymentForm.amount} className="bg-green-500 hover:bg-green-600">

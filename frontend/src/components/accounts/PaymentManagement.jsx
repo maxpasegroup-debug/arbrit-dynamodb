@@ -196,7 +196,7 @@ const PaymentManagement = () => {
       </div>
 
       {/* Approved Invoices - Ready to Send */}
-      <div className="bg-white backdrop-blur-sm border border-gray-200 rounded-xl p-6">
+      <div className="bg-slate-900 backdrop-blur-sm border border-white/10 rounded-xl p-6">
         <h3 className="text-xl font-semibold text-white mb-4 flex items-center gap-2">
           <CheckCircle className="w-5 h-5 text-green-400" />
           Approved Invoices - Ready to Send ({approvedInvoices.filter(i => !i.sent_to_client).length})
@@ -237,7 +237,7 @@ const PaymentManagement = () => {
       </div>
 
       {/* Pending Payments */}
-      <div className="bg-white backdrop-blur-sm border border-gray-200 rounded-xl p-6">
+      <div className="bg-slate-900 backdrop-blur-sm border border-white/10 rounded-xl p-6">
         <h3 className="text-xl font-semibold text-white mb-4 flex items-center gap-2">
           <Clock className="w-5 h-5 text-yellow-400" />
           Pending Payments ({pendingPayments.length})
@@ -298,13 +298,13 @@ const PaymentManagement = () => {
 
       {/* Recent Payments */}
       {paymentHistory.length > 0 && (
-        <div className="bg-white backdrop-blur-sm border border-gray-200 rounded-xl p-6">
+        <div className="bg-slate-900 backdrop-blur-sm border border-white/10 rounded-xl p-6">
           <h3 className="text-xl font-semibold text-white mb-4">Recent Payments</h3>
           <div className="space-y-3">
             {paymentHistory.slice(0, 5).map((payment) => (
               <div 
                 key={payment.id}
-                className="bg-white border border-gray-200 rounded-lg p-3 flex items-center justify-between"
+                className="bg-slate-900 border border-white/10 rounded-lg p-3 flex items-center justify-between"
               >
                 <div>
                   <p className="text-white font-medium">{payment.client_name}</p>
@@ -322,7 +322,7 @@ const PaymentManagement = () => {
 
       {/* Send Invoice Dialog */}
       <Dialog open={sendDialogOpen} onOpenChange={setSendDialogOpen}>
-        <DialogContent className="bg-[#1a2f4d] border-gray-200 text-white">
+        <DialogContent className="bg-[#1a2f4d] border-white/10 text-white">
           <DialogHeader>
             <DialogTitle className="text-2xl">Send Invoice to Client</DialogTitle>
             <DialogDescription className="text-gray-400">
@@ -331,7 +331,7 @@ const PaymentManagement = () => {
           </DialogHeader>
           <div className="space-y-4">
             {selectedInvoice && (
-              <div className="bg-white border border-gray-200 rounded-lg p-3">
+              <div className="bg-slate-900 border border-white/10 rounded-lg p-3">
                 <p className="text-sm text-gray-400">Client</p>
                 <p className="text-white font-medium">{selectedInvoice.client_name}</p>
                 <p className="text-sm text-gray-400 mt-2">Amount</p>
@@ -345,7 +345,7 @@ const PaymentManagement = () => {
                 value={invoiceNumber}
                 onChange={(e) => setInvoiceNumber(e.target.value)}
                 placeholder="INV-2025-001"
-                className="bg-white border-gray-200 text-white mt-1"
+                className="bg-slate-900 border-white/10 text-white mt-1"
               />
             </div>
 
@@ -355,17 +355,17 @@ const PaymentManagement = () => {
                 type="date"
                 value={dueDate}
                 onChange={(e) => setDueDate(e.target.value)}
-                className="bg-white border-gray-200 text-white mt-1"
+                className="bg-slate-900 border-white/10 text-white mt-1"
               />
             </div>
 
             <div>
               <Label className="text-gray-400">Send Via</Label>
               <Select value={sentVia} onValueChange={setSentVia}>
-                <SelectTrigger className="bg-white border-gray-200 text-white mt-1">
+                <SelectTrigger className="bg-slate-900 border-white/10 text-white mt-1">
                   <SelectValue />
                 </SelectTrigger>
-                <SelectContent className="bg-[#1a2f4d] border-gray-200">
+                <SelectContent className="bg-[#1a2f4d] border-white/10">
                   <SelectItem value="Email">Email</SelectItem>
                   <SelectItem value="WhatsApp">WhatsApp</SelectItem>
                   <SelectItem value="Courier">Courier</SelectItem>
@@ -379,7 +379,7 @@ const PaymentManagement = () => {
                 variant="outline"
                 onClick={() => setSendDialogOpen(false)}
                 disabled={processing}
-                className="border-gray-300 text-white"
+                className="border-white/20 text-white"
               >
                 Cancel
               </Button>
@@ -397,7 +397,7 @@ const PaymentManagement = () => {
 
       {/* Record Payment Dialog */}
       <Dialog open={paymentDialogOpen} onOpenChange={setPaymentDialogOpen}>
-        <DialogContent className="bg-[#1a2f4d] border-gray-200 text-white max-w-2xl">
+        <DialogContent className="bg-[#1a2f4d] border-white/10 text-white max-w-2xl">
           <DialogHeader>
             <DialogTitle className="text-2xl">Record Payment Received</DialogTitle>
             <DialogDescription className="text-gray-400">
@@ -406,7 +406,7 @@ const PaymentManagement = () => {
           </DialogHeader>
           <div className="space-y-4">
             {selectedInvoice && (
-              <div className="bg-white border border-gray-200 rounded-lg p-3 grid grid-cols-2 gap-4">
+              <div className="bg-slate-900 border border-white/10 rounded-lg p-3 grid grid-cols-2 gap-4">
                 <div>
                   <p className="text-sm text-gray-400">Client</p>
                   <p className="text-white font-medium">{selectedInvoice.client_name}</p>
@@ -426,7 +426,7 @@ const PaymentManagement = () => {
                   step="0.01"
                   value={paymentAmount}
                   onChange={(e) => setPaymentAmount(e.target.value)}
-                  className="bg-white border-gray-200 text-white mt-1"
+                  className="bg-slate-900 border-white/10 text-white mt-1"
                 />
               </div>
               <div>
@@ -435,7 +435,7 @@ const PaymentManagement = () => {
                   type="date"
                   value={paymentDate}
                   onChange={(e) => setPaymentDate(e.target.value)}
-                  className="bg-white border-gray-200 text-white mt-1"
+                  className="bg-slate-900 border-white/10 text-white mt-1"
                 />
               </div>
             </div>
@@ -444,10 +444,10 @@ const PaymentManagement = () => {
               <div>
                 <Label className="text-gray-400">Payment Method *</Label>
                 <Select value={paymentMethod} onValueChange={setPaymentMethod}>
-                  <SelectTrigger className="bg-white border-gray-200 text-white mt-1">
+                  <SelectTrigger className="bg-slate-900 border-white/10 text-white mt-1">
                     <SelectValue />
                   </SelectTrigger>
-                  <SelectContent className="bg-[#1a2f4d] border-gray-200">
+                  <SelectContent className="bg-[#1a2f4d] border-white/10">
                     <SelectItem value="Bank Transfer">Bank Transfer</SelectItem>
                     <SelectItem value="Cash">Cash</SelectItem>
                     <SelectItem value="Cheque">Cheque</SelectItem>
@@ -462,7 +462,7 @@ const PaymentManagement = () => {
                   value={paymentReference}
                   onChange={(e) => setPaymentReference(e.target.value)}
                   placeholder="TXN12345"
-                  className="bg-white border-gray-200 text-white mt-1"
+                  className="bg-slate-900 border-white/10 text-white mt-1"
                 />
               </div>
             </div>
@@ -473,7 +473,7 @@ const PaymentManagement = () => {
                 value={paymentNotes}
                 onChange={(e) => setPaymentNotes(e.target.value)}
                 placeholder="Any additional notes..."
-                className="bg-white border-gray-200 text-white mt-1"
+                className="bg-slate-900 border-white/10 text-white mt-1"
                 rows={3}
               />
             </div>
@@ -483,7 +483,7 @@ const PaymentManagement = () => {
                 variant="outline"
                 onClick={() => setPaymentDialogOpen(false)}
                 disabled={processing}
-                className="border-gray-300 text-white"
+                className="border-white/20 text-white"
               >
                 Cancel
               </Button>
@@ -501,7 +501,7 @@ const PaymentManagement = () => {
 
       {/* View Details Dialog */}
       <Dialog open={viewDialogOpen} onOpenChange={setViewDialogOpen}>
-        <DialogContent className="bg-[#1a2f4d] border-gray-200 text-white max-w-2xl">
+        <DialogContent className="bg-[#1a2f4d] border-white/10 text-white max-w-2xl">
           <DialogHeader>
             <DialogTitle className="text-2xl">Invoice Details</DialogTitle>
           </DialogHeader>
@@ -529,7 +529,7 @@ const PaymentManagement = () => {
               {selectedInvoice.description && (
                 <div>
                   <p className="text-sm text-gray-400 mb-2">Description</p>
-                  <div className="bg-white border border-gray-200 rounded-lg p-3">
+                  <div className="bg-slate-900 border border-white/10 rounded-lg p-3">
                     <p className="text-white">{selectedInvoice.description}</p>
                   </div>
                 </div>

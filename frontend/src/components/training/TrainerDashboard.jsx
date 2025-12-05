@@ -104,7 +104,7 @@ const TrainerDashboard = () => {
         <div className="space-y-4">
           <h3 className="text-xl font-bold text-white">🔴 TODAY'S TRAININGS ({today.length})</h3>
           {today.map(training => (
-            <Card key={training.id} className="bg-white border-red-500/30">
+            <Card key={training.id} className="bg-slate-900 border-red-500/30">
               <CardContent className="p-6">
                 <div className="flex items-start justify-between mb-4">
                   <div className="flex-1">
@@ -131,7 +131,7 @@ const TrainerDashboard = () => {
                     <div className="space-y-2">
                       <div className="flex items-center gap-2">
                         <CheckCircle className="w-4 h-4 text-green-400" />
-                        <span className="text-gray-700 text-sm">Pre-training Preparation</span>
+                        <span className="text-slate-300 text-sm">Pre-training Preparation</span>
                       </div>
                       <div className="flex items-center gap-2">
                         {training.current_day >= 1 ? (
@@ -139,7 +139,7 @@ const TrainerDashboard = () => {
                         ) : (
                           <div className="w-4 h-4 border-2 border-blue-400 rounded-full" />
                         )}
-                        <span className="text-gray-700 text-sm">Day 1 - {training.current_day === 1 ? 'In Progress' : training.current_day > 1 ? 'Completed' : 'Pending'}</span>
+                        <span className="text-slate-300 text-sm">Day 1 - {training.current_day === 1 ? 'In Progress' : training.current_day > 1 ? 'Completed' : 'Pending'}</span>
                       </div>
                     </div>
                   </div>
@@ -182,7 +182,7 @@ const TrainerDashboard = () => {
         <div className="space-y-4">
           <h3 className="text-xl font-bold text-white">🔵 ACTIVE TRAININGS ({active.length})</h3>
           {active.map(training => (
-            <Card key={training.id} className="bg-white border-purple-500/30">
+            <Card key={training.id} className="bg-slate-900 border-purple-500/30">
               <CardContent className="p-6">
                 <div className="flex items-start justify-between">
                   <div className="flex-1">
@@ -197,7 +197,7 @@ const TrainerDashboard = () => {
                         </div>
                         <span className="text-white font-semibold">{training.progress_percentage}%</span>
                       </div>
-                      <p className="text-gray-500 text-sm">{training.progress_stage} (Day {training.current_day}/{training.training_days})</p>
+                      <p className="text-slate-400 text-sm">{training.progress_stage} (Day {training.current_day}/{training.training_days})</p>
                     </div>
                     <div className="flex items-center gap-4 mt-3 text-slate-400 text-sm">
                       <div className="flex items-center gap-2">

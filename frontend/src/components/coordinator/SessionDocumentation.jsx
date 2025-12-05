@@ -35,7 +35,7 @@ const SessionDocumentation = () => {
 
   if (loading) {
     return (
-      <Card className="bg-white border-gray-200">
+      <Card className="bg-slate-900 border-white/10">
         <CardContent className="p-6">
           <p className="text-gray-400 text-center">Loading documents...</p>
         </CardContent>
@@ -45,7 +45,7 @@ const SessionDocumentation = () => {
 
   return (
     <div className="space-y-6">
-      <Card className="bg-white border-gray-200">
+      <Card className="bg-slate-900 border-white/10">
         <CardHeader className="flex flex-row items-center justify-between">
           <div>
             <CardTitle className="text-white text-xl">Session Documentation</CardTitle>
@@ -66,7 +66,7 @@ const SessionDocumentation = () => {
           ) : (
             <div className="space-y-3">
               {documents.map((doc) => (
-                <Card key={doc.id} className="bg-white border-gray-200 hover:bg-white transition-all">
+                <Card key={doc.id} className="bg-slate-900 border-white/10 hover:bg-white transition-all">
                   <CardContent className="p-4 flex items-center justify-between">
                     <div className="flex items-center gap-4">
                       <div className="bg-blue-500/20 p-3 rounded-lg">

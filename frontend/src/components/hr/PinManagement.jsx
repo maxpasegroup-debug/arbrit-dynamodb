@@ -162,7 +162,7 @@ const PinManagement = () => {
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
-        <p className="text-gray-500">Loading PIN management data...</p>
+        <p className="text-slate-400">Loading PIN management data...</p>
       </div>
     );
   }
@@ -175,12 +175,12 @@ const PinManagement = () => {
           <Key className="w-8 h-8 text-amber-400" />
           PIN Management System
         </h2>
-        <p className="text-gray-500 mt-1">Manage and reset user PINs securely</p>
+        <p className="text-slate-400 mt-1">Manage and reset user PINs securely</p>
       </div>
 
       {/* Stats Cards */}
       <div className="grid grid-cols-3 gap-6">
-        <Card className="bg-white border-blue-500/30">
+        <Card className="bg-slate-900 border-blue-500/30">
           <CardHeader>
             <CardTitle className="text-white text-sm">Total Users</CardTitle>
           </CardHeader>
@@ -189,7 +189,7 @@ const PinManagement = () => {
           </CardContent>
         </Card>
 
-        <Card className="bg-white border-green-500/30">
+        <Card className="bg-slate-900 border-green-500/30">
           <CardHeader>
             <CardTitle className="text-white text-sm">Custom PINs</CardTitle>
           </CardHeader>
@@ -200,7 +200,7 @@ const PinManagement = () => {
           </CardContent>
         </Card>
 
-        <Card className="bg-white border-yellow-500/30">
+        <Card className="bg-slate-900 border-yellow-500/30">
           <CardHeader>
             <CardTitle className="text-white text-sm">Temporary PINs</CardTitle>
           </CardHeader>
@@ -221,13 +221,13 @@ const PinManagement = () => {
             placeholder="Search by name, mobile, or role..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="pl-10 bg-gray-50 border-gray-200 text-white"
+            className="pl-10 bg-slate-800 border-white/10 text-white"
           />
         </div>
         <Button
           onClick={fetchAllPinStatus}
           variant="outline"
-          className="border-gray-300 text-white hover:bg-white"
+          className="border-white/20 text-white hover:bg-white"
         >
           <RefreshCw className="w-4 h-4 mr-2" />
           Refresh
@@ -235,11 +235,11 @@ const PinManagement = () => {
       </div>
 
       {/* Users Table */}
-      <Card className="bg-white border-gray-200">
+      <Card className="bg-slate-900 border-white/10">
         <CardContent className="p-0">
           <div className="overflow-x-auto">
             <table className="w-full">
-              <thead className="bg-white border-b border-gray-200">
+              <thead className="bg-slate-900 border-b border-white/10">
                 <tr>
                   <th className="px-6 py-4 text-left text-sm font-semibold text-white">User</th>
                   <th className="px-6 py-4 text-left text-sm font-semibold text-white">Mobile</th>
@@ -313,7 +313,7 @@ const PinManagement = () => {
               </div>
               Reset PIN
             </DialogTitle>
-            <DialogDescription className="text-gray-500">
+            <DialogDescription className="text-slate-400">
               Reset PIN for {selectedUser?.name}
             </DialogDescription>
           </DialogHeader>
@@ -325,7 +325,7 @@ const PinManagement = () => {
                 <User className="w-5 h-5 text-blue-400" />
                 <div>
                   <p className="text-white font-semibold">{selectedUser?.name}</p>
-                  <p className="text-gray-500 text-sm">{selectedUser?.role} • {selectedUser?.mobile}</p>
+                  <p className="text-slate-400 text-sm">{selectedUser?.role} • {selectedUser?.mobile}</p>
                 </div>
               </div>
             </div>
@@ -342,7 +342,7 @@ const PinManagement = () => {
                 value={newPin}
                 onChange={(e) => setNewPin(e.target.value.replace(/\D/g, ''))}
                 placeholder="Enter new PIN"
-                className="bg-gray-50 border-gray-200 text-white text-lg tracking-widest text-center"
+                className="bg-slate-800 border-white/10 text-white text-lg tracking-widest text-center"
                 autoFocus
               />
             </div>
@@ -359,7 +359,7 @@ const PinManagement = () => {
                 value={confirmPin}
                 onChange={(e) => setConfirmPin(e.target.value.replace(/\D/g, ''))}
                 placeholder="Confirm new PIN"
-                className="bg-gray-50 border-gray-200 text-white text-lg tracking-widest text-center"
+                className="bg-slate-800 border-white/10 text-white text-lg tracking-widest text-center"
               />
             </div>
 
@@ -370,11 +370,11 @@ const PinManagement = () => {
                 id="temporary"
                 checked={isTemporary}
                 onChange={(e) => setIsTemporary(e.target.checked)}
-                className="w-5 h-5 rounded border-gray-300"
+                className="w-5 h-5 rounded border-white/20"
               />
               <label htmlFor="temporary" className="text-white text-sm flex-1 cursor-pointer">
                 <span className="font-semibold">Mark as Temporary</span>
-                <p className="text-gray-500 text-xs mt-1">User will be required to change PIN on next login</p>
+                <p className="text-slate-400 text-xs mt-1">User will be required to change PIN on next login</p>
               </label>
             </div>
 
@@ -389,7 +389,7 @@ const PinManagement = () => {
                   setConfirmPin('');
                   setIsTemporary(false);
                 }}
-                className="flex-1 border-gray-300 text-white hover:bg-white"
+                className="flex-1 border-white/20 text-white hover:bg-white"
                 disabled={resetting}
               >
                 Cancel

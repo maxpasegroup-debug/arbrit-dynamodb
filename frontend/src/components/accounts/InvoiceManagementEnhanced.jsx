@@ -241,10 +241,10 @@ const InvoiceManagementEnhanced = () => {
             </div>
           </div>
 
-          <div className="bg-white backdrop-blur-sm rounded-lg border border-gray-200 overflow-hidden">
+          <div className="bg-slate-900 backdrop-blur-sm rounded-lg border border-white/10 overflow-hidden">
             <Table>
               <TableHeader>
-                <TableRow className="border-gray-200">
+                <TableRow className="border-white/10">
                   <TableHead className="text-gray-300">Client Name</TableHead>
                   <TableHead className="text-gray-300">Lead ID</TableHead>
                   <TableHead className="text-gray-300">Description</TableHead>
@@ -256,7 +256,7 @@ const InvoiceManagementEnhanced = () => {
               </TableHeader>
               <TableBody>
                 {pendingInvoices.map((invoice) => (
-                  <TableRow key={invoice.id} className="border-gray-200">
+                  <TableRow key={invoice.id} className="border-white/10">
                     <TableCell className="text-white font-medium">{invoice.client_name}</TableCell>
                     <TableCell className="text-gray-300 font-mono text-sm">{invoice.lead_id?.substring(0, 8)}...</TableCell>
                     <TableCell className="text-gray-300 max-w-xs truncate">{invoice.description}</TableCell>
@@ -277,10 +277,10 @@ const InvoiceManagementEnhanced = () => {
       )}
 
       {/* Invoices Table */}
-      <div className="bg-white backdrop-blur-sm rounded-xl border border-gray-200 overflow-hidden">
+      <div className="bg-slate-900 backdrop-blur-sm rounded-xl border border-white/10 overflow-hidden">
         <Table>
           <TableHeader>
-            <TableRow className="border-gray-200">
+            <TableRow className="border-white/10">
               <TableHead className="text-gray-300">Invoice #</TableHead>
               <TableHead className="text-gray-300">Client Name</TableHead>
               <TableHead className="text-gray-300">Amount</TableHead>
@@ -298,7 +298,7 @@ const InvoiceManagementEnhanced = () => {
               </TableRow>
             ) : (
               invoices.map((invoice) => (
-                <TableRow key={invoice.id} className="border-gray-200">
+                <TableRow key={invoice.id} className="border-white/10">
                   <TableCell className="text-white font-medium">{invoice.invoice_number}</TableCell>
                   <TableCell className="text-white">{invoice.client_name}</TableCell>
                   <TableCell className="text-white">{invoice.currency || 'AED'} {parseFloat(invoice.amount || 0).toLocaleString()}</TableCell>
@@ -346,7 +346,7 @@ const InvoiceManagementEnhanced = () => {
           setShowEditDialog(false);
         }
       }}>
-        <DialogContent className="bg-white border-slate-700 text-white max-w-2xl">
+        <DialogContent className="bg-slate-900 border-slate-700 text-white max-w-2xl">
           <DialogHeader>
             <DialogTitle className="text-xl">
               {showCreateDialog ? 'Create New Invoice' : 'Edit Invoice'}
@@ -360,7 +360,7 @@ const InvoiceManagementEnhanced = () => {
                 id="invoice_number"
                 value={formData.invoice_number}
                 onChange={(e) => setFormData({...formData, invoice_number: e.target.value})}
-                className="bg-gray-50 border-slate-600 text-white"
+                className="bg-slate-800 border-slate-600 text-white"
                 placeholder="INV-2025-001"
               />
             </div>
@@ -371,7 +371,7 @@ const InvoiceManagementEnhanced = () => {
                 id="client_name"
                 value={formData.client_name}
                 onChange={(e) => setFormData({...formData, client_name: e.target.value})}
-                className="bg-gray-50 border-slate-600 text-white"
+                className="bg-slate-800 border-slate-600 text-white"
               />
             </div>
 
@@ -384,7 +384,7 @@ const InvoiceManagementEnhanced = () => {
                   step="0.01"
                   value={formData.amount}
                   onChange={(e) => setFormData({...formData, amount: e.target.value})}
-                  className="bg-gray-50 border-slate-600 text-white"
+                  className="bg-slate-800 border-slate-600 text-white"
                   placeholder="Amount before VAT"
                 />
               </div>
@@ -392,10 +392,10 @@ const InvoiceManagementEnhanced = () => {
               <div className="space-y-2">
                 <Label htmlFor="currency">Currency</Label>
                 <Select value={formData.currency || 'AED'} onValueChange={(val) => setFormData({...formData, currency: val})}>
-                  <SelectTrigger className="bg-gray-50 border-slate-600 text-white">
+                  <SelectTrigger className="bg-slate-800 border-slate-600 text-white">
                     <SelectValue />
                   </SelectTrigger>
-                  <SelectContent className="bg-gray-50 border-slate-600 text-white">
+                  <SelectContent className="bg-slate-800 border-slate-600 text-white">
                     <SelectItem value="AED">AED</SelectItem>
                     <SelectItem value="USD">USD</SelectItem>
                     <SelectItem value="SAR">SAR</SelectItem>
@@ -414,7 +414,7 @@ const InvoiceManagementEnhanced = () => {
                   step="0.01"
                   value={formData.vat_rate}
                   onChange={(e) => setFormData({...formData, vat_rate: e.target.value})}
-                  className="bg-gray-50 border-slate-600 text-white"
+                  className="bg-slate-800 border-slate-600 text-white"
                   placeholder="5% UAE VAT"
                 />
               </div>
@@ -426,7 +426,7 @@ const InvoiceManagementEnhanced = () => {
                   type="date"
                   value={formData.due_date}
                   onChange={(e) => setFormData({...formData, due_date: e.target.value})}
-                  className="bg-gray-50 border-slate-600 text-white"
+                  className="bg-slate-800 border-slate-600 text-white"
                 />
               </div>
             </div>
@@ -456,7 +456,7 @@ const InvoiceManagementEnhanced = () => {
                 id="description"
                 value={formData.description}
                 onChange={(e) => setFormData({...formData, description: e.target.value})}
-                className="bg-gray-50 border-slate-600 text-white min-h-[100px]"
+                className="bg-slate-800 border-slate-600 text-white min-h-[100px]"
                 placeholder="Invoice details..."
               />
             </div>
@@ -469,7 +469,7 @@ const InvoiceManagementEnhanced = () => {
                 setShowCreateDialog(false);
                 setShowEditDialog(false);
               }}
-              className="border-slate-600 text-white hover:bg-gray-50"
+              className="border-slate-600 text-white hover:bg-slate-800"
             >
               Cancel
             </Button>
@@ -486,7 +486,7 @@ const InvoiceManagementEnhanced = () => {
 
       {/* Delete Confirmation Dialog */}
       <Dialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog}>
-        <DialogContent className="bg-white border-slate-700 text-white">
+        <DialogContent className="bg-slate-900 border-slate-700 text-white">
           <DialogHeader>
             <DialogTitle className="text-xl flex items-center gap-2">
               <AlertTriangle className="w-6 h-6 text-red-500" />
@@ -500,7 +500,7 @@ const InvoiceManagementEnhanced = () => {
             </DialogDescription>
           </DialogHeader>
 
-          <div className="p-4 bg-white rounded-lg border border-gray-200 my-4">
+          <div className="p-4 bg-slate-900 rounded-lg border border-white/10 my-4">
             <p className="text-sm text-gray-400">
               Invoice: <span className="text-white font-medium">{selectedInvoice?.invoice_number}</span>
             </p>
@@ -516,7 +516,7 @@ const InvoiceManagementEnhanced = () => {
             <Button
               variant="outline"
               onClick={() => setShowDeleteDialog(false)}
-              className="border-slate-600 text-white hover:bg-gray-50"
+              className="border-slate-600 text-white hover:bg-slate-800"
             >
               Cancel
             </Button>

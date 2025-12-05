@@ -71,13 +71,13 @@ const CertificateRequest = () => {
       case 'approved': return 'bg-green-500/20 text-green-400 border-green-400/50';
       case 'pending': return 'bg-yellow-500/20 text-yellow-400 border-yellow-400/50';
       case 'rejected': return 'bg-red-500/20 text-red-400 border-red-400/50';
-      default: return 'bg-gray-500/20 text-gray-400 border-gray-400/50';
+      default: return 'bg-slate-8000/20 text-gray-400 border-gray-400/50';
     }
   };
 
   if (loading) {
     return (
-      <Card className="bg-white border-gray-200">
+      <Card className="bg-slate-900 border-white/10">
         <CardContent className="p-6">
           <p className="text-gray-400 text-center">Loading...</p>
         </CardContent>
@@ -88,7 +88,7 @@ const CertificateRequest = () => {
   return (
     <div className="space-y-6">
       {/* Request New Certificate */}
-      <Card className="bg-white border-gray-200">
+      <Card className="bg-slate-900 border-white/10">
         <CardHeader>
           <CardTitle className="text-white text-xl">Request Certificate</CardTitle>
           <p className="text-sm text-gray-400 mt-1">Request certificates for completed training sessions</p>
@@ -99,10 +99,10 @@ const CertificateRequest = () => {
               Select Completed Session
             </label>
             <Select value={selectedSession} onValueChange={setSelectedSession}>
-              <SelectTrigger className="bg-white border-gray-300 text-white">
+              <SelectTrigger className="bg-slate-900 border-white/20 text-white">
                 <SelectValue placeholder="Choose a session" />
               </SelectTrigger>
-              <SelectContent className="bg-[#1a2f4d] border-gray-300">
+              <SelectContent className="bg-[#1a2f4d] border-white/20">
                 {completedSessions.length === 0 ? (
                   <SelectItem value="no-sessions" disabled>
                     No completed sessions available
@@ -134,7 +134,7 @@ const CertificateRequest = () => {
       </Card>
 
       {/* Certificate Requests History */}
-      <Card className="bg-white border-gray-200">
+      <Card className="bg-slate-900 border-white/10">
         <CardHeader>
           <CardTitle className="text-white text-xl">Certificate Requests History</CardTitle>
           <p className="text-sm text-gray-400 mt-1">Track your certificate requests</p>
@@ -148,7 +148,7 @@ const CertificateRequest = () => {
           ) : (
             <div className="space-y-3">
               {certificateRequests.map((req) => (
-                <Card key={req.id} className="bg-white border-gray-200 hover:bg-white transition-all">
+                <Card key={req.id} className="bg-slate-900 border-white/10 hover:bg-white transition-all">
                   <CardContent className="p-4">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-3">

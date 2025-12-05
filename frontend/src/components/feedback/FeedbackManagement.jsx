@@ -56,7 +56,7 @@ const FeedbackManagement = () => {
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
-        <p className="text-gray-500">Loading feedbacks...</p>
+        <p className="text-slate-400">Loading feedbacks...</p>
       </div>
     );
   }
@@ -69,12 +69,12 @@ const FeedbackManagement = () => {
           <MessageSquare className="w-8 h-8 text-purple-400" />
           Training Feedback & Reviews
         </h2>
-        <p className="text-gray-500 mt-1">Monitor and analyze training feedback from participants</p>
+        <p className="text-slate-400 mt-1">Monitor and analyze training feedback from participants</p>
       </div>
 
       {/* Stats Cards */}
       <div className="grid grid-cols-3 gap-6">
-        <Card className="bg-white border-purple-500/30">
+        <Card className="bg-slate-900 border-purple-500/30">
           <CardHeader>
             <CardTitle className="text-white text-sm">Total Feedbacks</CardTitle>
           </CardHeader>
@@ -83,7 +83,7 @@ const FeedbackManagement = () => {
           </CardContent>
         </Card>
 
-        <Card className="bg-white border-yellow-500/30">
+        <Card className="bg-slate-900 border-yellow-500/30">
           <CardHeader>
             <CardTitle className="text-white text-sm">Average Rating</CardTitle>
           </CardHeader>
@@ -95,7 +95,7 @@ const FeedbackManagement = () => {
           </CardContent>
         </Card>
 
-        <Card className="bg-white border-green-500/30">
+        <Card className="bg-slate-900 border-green-500/30">
           <CardHeader>
             <CardTitle className="text-white text-sm">Positive Reviews</CardTitle>
           </CardHeader>
@@ -111,15 +111,15 @@ const FeedbackManagement = () => {
       {/* Feedback List */}
       <div className="space-y-4">
         {feedbacks.length === 0 ? (
-          <Card className="bg-white border-gray-200">
+          <Card className="bg-slate-900 border-white/10">
             <CardContent className="py-12 text-center">
               <MessageSquare className="w-16 h-16 text-slate-600 mx-auto mb-4" />
-              <p className="text-gray-500 text-lg">No feedback received yet</p>
+              <p className="text-slate-400 text-lg">No feedback received yet</p>
             </CardContent>
           </Card>
         ) : (
           feedbacks.map((feedback, idx) => (
-            <Card key={idx} className="bg-white border-gray-200 hover:bg-white transition-all">
+            <Card key={idx} className="bg-slate-900 border-white/10 hover:bg-white transition-all">
               <CardContent className="p-6">
                 <div className="flex items-start justify-between mb-4">
                   <div className="flex items-center gap-3">
@@ -128,7 +128,7 @@ const FeedbackManagement = () => {
                     </div>
                     <div>
                       <h4 className="text-white font-semibold">{feedback.client_name || 'Anonymous'}</h4>
-                      <p className="text-gray-500 text-sm">{feedback.course_name || 'Training Course'}</p>
+                      <p className="text-slate-400 text-sm">{feedback.course_name || 'Training Course'}</p>
                     </div>
                   </div>
                   <div className="flex items-center gap-2">
@@ -140,7 +140,7 @@ const FeedbackManagement = () => {
                 </div>
                 
                 {feedback.feedback && (
-                  <p className="text-gray-700 mb-3">{feedback.feedback}</p>
+                  <p className="text-slate-300 mb-3">{feedback.feedback}</p>
                 )}
                 
                 <div className="flex items-center gap-4 text-sm text-slate-500">

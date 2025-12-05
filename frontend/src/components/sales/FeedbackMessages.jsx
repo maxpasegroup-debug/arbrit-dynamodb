@@ -64,7 +64,7 @@ const FeedbackMessages = () => {
       case 'client_feedback': return 'bg-purple-500/20 text-purple-400 border-purple-400/30';
       case 'achievement': return 'bg-yellow-500/20 text-yellow-400 border-yellow-400/30';
       case 'reminder': return 'bg-orange-500/20 text-orange-400 border-orange-400/30';
-      default: return 'bg-gray-500/20 text-gray-400 border-gray-400/30';
+      default: return 'bg-slate-8000/20 text-gray-400 border-gray-400/30';
     }
   };
 
@@ -93,7 +93,7 @@ const FeedbackMessages = () => {
           <h3 className="text-xl font-semibold text-white mb-2">
             Messages & Feedback
           </h3>
-          <p className="text-gray-500">
+          <p className="text-slate-400">
             Communication and feedback from higher management
           </p>
         </div>
@@ -164,7 +164,7 @@ const FeedbackMessages = () => {
         {messages.map((message) => (
           <Card 
             key={message.id} 
-            className={`border-gray-300 transition-all ${
+            className={`border-white/20 transition-all ${
               message.read 
                 ? 'bg-white/30' 
                 : 'bg-white/70 border-blue-400/30'
@@ -240,13 +240,13 @@ const FeedbackMessages = () => {
       </div>
 
       {messages.length === 0 && (
-        <Card className="bg-gray-50/30 border-gray-300">
+        <Card className="bg-slate-800/30 border-white/20">
           <CardContent className="text-center py-12">
             <MessageCircle className="w-16 h-16 text-slate-400 mx-auto mb-4" />
-            <h3 className="text-gray-700 text-lg font-semibold mb-2">
+            <h3 className="text-slate-300 text-lg font-semibold mb-2">
               No Messages Yet
             </h3>
-            <p className="text-gray-500">
+            <p className="text-slate-400">
               Messages and feedback from management will appear here.
             </p>
           </CardContent>

@@ -184,7 +184,7 @@ const TrainingAllocationManagement = () => {
       </div>
 
       {/* Pending Training Requests */}
-      <div className="bg-white backdrop-blur-sm border border-gray-200 rounded-xl p-6">
+      <div className="bg-slate-900 backdrop-blur-sm border border-white/10 rounded-xl p-6">
         <h3 className="text-xl font-semibold text-white mb-4 flex items-center gap-2">
           <AlertCircle className="w-5 h-5 text-yellow-400" />
           Pending Allocation ({requestedTrainings.length})
@@ -252,13 +252,13 @@ const TrainingAllocationManagement = () => {
 
       {/* Allocated Trainings */}
       {allocatedTrainings.length > 0 && (
-        <div className="bg-white backdrop-blur-sm border border-gray-200 rounded-xl p-6">
+        <div className="bg-slate-900 backdrop-blur-sm border border-white/10 rounded-xl p-6">
           <h3 className="text-xl font-semibold text-white mb-4">Allocated Trainings</h3>
           <div className="space-y-3">
             {allocatedTrainings.slice(0, 5).map((training) => (
               <div 
                 key={training.id}
-                className="bg-white border border-gray-200 rounded-lg p-3 flex items-center justify-between"
+                className="bg-slate-900 border border-white/10 rounded-lg p-3 flex items-center justify-between"
               >
                 <div className="flex-1">
                   <div className="flex items-center gap-3 mb-1">
@@ -288,14 +288,14 @@ const TrainingAllocationManagement = () => {
 
       {/* Allocation Dialog */}
       <Dialog open={allocationDialogOpen} onOpenChange={setAllocationDialogOpen}>
-        <DialogContent className="bg-[#1a2f4d] border-gray-200 text-white max-w-2xl">
+        <DialogContent className="bg-[#1a2f4d] border-white/10 text-white max-w-2xl">
           <DialogHeader>
             <DialogTitle className="text-2xl">Allocate Training</DialogTitle>
           </DialogHeader>
           {selectedRequest && (
             <div className="space-y-4">
               {/* Training Details */}
-              <div className="bg-white border border-gray-200 rounded-lg p-4">
+              <div className="bg-slate-900 border border-white/10 rounded-lg p-4">
                 <h4 className="text-lg font-semibold text-white mb-2">{selectedRequest.client_name}</h4>
                 <div className="grid grid-cols-2 gap-3 text-sm">
                   <div>
@@ -321,10 +321,10 @@ const TrainingAllocationManagement = () => {
               <div>
                 <Label className="text-gray-400">Select Trainer *</Label>
                 <Select value={allocationData.trainer_id} onValueChange={handleTrainerChange}>
-                  <SelectTrigger className="bg-white border-gray-200 text-white mt-1">
+                  <SelectTrigger className="bg-slate-900 border-white/10 text-white mt-1">
                     <SelectValue placeholder="Choose a trainer" />
                   </SelectTrigger>
-                  <SelectContent className="bg-[#1a2f4d] border-gray-200">
+                  <SelectContent className="bg-[#1a2f4d] border-white/10">
                     {trainers.map(trainer => (
                       <SelectItem key={trainer.id} value={trainer.id}>
                         {trainer.name} - {trainer.designation}
@@ -343,7 +343,7 @@ const TrainingAllocationManagement = () => {
                       type="date"
                       value={date}
                       onChange={(e) => handleDateChange(index, e.target.value)}
-                      className="bg-white border-gray-200 text-white"
+                      className="bg-slate-900 border-white/10 text-white"
                     />
                     {allocationData.scheduled_dates.length > 1 && (
                       <Button
@@ -361,7 +361,7 @@ const TrainingAllocationManagement = () => {
                   size="sm"
                   variant="outline"
                   onClick={addDateField}
-                  className="border-gray-300 text-white mt-1"
+                  className="border-white/20 text-white mt-1"
                 >
                   + Add Another Day
                 </Button>
@@ -374,7 +374,7 @@ const TrainingAllocationManagement = () => {
                   value={allocationData.notes}
                   onChange={(e) => setAllocationData({ ...allocationData, notes: e.target.value })}
                   placeholder="Any special instructions for the trainer..."
-                  className="bg-white border-gray-200 text-white mt-1"
+                  className="bg-slate-900 border-white/10 text-white mt-1"
                   rows={3}
                 />
               </div>
@@ -385,7 +385,7 @@ const TrainingAllocationManagement = () => {
                   variant="outline"
                   onClick={() => setAllocationDialogOpen(false)}
                   disabled={processing}
-                  className="border-gray-300 text-white"
+                  className="border-white/20 text-white"
                 >
                   Cancel
                 </Button>

@@ -140,10 +140,10 @@ const CreditNoteManager = () => {
       </div>
 
       {/* Credit Notes Table */}
-      <div className="bg-white backdrop-blur-sm rounded-xl border border-gray-200 overflow-hidden">
+      <div className="bg-slate-900 backdrop-blur-sm rounded-xl border border-white/10 overflow-hidden">
         <Table>
           <TableHeader>
-            <TableRow className="border-gray-200">
+            <TableRow className="border-white/10">
               <TableHead className="text-gray-300">Credit Note #</TableHead>
               <TableHead className="text-gray-300">Invoice #</TableHead>
               <TableHead className="text-gray-300">Client</TableHead>
@@ -163,7 +163,7 @@ const CreditNoteManager = () => {
               </TableRow>
             ) : (
               creditNotes.map((note) => (
-                <TableRow key={note.id} className="border-gray-200">
+                <TableRow key={note.id} className="border-white/10">
                   <TableCell className="text-white font-medium">{note.credit_note_number}</TableCell>
                   <TableCell className="text-white">{note.invoice_number || '-'}</TableCell>
                   <TableCell className="text-white">{note.client_name}</TableCell>
@@ -185,7 +185,7 @@ const CreditNoteManager = () => {
 
       {/* Create Credit Note Dialog */}
       <Dialog open={showDialog} onOpenChange={setShowDialog}>
-        <DialogContent className="bg-white border-slate-700 text-white max-w-2xl">
+        <DialogContent className="bg-slate-900 border-slate-700 text-white max-w-2xl">
           <DialogHeader>
             <DialogTitle className="text-xl flex items-center gap-2">
               <FileX className="w-6 h-6 text-red-400" />
@@ -200,7 +200,7 @@ const CreditNoteManager = () => {
                 <Input
                   value={formData.credit_note_number}
                   onChange={(e) => setFormData({...formData, credit_note_number: e.target.value})}
-                  className="bg-gray-50 border-slate-600 text-white"
+                  className="bg-slate-800 border-slate-600 text-white"
                 />
               </div>
               <div className="space-y-2">
@@ -209,7 +209,7 @@ const CreditNoteManager = () => {
                   type="date"
                   value={formData.issued_date}
                   onChange={(e) => setFormData({...formData, issued_date: e.target.value})}
-                  className="bg-gray-50 border-slate-600 text-white"
+                  className="bg-slate-800 border-slate-600 text-white"
                 />
               </div>
             </div>
@@ -217,10 +217,10 @@ const CreditNoteManager = () => {
             <div className="space-y-2">
               <Label>Link to Invoice (Optional)</Label>
               <Select value={formData.invoice_id || 'none'} onValueChange={handleInvoiceSelect}>
-                <SelectTrigger className="bg-gray-50 border-slate-600 text-white">
+                <SelectTrigger className="bg-slate-800 border-slate-600 text-white">
                   <SelectValue placeholder="Select invoice (optional)" />
                 </SelectTrigger>
-                <SelectContent className="bg-gray-50 border-slate-600 text-white">
+                <SelectContent className="bg-slate-800 border-slate-600 text-white">
                   <SelectItem value="none">None</SelectItem>
                   {invoices.map((inv) => (
                     <SelectItem key={inv.id} value={inv.id}>
@@ -236,7 +236,7 @@ const CreditNoteManager = () => {
               <Input
                 value={formData.client_name}
                 onChange={(e) => setFormData({...formData, client_name: e.target.value})}
-                className="bg-gray-50 border-slate-600 text-white"
+                className="bg-slate-800 border-slate-600 text-white"
               />
             </div>
 
@@ -248,16 +248,16 @@ const CreditNoteManager = () => {
                   step="0.01"
                   value={formData.amount}
                   onChange={(e) => setFormData({...formData, amount: e.target.value})}
-                  className="bg-gray-50 border-slate-600 text-white"
+                  className="bg-slate-800 border-slate-600 text-white"
                 />
               </div>
               <div className="space-y-2">
                 <Label>Reason *</Label>
                 <Select value={formData.reason} onValueChange={(val) => setFormData({...formData, reason: val})}>
-                  <SelectTrigger className="bg-gray-50 border-slate-600 text-white">
+                  <SelectTrigger className="bg-slate-800 border-slate-600 text-white">
                     <SelectValue />
                   </SelectTrigger>
-                  <SelectContent className="bg-gray-50 border-slate-600 text-white">
+                  <SelectContent className="bg-slate-800 border-slate-600 text-white">
                     <SelectItem value="Refund">Refund</SelectItem>
                     <SelectItem value="Cancellation">Cancellation</SelectItem>
                     <SelectItem value="Discount">Discount</SelectItem>
@@ -272,14 +272,14 @@ const CreditNoteManager = () => {
               <Textarea
                 value={formData.description}
                 onChange={(e) => setFormData({...formData, description: e.target.value})}
-                className="bg-gray-50 border-slate-600 text-white min-h-[100px]"
+                className="bg-slate-800 border-slate-600 text-white min-h-[100px]"
                 placeholder="Explain the reason for this credit note..."
               />
             </div>
           </div>
 
           <DialogFooter>
-            <Button variant="outline" onClick={() => setShowDialog(false)} className="border-slate-600 text-white hover:bg-gray-50">
+            <Button variant="outline" onClick={() => setShowDialog(false)} className="border-slate-600 text-white hover:bg-slate-800">
               Cancel
             </Button>
             <Button 

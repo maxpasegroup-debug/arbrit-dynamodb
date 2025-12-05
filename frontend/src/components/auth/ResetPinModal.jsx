@@ -92,7 +92,7 @@ const ResetPinModal = ({ open, onOpenChange }) => {
             </div>
             Reset Your PIN
           </DialogTitle>
-          <DialogDescription className="text-gray-500">
+          <DialogDescription className="text-slate-400">
             {step === 1 && "Enter your current PIN and choose a new secure PIN"}
             {step === 2 && "Confirm your new PIN"}
             {step === 3 && "PIN changed successfully!"}
@@ -113,7 +113,7 @@ const ResetPinModal = ({ open, onOpenChange }) => {
                 value={pinData.currentPin}
                 onChange={(e) => setPinData({ ...pinData, currentPin: e.target.value.replace(/\D/g, '') })}
                 placeholder="Enter current PIN"
-                className="bg-gray-50 border-gray-200 text-white text-lg tracking-widest text-center"
+                className="bg-slate-800 border-white/10 text-white text-lg tracking-widest text-center"
                 required
                 autoFocus
               />
@@ -131,7 +131,7 @@ const ResetPinModal = ({ open, onOpenChange }) => {
                 value={pinData.newPin}
                 onChange={(e) => setPinData({ ...pinData, newPin: e.target.value.replace(/\D/g, '') })}
                 placeholder="Enter new PIN"
-                className="bg-gray-50 border-gray-200 text-white text-lg tracking-widest text-center"
+                className="bg-slate-800 border-white/10 text-white text-lg tracking-widest text-center"
                 required
               />
             </div>
@@ -148,7 +148,7 @@ const ResetPinModal = ({ open, onOpenChange }) => {
                 value={pinData.confirmPin}
                 onChange={(e) => setPinData({ ...pinData, confirmPin: e.target.value.replace(/\D/g, '') })}
                 placeholder="Confirm new PIN"
-                className="bg-gray-50 border-gray-200 text-white text-lg tracking-widest text-center"
+                className="bg-slate-800 border-white/10 text-white text-lg tracking-widest text-center"
                 required
               />
             </div>
@@ -159,7 +159,7 @@ const ResetPinModal = ({ open, onOpenChange }) => {
                 <AlertCircle className="w-5 h-5 text-blue-400 mt-0.5" />
                 <div className="space-y-1 text-sm">
                   <p className="text-blue-300 font-semibold">PIN Requirements:</p>
-                  <ul className="text-gray-500 space-y-1 ml-4">
+                  <ul className="text-slate-400 space-y-1 ml-4">
                     <li>• Must be exactly 4 digits</li>
                     <li>• Cannot be sequential (1234)</li>
                     <li>• Cannot be repeated digits (1111)</li>
@@ -175,7 +175,7 @@ const ResetPinModal = ({ open, onOpenChange }) => {
                 type="button"
                 variant="outline"
                 onClick={handleClose}
-                className="flex-1 border-gray-300 text-white hover:bg-white"
+                className="flex-1 border-white/20 text-white hover:bg-white"
                 disabled={loading}
               >
                 Cancel
@@ -195,7 +195,7 @@ const ResetPinModal = ({ open, onOpenChange }) => {
               <CheckCircle className="w-10 h-10 text-green-400" />
             </div>
             <h3 className="text-xl font-bold text-white mb-2">PIN Changed Successfully!</h3>
-            <p className="text-gray-500">Your new PIN is now active. Please remember it for future logins.</p>
+            <p className="text-slate-400">Your new PIN is now active. Please remember it for future logins.</p>
           </div>
         )}
       </DialogContent>

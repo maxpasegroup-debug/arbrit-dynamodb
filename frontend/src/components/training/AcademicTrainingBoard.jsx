@@ -137,13 +137,13 @@ const AcademicTrainingBoard = () => {
         <div className="space-y-4">
           <h3 className="text-xl font-bold text-white">📋 Pending Allocation ({pending.length})</h3>
           {pending.map(training => (
-            <Card key={training.id} className="bg-white border-yellow-500/30">
+            <Card key={training.id} className="bg-slate-900 border-yellow-500/30">
               <CardContent className="p-6">
                 <div className="flex items-start justify-between">
                   <div className="flex-1">
                     <h4 className="text-xl font-bold text-white">{training.client_name}</h4>
                     <p className="text-purple-300 text-lg">{training.course_name} • {training.number_of_participants} Participants</p>
-                    <p className="text-gray-500 mt-2">Requested by: {training.requested_by_name}</p>
+                    <p className="text-slate-400 mt-2">Requested by: {training.requested_by_name}</p>
                     <div className="flex items-center gap-4 mt-3">
                       <div className="flex items-center gap-2 text-slate-400">
                         <Calendar className="w-4 h-4" />
@@ -175,7 +175,7 @@ const AcademicTrainingBoard = () => {
         <div className="space-y-4">
           <h3 className="text-xl font-bold text-white">🔵 Active Trainings ({active.length})</h3>
           {active.map(training => (
-            <Card key={training.id} className="bg-white border-blue-500/30">
+            <Card key={training.id} className="bg-slate-900 border-blue-500/30">
               <CardContent className="p-6">
                 <div className="flex items-start justify-between">
                   <div className="flex-1">
@@ -190,7 +190,7 @@ const AcademicTrainingBoard = () => {
                         </div>
                         <span className="text-white font-semibold">{training.progress_percentage}%</span>
                       </div>
-                      <p className="text-gray-500 text-sm">{training.progress_stage}</p>
+                      <p className="text-slate-400 text-sm">{training.progress_stage}</p>
                     </div>
                     <div className="flex items-center gap-2 mt-3 text-blue-300">
                       <User className="w-4 h-4" />
@@ -205,7 +205,7 @@ const AcademicTrainingBoard = () => {
       )}
 
       <Dialog open={allocateModal} onOpenChange={setAllocateModal}>
-        <DialogContent className="max-w-2xl bg-white border-gray-200">
+        <DialogContent className="max-w-2xl bg-slate-900 border-white/10">
           <DialogHeader>
             <DialogTitle className="text-white text-2xl">Allocate Trainer</DialogTitle>
           </DialogHeader>
@@ -223,7 +223,7 @@ const AcademicTrainingBoard = () => {
                     trainer_name: trainer?.name || ''
                   });
                 }}
-                className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-md text-white"
+                className="w-full px-3 py-2 bg-slate-800 border border-white/10 rounded-md text-white"
               >
                 <option value="">Select Trainer</option>
                 {trainers.map(trainer => (
@@ -245,7 +245,7 @@ const AcademicTrainingBoard = () => {
                     newDates[0] = e.target.value;
                     setAllocationData({...allocationData, scheduled_dates: newDates});
                   }}
-                  className="bg-gray-50 border-gray-200 text-white"
+                  className="bg-slate-800 border-white/10 text-white"
                 />
               </div>
               <div>
@@ -254,7 +254,7 @@ const AcademicTrainingBoard = () => {
                   type="number"
                   value={allocationData.training_days}
                   onChange={(e) => setAllocationData({...allocationData, training_days: parseInt(e.target.value)})}
-                  className="bg-gray-50 border-gray-200 text-white"
+                  className="bg-slate-800 border-white/10 text-white"
                   min="1"
                 />
               </div>
@@ -265,7 +265,7 @@ const AcademicTrainingBoard = () => {
               <textarea
                 value={allocationData.notes}
                 onChange={(e) => setAllocationData({...allocationData, notes: e.target.value})}
-                className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-md text-white min-h-[80px]"
+                className="w-full px-3 py-2 bg-slate-800 border border-white/10 rounded-md text-white min-h-[80px]"
                 placeholder="Any special instructions..."
               />
             </div>
@@ -274,7 +274,7 @@ const AcademicTrainingBoard = () => {
               <Button
                 variant="outline"
                 onClick={() => setAllocateModal(false)}
-                className="border-gray-300 text-white hover:bg-white"
+                className="border-white/20 text-white hover:bg-white"
               >
                 Cancel
               </Button>

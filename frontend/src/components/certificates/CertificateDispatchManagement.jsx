@@ -283,7 +283,7 @@ const CertificateDispatchManagement = () => {
             <AgingAlertsButton />
             <Button
               onClick={() => setCreateOpen(true)}
-              className="bg-white text-indigo-600 hover:bg-indigo-50"
+              className="bg-slate-900 text-indigo-600 hover:bg-indigo-50"
             >
               <Plus className="w-4 h-4 mr-2" />
               New Certificate
@@ -293,7 +293,7 @@ const CertificateDispatchManagement = () => {
 
         {stats && (
           <div className="grid grid-cols-6 gap-4 mt-6">
-            <div className="bg-white backdrop-blur-sm rounded-lg p-4">
+            <div className="bg-slate-900 backdrop-blur-sm rounded-lg p-4">
               <p className="text-sm text-indigo-100">Total</p>
               <p className="text-3xl font-bold">{stats.total_certificates}</p>
             </div>
@@ -322,7 +322,7 @@ const CertificateDispatchManagement = () => {
       </div>
 
       {/* Category Filter Tabs */}
-      <div className="bg-white border border-gray-200 rounded-lg p-2">
+      <div className="bg-slate-900 border border-white/10 rounded-lg p-2">
         <div className="grid grid-cols-3 gap-2">
           <button
             onClick={() => setFilterCategory('all')}
@@ -362,7 +362,7 @@ const CertificateDispatchManagement = () => {
 
       {/* Status Filter Tabs */}
       <Tabs value={filterStatus} onValueChange={setFilterStatus} className="w-full">
-        <TabsList className="grid w-full grid-cols-6 bg-white border border-gray-200">
+        <TabsList className="grid w-full grid-cols-6 bg-slate-900 border border-white/10">
           <TabsTrigger value="all">All ({filteredRecords.length})</TabsTrigger>
           <TabsTrigger value="initiated">Initiated</TabsTrigger>
           <TabsTrigger value="prepared">Prepared</TabsTrigger>
@@ -377,9 +377,9 @@ const CertificateDispatchManagement = () => {
         {loading ? (
           <p className="text-center py-12 text-slate-400">Loading certificates...</p>
         ) : filteredRecords.length === 0 ? (
-          <div className="text-center py-12 bg-white rounded-lg border border-gray-200">
+          <div className="text-center py-12 bg-slate-900 rounded-lg border border-white/10">
             <Package className="w-16 h-16 text-slate-600 mx-auto mb-4" />
-            <p className="text-gray-500 text-lg">No certificate records found</p>
+            <p className="text-slate-400 text-lg">No certificate records found</p>
           </div>
         ) : (
           filteredRecords.map((record) => {
@@ -397,7 +397,7 @@ const CertificateDispatchManagement = () => {
                     ? 'bg-orange-500/10 border-orange-400/50'
                     : aging?.severity === 'warning'
                     ? 'bg-yellow-500/10 border-yellow-400/50'
-                    : 'bg-white border-gray-200 hover:bg-white'
+                    : 'bg-white border-white/10 hover:bg-white'
                 }`}
               >
                 <div className="flex items-start justify-between mb-4">
@@ -415,13 +415,13 @@ const CertificateDispatchManagement = () => {
                     </div>
                     <div className="grid grid-cols-3 gap-3 text-sm text-slate-300">
                       <div>
-                        <span className="text-gray-500">Contact:</span> {record.contact_person}
+                        <span className="text-slate-400">Contact:</span> {record.contact_person}
                       </div>
                       <div>
-                        <span className="text-gray-500">Course:</span> {record.course_name}
+                        <span className="text-slate-400">Course:</span> {record.course_name}
                       </div>
                       <div>
-                        <span className="text-gray-500">Certificates:</span> {record.certificate_numbers?.length || 0}
+                        <span className="text-slate-400">Certificates:</span> {record.certificate_numbers?.length || 0}
                       </div>
                     </div>
                   </div>
@@ -513,10 +513,10 @@ const CertificateDispatchManagement = () => {
 
       {/* Create Certificate Dialog */}
       <Dialog open={createOpen} onOpenChange={setCreateOpen}>
-        <DialogContent className="max-w-2xl bg-white border-gray-200">
+        <DialogContent className="max-w-2xl bg-slate-900 border-white/10">
           <DialogHeader>
             <DialogTitle className="text-white">Create Certificate Tracking</DialogTitle>
-            <DialogDescription className="text-gray-500">
+            <DialogDescription className="text-slate-400">
               Initiate a new certificate dispatch and delivery tracking
             </DialogDescription>
           </DialogHeader>
@@ -529,7 +529,7 @@ const CertificateDispatchManagement = () => {
                   value={newCertificate.company_name}
                   onChange={(e) => setNewCertificate({...newCertificate, company_name: e.target.value})}
                   required
-                  className="bg-gray-50 border-gray-200 text-white"
+                  className="bg-slate-800 border-white/10 text-white"
                 />
               </div>
               <div>
@@ -538,7 +538,7 @@ const CertificateDispatchManagement = () => {
                   value={newCertificate.contact_person}
                   onChange={(e) => setNewCertificate({...newCertificate, contact_person: e.target.value})}
                   required
-                  className="bg-gray-50 border-gray-200 text-white"
+                  className="bg-slate-800 border-white/10 text-white"
                 />
               </div>
               <div>
@@ -547,7 +547,7 @@ const CertificateDispatchManagement = () => {
                   value={newCertificate.contact_mobile}
                   onChange={(e) => setNewCertificate({...newCertificate, contact_mobile: e.target.value})}
                   required
-                  className="bg-gray-50 border-gray-200 text-white"
+                  className="bg-slate-800 border-white/10 text-white"
                 />
               </div>
               <div>
@@ -556,7 +556,7 @@ const CertificateDispatchManagement = () => {
                   value={newCertificate.course_name}
                   onChange={(e) => setNewCertificate({...newCertificate, course_name: e.target.value})}
                   required
-                  className="bg-gray-50 border-gray-200 text-white"
+                  className="bg-slate-800 border-white/10 text-white"
                 />
               </div>
               <div>
@@ -566,7 +566,7 @@ const CertificateDispatchManagement = () => {
                   value={newCertificate.training_date}
                   onChange={(e) => setNewCertificate({...newCertificate, training_date: e.target.value})}
                   required
-                  className="bg-gray-50 border-gray-200 text-white"
+                  className="bg-slate-800 border-white/10 text-white"
                 />
               </div>
               <div>
@@ -576,7 +576,7 @@ const CertificateDispatchManagement = () => {
                   value={newCertificate.participants_count}
                   onChange={(e) => setNewCertificate({...newCertificate, participants_count: e.target.value})}
                   required
-                  className="bg-gray-50 border-gray-200 text-white"
+                  className="bg-slate-800 border-white/10 text-white"
                 />
               </div>
               <div>
@@ -585,10 +585,10 @@ const CertificateDispatchManagement = () => {
                   value={newCertificate.certificate_type} 
                   onValueChange={(val) => setNewCertificate({...newCertificate, certificate_type: val})}
                 >
-                  <SelectTrigger className="bg-gray-50 border-gray-200 text-white">
+                  <SelectTrigger className="bg-slate-800 border-white/10 text-white">
                     <SelectValue />
                   </SelectTrigger>
-                  <SelectContent className="bg-gray-50 border-gray-200">
+                  <SelectContent className="bg-slate-800 border-white/10">
                     <SelectItem value="In-House">In-House (48h delivery)</SelectItem>
                     <SelectItem value="International">International (30/60/90 days)</SelectItem>
                   </SelectContent>
@@ -602,7 +602,7 @@ const CertificateDispatchManagement = () => {
                 onChange={(e) => setNewCertificate({...newCertificate, certificate_numbers: e.target.value})}
                 placeholder="e.g., CERT-001, CERT-002, CERT-003"
                 required
-                className="bg-gray-50 border-gray-200 text-white"
+                className="bg-slate-800 border-white/10 text-white"
               />
             </div>
 
@@ -621,7 +621,7 @@ const CertificateDispatchManagement = () => {
 
       {/* Status Update Dialog */}
       <Dialog open={statusUpdateOpen} onOpenChange={setStatusUpdateOpen}>
-        <DialogContent className="max-w-2xl bg-white border-gray-200">
+        <DialogContent className="max-w-2xl bg-slate-900 border-white/10">
           <DialogHeader>
             <DialogTitle className="text-white">Update Certificate Status</DialogTitle>
           </DialogHeader>
@@ -630,10 +630,10 @@ const CertificateDispatchManagement = () => {
             <div>
               <Label className="text-white">New Status</Label>
               <Select value={statusUpdate.status} onValueChange={(val) => setStatusUpdate({...statusUpdate, status: val})}>
-                <SelectTrigger className="bg-gray-50 border-gray-200 text-white">
+                <SelectTrigger className="bg-slate-800 border-white/10 text-white">
                   <SelectValue />
                 </SelectTrigger>
-                <SelectContent className="bg-gray-50 border-gray-200">
+                <SelectContent className="bg-slate-800 border-white/10">
                   <SelectItem value="prepared">Prepared</SelectItem>
                   <SelectItem value="dispatched">Dispatched</SelectItem>
                   <SelectItem value="in_transit">In Transit</SelectItem>
@@ -651,7 +651,7 @@ const CertificateDispatchManagement = () => {
                       type="date"
                       value={statusUpdate.dispatch_date}
                       onChange={(e) => setStatusUpdate({...statusUpdate, dispatch_date: e.target.value})}
-                      className="bg-gray-50 border-gray-200 text-white"
+                      className="bg-slate-800 border-white/10 text-white"
                     />
                   </div>
                   <div>
@@ -660,7 +660,7 @@ const CertificateDispatchManagement = () => {
                       type="date"
                       value={statusUpdate.expected_delivery_date}
                       onChange={(e) => setStatusUpdate({...statusUpdate, expected_delivery_date: e.target.value})}
-                      className="bg-gray-50 border-gray-200 text-white"
+                      className="bg-slate-800 border-white/10 text-white"
                     />
                   </div>
                 </div>
@@ -670,7 +670,7 @@ const CertificateDispatchManagement = () => {
                     value={statusUpdate.courier_service}
                     onChange={(e) => setStatusUpdate({...statusUpdate, courier_service: e.target.value})}
                     placeholder="e.g., Aramex, DHL, FedEx"
-                    className="bg-gray-50 border-gray-200 text-white"
+                    className="bg-slate-800 border-white/10 text-white"
                   />
                 </div>
                 <div>
@@ -678,7 +678,7 @@ const CertificateDispatchManagement = () => {
                   <Input
                     value={statusUpdate.tracking_number}
                     onChange={(e) => setStatusUpdate({...statusUpdate, tracking_number: e.target.value})}
-                    className="bg-gray-50 border-gray-200 text-white"
+                    className="bg-slate-800 border-white/10 text-white"
                   />
                 </div>
               </>
@@ -693,7 +693,7 @@ const CertificateDispatchManagement = () => {
                       type="date"
                       value={statusUpdate.delivery_date}
                       onChange={(e) => setStatusUpdate({...statusUpdate, delivery_date: e.target.value})}
-                      className="bg-gray-50 border-gray-200 text-white"
+                      className="bg-slate-800 border-white/10 text-white"
                     />
                   </div>
                   <div>
@@ -701,7 +701,7 @@ const CertificateDispatchManagement = () => {
                     <Input
                       value={statusUpdate.recipient_name}
                       onChange={(e) => setStatusUpdate({...statusUpdate, recipient_name: e.target.value})}
-                      className="bg-gray-50 border-gray-200 text-white"
+                      className="bg-slate-800 border-white/10 text-white"
                     />
                   </div>
                 </div>
@@ -713,7 +713,7 @@ const CertificateDispatchManagement = () => {
               <Textarea
                 value={statusUpdate.notes}
                 onChange={(e) => setStatusUpdate({...statusUpdate, notes: e.target.value})}
-                className="bg-gray-50 border-gray-200 text-white"
+                className="bg-slate-800 border-white/10 text-white"
                 placeholder="Add any notes about this status update..."
               />
             </div>
@@ -733,13 +733,13 @@ const CertificateDispatchManagement = () => {
 
       {/* Photo Upload Dialog */}
       <Dialog open={photoUploadOpen} onOpenChange={setPhotoUploadOpen}>
-        <DialogContent className="max-w-lg bg-white border-gray-200">
+        <DialogContent className="max-w-lg bg-slate-900 border-white/10">
           <DialogHeader>
             <DialogTitle className="text-white flex items-center gap-2">
               <Camera className="w-5 h-5" />
               Upload Delivery Note Photo
             </DialogTitle>
-            <DialogDescription className="text-gray-500">
+            <DialogDescription className="text-slate-400">
               Upload photo of signed delivery note as proof
             </DialogDescription>
           </DialogHeader>
@@ -752,7 +752,7 @@ const CertificateDispatchManagement = () => {
                 onChange={(e) => setDeliveryPhoto({...deliveryPhoto, photo_url: e.target.value})}
                 placeholder="Paste image URL or upload link"
                 required
-                className="bg-gray-50 border-gray-200 text-white"
+                className="bg-slate-800 border-white/10 text-white"
               />
               <p className="text-xs text-slate-500 mt-1">Upload photo to cloud storage and paste URL here</p>
             </div>
@@ -763,7 +763,7 @@ const CertificateDispatchManagement = () => {
                 value={deliveryPhoto.recipient_name}
                 onChange={(e) => setDeliveryPhoto({...deliveryPhoto, recipient_name: e.target.value})}
                 required
-                className="bg-gray-50 border-gray-200 text-white"
+                className="bg-slate-800 border-white/10 text-white"
               />
             </div>
 
@@ -771,7 +771,7 @@ const CertificateDispatchManagement = () => {
               <p className="text-blue-300 text-sm">
                 📸 This photo serves as official proof of delivery. Ensure it shows:
               </p>
-              <ul className="text-gray-700 text-xs mt-2 space-y-1">
+              <ul className="text-slate-300 text-xs mt-2 space-y-1">
                 <li>• Clear image of delivery note</li>
                 <li>• Recipient signature</li>
                 <li>• Date and time stamp</li>
@@ -795,55 +795,55 @@ const CertificateDispatchManagement = () => {
       {/* Details Modal */}
       {selectedRecord && (
         <Dialog open={detailsOpen} onOpenChange={setDetailsOpen}>
-          <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto bg-white border-gray-200">
+          <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto bg-slate-900 border-white/10">
             <DialogHeader>
               <DialogTitle className="text-white text-2xl">Certificate Tracking Details</DialogTitle>
             </DialogHeader>
 
             <div className="space-y-6 mt-4">
               {/* Progress Tracker */}
-              <div className="bg-white rounded-lg p-6 border border-gray-200">
+              <div className="bg-slate-900 rounded-lg p-6 border border-white/10">
                 <h3 className="text-lg font-semibold text-white mb-4">Delivery Progress</h3>
                 <CertificateProgressTracker currentStatus={selectedRecord.status} />
               </div>
 
               {/* Company Info */}
-              <div className="bg-white rounded-lg p-4 border border-gray-200">
+              <div className="bg-slate-900 rounded-lg p-4 border border-white/10">
                 <h3 className="text-lg font-semibold text-white mb-3">Company Information</h3>
                 <div className="grid grid-cols-2 gap-4 text-sm">
                   <div>
-                    <p className="text-gray-500">Company</p>
+                    <p className="text-slate-400">Company</p>
                     <p className="text-white font-medium">{selectedRecord.company_name}</p>
                   </div>
                   <div>
-                    <p className="text-gray-500">Contact Person</p>
+                    <p className="text-slate-400">Contact Person</p>
                     <p className="text-white">{selectedRecord.contact_person}</p>
                   </div>
                   <div>
-                    <p className="text-gray-500">Mobile</p>
+                    <p className="text-slate-400">Mobile</p>
                     <p className="text-white">{selectedRecord.contact_mobile}</p>
                   </div>
                   <div>
-                    <p className="text-gray-500">Course</p>
+                    <p className="text-slate-400">Course</p>
                     <p className="text-white">{selectedRecord.course_name}</p>
                   </div>
                 </div>
               </div>
 
               {/* Certificate Details */}
-              <div className="bg-white rounded-lg p-4 border border-gray-200">
+              <div className="bg-slate-900 rounded-lg p-4 border border-white/10">
                 <h3 className="text-lg font-semibold text-white mb-3">Certificate Details</h3>
                 <div className="grid grid-cols-2 gap-4 text-sm">
                   <div>
-                    <p className="text-gray-500">Training Date</p>
+                    <p className="text-slate-400">Training Date</p>
                     <p className="text-white">{new Date(selectedRecord.training_date).toLocaleDateString()}</p>
                   </div>
                   <div>
-                    <p className="text-gray-500">Participants</p>
+                    <p className="text-slate-400">Participants</p>
                     <p className="text-white">{selectedRecord.participants_count}</p>
                   </div>
                   <div className="col-span-2">
-                    <p className="text-gray-500">Certificate Numbers</p>
+                    <p className="text-slate-400">Certificate Numbers</p>
                     <p className="text-white">{selectedRecord.certificate_numbers?.join(', ') || 'N/A'}</p>
                   </div>
                 </div>
@@ -851,30 +851,30 @@ const CertificateDispatchManagement = () => {
 
               {/* Delivery Info */}
               {(selectedRecord.courier_service || selectedRecord.tracking_number) && (
-                <div className="bg-white rounded-lg p-4 border border-gray-200">
+                <div className="bg-slate-900 rounded-lg p-4 border border-white/10">
                   <h3 className="text-lg font-semibold text-white mb-3">Delivery Information</h3>
                   <div className="grid grid-cols-2 gap-4 text-sm">
                     {selectedRecord.courier_service && (
                       <div>
-                        <p className="text-gray-500">Courier Service</p>
+                        <p className="text-slate-400">Courier Service</p>
                         <p className="text-white">{selectedRecord.courier_service}</p>
                       </div>
                     )}
                     {selectedRecord.tracking_number && (
                       <div>
-                        <p className="text-gray-500">Tracking Number</p>
+                        <p className="text-slate-400">Tracking Number</p>
                         <p className="text-white font-mono">{selectedRecord.tracking_number}</p>
                       </div>
                     )}
                     {selectedRecord.dispatch_date && (
                       <div>
-                        <p className="text-gray-500">Dispatch Date</p>
+                        <p className="text-slate-400">Dispatch Date</p>
                         <p className="text-white">{new Date(selectedRecord.dispatch_date).toLocaleDateString()}</p>
                       </div>
                     )}
                     {selectedRecord.expected_delivery_date && (
                       <div>
-                        <p className="text-gray-500">Expected Delivery</p>
+                        <p className="text-slate-400">Expected Delivery</p>
                         <p className="text-white">{new Date(selectedRecord.expected_delivery_date).toLocaleDateString()}</p>
                       </div>
                     )}
@@ -884,25 +884,25 @@ const CertificateDispatchManagement = () => {
 
               {/* Delivery Photo */}
               {selectedRecord.delivery_note_photo && (
-                <div className="bg-white rounded-lg p-4 border border-gray-200">
+                <div className="bg-slate-900 rounded-lg p-4 border border-white/10">
                   <h3 className="text-lg font-semibold text-white mb-3 flex items-center gap-2">
                     <Camera className="w-5 h-5 text-green-400" />
                     Delivery Proof
                   </h3>
                   <div className="mb-3">
-                    <p className="text-gray-500 text-sm">Received by: <span className="text-white font-medium">{selectedRecord.recipient_name}</span></p>
+                    <p className="text-slate-400 text-sm">Received by: <span className="text-white font-medium">{selectedRecord.recipient_name}</span></p>
                   </div>
                   <img 
                     src={selectedRecord.delivery_note_photo} 
                     alt="Delivery Note" 
-                    className="w-full rounded-lg border border-gray-200"
+                    className="w-full rounded-lg border border-white/10"
                   />
                 </div>
               )}
 
               {/* Status History */}
               {selectedRecord.status_history && (
-                <div className="bg-white rounded-lg p-4 border border-gray-200">
+                <div className="bg-slate-900 rounded-lg p-4 border border-white/10">
                   <h3 className="text-lg font-semibold text-white mb-3">Status History</h3>
                   <div className="space-y-3">
                     {selectedRecord.status_history.map((history, idx) => (
@@ -930,7 +930,7 @@ const CertificateDispatchManagement = () => {
 
       {/* Delivery Note Modal */}
       <Dialog open={deliveryNoteModalOpen} onOpenChange={setDeliveryNoteModalOpen}>
-        <DialogContent className="max-w-3xl bg-white border-gray-200">
+        <DialogContent className="max-w-3xl bg-slate-900 border-white/10">
           <DialogHeader>
             <DialogTitle className="text-white flex items-center gap-2">
               <Camera className="w-5 h-5 text-green-400" />
@@ -943,7 +943,7 @@ const CertificateDispatchManagement = () => {
                 <img 
                   src={selectedDeliveryNote} 
                   alt="Delivery Note" 
-                  className="w-full rounded-lg border border-gray-200"
+                  className="w-full rounded-lg border border-white/10"
                 />
                 <div className="flex gap-3">
                   <Button

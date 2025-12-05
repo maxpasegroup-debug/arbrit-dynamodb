@@ -110,7 +110,7 @@ const TrainingTrackerMetro = () => {
       'Certification': 'bg-pink-500',
       'Completed': 'bg-green-500'
     };
-    return colors[status] || 'bg-gray-500';
+    return colors[status] || 'bg-slate-8000';
   };
 
   const getStatusIcon = (status) => {
@@ -164,7 +164,7 @@ const TrainingTrackerMetro = () => {
           return (
             <div
               key={status}
-              className="flex-shrink-0 bg-white backdrop-blur-sm rounded-lg border border-gray-200 p-4 min-w-[180px]"
+              className="flex-shrink-0 bg-slate-900 backdrop-blur-sm rounded-lg border border-white/10 p-4 min-w-[180px]"
             >
               <div className="flex items-center gap-3">
                 <div className={`${colorClass} p-2 rounded-lg`}>
@@ -189,7 +189,7 @@ const TrainingTrackerMetro = () => {
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               placeholder="Search by company, course, location, or trainer..."
-              className="pl-10 bg-gray-50 border-gray-200 text-slate-100"
+              className="pl-10 bg-slate-800 border-white/10 text-slate-100"
             />
           </div>
         </div>
@@ -197,7 +197,7 @@ const TrainingTrackerMetro = () => {
           variant="outline"
           size="sm"
           onClick={exportToCSV}
-          className="border-gray-300 hover:bg-white"
+          className="border-white/20 hover:bg-white"
         >
           <Download className="w-4 h-4 mr-2" />
           Export
@@ -215,7 +215,7 @@ const TrainingTrackerMetro = () => {
             return (
               <div
                 key={status}
-                className="flex-shrink-0 bg-white backdrop-blur-sm rounded-xl border border-gray-200 p-4"
+                className="flex-shrink-0 bg-slate-900 backdrop-blur-sm rounded-xl border border-white/10 p-4"
                 style={{ width: '320px' }}
               >
                 {/* Column Header */}
@@ -241,7 +241,7 @@ const TrainingTrackerMetro = () => {
                     trainingsInStatus.map((training) => (
                       <div
                         key={training.id}
-                        className="bg-gray-50/50 rounded-lg p-4 border border-gray-200 hover:border-gray-300 transition-all cursor-pointer"
+                        className="bg-slate-800/50 rounded-lg p-4 border border-white/10 hover:border-white/20 transition-all cursor-pointer"
                         onClick={() => {
                           setSelectedTraining(training);
                           setDetailsOpen(true);
@@ -258,7 +258,7 @@ const TrainingTrackerMetro = () => {
                         </div>
 
                         {/* PROGRESS MAP - Journey Tracker */}
-                        <div className="mb-3 p-2 bg-white0 rounded border border-white/5">
+                        <div className="mb-3 p-2 bg-slate-9000 rounded border border-white/5">
                           <div className="flex items-center justify-between mb-1">
                             {statuses.map((s, idx) => {
                               const currentStatusIndex = statuses.indexOf(training.status);
@@ -274,7 +274,7 @@ const TrainingTrackerMetro = () => {
                                         ? 'bg-green-500'
                                         : isCurrent
                                         ? getStatusColor(s)
-                                        : 'bg-gray-100'
+                                        : 'bg-slate-700'
                                     }`}
                                     title={s}
                                   >
@@ -283,7 +283,7 @@ const TrainingTrackerMetro = () => {
                                   {idx < statuses.length - 1 && (
                                     <div
                                       className={`w-4 h-0.5 ${
-                                        isCompleted ? 'bg-green-500' : 'bg-gray-100'
+                                        isCompleted ? 'bg-green-500' : 'bg-slate-700'
                                       }`}
                                     />
                                   )}
@@ -335,7 +335,7 @@ const TrainingTrackerMetro = () => {
                         )}
 
                         {/* Action Buttons */}
-                        <div className="flex gap-2 pt-2 border-t border-gray-200">
+                        <div className="flex gap-2 pt-2 border-t border-white/10">
                           {statusIndex < statuses.length - 1 && (
                             <Button
                               size="sm"
@@ -356,7 +356,7 @@ const TrainingTrackerMetro = () => {
                               setSelectedTraining(training);
                               setDetailsOpen(true);
                             }}
-                            className="border-gray-300 text-white hover:bg-white text-xs"
+                            className="border-white/20 text-white hover:bg-white text-xs"
                           >
                             <Eye className="w-3 h-3" />
                           </Button>
@@ -373,7 +373,7 @@ const TrainingTrackerMetro = () => {
 
       {/* Training Details Dialog */}
       <Dialog open={detailsOpen} onOpenChange={setDetailsOpen}>
-        <DialogContent className="bg-[#1a2f4d] border-gray-300 text-white max-w-2xl">
+        <DialogContent className="bg-[#1a2f4d] border-white/20 text-white max-w-2xl">
           <DialogHeader>
             <DialogTitle className="text-2xl">Training Details</DialogTitle>
           </DialogHeader>
@@ -433,7 +433,7 @@ const TrainingTrackerMetro = () => {
               {selectedTraining.notes && (
                 <div>
                   <p className="text-sm text-gray-400 mb-2">Notes</p>
-                  <p className="text-white bg-white p-3 rounded-lg">{selectedTraining.notes}</p>
+                  <p className="text-white bg-slate-900 p-3 rounded-lg">{selectedTraining.notes}</p>
                 </div>
               )}
             </div>
