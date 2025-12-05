@@ -62,20 +62,20 @@ export default function TeleSalesDashboard() {
 
   if (!userData) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100 flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-green-900 to-slate-900 flex items-center justify-center">
         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100">
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-green-900 to-slate-900">
       {/* Header */}
       <div className="bg-gray-50/50 border-b border-gray-200 sticky top-0 z-10 backdrop-blur-lg">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center py-4">
             <div>
-              <h1 className="text-2xl font-bold text-gray-900">Tele Sales Dashboard</h1>
+              <h1 className="text-2xl font-bold text-white">Tele Sales Dashboard</h1>
               <p className="text-slate-400 text-sm mt-1">Welcome, {userData.name}</p>
             </div>
             <Button
@@ -98,30 +98,30 @@ export default function TeleSalesDashboard() {
             <Card className="bg-gray-50/50 border-gray-200 p-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-gray-500 text-sm">Total Leads</p>
+                  <p className="text-slate-400 text-sm">Total Leads</p>
                   <p className="text-3xl font-bold text-gray-900 mt-2">{stats.leads}</p>
                 </div>
-                <Users className="w-12 h-12 text-gray-700 opacity-50" />
+                <Users className="w-12 h-12 text-green-400 opacity-50" />
               </div>
             </Card>
 
             <Card className="bg-gray-50/50 border-gray-200 p-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-gray-500 text-sm">Quoted</p>
+                  <p className="text-slate-400 text-sm">Quoted</p>
                   <p className="text-3xl font-bold text-gray-900 mt-2">{stats.quoted}</p>
                 </div>
-                <Phone className="w-12 h-12 text-gray-700 opacity-50" />
+                <Phone className="w-12 h-12 text-green-400 opacity-50" />
               </div>
             </Card>
 
             <Card className="bg-gray-50/50 border-gray-200 p-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-gray-500 text-sm">Won Deals</p>
+                  <p className="text-slate-400 text-sm">Won Deals</p>
                   <p className="text-3xl font-bold text-gray-900 mt-2">{stats.won}</p>
                 </div>
-                <TrendingUp className="w-12 h-12 text-gray-700 opacity-50" />
+                <TrendingUp className="w-12 h-12 text-green-400 opacity-50" />
               </div>
             </Card>
           </div>

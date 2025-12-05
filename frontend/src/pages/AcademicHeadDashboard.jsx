@@ -116,7 +116,7 @@ const AcademicHeadDashboard = () => {
         <div className="container mx-auto px-6 py-4">
           <div className="flex justify-between items-center">
             <div>
-              <h1 className="text-2xl font-bold text-gray-900">Academic Head Dashboard</h1>
+              <h1 className="text-2xl font-bold text-white">Academic Head Dashboard</h1>
               <p className="text-sm text-slate-400">Arbrit Safety Management</p>
             </div>
             
@@ -141,7 +141,7 @@ const AcademicHeadDashboard = () => {
 
       <main className="container mx-auto px-6 py-8">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-10 bg-white border border-gray-200 shadow-sm">
+          <TabsList className="grid w-full grid-cols-10 bg-white/5 backdrop-blur-sm border border-white/10">
             <TabsTrigger 
               value="overview"
               className="data-[state=active]:bg-yellow-500/20 data-[state=active]:text-white text-gray-300"
@@ -223,11 +223,11 @@ const AcademicHeadDashboard = () => {
                   <div className="bg-gradient-to-br from-blue-500/20 to-blue-600/10 border border-blue-500/30 rounded-xl p-6">
                     <div className="flex items-center justify-between">
                       <div>
-                        <p className="text-sm text-gray-700">Total Trainings</p>
+                        <p className="text-sm text-gray-300">Total Trainings</p>
                         <p className="text-4xl font-bold text-gray-900 mt-2">{stats.totalTrainings}</p>
                         <p className="text-xs text-gray-400 mt-1">All time</p>
                       </div>
-                      <GraduationCap className="w-12 h-12 text-gray-700 opacity-50" />
+                      <GraduationCap className="w-12 h-12 text-green-400 opacity-50" />
                     </div>
                   </div>
 
@@ -235,11 +235,11 @@ const AcademicHeadDashboard = () => {
                   <div className="bg-gradient-to-br from-green-500/20 to-green-600/10 border border-green-500/30 rounded-xl p-6">
                     <div className="flex items-center justify-between">
                       <div>
-                        <p className="text-sm text-gray-700">Active Trainings</p>
+                        <p className="text-sm text-gray-300">Active Trainings</p>
                         <p className="text-4xl font-bold text-gray-900 mt-2">{stats.activeTrainings}</p>
                         <p className="text-xs text-gray-400 mt-1">In progress</p>
                       </div>
-                      <TrendingUp className="w-12 h-12 text-gray-700 opacity-50" />
+                      <TrendingUp className="w-12 h-12 text-green-400 opacity-50" />
                     </div>
                   </div>
 
@@ -247,11 +247,11 @@ const AcademicHeadDashboard = () => {
                   <div className="bg-gradient-to-br from-purple-500/20 to-purple-600/10 border border-purple-500/30 rounded-xl p-6">
                     <div className="flex items-center justify-between">
                       <div>
-                        <p className="text-sm text-gray-700">Completed</p>
+                        <p className="text-sm text-gray-300">Completed</p>
                         <p className="text-4xl font-bold text-gray-900 mt-2">{stats.completedTrainings}</p>
                         <p className="text-xs text-gray-400 mt-1">Finished</p>
                       </div>
-                      <Award className="w-12 h-12 text-gray-700 opacity-50" />
+                      <Award className="w-12 h-12 text-green-400 opacity-50" />
                     </div>
                   </div>
 
@@ -259,7 +259,7 @@ const AcademicHeadDashboard = () => {
                   <div className="bg-gradient-to-br from-yellow-500/20 to-yellow-600/10 border border-yellow-500/30 rounded-xl p-6">
                     <div className="flex items-center justify-between">
                       <div>
-                        <p className="text-sm text-gray-700">Pending Certificates</p>
+                        <p className="text-sm text-gray-300">Pending Certificates</p>
                         <p className="text-4xl font-bold text-gray-900 mt-2">{stats.pendingCertificates}</p>
                         <p className="text-xs text-gray-400 mt-1">Awaiting approval</p>
                       </div>
@@ -271,11 +271,11 @@ const AcademicHeadDashboard = () => {
                   <div className="bg-gradient-to-br from-cyan-500/20 to-cyan-600/10 border border-cyan-500/30 rounded-xl p-6">
                     <div className="flex items-center justify-between">
                       <div>
-                        <p className="text-sm text-gray-700">Total Trainers</p>
+                        <p className="text-sm text-gray-300">Total Trainers</p>
                         <p className="text-4xl font-bold text-gray-900 mt-2">{stats.totalTrainers}</p>
                         <p className="text-xs text-gray-400 mt-1">Active trainers</p>
                       </div>
-                      <Users className="w-12 h-12 text-gray-700 opacity-50" />
+                      <Users className="w-12 h-12 text-green-400 opacity-50" />
                     </div>
                   </div>
 
@@ -283,7 +283,7 @@ const AcademicHeadDashboard = () => {
                   <div className="bg-gradient-to-br from-red-500/20 to-red-600/10 border border-red-500/30 rounded-xl p-6">
                     <div className="flex items-center justify-between">
                       <div>
-                        <p className="text-sm text-gray-700">Pending Requests</p>
+                        <p className="text-sm text-gray-300">Pending Requests</p>
                         <p className="text-4xl font-bold text-gray-900 mt-2">{stats.pendingRequests}</p>
                         <p className="text-xs text-gray-400 mt-1">Needs review</p>
                       </div>
@@ -365,7 +365,7 @@ const AcademicHeadDashboard = () => {
                 
                 <TabsContent value="assessments">
                   <Tabs defaultValue="create" className="space-y-4">
-                    <TabsList className="bg-white border border-gray-200 shadow-sm">
+                    <TabsList className="bg-white/5 backdrop-blur-sm border border-white/10">
                       <TabsTrigger value="create">Create Assessment</TabsTrigger>
                       <TabsTrigger value="qr">Generate QR</TabsTrigger>
                     </TabsList>
@@ -382,7 +382,7 @@ const AcademicHeadDashboard = () => {
                 
                 <TabsContent value="feedback">
                   <Tabs defaultValue="create" className="space-y-4">
-                    <TabsList className="bg-white border border-gray-200 shadow-sm">
+                    <TabsList className="bg-white/5 backdrop-blur-sm border border-white/10">
                       <TabsTrigger value="create">Create Feedback Form</TabsTrigger>
                       <TabsTrigger value="qr">Generate QR</TabsTrigger>
                     </TabsList>

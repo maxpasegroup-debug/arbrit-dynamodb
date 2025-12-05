@@ -26,13 +26,13 @@ const HRMDashboard = () => {
                 onClick={() => navigate('/dashboard/coo')}
                 variant="outline"
                 size="sm"
-                className="border-gray-300 text-gray-700 hover:bg-gray-100"
+                className="border-gray-300 text-green-400 hover:bg-gray-100"
               >
                 <ArrowLeft className="w-4 h-4 mr-2" />
                 Back to Dashboard
               </Button>
               <div>
-                <h1 className="text-2xl font-bold text-gray-900">Human Resource Management</h1>
+                <h1 className="text-2xl font-bold text-white">Human Resource Management</h1>
                 <p className="text-sm text-gray-400">Manage employees, attendance, and documents</p>
               </div>
             </div>
@@ -43,11 +43,11 @@ const HRMDashboard = () => {
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-6 py-8">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-4 bg-white border border-gray-200 shadow-sm">
+          <TabsList className="grid w-full grid-cols-4 bg-white/5 backdrop-blur-sm border border-white/10">
             <TabsTrigger 
               value="employees" 
               data-testid="tab-employees"
-              className="data-[state=active]:bg-gray-900 data-[state=active]:text-white text-gray-300"
+              className="data-[state=active]:bg-green-500/20 data-[state=active]:text-white text-gray-300"
             >
               <Users className="w-4 h-4 mr-2" />
               Employee Management
@@ -55,7 +55,7 @@ const HRMDashboard = () => {
             <TabsTrigger 
               value="attendance"
               data-testid="tab-attendance"
-              className="data-[state=active]:bg-gray-900 data-[state=active]:text-white text-gray-300"
+              className="data-[state=active]:bg-green-500/20 data-[state=active]:text-white text-gray-300"
             >
               <ClipboardCheck className="w-4 h-4 mr-2" />
               Attendance
@@ -63,7 +63,7 @@ const HRMDashboard = () => {
             <TabsTrigger 
               value="records"
               data-testid="tab-records"
-              className="data-[state=active]:bg-gray-900 data-[state=active]:text-white text-gray-300"
+              className="data-[state=active]:bg-green-500/20 data-[state=active]:text-white text-gray-300"
             >
               <FileText className="w-4 h-4 mr-2" />
               Employee Records
@@ -71,7 +71,7 @@ const HRMDashboard = () => {
             <TabsTrigger 
               value="company"
               data-testid="tab-company"
-              className="data-[state=active]:bg-gray-900 data-[state=active]:text-white text-gray-300"
+              className="data-[state=active]:bg-green-500/20 data-[state=active]:text-white text-gray-300"
             >
               <Building2 className="w-4 h-4 mr-2" />
               Company Documents

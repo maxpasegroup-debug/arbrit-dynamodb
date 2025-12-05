@@ -98,8 +98,8 @@ const HRDashboard = () => {
               />
               <div>
                 <div className="flex items-center gap-2">
-                  <Users className="w-5 h-5 text-gray-700" />
-                  <h1 className="text-2xl font-bold text-gray-900">HR Dashboard</h1>
+                  <Users className="w-5 h-5 text-green-400" />
+                  <h1 className="text-2xl font-bold text-white">HR Dashboard</h1>
                 </div>
                 <p className="text-sm text-gray-400">Human Resource Management</p>
               </div>
@@ -109,14 +109,14 @@ const HRDashboard = () => {
             <div className="flex items-center gap-4">
               <div className="text-right">
                 <p className="text-sm font-semibold text-gray-900">{user?.name}</p>
-                <p className="text-xs text-gray-700">HR Manager</p>
+                <p className="text-xs text-gray-300">HR Manager</p>
               </div>
               <Button
                 data-testid="logout-button"
                 onClick={handleLogout}
                 variant="outline"
                 size="sm"
-                className="border-gray-300 text-gray-700 hover:bg-gray-100"
+                className="border-gray-300 text-green-400 hover:bg-gray-100"
               >
                 <LogOut className="w-4 h-4 mr-2" />
                 Logout
@@ -133,18 +133,18 @@ const HRDashboard = () => {
           <h2 className="text-2xl font-bold text-gray-900 mb-2">
             Welcome back, {user?.name?.split(' ')[0]}!
           </h2>
-          <p className="text-gray-700">
+          <p className="text-gray-300">
             Manage employees, attendance, and documents from your HR dashboard.
           </p>
         </div>
 
         {/* HRM Modules Tabs */}
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-6 bg-white border border-gray-200 shadow-sm">
+          <TabsList className="grid w-full grid-cols-6 bg-white/5 backdrop-blur-sm border border-white/10">
             <TabsTrigger 
               value="employees" 
               data-testid="tab-employees"
-              className="data-[state=active]:bg-gray-900 data-[state=active]:text-white text-gray-300"
+              className="data-[state=active]:bg-green-500/20 data-[state=active]:text-white text-gray-300"
             >
               <Users className="w-4 h-4 mr-2" />
               Employee Management
@@ -152,34 +152,34 @@ const HRDashboard = () => {
             <TabsTrigger 
               value="attendance"
               data-testid="tab-attendance"
-              className="data-[state=active]:bg-gray-900 data-[state=active]:text-white text-gray-300"
+              className="data-[state=active]:bg-green-500/20 data-[state=active]:text-white text-gray-300"
             >
               Attendance
             </TabsTrigger>
             <TabsTrigger 
               value="records"
               data-testid="tab-records"
-              className="data-[state=active]:bg-gray-900 data-[state=active]:text-white text-gray-300"
+              className="data-[state=active]:bg-green-500/20 data-[state=active]:text-white text-gray-300"
             >
               Employee Records
             </TabsTrigger>
             <TabsTrigger 
               value="company"
               data-testid="tab-company"
-              className="data-[state=active]:bg-gray-900 data-[state=active]:text-white text-gray-300"
+              className="data-[state=active]:bg-green-500/20 data-[state=active]:text-white text-gray-300"
             >
               Company Documents
             </TabsTrigger>
             <TabsTrigger 
               value="my-expenses"
-              className="data-[state=active]:bg-gray-900 data-[state=active]:text-white text-gray-300"
+              className="data-[state=active]:bg-green-500/20 data-[state=active]:text-white text-gray-300"
             >
               <Receipt className="w-4 h-4 mr-2" />
               My Expenses
             </TabsTrigger>
             <TabsTrigger 
               value="expense-review"
-              className="data-[state=active]:bg-gray-900 data-[state=active]:text-white text-gray-300"
+              className="data-[state=active]:bg-green-500/20 data-[state=active]:text-white text-gray-300"
             >
               <DollarSign className="w-4 h-4 mr-2" />
               Expense Review
