@@ -139,9 +139,9 @@ const SelfLeadForm = ({ showFieldType = false, onSuccess }) => {
       </Button>
 
       <Dialog open={showDialog} onOpenChange={setShowDialog}>
-        <DialogContent className="bg-[#1a2f4d] border-white/20 text-gray-900 max-w-4xl max-h-[90vh] overflow-y-auto">
+        <DialogContent className="bg-[#1a2f4d] border-white/20 text-slate-100 max-w-4xl max-h-[90vh] overflow-y-auto">
           <DialogHeader>
-            <DialogTitle className="text-xl text-gray-900">ARBRIT Lead Submission Form</DialogTitle>
+            <DialogTitle className="text-xl text-slate-100">ARBRIT Lead Submission Form</DialogTitle>
           </DialogHeader>
           <form onSubmit={handleSubmit} className="space-y-6">
             {/* Lead Basic Information */}
@@ -154,7 +154,7 @@ const SelfLeadForm = ({ showFieldType = false, onSuccess }) => {
                     value={formData.first_name}
                     onChange={(e) => setFormData({ ...formData, first_name: e.target.value })}
                     placeholder="John"
-                    className="bg-slate-900 border-white/20 text-gray-900 mt-1"
+                    className="bg-slate-900 border-white/20 text-slate-100 mt-1"
                     required
                   />
                 </div>
@@ -164,7 +164,7 @@ const SelfLeadForm = ({ showFieldType = false, onSuccess }) => {
                     value={formData.last_name}
                     onChange={(e) => setFormData({ ...formData, last_name: e.target.value })}
                     placeholder="Doe"
-                    className="bg-slate-900 border-white/20 text-gray-900 mt-1"
+                    className="bg-slate-900 border-white/20 text-slate-100 mt-1"
                   />
                 </div>
                 <div>
@@ -173,7 +173,7 @@ const SelfLeadForm = ({ showFieldType = false, onSuccess }) => {
                     value={formData.lead_owner}
                     onChange={(e) => setFormData({ ...formData, lead_owner: e.target.value })}
                     placeholder="Sales Representative"
-                    className="bg-slate-900 border-white/20 text-gray-900 mt-1"
+                    className="bg-slate-900 border-white/20 text-slate-100 mt-1"
                     required
                   />
                 </div>
@@ -182,7 +182,7 @@ const SelfLeadForm = ({ showFieldType = false, onSuccess }) => {
                   <select
                     value={formData.source}
                     onChange={(e) => setFormData({ ...formData, source: e.target.value })}
-                    className="w-full bg-slate-900 border border-white/20 text-gray-900 rounded-md p-2 mt-1"
+                    className="w-full bg-slate-900 border border-white/20 text-slate-100 rounded-md p-2 mt-1"
                   >
                     <option value="Self">Self</option>
                     <option value="Website">Website</option>
@@ -200,7 +200,7 @@ const SelfLeadForm = ({ showFieldType = false, onSuccess }) => {
                   <select
                     value={formData.lead_category}
                     onChange={(e) => setFormData({ ...formData, lead_category: e.target.value })}
-                    className="w-full bg-slate-900 border border-white/20 text-gray-900 rounded-md p-2 mt-1"
+                    className="w-full bg-slate-900 border border-white/20 text-slate-100 rounded-md p-2 mt-1"
                   >
                     <option value="">Select Category</option>
                     <option value="Hot">Hot Lead</option>
@@ -219,7 +219,7 @@ const SelfLeadForm = ({ showFieldType = false, onSuccess }) => {
                 type="button"
                 onClick={() => setLeadType('company')}
                 className={`flex-1 flex items-center justify-center gap-2 py-2 px-4 rounded-md transition-all ${
-                  leadType === 'company' ? 'bg-blue-600 text-gray-900' : 'text-slate-400 hover:text-slate-200'
+                  leadType === 'company' ? 'bg-blue-600 text-slate-100' : 'text-slate-400 hover:text-slate-200'
                 }`}
               >
                 <Building2 className="w-4 h-4" />
@@ -229,7 +229,7 @@ const SelfLeadForm = ({ showFieldType = false, onSuccess }) => {
                 type="button"
                 onClick={() => setLeadType('individual')}
                 className={`flex-1 flex items-center justify-center gap-2 py-2 px-4 rounded-md transition-all ${
-                  leadType === 'individual' ? 'bg-blue-600 text-gray-900' : 'text-slate-400 hover:text-slate-200'
+                  leadType === 'individual' ? 'bg-blue-600 text-slate-100' : 'text-slate-400 hover:text-slate-200'
                 }`}
               >
                 <User className="w-4 h-4" />
@@ -248,7 +248,7 @@ const SelfLeadForm = ({ showFieldType = false, onSuccess }) => {
                       value={formData.company_name}
                       onChange={(e) => setFormData({ ...formData, company_name: e.target.value })}
                       placeholder="ABC Company Ltd."
-                      className="bg-slate-900 border-white/20 text-gray-900 mt-1"
+                      className="bg-slate-900 border-white/20 text-slate-100 mt-1"
                       required
                     />
                   </div>
@@ -258,7 +258,7 @@ const SelfLeadForm = ({ showFieldType = false, onSuccess }) => {
                       value={formData.contact_person}
                       onChange={(e) => setFormData({ ...formData, contact_person: e.target.value })}
                       placeholder="John Doe"
-                      className="bg-slate-900 border-white/20 text-gray-900 mt-1"
+                      className="bg-slate-900 border-white/20 text-slate-100 mt-1"
                       required
                     />
                   </div>
@@ -268,7 +268,7 @@ const SelfLeadForm = ({ showFieldType = false, onSuccess }) => {
                       value={formData.contact_designation}
                       onChange={(e) => setFormData({ ...formData, contact_designation: e.target.value })}
                       placeholder="Safety Manager"
-                      className="bg-slate-900 border-white/20 text-gray-900 mt-1"
+                      className="bg-slate-900 border-white/20 text-slate-100 mt-1"
                       required
                     />
                   </div>
@@ -278,7 +278,7 @@ const SelfLeadForm = ({ showFieldType = false, onSuccess }) => {
                       value={formData.phone}
                       onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                       placeholder="971xxxxxxxxx"
-                      className="bg-slate-900 border-white/20 text-gray-900 mt-1"
+                      className="bg-slate-900 border-white/20 text-slate-100 mt-1"
                       required
                     />
                   </div>
@@ -289,7 +289,7 @@ const SelfLeadForm = ({ showFieldType = false, onSuccess }) => {
                       value={formData.contact_email}
                       onChange={(e) => setFormData({ ...formData, contact_email: e.target.value })}
                       placeholder="contact@company.com"
-                      className="bg-slate-900 border-white/20 text-gray-900 mt-1"
+                      className="bg-slate-900 border-white/20 text-slate-100 mt-1"
                     />
                   </div>
                   <div className="col-span-2">
@@ -299,7 +299,7 @@ const SelfLeadForm = ({ showFieldType = false, onSuccess }) => {
                       value={formData.website}
                       onChange={(e) => setFormData({ ...formData, website: e.target.value })}
                       placeholder="https://www.company.com"
-                      className="bg-slate-900 border-white/20 text-gray-900 mt-1"
+                      className="bg-slate-900 border-white/20 text-slate-100 mt-1"
                     />
                   </div>
                   <div>
@@ -307,7 +307,7 @@ const SelfLeadForm = ({ showFieldType = false, onSuccess }) => {
                     <select
                       value={formData.industry}
                       onChange={(e) => setFormData({ ...formData, industry: e.target.value })}
-                      className="w-full bg-slate-900 border border-white/20 text-gray-900 rounded-md p-2 mt-1"
+                      className="w-full bg-slate-900 border border-white/20 text-slate-100 rounded-md p-2 mt-1"
                     >
                       <option value="">Select Industry</option>
                       <option value="Construction">Construction</option>
@@ -324,7 +324,7 @@ const SelfLeadForm = ({ showFieldType = false, onSuccess }) => {
                     <select
                       value={formData.employee_count}
                       onChange={(e) => setFormData({ ...formData, employee_count: e.target.value })}
-                      className="w-full bg-slate-900 border border-white/20 text-gray-900 rounded-md p-2 mt-1"
+                      className="w-full bg-slate-900 border border-white/20 text-slate-100 rounded-md p-2 mt-1"
                     >
                       <option value="">Select Range</option>
                       <option value="1-10">1-10</option>
@@ -348,7 +348,7 @@ const SelfLeadForm = ({ showFieldType = false, onSuccess }) => {
                       value={formData.client_name}
                       onChange={(e) => setFormData({ ...formData, client_name: e.target.value })}
                       placeholder="John Doe"
-                      className="bg-slate-900 border-white/20 text-gray-900 mt-1"
+                      className="bg-slate-900 border-white/20 text-slate-100 mt-1"
                       required
                     />
                   </div>
@@ -358,7 +358,7 @@ const SelfLeadForm = ({ showFieldType = false, onSuccess }) => {
                       value={formData.phone}
                       onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                       placeholder="971xxxxxxxxx"
-                      className="bg-slate-900 border-white/20 text-gray-900 mt-1"
+                      className="bg-slate-900 border-white/20 text-slate-100 mt-1"
                       required
                     />
                   </div>
@@ -369,7 +369,7 @@ const SelfLeadForm = ({ showFieldType = false, onSuccess }) => {
                       value={formData.contact_email}
                       onChange={(e) => setFormData({ ...formData, contact_email: e.target.value })}
                       placeholder="john@email.com"
-                      className="bg-slate-900 border-white/20 text-gray-900 mt-1"
+                      className="bg-slate-900 border-white/20 text-slate-100 mt-1"
                     />
                   </div>
                 </div>
@@ -386,7 +386,7 @@ const SelfLeadForm = ({ showFieldType = false, onSuccess }) => {
                     value={formData.training_service_details}
                     onChange={(e) => setFormData({ ...formData, training_service_details: e.target.value })}
                     placeholder="Brief description of training needs"
-                    className="bg-slate-900 border-white/20 text-gray-900 mt-1"
+                    className="bg-slate-900 border-white/20 text-slate-100 mt-1"
                   />
                 </div>
                 <div className="col-span-2">
@@ -395,7 +395,7 @@ const SelfLeadForm = ({ showFieldType = false, onSuccess }) => {
                     value={formData.product_services_required}
                     onChange={(e) => setFormData({ ...formData, product_services_required: e.target.value })}
                     placeholder="Specific products or services needed"
-                    className="bg-slate-900 border-white/20 text-gray-900 mt-1"
+                    className="bg-slate-900 border-white/20 text-slate-100 mt-1"
                   />
                 </div>
                 <div className="col-span-2">
@@ -403,7 +403,7 @@ const SelfLeadForm = ({ showFieldType = false, onSuccess }) => {
                   <select
                     value={formData.course_id}
                     onChange={(e) => handleCourseChange(e.target.value)}
-                    className="w-full bg-slate-900 border border-white/20 text-gray-900 rounded-md p-2 mt-1"
+                    className="w-full bg-slate-900 border border-white/20 text-slate-100 rounded-md p-2 mt-1"
                   >
                     <option value="">Select Training Program</option>
                     {courses.map(course => (
@@ -420,7 +420,7 @@ const SelfLeadForm = ({ showFieldType = false, onSuccess }) => {
                     min="1"
                     value={formData.num_trainees}
                     onChange={(e) => setFormData({ ...formData, num_trainees: parseInt(e.target.value) || 1 })}
-                    className="bg-slate-900 border-white/20 text-gray-900 mt-1"
+                    className="bg-slate-900 border-white/20 text-slate-100 mt-1"
                   />
                 </div>
                 <div>
@@ -429,7 +429,7 @@ const SelfLeadForm = ({ showFieldType = false, onSuccess }) => {
                     type="date"
                     value={formData.training_date}
                     onChange={(e) => setFormData({ ...formData, training_date: e.target.value })}
-                    className="bg-slate-900 border-white/20 text-gray-900 mt-1"
+                    className="bg-slate-900 border-white/20 text-slate-100 mt-1"
                   />
                 </div>
                 <div>
@@ -438,7 +438,7 @@ const SelfLeadForm = ({ showFieldType = false, onSuccess }) => {
                     value={formData.training_site}
                     onChange={(e) => setFormData({ ...formData, training_site: e.target.value })}
                     placeholder="On-site / Off-site"
-                    className="bg-slate-900 border-white/20 text-gray-900 mt-1"
+                    className="bg-slate-900 border-white/20 text-slate-100 mt-1"
                   />
                 </div>
                 <div>
@@ -447,7 +447,7 @@ const SelfLeadForm = ({ showFieldType = false, onSuccess }) => {
                     value={formData.training_location}
                     onChange={(e) => setFormData({ ...formData, training_location: e.target.value })}
                     placeholder="City, Country"
-                    className="bg-slate-900 border-white/20 text-gray-900 mt-1"
+                    className="bg-slate-900 border-white/20 text-slate-100 mt-1"
                   />
                 </div>
                 <div>
@@ -456,7 +456,7 @@ const SelfLeadForm = ({ showFieldType = false, onSuccess }) => {
                     value={formData.branch}
                     onChange={(e) => setFormData({ ...formData, branch: e.target.value })}
                     placeholder="Branch location"
-                    className="bg-slate-900 border-white/20 text-gray-900 mt-1"
+                    className="bg-slate-900 border-white/20 text-slate-100 mt-1"
                   />
                 </div>
               </div>
@@ -471,7 +471,7 @@ const SelfLeadForm = ({ showFieldType = false, onSuccess }) => {
                   <select
                     value={formData.payment_mode}
                     onChange={(e) => setFormData({ ...formData, payment_mode: e.target.value })}
-                    className="w-full bg-slate-900 border border-white/20 text-gray-900 rounded-md p-2 mt-1"
+                    className="w-full bg-slate-900 border border-white/20 text-slate-100 rounded-md p-2 mt-1"
                   >
                     <option value="">Select Payment Mode</option>
                     <option value="Cash">Cash</option>
@@ -486,7 +486,7 @@ const SelfLeadForm = ({ showFieldType = false, onSuccess }) => {
                   <select
                     value={formData.payment_terms}
                     onChange={(e) => setFormData({ ...formData, payment_terms: e.target.value })}
-                    className="w-full bg-slate-900 border border-white/20 text-gray-900 rounded-md p-2 mt-1"
+                    className="w-full bg-slate-900 border border-white/20 text-slate-100 rounded-md p-2 mt-1"
                   >
                     <option value="">Select Payment Terms</option>
                     <option value="Advance">100% Advance</option>
@@ -508,7 +508,7 @@ const SelfLeadForm = ({ showFieldType = false, onSuccess }) => {
                   <textarea
                     value={formData.remarks}
                     onChange={(e) => setFormData({ ...formData, remarks: e.target.value })}
-                    className="w-full bg-slate-900 border border-white/20 text-gray-900 rounded-md p-2 mt-1 min-h-[80px]"
+                    className="w-full bg-slate-900 border border-white/20 text-slate-100 rounded-md p-2 mt-1 min-h-[80px]"
                     placeholder="Any remarks or special notes..."
                   />
                 </div>
@@ -517,7 +517,7 @@ const SelfLeadForm = ({ showFieldType = false, onSuccess }) => {
                   <textarea
                     value={formData.description}
                     onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                    className="w-full bg-slate-900 border border-white/20 text-gray-900 rounded-md p-2 mt-1 min-h-[80px]"
+                    className="w-full bg-slate-900 border border-white/20 text-slate-100 rounded-md p-2 mt-1 min-h-[80px]"
                     placeholder="Detailed description of requirements..."
                   />
                 </div>
@@ -529,7 +529,7 @@ const SelfLeadForm = ({ showFieldType = false, onSuccess }) => {
                 type="button"
                 onClick={() => setShowDialog(false)}
                 variant="outline"
-                className="border-white/20 text-gray-900 hover:bg-white"
+                className="border-white/20 text-slate-100 hover:bg-white"
               >
                 Cancel
               </Button>
