@@ -67,7 +67,7 @@ const FieldSalesDashboard = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-green-900 to-slate-900">
       {/* Header */}
-      <header className="bg-slate-900 border-b border-white/10 sticky top-0 z-50 shadow-sm">
+      <header className="bg-black/20 backdrop-blur-sm border-b border-white/10 sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center py-4">
             <div className="flex items-center space-x-4">
