@@ -273,11 +273,15 @@ const TargetManagement = () => {
                   <SelectValue placeholder="Select team member" />
                 </SelectTrigger>
                 <SelectContent className="bg-[#1a2f4d] border-white/20">
-                  {teamMembers.map(member => (
-                    <SelectItem key={member.id} value={member.id}>
-                      {member.name} - {member.designation}
-                    </SelectItem>
-                  ))}
+                  {teamMembers.length > 0 ? (
+                    teamMembers.map(member => (
+                      <SelectItem key={member.id} value={member.id}>
+                        {member.name} - {member.role}
+                      </SelectItem>
+                    ))
+                  ) : (
+                    <div className="p-2 text-gray-400 text-sm">No sales team members found</div>
+                  )}
                 </SelectContent>
               </Select>
             </div>
