@@ -214,7 +214,17 @@ def generate_arbrit_quotation_pdf(quotation_data, output_path, location="dubai",
     
     # Totals Section (REMOVED: Reference No, Sub Total, Paid Amount)
     total_amount = sum([float(item.get('amount', 0)) for item in items])
-    vat_amount = total_amount * 0.05  # 5% VAT
+    
+    # LOCATION-BASED VAT CALCULATION
+    location = quotation_data.get('location', 'dubai').lower()
+    if location == 'saudi':
+        vat_rate = 0.15  # 15% VAT for Saudi Arabia
+        vat_label = 'VAT (15%):'
+    else:
+        vat_rate = 0.05  # 5% VAT for UAE (Dubai/Abu Dhabi)
+        vat_label = 'VAT (5%):'
+    
+    vat_amount = total_amount * vat_rate
     grand_total = total_amount + vat_amount
     
     totals_data = [
