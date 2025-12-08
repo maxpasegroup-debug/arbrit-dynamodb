@@ -1,6 +1,14 @@
 from fastapi import FastAPI, APIRouter, HTTPException, Depends, status, UploadFile, File, Form
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from dotenv import load_dotenv
+from certificate_automation import (
+    calculate_certificate_expiry,
+    get_certificate_dashboard_stats,
+    generate_renewal_lead_data,
+    process_daily_certificate_checks,
+    format_renewal_email
+)
+
 from starlette.middleware.cors import CORSMiddleware
 import os
 import logging
