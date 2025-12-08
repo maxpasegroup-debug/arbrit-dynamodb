@@ -5027,7 +5027,9 @@ def main_critical_fixes_testing():
 if __name__ == "__main__":
     # Check command line arguments for specific test types
     if len(sys.argv) > 1:
-        if sys.argv[1] == "training":
+        if sys.argv[1] == "critical":
+            sys.exit(main_critical_fixes_testing())
+        elif sys.argv[1] == "training":
             sys.exit(main_training_workflow())
         elif sys.argv[1] == "booking":
             sys.exit(main_booking_request())
