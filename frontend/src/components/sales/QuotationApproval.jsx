@@ -43,6 +43,12 @@ const QuotationApproval = () => {
   };
 
   const submitAction = async () => {
+    // MANDATORY: Rejection comments required for revision workflow
+    if (actionType === 'reject' && !remarks.trim()) {
+      toast.error('Rejection reason is mandatory. Please provide feedback for the sales executive.');
+      return;
+    }
+
     try {
       const token = localStorage.getItem('token');
       await axios.put(
@@ -55,7 +61,8 @@ const QuotationApproval = () => {
       fetchQuotations();
     } catch (error) {
       console.error('Error processing quotation:', error);
-      toast.error('Failed to process quotation');
+      const errorMsg = error.response?.data?.detail || 'Failed to process quotation';
+      toast.error(errorMsg);
     }
   };
 
