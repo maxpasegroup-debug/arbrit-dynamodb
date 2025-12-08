@@ -25,7 +25,9 @@ const QuotationDialog = ({ open, onOpenChange, lead, onSuccess }) => {
     contact_person: '',
     city: '',
     country: 'United Arab Emirates',
-    valid_till: ''
+    valid_till: '',
+    payment_mode: '',
+    payment_terms: ''
   });
 
   useEffect(() => {
