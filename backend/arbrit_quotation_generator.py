@@ -245,20 +245,34 @@ def generate_arbrit_quotation_pdf(quotation_data, output_path, location="dubai",
     elements.append(grand_total_table)
     elements.append(Spacer(1, 8*mm))
     
+    # Payment Details Section (if provided)
+    payment_mode = quotation_data.get('payment_mode', '')
+    payment_terms = quotation_data.get('payment_terms', '')
+    
+    payment_details_text = ""
+    if payment_mode or payment_terms:
+        payment_details_text = f"""<b>Payment Details:</b><br/>"""
+        if payment_mode:
+            payment_details_text += f"""<b>Payment Mode:</b> {payment_mode}<br/>"""
+        if payment_terms:
+            payment_details_text += f"""<b>Payment Terms:</b> {payment_terms}<br/><br/>"""
+    else:
+        payment_details_text = """<b>Payment Terms:</b><br/>
+    Payment to be confirmed prior to training date or on training day<br/><br/>"""
+    
     # Terms & Conditions (REMOVED: Emirates ID, LPO Signed text)
     terms_text = f"""<b>Terms & Conditions</b><br/><br/>
     <b>PREREQUISITE:</b><br/>
     • FILLED REGISTRATION FORM<br/><br/>
+    
+    {payment_details_text}
     
     <b>Bank Details:</b><br/>
     {loc_details['company_name']}<br/>
     <b>BANK NAME:</b> {loc_details['bank_name']}<br/>
     <b>ACCOUNT NO:</b> {loc_details['account_no']}<br/>
     <b>BRANCH:</b> {loc_details['branch']}<br/>
-    <b>SWIFT CODE:</b> {loc_details['swift_code']}<br/><br/>
-    
-    <b>Payment Terms:</b><br/>
-    Payment to be confirmed prior to training date or on training day<br/><br/>"""
+    <b>SWIFT CODE:</b> {loc_details['swift_code']}<br/><br/>"""
     
     elements.append(Paragraph(terms_text, normal_style))
     elements.append(Spacer(1, 5*mm))
