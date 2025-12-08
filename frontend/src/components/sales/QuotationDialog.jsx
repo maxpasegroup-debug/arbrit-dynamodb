@@ -11,7 +11,7 @@ import axios from 'axios';
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
 
-const QuotationDialog = ({ open, onOpenChange, lead, onSuccess }) => {
+const QuotationDialog = ({ open, onOpenChange, lead, existingQuotation, isRevision, onSuccess }) => {
   const [loading, setLoading] = useState(false);
   const [items, setItems] = useState([
     { description: '', quantity: 1, unit_price: 0, amount: 0, additional_info: '' }
