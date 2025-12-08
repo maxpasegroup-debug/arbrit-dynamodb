@@ -484,7 +484,7 @@ class Quotation(BaseModel):
     created_by_name: str
     approved_by: Optional[str] = None  # Sales Head ID
     approved_by_name: Optional[str] = None
-    status: str = "Pending"  # Pending, Approved, Rejected
+    status: str = "Pending"  # Pending, Approved, Rejected, Rejected - Revision Required, Pending Review (Revised)
     remarks: Optional[str] = None
     created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
     approved_at: Optional[datetime] = None
@@ -494,6 +494,15 @@ class Quotation(BaseModel):
     country: Optional[str] = "United Arab Emirates"
     valid_till: Optional[str] = None
     quotation_number: Optional[str] = None
+    
+    # Revision & Resubmission Workflow fields
+    revision_count: int = 0  # Track number of revisions
+    rejection_reason: Optional[str] = None  # Mandatory feedback from Sales Head
+    original_quotation_id: Optional[str] = None  # Link to the very first version
+    previous_version_id: Optional[str] = None  # Link to immediate previous version
+    rejected_by: Optional[str] = None  # Who rejected it
+    rejected_by_name: Optional[str] = None
+    rejected_at: Optional[datetime] = None
 
 
 class QuotationCreate(BaseModel):
