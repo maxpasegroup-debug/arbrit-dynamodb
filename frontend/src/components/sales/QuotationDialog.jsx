@@ -30,9 +30,42 @@ const QuotationDialog = ({ open, onOpenChange, lead, existingQuotation, isRevisi
     payment_terms: ''
   });
 
-  // UPDATE 4: Enhanced pre-filling with lead data
+  // UPDATE 4: Enhanced pre-filling with lead data OR existing quotation for revision
   useEffect(() => {
-    if (lead) {
+    // If this is a revision, pre-fill with existing quotation data
+    if (isRevision && existingQuotation) {
+      setFormData({
+        client_name: existingQuotation.client_name || '',
+        lead_id: existingQuotation.lead_id || '',
+        remarks: existingQuotation.remarks || '',
+        total_amount: existingQuotation.total_amount || 0,
+        location: existingQuotation.location || 'dubai',
+        contact_person: existingQuotation.contact_person || '',
+        city: existingQuotation.city || '',
+        country: existingQuotation.country || 'United Arab Emirates',
+        valid_till: existingQuotation.valid_till || '',
+        payment_mode: existingQuotation.payment_mode || '',
+        payment_terms: existingQuotation.payment_terms || ''
+      });
+      
+      // Parse existing items
+      if (existingQuotation.items) {
+        try {
+          const parsedItems = JSON.parse(existingQuotation.items);
+          setItems(parsedItems.map(item => ({
+            description: item.description || '',
+            quantity: item.quantity || 1,
+            unit_price: item.unit_price || 0,
+            amount: item.amount || 0,
+            additional_info: item.additional_info || ''
+          })));
+        } catch (e) {
+          console.error('Error parsing items:', e);
+        }
+      }
+    }
+    // Otherwise, pre-fill with lead data
+    else if (lead) {
       setFormData(prev => ({
         ...prev,
         client_name: lead.client_name || lead.company_name || '',
@@ -55,7 +88,7 @@ const QuotationDialog = ({ open, onOpenChange, lead, existingQuotation, isRevisi
         }]);
       }
     }
-  }, [lead]);
+  }, [lead, existingQuotation, isRevision]);
 
   useEffect(() => {
     const total = items.reduce((sum, item) => sum + (parseFloat(item.amount) || 0), 0);
