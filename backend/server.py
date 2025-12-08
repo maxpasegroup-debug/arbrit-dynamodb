@@ -3056,22 +3056,29 @@ async def generate_quotation_pdf_endpoint(
         if lead_id:
             lead = await db.leads.find_one({"id": lead_id}, {"_id": 0})
         
-        # Prepare quotation data for PDF
+        # Prepare quotation data for PDF (Arbrit format)
         pdf_data = {
-            "quotation_ref": quotation.get("id", "N/A")[:20],
+            "quotation_number": quotation.get("quotation_number", f"QT-{quotation_id[:8].upper()}"),
             "client_name": quotation.get("client_name", "N/A"),
-            "contact_person": lead.get("contact_person") if lead else "N/A",
-            "client_email": lead.get("contact_email") if lead else "",
-            "items": quotation.get("items", "Training Services"),
-            "total_amount": quotation.get("total_amount", 0),
+            "contact_person": quotation.get("contact_person") or (lead.get("contact_person") if lead else "N/A"),
+            "city": quotation.get("city") or (lead.get("city") if lead else "Dubai"),
+            "country": quotation.get("country", "United Arab Emirates"),
+            "created_at": quotation.get("created_at", datetime.now(timezone.utc)).strftime("%b %d, %Y"),
+            "valid_till": quotation.get("valid_till", "Dec 31, 2025"),
+            "items": eval(quotation.get("items", "[]")) if isinstance(quotation.get("items"), str) else [{"description": "Training Service", "list_price": quotation.get("total_amount", 0), "qty": 1, "amount": quotation.get("total_amount", 0)}],
+            "amount": quotation.get("total_amount", 0),
             "num_trainees": lead.get("num_trainees") if lead else 1,
-            "validity_period": quotation.get("validity_period", "30 days"),
-            "terms": quotation.get("terms", "Standard terms and conditions apply")
+            "submitted_by_name": quotation.get("created_by_name", "Sales Executive"),
+            "submitted_by_phone": current_user.get("mobile", "+971 XX XXX XXXX"),
+            "submitted_by_email": current_user.get("email", "sales@arbritsafety.com")
         }
         
-        # Generate PDF
+        # Get location from quotation
+        location = quotation.get("location", "dubai")
+        
+        # Generate PDF with Arbrit format
         pdf_path = get_quotation_pdf_path(quotation_id)
-        generate_quotation_pdf(pdf_data, pdf_path)
+        generate_arbrit_quotation_pdf(pdf_data, pdf_path, location=location)
         
         # Return file
         return FileResponse(
