@@ -1369,9 +1369,34 @@ async def login(request: LoginRequest):
                 detail="Invalid mobile number or PIN"
             )
         
-        # Verify PIN
-        if not verify_pin(request.pin, user["pin_hash"]):
-            logger.warning(f"Failed PIN verification for mobile: {request.mobile}")
+        # SECURITY FIX: Validate that pin_hash exists and is not empty
+        pin_hash = user.get("pin_hash")
+        if not pin_hash or pin_hash == "" or not isinstance(pin_hash, str):
+            logger.error(f"SECURITY ALERT: User {request.mobile} has invalid/missing pin_hash!")
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="Account configuration error. Please contact administrator."
+            )
+        
+        # Verify PIN - wrap in try-except to catch hash verification errors
+        try:
+            pin_valid = verify_pin(request.pin, pin_hash)
+            # SECURITY FIX: Explicitly check for True (not just truthy)
+            if pin_valid is not True:
+                logger.warning(f"Failed PIN verification for mobile: {request.mobile}")
+                raise HTTPException(
+                    status_code=status.HTTP_401_UNAUTHORIZED,
+                    detail="Invalid mobile number or PIN"
+                )
+        except ValueError as ve:
+            # This catches bcrypt errors for invalid hash formats
+            logger.error(f"SECURITY ALERT: Invalid hash format for user {request.mobile}: {ve}")
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="Account configuration error. Please contact administrator."
+            )
+        except Exception as ve_err:
+            logger.error(f"PIN verification error for {request.mobile}: {ve_err}")
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,
                 detail="Invalid mobile number or PIN"
