@@ -520,7 +520,7 @@ class QuotationCreate(BaseModel):
 
 class QuotationApprove(BaseModel):
     status: str  # Approved, Rejected
-    remarks: Optional[str] = None
+    remarks: Optional[str] = None  # Mandatory for rejection
 
 
 class QuotationUpdate(BaseModel):
