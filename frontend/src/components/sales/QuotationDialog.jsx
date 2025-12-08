@@ -470,7 +470,7 @@ const QuotationDialog = ({ open, onOpenChange, lead, existingQuotation, isRevisi
               disabled={loading}
               className="bg-blue-600 hover:bg-blue-700"
             >
-              {loading ? 'Creating...' : 'Create Quotation'}
+              {loading ? (isRevision ? 'Resubmitting...' : 'Creating...') : (isRevision ? 'Revise & Resubmit' : 'Create Quotation')}
             </Button>
           </div>
         </form>
