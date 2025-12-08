@@ -145,11 +145,31 @@ const QuotationDialog = ({ open, onOpenChange, lead, existingQuotation, isRevisi
         total_amount: parseFloat(formData.total_amount)
       };
 
-      await axios.post(`${API}/sales/quotations`, quotationData, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
+      if (isRevision && existingQuotation) {
+        // REVISION MODE: Update existing quotation
+        await axios.put(
+          `${API}/sales/quotations/${existingQuotation.id}/revise`,
+          quotationData,
+          { headers: { Authorization: `Bearer ${token}` } }
+        );
 
-      toast.success('Quotation created successfully!');
+        // After revision, resubmit it
+        await axios.put(
+          `${API}/sales/quotations/${existingQuotation.id}/resubmit`,
+          {},
+          { headers: { Authorization: `Bearer ${token}` } }
+        );
+
+        toast.success('Quotation revised and resubmitted successfully!');
+      } else {
+        // CREATE MODE: New quotation
+        await axios.post(`${API}/sales/quotations`, quotationData, {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+
+        toast.success('Quotation created successfully!');
+      }
+
       onOpenChange(false);
       if (onSuccess) onSuccess();
       
@@ -169,8 +189,8 @@ const QuotationDialog = ({ open, onOpenChange, lead, existingQuotation, isRevisi
         payment_terms: ''
       });
     } catch (error) {
-      console.error('Error creating quotation:', error);
-      const errorMsg = error.response?.data?.detail || 'Failed to create quotation';
+      console.error('Error saving quotation:', error);
+      const errorMsg = error.response?.data?.detail || 'Failed to save quotation';
       toast.error(errorMsg);
     } finally {
       setLoading(false);
