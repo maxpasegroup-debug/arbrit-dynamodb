@@ -904,9 +904,9 @@ metadata:
 
 test_plan:
   current_focus:
-    - "P1 Issues #3 and #4: Lifecycle Status Display Feature"
-    - "COMPLETE SMOKE TEST - VERIFY CLEAN CRM"
-  stuck_tasks: []
+    - "CRITICAL FIX 3: Academic Library Script Document Distribution"
+  stuck_tasks:
+    - "CRITICAL FIX 3: Academic Library Script Document Distribution"
   test_all: false
   test_priority: "high_first"
 
