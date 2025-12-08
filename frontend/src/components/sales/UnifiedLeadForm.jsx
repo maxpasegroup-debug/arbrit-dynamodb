@@ -581,14 +581,43 @@ const UnifiedLeadForm = ({
               <Input
                 value={formData.contact_mobile}
                 onChange={(e) => {
+                  const value = e.target.value;
                   // Auto-fill both fields for backend compatibility
                   setFormData({ 
                     ...formData, 
-                    contact_mobile: e.target.value,
-                    phone: e.target.value 
+                    contact_mobile: value,
+                    phone: value 
                   });
                 }}
-                placeholder="971xxxxxxxxx"
+                onBlur={(e) => {
+                  // UPDATE 2: Country-specific phone validation
+                  const phone = e.target.value;
+                  const location = formData.training_location || formData.branch || '';
+                  
+                  if (phone) {
+                    let isValid = true;
+                    let errorMsg = '';
+                    
+                    if (location.toLowerCase().includes('dubai') || location.toLowerCase().includes('abu dhabi')) {
+                      // UAE format: 971XXXXXXXXX (12 digits)
+                      if (!/^971\d{9}$/.test(phone)) {
+                        isValid = false;
+                        errorMsg = 'UAE phone must be in format: 971XXXXXXXXX (12 digits)';
+                      }
+                    } else if (location.toLowerCase().includes('saudi')) {
+                      // Saudi format: 966XXXXXXXXX (12 digits)
+                      if (!/^966\d{9}$/.test(phone)) {
+                        isValid = false;
+                        errorMsg = 'Saudi phone must be in format: 966XXXXXXXXX (12 digits)';
+                      }
+                    }
+                    
+                    if (!isValid) {
+                      toast.error(errorMsg);
+                    }
+                  }
+                }}
+                placeholder="971xxxxxxxxx (UAE) or 966xxxxxxxxx (Saudi)"
                 className="bg-slate-900 border-white/20 text-slate-100"
                 required
               />
