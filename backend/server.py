@@ -16,6 +16,7 @@ from difflib import SequenceMatcher
 import re
 from decimal import Decimal
 from quotation_pdf_generator import generate_quotation_pdf, get_quotation_pdf_path
+from arbrit_quotation_generator import generate_arbrit_quotation_pdf
 from fastapi.responses import FileResponse
 
 # Helper function to convert floats to Decimals for DynamoDB
