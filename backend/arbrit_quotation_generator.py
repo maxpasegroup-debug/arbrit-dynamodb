@@ -228,7 +228,7 @@ def generate_arbrit_quotation_pdf(quotation_data, output_path, location="dubai",
     grand_total = total_amount + vat_amount
     
     totals_data = [
-        ['VAT:', f"AED {vat_amount:.2f}"],
+        [vat_label, f"AED {vat_amount:.2f}"],
         ['', '']  # Empty row for spacing
     ]
     
