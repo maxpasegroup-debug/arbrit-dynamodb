@@ -501,6 +501,11 @@ class QuotationCreate(BaseModel):
     items: str
     total_amount: float
     remarks: Optional[str] = None
+    location: Optional[str] = "dubai"  # dubai, abu_dhabi, saudi
+    contact_person: Optional[str] = None
+    city: Optional[str] = None
+    country: Optional[str] = "United Arab Emirates"
+    valid_till: Optional[str] = None
 
 
 class QuotationApprove(BaseModel):
