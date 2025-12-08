@@ -3290,6 +3290,25 @@ class ArbritBackendHealthTester:
         # Print final results
         self.print_final_results()
 
+    def print_final_results(self):
+        """Print final test results summary"""
+        print("\n" + "="*80)
+        print("🎯 TESTING SUMMARY")
+        print("="*80)
+        
+        if self.tests_run > 0:
+            success_rate = (self.tests_passed / self.tests_run) * 100
+            print(f"✅ Tests Passed: {self.tests_passed}/{self.tests_run} ({success_rate:.1f}%)")
+            
+            if self.failed_tests:
+                print(f"❌ Failed Tests: {len(self.failed_tests)}")
+                for failed in self.failed_tests:
+                    print(f"   - {failed['test']}: {failed.get('error', 'Status code mismatch')}")
+            else:
+                print("🎉 All tests passed!")
+        else:
+            print("⚠️ No tests were run")
+
     def run_training_workflow_tests(self):
         """Run complete training workflow end-to-end testing"""
         print("🚀 STARTING TRAINING WORKFLOW END-TO-END TESTING")
