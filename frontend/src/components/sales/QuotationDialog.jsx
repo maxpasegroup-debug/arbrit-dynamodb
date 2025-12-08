@@ -20,7 +20,12 @@ const QuotationDialog = ({ open, onOpenChange, lead, onSuccess }) => {
     client_name: '',
     lead_id: '',
     remarks: '',
-    total_amount: 0
+    total_amount: 0,
+    location: 'dubai',  // dubai, abu_dhabi, saudi
+    contact_person: '',
+    city: '',
+    country: 'United Arab Emirates',
+    valid_till: ''
   });
 
   useEffect(() => {
