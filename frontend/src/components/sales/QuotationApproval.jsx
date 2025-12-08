@@ -63,15 +63,25 @@ const QuotationApproval = () => {
     const colors = {
       'Draft': 'bg-slate-8000/20 text-gray-300 border-gray-500/30',
       'Pending': 'bg-yellow-500/20 text-yellow-300 border-yellow-500/30',
+      'Pending Review (Revised)': 'bg-blue-500/20 text-blue-300 border-blue-500/30',
       'Approved': 'bg-green-500/20 text-green-300 border-green-500/30',
       'Rejected': 'bg-red-500/20 text-red-300 border-red-500/30',
+      'Rejected - Revision Required': 'bg-orange-500/20 text-orange-300 border-orange-500/30',
       'Sent': 'bg-blue-500/20 text-blue-300 border-blue-500/30'
     };
     return colors[status] || colors['Draft'];
   };
 
-  const pendingQuotations = quotations.filter(q => q.status === 'Pending' || q.status === 'Draft');
-  const processedQuotations = quotations.filter(q => q.status !== 'Pending' && q.status !== 'Draft');
+  const pendingQuotations = quotations.filter(q => 
+    q.status === 'Pending' || 
+    q.status === 'Draft' || 
+    q.status === 'Pending Review (Revised)'
+  );
+  const processedQuotations = quotations.filter(q => 
+    q.status !== 'Pending' && 
+    q.status !== 'Draft' && 
+    q.status !== 'Pending Review (Revised)'
+  );
 
   return (
     <div className="space-y-6">
