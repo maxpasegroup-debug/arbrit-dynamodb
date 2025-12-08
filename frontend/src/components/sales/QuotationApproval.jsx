@@ -174,7 +174,14 @@ const QuotationApproval = () => {
               ) : (
                 processedQuotations.map((quot) => (
                   <TableRow key={quot.id} className="border-white/20">
-                    <TableCell className="text-white font-medium">{quot.client_name}</TableCell>
+                    <TableCell className="text-white font-medium">
+                      {quot.client_name}
+                      {quot.revision_count > 0 && (
+                        <Badge className="ml-2 bg-blue-500/20 text-blue-300 border-blue-400/50 text-xs">
+                          v{quot.revision_count}
+                        </Badge>
+                      )}
+                    </TableCell>
                     <TableCell className="text-gray-300">${parseFloat(quot.total_amount || 0).toLocaleString()}</TableCell>
                     <TableCell className="text-gray-300 text-sm">{quot.created_by_name || 'N/A'}</TableCell>
                     <TableCell className="text-gray-300 text-sm">
