@@ -3021,7 +3021,8 @@ async def reject_quotation_sales_head(
     current_user: dict = Depends(get_current_user)
 ):
     """
-    Sales Head rejects a quotation request.
+    Sales Head rejects a quotation request with mandatory feedback.
+    Status changes to "Rejected - Revision Required" to enable revision workflow.
     """
     try:
         if current_user["role"] not in ["Sales Head", "MD", "COO", "CEO"]:
@@ -3035,15 +3036,21 @@ async def reject_quotation_sales_head(
         if not quotation:
             raise HTTPException(status_code=404, detail="Quotation not found")
         
-        if not rejection_data.get("comments"):
-            raise HTTPException(status_code=400, detail="Rejection reason is required")
+        # MANDATORY: Rejection reason required for revision workflow
+        rejection_reason = rejection_data.get("comments", "").strip()
+        if not rejection_reason:
+            raise HTTPException(
+                status_code=400, 
+                detail="Rejection reason is mandatory. Please provide feedback for the sales executive."
+            )
         
         update_data = {
-            "status": "Rejected",
+            "status": "Rejected - Revision Required",  # Enable revision workflow
             "rejected_by": current_user["id"],
             "rejected_by_name": current_user["name"],
             "rejected_at": datetime.now(timezone.utc).isoformat(),
-            "comments": rejection_data.get("comments", "")
+            "rejection_reason": rejection_reason,  # Store for sales executive to see
+            "comments": rejection_reason  # Keep for backward compatibility
         }
         
         await db.quotations.update_one({"id": quotation_id}, {"$set": update_data})
