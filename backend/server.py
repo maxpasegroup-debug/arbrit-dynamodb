@@ -4122,6 +4122,10 @@ async def update_my_lead(lead_id: str, update_data: dict, current_user: dict = D
         if not existing:
             raise HTTPException(status_code=404, detail="Lead not found")
         
+        # ENHANCED LOGGING: Track what data is being updated
+        logger.info(f"Lead update attempt by {current_user['name']} for lead {lead_id}")
+        logger.debug(f"Update data received: {update_data}")
+        
         # Status-Based Auto-Score Update
         new_status = update_data.get('status', existing.get('status'))
         old_status = existing.get('status')
@@ -4137,10 +4141,20 @@ async def update_my_lead(lead_id: str, update_data: dict, current_user: dict = D
                 update_data['lead_score'] = 'hot'  # In negotiation = hot lead
         
         # Convert floats to decimals for DynamoDB compatibility
-        update_data = convert_floats_to_decimals(update_data)
+        try:
+            update_data = convert_floats_to_decimals(update_data)
+        except Exception as conv_error:
+            logger.error(f"Error converting floats to decimals: {conv_error}")
+            logger.error(f"Problematic data: {update_data}")
+            raise HTTPException(
+                status_code=400, 
+                detail=f"Data conversion error: {str(conv_error)}"
+            )
+        
         update_data["updated_at"] = datetime.now(timezone.utc).isoformat()
         
         await db.leads.update_one({"id": lead_id}, {"$set": update_data})
+        logger.info(f"Lead {lead_id} updated successfully by {current_user['name']}")
         
         # Log history if status changed
         if old_status != new_status:
@@ -4162,9 +4176,16 @@ async def update_my_lead(lead_id: str, update_data: dict, current_user: dict = D
         
         return {"message": "Lead updated successfully", "score_updated": old_score != update_data.get('lead_score', old_score)}
         
+    except HTTPException:
+        raise
     except Exception as e:
-        logger.error(f"Error updating lead: {e}")
-        raise HTTPException(status_code=500, detail="Failed to update lead")
+        logger.error(f"Error updating lead {lead_id} by {current_user['name']}: {e}")
+        logger.error(f"Exception type: {type(e).__name__}")
+        logger.error(f"Exception details: {str(e)}")
+        raise HTTPException(
+            status_code=500, 
+            detail=f"Failed to update lead: {str(e)}"
+        )
 
 
 # Sales - Create Quotation
