@@ -203,11 +203,23 @@ const QuotationDialog = ({ open, onOpenChange, lead, existingQuotation, isRevisi
         <DialogHeader>
           <DialogTitle className="text-white text-xl flex items-center gap-2">
             <FileText className="w-5 h-5" />
-            Create Quotation
+            {isRevision ? `Revise Quotation (v${(existingQuotation?.revision_count || 0) + 1})` : 'Create Quotation'}
           </DialogTitle>
         </DialogHeader>
 
         <form onSubmit={handleSubmit} className="space-y-6">
+          {/* Show rejection feedback if this is a revision */}
+          {isRevision && existingQuotation?.rejection_reason && (
+            <div className="p-4 bg-yellow-500/10 border border-yellow-400/30 rounded-lg">
+              <h4 className="text-sm font-semibold text-yellow-300 mb-2 flex items-center gap-2">
+                <AlertCircle className="w-4 h-4" />
+                Feedback from {existingQuotation.rejected_by_name || 'Sales Head'}
+              </h4>
+              <p className="text-slate-200 text-sm">
+                {existingQuotation.rejection_reason}
+              </p>
+            </div>
+          )}
           {/* Client Information */}
           <div className="space-y-4 p-4 bg-blue-500/10 border border-blue-400/30 rounded-lg">
             <h4 className="text-sm font-semibold text-slate-200">Client Information</h4>
