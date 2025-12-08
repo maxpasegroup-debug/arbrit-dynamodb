@@ -528,6 +528,13 @@ class QuotationUpdate(BaseModel):
     items: Optional[str] = None
     total_amount: Optional[float] = None
     remarks: Optional[str] = None
+    location: Optional[str] = None
+    contact_person: Optional[str] = None
+    city: Optional[str] = None
+    country: Optional[str] = None
+    valid_till: Optional[str] = None
+    payment_mode: Optional[str] = None
+    payment_terms: Optional[str] = None
 
 
 class InvoiceRequestUpdate(BaseModel):
