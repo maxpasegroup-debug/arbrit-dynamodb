@@ -141,7 +141,7 @@ Training Booking → Training Completion → Certificate Generation
 
 ## 📱 ACCESS INFORMATION
 
-**Application URL:** https://crm-workflow-10.preview.emergentagent.com
+**Application URL:** https://arbrit-safety-crm.preview.emergentagent.com
 
 **Login Method:** Mobile Number + 4-Digit PIN
 

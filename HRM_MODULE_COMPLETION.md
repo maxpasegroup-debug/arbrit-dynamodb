@@ -148,8 +148,8 @@
 
 ## URLs
 
-- **HRM Dashboard**: https://crm-workflow-10.preview.emergentagent.com/hrm
-- **COO Dashboard**: https://crm-workflow-10.preview.emergentagent.com/dashboard/coo
+- **HRM Dashboard**: https://arbrit-safety-crm.preview.emergentagent.com/hrm
+- **COO Dashboard**: https://arbrit-safety-crm.preview.emergentagent.com/dashboard/coo
 
 ## Key Features
 

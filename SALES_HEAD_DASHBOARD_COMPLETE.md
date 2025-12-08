@@ -396,10 +396,10 @@ Designation: "Sales Head"
 
 ## 📍 URLs
 
-- **Login**: https://crm-workflow-10.preview.emergentagent.com/login
-- **COO Dashboard**: https://crm-workflow-10.preview.emergentagent.com/dashboard/coo
-- **HR Dashboard**: https://crm-workflow-10.preview.emergentagent.com/dashboard/hr
-- **Sales Head Dashboard**: https://crm-workflow-10.preview.emergentagent.com/dashboard/sales-head
+- **Login**: https://arbrit-safety-crm.preview.emergentagent.com/login
+- **COO Dashboard**: https://arbrit-safety-crm.preview.emergentagent.com/dashboard/coo
+- **HR Dashboard**: https://arbrit-safety-crm.preview.emergentagent.com/dashboard/hr
+- **Sales Head Dashboard**: https://arbrit-safety-crm.preview.emergentagent.com/dashboard/sales-head
 
 ## ⚠️ Important Notes
 

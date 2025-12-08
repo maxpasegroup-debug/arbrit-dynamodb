@@ -3,7 +3,7 @@ import sys
 from datetime import datetime
 
 class InvoiceAcademicTester:
-    def __init__(self, base_url="https://crm-workflow-10.preview.emergentagent.com"):
+    def __init__(self, base_url="https://arbrit-safety-crm.preview.emergentagent.com"):
         self.base_url = base_url
         self.api_url = f"{base_url}/api"
         self.token = None

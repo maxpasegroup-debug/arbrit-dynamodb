@@ -7,7 +7,7 @@ import requests
 import json
 
 # Login as Field Sales
-login_response = requests.post("https://crm-workflow-10.preview.emergentagent.com/api/auth/login", 
+login_response = requests.post("https://arbrit-safety-crm.preview.emergentagent.com/api/auth/login", 
                               json={"mobile": "971545844386", "pin": "4386"})
 
 if login_response.status_code == 200:
@@ -29,7 +29,7 @@ if login_response.status_code == 200:
     }
     
     print(f"📋 Testing invoice request creation...")
-    response = requests.post("https://crm-workflow-10.preview.emergentagent.com/api/sales/invoice-requests", 
+    response = requests.post("https://arbrit-safety-crm.preview.emergentagent.com/api/sales/invoice-requests", 
                            json=invoice_data, headers=headers)
     
     print(f"Status: {response.status_code}")

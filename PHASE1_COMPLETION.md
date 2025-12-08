@@ -94,8 +94,8 @@
 
 ## URLs
 
-- **Login Page**: https://crm-workflow-10.preview.emergentagent.com/login
-- **COO Dashboard**: https://crm-workflow-10.preview.emergentagent.com/dashboard/coo
+- **Login Page**: https://arbrit-safety-crm.preview.emergentagent.com/login
+- **COO Dashboard**: https://arbrit-safety-crm.preview.emergentagent.com/dashboard/coo
 
 ## API Endpoints
 
