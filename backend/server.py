@@ -3072,6 +3072,190 @@ async def reject_quotation_sales_head(
         raise HTTPException(status_code=500, detail="Failed to reject quotation")
 
 
+
+# ========== REVISION & RESUBMISSION WORKFLOW ENDPOINTS ==========
+
+@api_router.put("/sales/quotations/{quotation_id}/revise")
+async def revise_rejected_quotation(
+    quotation_id: str,
+    revision_data: QuotationUpdate,
+    current_user: dict = Depends(get_current_user)
+):
+    """
+    Sales Executive revises a rejected quotation based on Sales Head feedback.
+    Only quotations with status "Rejected - Revision Required" can be revised.
+    """
+    try:
+        # Get the rejected quotation
+        quotation = await db.quotations.find_one({"id": quotation_id}, {"_id": 0})
+        
+        if not quotation:
+            raise HTTPException(status_code=404, detail="Quotation not found")
+        
+        # Check if user is the creator
+        if quotation.get("created_by") != current_user["id"]:
+            raise HTTPException(
+                status_code=403, 
+                detail="You can only revise your own quotations"
+            )
+        
+        # Check if quotation is in revision-eligible status
+        if quotation.get("status") != "Rejected - Revision Required":
+            raise HTTPException(
+                status_code=400,
+                detail=f"Only rejected quotations can be revised. Current status: {quotation.get('status')}"
+            )
+        
+        # Prepare update data (only update provided fields)
+        update_fields = {}
+        if revision_data.client_name:
+            update_fields["client_name"] = revision_data.client_name
+        if revision_data.items:
+            update_fields["items"] = revision_data.items
+        if revision_data.total_amount is not None:
+            update_fields["total_amount"] = revision_data.total_amount
+        if revision_data.remarks:
+            update_fields["remarks"] = revision_data.remarks
+        if revision_data.location:
+            update_fields["location"] = revision_data.location
+        if revision_data.contact_person:
+            update_fields["contact_person"] = revision_data.contact_person
+        if revision_data.city:
+            update_fields["city"] = revision_data.city
+        if revision_data.country:
+            update_fields["country"] = revision_data.country
+        if revision_data.valid_till:
+            update_fields["valid_till"] = revision_data.valid_till
+        if revision_data.payment_mode:
+            update_fields["payment_mode"] = revision_data.payment_mode
+        if revision_data.payment_terms:
+            update_fields["payment_terms"] = revision_data.payment_terms
+        
+        # Track revision history
+        current_revision_count = quotation.get("revision_count", 0)
+        update_fields["revision_count"] = current_revision_count + 1
+        update_fields["updated_at"] = datetime.now(timezone.utc).isoformat()
+        
+        # Store original quotation ID if this is the first revision
+        if not quotation.get("original_quotation_id"):
+            update_fields["original_quotation_id"] = quotation_id
+        
+        # Store previous version ID
+        update_fields["previous_version_id"] = quotation_id
+        
+        await db.quotations.update_one({"id": quotation_id}, {"$set": update_fields})
+        
+        return {
+            "message": "Quotation revised successfully. Ready to resubmit for approval.",
+            "quotation_id": quotation_id,
+            "revision_count": update_fields["revision_count"]
+        }
+    
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error revising quotation: {e}")
+        raise HTTPException(status_code=500, detail="Failed to revise quotation")
+
+
+@api_router.put("/sales/quotations/{quotation_id}/resubmit")
+async def resubmit_revised_quotation(
+    quotation_id: str,
+    current_user: dict = Depends(get_current_user)
+):
+    """
+    Sales Executive resubmits a revised quotation for Sales Head approval.
+    Changes status from "Rejected - Revision Required" to "Pending Review (Revised)".
+    """
+    try:
+        # Get the quotation
+        quotation = await db.quotations.find_one({"id": quotation_id}, {"_id": 0})
+        
+        if not quotation:
+            raise HTTPException(status_code=404, detail="Quotation not found")
+        
+        # Check if user is the creator
+        if quotation.get("created_by") != current_user["id"]:
+            raise HTTPException(
+                status_code=403,
+                detail="You can only resubmit your own quotations"
+            )
+        
+        # Check if quotation is in correct status
+        if quotation.get("status") != "Rejected - Revision Required":
+            raise HTTPException(
+                status_code=400,
+                detail=f"Only rejected quotations can be resubmitted. Current status: {quotation.get('status')}"
+            )
+        
+        # Change status to pending review (revised)
+        revision_count = quotation.get("revision_count", 0)
+        update_data = {
+            "status": "Pending Review (Revised)",
+            "resubmitted_at": datetime.now(timezone.utc).isoformat(),
+            "updated_at": datetime.now(timezone.utc).isoformat()
+        }
+        
+        await db.quotations.update_one({"id": quotation_id}, {"$set": update_data})
+        
+        # Update lead status if linked
+        lead_id = quotation.get("lead_id")
+        if lead_id:
+            await db.leads.update_one(
+                {"id": lead_id},
+                {"$set": {
+                    "quotation_status": "Pending Review (Revised)",
+                    "updated_at": datetime.now(timezone.utc).isoformat()
+                }}
+            )
+        
+        return {
+            "message": f"Quotation (Revision v{revision_count}) resubmitted for approval successfully",
+            "quotation_id": quotation_id,
+            "status": "Pending Review (Revised)",
+            "revision_count": revision_count
+        }
+    
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error resubmitting quotation: {e}")
+        raise HTTPException(status_code=500, detail="Failed to resubmit quotation")
+
+
+@api_router.get("/sales/quotations/rejected")
+async def get_rejected_quotations(current_user: dict = Depends(get_current_user)):
+    """
+    Get all rejected quotations for the current sales executive.
+    Shows quotations with status "Rejected - Revision Required".
+    """
+    try:
+        query = {
+            "created_by": current_user["id"],
+            "status": "Rejected - Revision Required"
+        }
+        
+        query_result = await db.quotations.find(query, {"_id": 0})
+        quotations = await query_result.to_list(1000)
+        
+        # Format dates
+        for quot in quotations:
+            if isinstance(quot.get('created_at'), str):
+                quot['created_at'] = datetime.fromisoformat(quot['created_at'])
+            if isinstance(quot.get('rejected_at'), str):
+                quot['rejected_at'] = datetime.fromisoformat(quot['rejected_at'])
+        
+        return {
+            "count": len(quotations),
+            "quotations": quotations
+        }
+    
+    except Exception as e:
+        logger.error(f"Error fetching rejected quotations: {e}")
+        raise HTTPException(status_code=500, detail="Failed to fetch rejected quotations")
+
+
+
 # Generate Quotation PDF (NEW - for approved quotations only)
 @api_router.get("/sales/quotations/{quotation_id}/generate-pdf")
 async def generate_quotation_pdf_endpoint(
