@@ -79,9 +79,9 @@ def create_demo_data():
         folders_table.put_item(Item=folder)
         print(f"  ✅ Created folder: {folder['name']}")
     
-    # Define demo documents with realistic file paths
+    # Define demo documents with realistic file paths - DISTRIBUTED ACROSS FOLDERS
     documents_data = [
-        # Safety Training Materials
+        # FOLDER 0: Safety Training Materials
         {
             'id': str(uuid4()),
             'name': 'OSHA Safety Standards Guide.pdf',
@@ -119,11 +119,11 @@ def create_demo_data():
             'version': '1.5'
         },
         
-        # First Aid & Emergency Response
+        # FOLDER 1: First Aid & Emergency Response
         {
             'id': str(uuid4()),
             'name': 'CPR Training Manual.pdf',
-            'folder_id': folders_data[0]['id'],
+            'folder_id': folders_data[1]['id'],
             'file_path': 'https://example.com/docs/cpr-manual.pdf',
             'file_type': 'application/pdf',
             'size': 3145728,  # 3 MB
@@ -135,7 +135,7 @@ def create_demo_data():
         {
             'id': str(uuid4()),
             'name': 'Emergency Response Plan Template.docx',
-            'folder_id': folders_data[0]['id'],
+            'folder_id': folders_data[1]['id'],
             'file_path': 'https://example.com/docs/emergency-response.docx',
             'file_type': 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
             'size': 512000,  # 500 KB
@@ -147,7 +147,7 @@ def create_demo_data():
         {
             'id': str(uuid4()),
             'name': 'First Aid Kit Contents Guide.pdf',
-            'folder_id': folders_data[0]['id'],
+            'folder_id': folders_data[1]['id'],
             'file_path': 'https://example.com/docs/first-aid-kit.pdf',
             'file_type': 'application/pdf',
             'size': 819200,  # 800 KB
@@ -157,11 +157,11 @@ def create_demo_data():
             'version': '2.0'
         },
         
-        # Fire Safety & Prevention
+        # FOLDER 2: Fire Safety & Prevention
         {
             'id': str(uuid4()),
             'name': 'Fire Extinguisher Types and Usage.pdf',
-            'folder_id': folders_data[0]['id'],
+            'folder_id': folders_data[2]['id'],
             'file_path': 'https://example.com/docs/fire-extinguisher.pdf',
             'file_type': 'application/pdf',
             'size': 1572864,  # 1.5 MB
@@ -173,7 +173,7 @@ def create_demo_data():
         {
             'id': str(uuid4()),
             'name': 'Fire Evacuation Procedures.pptx',
-            'folder_id': folders_data[0]['id'],
+            'folder_id': folders_data[2]['id'],
             'file_path': 'https://example.com/docs/fire-evacuation.pptx',
             'file_type': 'application/vnd.openxmlformats-officedocument.presentationml.presentation',
             'size': 4194304,  # 4 MB
@@ -183,11 +183,11 @@ def create_demo_data():
             'version': '2.3'
         },
         
-        # Construction Safety
+        # FOLDER 3: Construction Safety
         {
             'id': str(uuid4()),
             'name': 'Scaffolding Safety Standards.pdf',
-            'folder_id': folders_data[0]['id'],
+            'folder_id': folders_data[3]['id'],
             'file_path': 'https://example.com/docs/scaffolding-safety.pdf',
             'file_type': 'application/pdf',
             'size': 2097152,  # 2 MB
@@ -199,7 +199,7 @@ def create_demo_data():
         {
             'id': str(uuid4()),
             'name': 'Fall Protection Guidelines.pdf',
-            'folder_id': folders_data[0]['id'],
+            'folder_id': folders_data[3]['id'],
             'file_path': 'https://example.com/docs/fall-protection.pdf',
             'file_type': 'application/pdf',
             'size': 1835008,  # 1.75 MB
@@ -211,7 +211,7 @@ def create_demo_data():
         {
             'id': str(uuid4()),
             'name': 'Heavy Equipment Operation Safety.pptx',
-            'folder_id': folders_data[0]['id'],
+            'folder_id': folders_data[3]['id'],
             'file_path': 'https://example.com/docs/equipment-safety.pptx',
             'file_type': 'application/vnd.openxmlformats-officedocument.presentationml.presentation',
             'size': 6291456,  # 6 MB
@@ -221,11 +221,11 @@ def create_demo_data():
             'version': '1.9'
         },
         
-        # Trainer Resources
+        # FOLDER 4: Trainer Resources
         {
             'id': str(uuid4()),
             'name': 'Effective Training Techniques.pdf',
-            'folder_id': folders_data[0]['id'],
+            'folder_id': folders_data[4]['id'],
             'file_path': 'https://example.com/docs/training-techniques.pdf',
             'file_type': 'application/pdf',
             'size': 1310720,  # 1.25 MB
@@ -237,7 +237,7 @@ def create_demo_data():
         {
             'id': str(uuid4()),
             'name': 'Assessment and Evaluation Forms.xlsx',
-            'folder_id': folders_data[0]['id'],
+            'folder_id': folders_data[4]['id'],
             'file_path': 'https://example.com/docs/assessment-forms.xlsx',
             'file_type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
             'size': 204800,  # 200 KB
