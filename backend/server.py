@@ -487,6 +487,12 @@ class Quotation(BaseModel):
     remarks: Optional[str] = None
     created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
     approved_at: Optional[datetime] = None
+    location: Optional[str] = "dubai"  # dubai, abu_dhabi, saudi
+    contact_person: Optional[str] = None
+    city: Optional[str] = None
+    country: Optional[str] = "United Arab Emirates"
+    valid_till: Optional[str] = None
+    quotation_number: Optional[str] = None
 
 
 class QuotationCreate(BaseModel):
