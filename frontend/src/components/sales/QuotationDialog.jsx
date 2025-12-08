@@ -159,6 +159,62 @@ const QuotationDialog = ({ open, onOpenChange, lead, onSuccess }) => {
                 />
               </div>
             </div>
+            
+            {/* Location and Additional Details */}
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <Label className="text-slate-300">Location *</Label>
+                <select
+                  value={formData.location}
+                  onChange={(e) => setFormData({...formData, location: e.target.value})}
+                  className="w-full bg-slate-800 border border-white/20 text-slate-100 rounded-md p-2"
+                  required
+                >
+                  <option value="dubai">Dubai - ARBRIT SAFETY TRAINING AND CONSULTANCY LLC</option>
+                  <option value="abu_dhabi">Abu Dhabi - ARBRIT CONSULTANCY AND SAFETY TRAINING LLC</option>
+                  <option value="saudi">Saudi Arabia - ARBRIT SAFETY TRAINING COMPANY</option>
+                </select>
+              </div>
+              <div>
+                <Label className="text-slate-300">Contact Person</Label>
+                <Input
+                  value={formData.contact_person}
+                  onChange={(e) => setFormData({...formData, contact_person: e.target.value})}
+                  placeholder="Contact person name"
+                  className="bg-slate-800 border-white/20 text-slate-100"
+                />
+              </div>
+            </div>
+            
+            <div className="grid grid-cols-3 gap-4">
+              <div>
+                <Label className="text-slate-300">City</Label>
+                <Input
+                  value={formData.city}
+                  onChange={(e) => setFormData({...formData, city: e.target.value})}
+                  placeholder="City"
+                  className="bg-slate-800 border-white/20 text-slate-100"
+                />
+              </div>
+              <div>
+                <Label className="text-slate-300">Country</Label>
+                <Input
+                  value={formData.country}
+                  onChange={(e) => setFormData({...formData, country: e.target.value})}
+                  placeholder="Country"
+                  className="bg-slate-800 border-white/20 text-slate-100"
+                />
+              </div>
+              <div>
+                <Label className="text-slate-300">Valid Till</Label>
+                <Input
+                  type="date"
+                  value={formData.valid_till}
+                  onChange={(e) => setFormData({...formData, valid_till: e.target.value})}
+                  className="bg-slate-800 border-white/20 text-slate-100"
+                />
+              </div>
+            </div>
           </div>
 
           {/* Quotation Items */}
