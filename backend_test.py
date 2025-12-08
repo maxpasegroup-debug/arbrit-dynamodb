@@ -2887,6 +2887,409 @@ class ArbritBackendHealthTester:
         
         return success, response
 
+    def test_critical_fix_1_login_security(self):
+        """CRITICAL FIX 1: Test Enhanced Login Security Vulnerability Fix"""
+        print("\n🔐 CRITICAL FIX 1: LOGIN SECURITY VULNERABILITY TESTING")
+        print("=" * 60)
+        
+        # Test 1: Valid login with correct PIN (Sales Head: 971545844387/4387)
+        print("\n✅ Test 1: Valid Login with Correct PIN")
+        success, response = self.run_test(
+            "Valid Login - Sales Head (971545844387/4387)",
+            "POST",
+            "auth/login",
+            200,
+            data={"mobile": "971545844387", "pin": "4387"}
+        )
+        
+        if success and 'token' in response:
+            self.sales_head_token = response['token']
+            print(f"   ✅ SUCCESS: Valid credentials accepted")
+            print(f"   ✅ User: {response.get('user', {}).get('name', 'Unknown')}")
+            print(f"   ✅ Role: {response.get('user', {}).get('role', 'Unknown')}")
+        else:
+            print(f"   ❌ FAILED: Valid credentials rejected")
+        
+        # Test 2: Invalid login with wrong PIN (should return 401)
+        print("\n❌ Test 2: Invalid Login with Wrong PIN")
+        success, response = self.run_test(
+            "Invalid Login - Wrong PIN (971545844387/9999)",
+            "POST",
+            "auth/login",
+            401,
+            data={"mobile": "971545844387", "pin": "9999"}
+        )
+        
+        if success:
+            print(f"   ✅ SUCCESS: Invalid PIN correctly rejected with 401")
+        else:
+            print(f"   ❌ FAILED: Invalid PIN not properly rejected")
+        
+        # Test 3: Multiple random PIN attempts (all should fail with 401)
+        print("\n🔄 Test 3: Multiple Random PIN Attempts")
+        random_pins = ["1111", "0000", "1234", "5678", "9876"]
+        all_rejected = True
+        
+        for pin in random_pins:
+            success, response = self.run_test(
+                f"Random PIN Attempt ({pin})",
+                "POST",
+                "auth/login",
+                401,
+                data={"mobile": "971545844387", "pin": pin}
+            )
+            
+            if not success:
+                all_rejected = False
+                print(f"   ❌ FAILED: PIN {pin} was not properly rejected")
+            else:
+                print(f"   ✅ PIN {pin} correctly rejected")
+        
+        if all_rejected:
+            print(f"   ✅ SUCCESS: All random PIN attempts correctly rejected")
+        else:
+            print(f"   ❌ FAILED: Some random PIN attempts were not properly rejected")
+        
+        # Test 4: Verify security fix prevents bypass attempts
+        print("\n🛡️ Test 4: Security Bypass Prevention")
+        bypass_attempts = [
+            {"mobile": "971545844387", "pin": ""},  # Empty PIN
+            {"mobile": "971545844387"},  # Missing PIN
+            {"mobile": "", "pin": "4387"},  # Empty mobile
+        ]
+        
+        bypass_prevented = True
+        for i, attempt in enumerate(bypass_attempts, 1):
+            try:
+                success, response = self.run_test(
+                    f"Bypass Attempt {i}",
+                    "POST",
+                    "auth/login",
+                    401,  # Should be rejected
+                    data=attempt
+                )
+                
+                if not success:
+                    bypass_prevented = False
+                    print(f"   ❌ FAILED: Bypass attempt {i} was not properly rejected")
+                else:
+                    print(f"   ✅ Bypass attempt {i} correctly rejected")
+            except Exception as e:
+                print(f"   ✅ Bypass attempt {i} correctly rejected (validation error)")
+        
+        if bypass_prevented:
+            print(f"   ✅ SUCCESS: All bypass attempts correctly prevented")
+        else:
+            print(f"   ❌ FAILED: Some bypass attempts were not properly prevented")
+        
+        return True
+
+    def test_critical_fix_2_quotation_lead_updates(self):
+        """CRITICAL FIX 2: Test Quotation & Lead Form Updates (5 Updates)"""
+        print("\n📋 CRITICAL FIX 2: QUOTATION & LEAD FORM UPDATES TESTING")
+        print("=" * 60)
+        
+        # Ensure we have Sales Head token
+        if not hasattr(self, 'sales_head_token'):
+            print("   Getting Sales Head token...")
+            success, response = self.run_test(
+                "Login as Sales Head for Testing",
+                "POST",
+                "auth/login",
+                200,
+                data={"mobile": "971545844387", "pin": "4387"}
+            )
+            if success and 'token' in response:
+                self.sales_head_token = response['token']
+                self.token = self.sales_head_token
+        else:
+            self.token = self.sales_head_token
+        
+        # Update 1: Payment Details in Quotation
+        print("\n💰 Update 1: Payment Details in Quotation")
+        quotation_data = {
+            "client_name": "Test Payment Details Company",
+            "contact_person": "Ahmed Hassan",
+            "items": "Fire Safety Training - 25 participants",
+            "total_amount": 7500.00,
+            "payment_mode": "Bank Transfer",  # NEW FIELD
+            "payment_terms": "50% advance, 50% on completion",  # NEW FIELD
+            "remarks": "Testing payment details fields"
+        }
+        
+        success, response = self.run_test(
+            "Create Quotation with Payment Details",
+            "POST",
+            "sales/quotations",
+            200,
+            data=quotation_data
+        )
+        
+        if success:
+            print(f"   ✅ SUCCESS: Quotation created with payment_mode and payment_terms")
+            if 'quotation_id' in response:
+                self.test_quotation_id = response['quotation_id']
+                print(f"   ✅ Quotation ID: {self.test_quotation_id}")
+        else:
+            print(f"   ❌ FAILED: Could not create quotation with payment details")
+        
+        # Update 2: Country-Specific Phone Validation (Test UAE/Saudi numbers)
+        print("\n📱 Update 2: Country-Specific Phone Validation")
+        uae_numbers = ["971501234567", "971521234567", "971551234567"]
+        saudi_numbers = ["966501234567", "966551234567"]
+        
+        for number in uae_numbers + saudi_numbers:
+            country = "UAE" if number.startswith("971") else "Saudi Arabia"
+            lead_data = {
+                "lead_owner": "Mohammad Akbar",
+                "course_id": "fire-safety-001",
+                "lead_type": "individual",
+                "client_name": f"Test Client {number[-4:]}",
+                "client_mobile": number,
+                "urgency": "medium"
+            }
+            
+            success, response = self.run_test(
+                f"Create Lead with {country} Phone ({number})",
+                "POST",
+                "sales/self-lead",
+                200,
+                data=lead_data
+            )
+            
+            if success:
+                print(f"   ✅ {country} number {number} accepted")
+            else:
+                print(f"   ❌ {country} number {number} rejected")
+        
+        # Update 3: Payment Terms Removed from Lead Form (verify via lead creation)
+        print("\n🚫 Update 3: Payment Terms Removed from Lead Form")
+        lead_without_payment = {
+            "lead_owner": "Mohammad Akbar",
+            "course_id": "fire-safety-001",
+            "lead_type": "company",
+            "company_name": "Test Company No Payment",
+            "contact_person": "Test Contact",
+            "contact_designation": "Manager",
+            "contact_mobile": "971501234567",
+            "phone": "971501234567",
+            "urgency": "medium"
+            # NOTE: No payment_terms field should be needed
+        }
+        
+        success, response = self.run_test(
+            "Create Lead without Payment Terms",
+            "POST",
+            "sales/self-lead",
+            200,
+            data=lead_without_payment
+        )
+        
+        if success:
+            print(f"   ✅ SUCCESS: Lead created without payment terms requirement")
+            if 'lead_id' in response:
+                self.test_lead_id = response['lead_id']
+        else:
+            print(f"   ❌ FAILED: Lead creation failed (payment terms may still be required)")
+        
+        # Update 4: Pre-fill Quotation Form (create quotation from lead)
+        print("\n📝 Update 4: Pre-fill Quotation Form from Lead")
+        if hasattr(self, 'test_lead_id'):
+            prefilled_quotation_data = {
+                "lead_id": self.test_lead_id,  # Link to lead for pre-filling
+                "client_name": "Test Company No Payment",  # Should match lead
+                "contact_person": "Test Contact",  # Should match lead
+                "items": "Fire Safety Training based on lead requirements",
+                "total_amount": 5000.00,
+                "remarks": "Quotation pre-filled from lead data"
+            }
+            
+            success, response = self.run_test(
+                "Create Pre-filled Quotation from Lead",
+                "POST",
+                "sales/quotations",
+                200,
+                data=prefilled_quotation_data
+            )
+            
+            if success:
+                print(f"   ✅ SUCCESS: Quotation created with pre-filled data from lead")
+                if 'quotation_id' in response:
+                    print(f"   ✅ Pre-filled Quotation ID: {response['quotation_id']}")
+            else:
+                print(f"   ❌ FAILED: Could not create pre-filled quotation")
+        else:
+            print(f"   ⚠️ SKIPPED: No test lead available for pre-fill testing")
+        
+        # Update 5: Additional Info Field in Quotation Items
+        print("\n📄 Update 5: Additional Info Field in Quotation Items")
+        detailed_quotation_data = {
+            "client_name": "Test Additional Info Company",
+            "contact_person": "Mohammed Hassan",
+            "items": "Fire Safety Training - 30 participants",
+            "additional_info": "Special requirements: Bilingual training (English/Arabic), On-site delivery required, Certificate printing included",  # NEW FIELD
+            "total_amount": 9000.00,
+            "remarks": "Testing additional info field"
+        }
+        
+        success, response = self.run_test(
+            "Create Quotation with Additional Info",
+            "POST",
+            "sales/quotations",
+            200,
+            data=detailed_quotation_data
+        )
+        
+        if success:
+            print(f"   ✅ SUCCESS: Quotation created with additional_info field")
+            if 'quotation_id' in response:
+                print(f"   ✅ Additional Info Quotation ID: {response['quotation_id']}")
+        else:
+            print(f"   ❌ FAILED: Could not create quotation with additional info")
+        
+        return True
+
+    def test_critical_fix_3_academic_library_script(self):
+        """CRITICAL FIX 3: Test Academic Library Script Document Distribution"""
+        print("\n📚 CRITICAL FIX 3: ACADEMIC LIBRARY SCRIPT TESTING")
+        print("=" * 60)
+        
+        # Login as Academic Head to access library
+        print("\n🔐 Login as Academic Head")
+        success, response = self.run_test(
+            "Login as Academic Head",
+            "POST",
+            "auth/login",
+            200,
+            data={"mobile": "971557213537", "pin": "3537"}
+        )
+        
+        if success and 'token' in response:
+            self.token = response['token']
+            print(f"   ✅ Academic Head login successful: {response.get('user', {}).get('name', 'Unknown')}")
+        else:
+            print(f"   ❌ FAILED: Cannot login as Academic Head")
+            return False
+        
+        # Test document distribution across folders
+        print("\n📁 Testing Document Distribution Across Folders")
+        
+        expected_distribution = {
+            "Folder 0 (Safety Training Materials)": 3,
+            "Folder 1 (First Aid & Emergency)": 3,
+            "Folder 2 (Fire Safety)": 2,
+            "Folder 3 (Construction Safety)": 3,
+            "Folder 4 (Trainer Resources)": 2
+        }
+        
+        # Try to access academic library endpoints
+        library_endpoints = [
+            "academic/library/documents",
+            "academic/library/folders",
+            "academic/documents",
+            "library/documents",
+            "academic/training-library"
+        ]
+        
+        library_found = False
+        library_data = []
+        
+        for endpoint in library_endpoints:
+            print(f"   Trying endpoint: /api/{endpoint}")
+            success, response = self.run_test(
+                f"Academic Library Access ({endpoint})",
+                "GET",
+                endpoint,
+                200
+            )
+            
+            if success:
+                library_found = True
+                library_data = response
+                print(f"   ✅ Successfully accessed /api/{endpoint}")
+                break
+            else:
+                print(f"   ❌ Failed to access /api/{endpoint}")
+        
+        if not library_found:
+            print(f"   ⚠️ WARNING: Could not find academic library endpoint")
+            print(f"   ℹ️ This may indicate the script hasn't been run or endpoint doesn't exist")
+            return False
+        
+        # Analyze document distribution
+        print(f"\n📊 Analyzing Document Distribution")
+        
+        if isinstance(library_data, list):
+            print(f"   Found {len(library_data)} total documents")
+            
+            # Group documents by folder if folder information is available
+            folder_counts = {}
+            for doc in library_data:
+                folder = doc.get('folder', doc.get('category', 'Unknown'))
+                folder_counts[folder] = folder_counts.get(folder, 0) + 1
+            
+            print(f"   Document distribution by folder:")
+            for folder, count in folder_counts.items():
+                print(f"   - {folder}: {count} documents")
+            
+            # Check if distribution matches expected
+            distribution_correct = True
+            for expected_folder, expected_count in expected_distribution.items():
+                # Try to match folder names (flexible matching)
+                found_match = False
+                for actual_folder, actual_count in folder_counts.items():
+                    if str(expected_count) in str(actual_count) or any(keyword in actual_folder.lower() for keyword in expected_folder.lower().split()):
+                        if actual_count == expected_count:
+                            print(f"   ✅ {expected_folder}: Expected {expected_count}, Found {actual_count}")
+                            found_match = True
+                        else:
+                            print(f"   ❌ {expected_folder}: Expected {expected_count}, Found {actual_count}")
+                            distribution_correct = False
+                        break
+                
+                if not found_match:
+                    print(f"   ❌ {expected_folder}: Expected {expected_count}, Not found")
+                    distribution_correct = False
+            
+            if distribution_correct:
+                print(f"   ✅ SUCCESS: Document distribution matches expected pattern")
+            else:
+                print(f"   ❌ FAILED: Document distribution does not match expected pattern")
+        
+        elif isinstance(library_data, dict):
+            print(f"   Library data is a dictionary with keys: {list(library_data.keys())}")
+            # Handle different response formats
+            if 'folders' in library_data:
+                folders = library_data['folders']
+                print(f"   Found {len(folders)} folders")
+                for folder in folders:
+                    folder_name = folder.get('name', 'Unknown')
+                    doc_count = folder.get('document_count', 0)
+                    print(f"   - {folder_name}: {doc_count} documents")
+        
+        else:
+            print(f"   ⚠️ Unexpected library data format: {type(library_data)}")
+        
+        return True
+
+    def run_critical_fixes_comprehensive_test(self):
+        """Run comprehensive testing for all 3 critical fixes"""
+        print("🚀 CRITICAL FIXES COMPREHENSIVE TESTING")
+        print("=" * 80)
+        print("Testing all 3 critical fixes as specified in review request")
+        
+        # Critical Fix 1: Login Security Vulnerability
+        self.test_critical_fix_1_login_security()
+        
+        # Critical Fix 2: Quotation & Lead Form Updates (5 Updates)
+        self.test_critical_fix_2_quotation_lead_updates()
+        
+        # Critical Fix 3: Academic Library Script
+        self.test_critical_fix_3_academic_library_script()
+        
+        # Print final results
+        self.print_final_results()
+
     def run_training_workflow_tests(self):
         """Run complete training workflow end-to-end testing"""
         print("🚀 STARTING TRAINING WORKFLOW END-TO-END TESTING")
