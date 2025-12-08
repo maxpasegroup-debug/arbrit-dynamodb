@@ -875,42 +875,7 @@ const UnifiedLeadForm = ({
         </div>
       </div>
 
-      {/* Payment Information */}
-      <div className="space-y-4 p-4 bg-yellow-500/10 border border-yellow-400/30 rounded-lg">
-        <h4 className="text-sm font-semibold text-slate-200">Payment Information</h4>
-        <div className="grid grid-cols-2 gap-4">
-          <div>
-            <Label className="text-slate-300">Payment Mode</Label>
-            <select
-              value={formData.payment_mode}
-              onChange={(e) => setFormData({ ...formData, payment_mode: e.target.value })}
-              className="w-full bg-slate-900 border border-white/20 text-slate-100 rounded-md p-2"
-            >
-              <option value="">Select Payment Mode</option>
-              <option value="Cash">Cash</option>
-              <option value="Bank Transfer">Bank Transfer</option>
-              <option value="Credit Card">Credit Card</option>
-              <option value="Cheque">Cheque</option>
-              <option value="Online Payment">Online Payment</option>
-            </select>
-          </div>
-          <div>
-            <Label className="text-slate-300">Payment Terms</Label>
-            <select
-              value={formData.payment_terms}
-              onChange={(e) => setFormData({ ...formData, payment_terms: e.target.value })}
-              className="w-full bg-slate-900 border border-white/20 text-slate-100 rounded-md p-2"
-            >
-              <option value="">Select Payment Terms</option>
-              <option value="Advance">100% Advance</option>
-              <option value="50-50">50% Advance, 50% Post-Training</option>
-              <option value="Net 30">Net 30 Days</option>
-              <option value="Net 60">Net 60 Days</option>
-              <option value="Custom">Custom Terms</option>
-            </select>
-          </div>
-        </div>
-      </div>
+      {/* UPDATE 3: Payment Information section REMOVED - now only in Quotation Dialog */}
 
       {/* Auto-Calculated Lead Score Display */}
       {formData.lead_score && (
